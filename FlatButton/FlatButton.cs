@@ -65,35 +65,17 @@ namespace CustomControls
             if (_mouseOver)
             {
                 if (!Checked)
-                    DrawBorder();
-                PunchOutSides();
-            }
-            /*
-            if (_mouseOver)
-            {
-                g.FillRectangle(new SolidBrush(BackColor), pevent.ClipRectangle);
-                if (!_checkStateChanged)
                 {
                     DrawBorder();
                     PunchOutSides();
                 }
                 else
-                {
-                    DrawCheckState();
-                }
+                    DrawBorder(2);
             }
-            else
-            {
-                DrawCheckState();
-            }
-            */
-            if (ImageList != null && ImageKey != null)
-            {
-                if (Checked)
-                    g.DrawImage(ImageList.Images[$"{ImageKey}C"], new Point(4, 4));
-                else
-                    g.DrawImage(ImageList.Images[ImageKey], new Point(4, 4));
-            }
+
+            int imgIndex;
+            if (ImageList != null && ((imgIndex = ImageList.Images.IndexOfKey(ImageKey)) > -1))
+                ImageList.Draw(g, new Point(4, 4), imgIndex);
 
             // Inner methods
             void DrawCheckState()
@@ -107,10 +89,19 @@ namespace CustomControls
                     g.FillRectangle(new SolidBrush(BackColor), pevent.ClipRectangle);
             }
 
-            void DrawBorder()
+            void DrawBorder(int width = 1)
             {
-                using (Pen p = new Pen(Brushes.DodgerBlue, 1))
-                    g.DrawRectangle(p, borderRect);
+                Color brushColor = Color.DodgerBlue;
+                //if (width == 1)
+                    //brushColor = Color.DodgerBlue;
+                //else
+                    //brushColor = Color.ForestGreen;
+                using (Pen p = new Pen(brushColor, width))
+                {
+                    // incorrect
+                    Rectangle rect = new Rectangle(borderRect.X + width - 1, borderRect.Y + width - 1, borderRect.Width - width + 1, borderRect.Height - width + 1);
+                    g.DrawRectangle(p, rect);
+                }
             }
 
             void PunchOutSides()

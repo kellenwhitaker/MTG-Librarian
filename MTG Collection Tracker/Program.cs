@@ -16,7 +16,7 @@ namespace MTG_Collection_Tracker
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Form1 form = new Form1();
+            MainForm form = new MainForm();
             Application.Run();
         }
     }

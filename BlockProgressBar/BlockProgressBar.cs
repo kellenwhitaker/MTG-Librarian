@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+//TODO convert to use bare drawing instead of panels
 namespace CustomControls
 {
     public partial class BlockProgressBar : UserControl
