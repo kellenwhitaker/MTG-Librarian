@@ -253,6 +253,7 @@
     <Compile Include="Events\EventArgs.cs" />
     <Compile Include="Extensions\HtmlAgilityPackExtensions.cs" />
     <Compile Include="Extensions\OLVExtensions.cs" />
+    <Compile Include="Extensions\TaskCollectionExtensions.cs" />
     <Compile Include="Forms\CollectorViewForm.cs">
       <SubType>Form</SubType>
     </Compile>
