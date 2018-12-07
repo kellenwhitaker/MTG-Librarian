@@ -57,6 +57,7 @@ namespace MTG_Collection_Tracker
             }
             catch (Exception ex)
             {
+                Console.WriteLine(ex.ToString());
                 RunState = RunState.Failed;
             }
             finally

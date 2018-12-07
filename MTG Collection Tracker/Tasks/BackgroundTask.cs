@@ -47,9 +47,14 @@ namespace MTG_Collection_Tracker
             }
             protected set
             {
-                Rectangle cloneRect = new Rectangle(0, 0, value.Width, value.Height);
-                System.Drawing.Imaging.PixelFormat format = value.PixelFormat;
-                _icon = ((Bitmap)value).GetCopyOf();
+                if (value != null)
+                {
+                    Rectangle cloneRect = new Rectangle(0, 0, value.Width, value.Height);
+                    System.Drawing.Imaging.PixelFormat format = value.PixelFormat;
+                    _icon = ((Bitmap)value).GetCopyOf();
+                }
+                else
+                    _icon = null;
             }
         }
         private int _TotalWorkUnits;

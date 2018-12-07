@@ -92,7 +92,7 @@ namespace MTG_Collection_Tracker
 
         private void ResetState()
         {
-            _tasks.Clear();
+            while (_tasks.TryTake(out var _)) ;
             _completedTasks.Clear();
         }
 
