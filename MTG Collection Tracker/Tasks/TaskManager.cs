@@ -16,7 +16,7 @@ namespace MTG_Collection_Tracker
     public class TaskManager : BackgroundWorker
     {
         private ConcurrentQueue<BackgroundTask> _taskQ;
-        private List<BackgroundTask> _tasks;
+        private BlockingCollection<BackgroundTask> _tasks;
         private List<BackgroundTask> _activeTasks;
         private List<BackgroundTask> _completedTasks;
         private EnhancedOLV listView;
@@ -29,7 +29,7 @@ namespace MTG_Collection_Tracker
             tasksLabel = label;
             this.progressBar = progressBar;
             _taskQ = new ConcurrentQueue<BackgroundTask>();
-            _tasks = new List<BackgroundTask>();
+            _tasks = new BlockingCollection<BackgroundTask>();
             _completedTasks = new List<BackgroundTask>();
             _activeTasks = new List<BackgroundTask>();
             RunWorkerAsync();
