@@ -12,7 +12,7 @@ using CustomControls;
 
 namespace MTG_Collection_Tracker
 {
-    [System.ComponentModel.DesignerCategory("Code")]
+    [DesignerCategory("Code")]
     public class TaskManager : BackgroundWorker
     {
         private ConcurrentQueue<BackgroundTask> _taskQ;

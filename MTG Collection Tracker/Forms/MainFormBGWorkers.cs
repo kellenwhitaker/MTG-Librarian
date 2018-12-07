@@ -1,8 +1,10 @@
-﻿using System;
+﻿using HtmlAgilityPack;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -44,19 +46,42 @@ namespace MTG_Collection_Tracker
             Show();
         }
 
+        private List<CardSet> GetMTGJSONSets()
+        {
+            Regex matchCode_Date = new Regex("</strong><br>(.+)<br><a");
+            string URL = "https://mtgjson.com/v4/sets.html";
+            var doc = new HtmlWeb().Load(URL);
+            var sets = new List<CardSet>();
+            var tableCells = doc.DocumentNode.SelectNodes("//td[i[@class='set']]");
+            CardSet set;
+            foreach (var Cell in tableCells)
+            {
+                set = new CardSet { Name = Cell.Descendants().ElementAt(2).InnerText.Replace("&amp;", "&") };
+                string InnerHTML = Cell.InnerHtml;
+                MatchCollection matches = matchCode_Date.Matches(InnerHTML);
+                string matchString;
+                if (matches.Count > 0)
+                {
+                    matchString = matches[0].Groups[1].Value;
+                    var code_Date = matchString.Split(new[] { '—' });
+                    if (code_Date.Length > 0)
+                        set.Code = code_Date[0].Trim();
+                    if (code_Date.Length > 1)
+                        set.ReleaseDate = code_Date[1].Trim();
+                }
+                string href = Cell.Descendants().Where(a => a.Attributes.Contains("href")).FirstOrDefault()?.Attributes.Where(a => a.Name == "href").FirstOrDefault()?.Value;
+                if (href != null)
+                    set.MTGJSONURL = "http://mtgjson.com/v4/" + href;
+                sets.Add(set);
+            }
+            return sets;
+        }
+
+
+
         private void checkForNewSetsWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            var sets = GetGathererSets();
-            var archiveSets = GetWizardsArchiveSets();
-            //var wikiSets = GetWikipediaSets();
-            foreach (var set in sets)
-            {
-                string setName = (set.Replace(" & ", " AND ")).StripPunctuation().Trim();
-                setName = setName.ToUpper();
-                if (setName.EndsWith(" EDITION"))
-                    setName = setName.Replace(" EDITION", "");
-                setName = setName.ToUpper().Replace("CORE SET", "").Replace("MAGIC THE GATHERING", "").Replace("DUEL DECKS", "").Replace("BOX SET", "").Trim();
-            }
+            var sets = GetMTGJSONSets();
             using (var context = new MyDbContext())
             {
                 var DBSets = from s in context.Sets
@@ -64,8 +89,9 @@ namespace MTG_Collection_Tracker
 
                 foreach (var set in DBSets)
                 {
-                    if (sets.Contains(set.Name))
-                        sets.Remove(set.Name);
+                    var matchingSet = sets.Where(x => x.Name == set.Name).FirstOrDefault();
+                    if (matchingSet != null)
+                        sets.Remove(matchingSet);
                 }
             }
             e.Result = sets;
@@ -73,12 +99,12 @@ namespace MTG_Collection_Tracker
 
         private void CheckForNewSetsWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            var sets = e.Result as List<string>;
+            var sets = e.Result as List<CardSet>;
             if (sets.Count > 0)
             {
                 string newSets = "";
                 foreach (var set in sets)
-                    newSets += "[" + set + "] ";
+                    newSets += "[" + set.Name + "] ";
 
                 if (MessageBox.Show("The following new sets are available for download: \n\n" + newSets + "\n\nWould you like to download them now?", "New Sets Are Available", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {

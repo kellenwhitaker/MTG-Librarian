@@ -15,7 +15,6 @@ namespace MTG_Collection_Tracker
         object TaskObject { get; set; }
         string Caption { get; set; }
         RunWorkerCompletedEventHandler OnTaskCompleted { set; }
-        //void OnTaskRun(object sender, DoWorkEventArgs e);
         BlockProgressBar ProgressBar { get; }
         int TotalWorkUnits { get; }
         int CompletedWorkUnits { get; }
@@ -25,7 +24,7 @@ namespace MTG_Collection_Tracker
         Image Icon { get; }
     }
 
-    public enum RunState { Created, Initialized, Running, Paused, Stopped, Completed }
+    public enum RunState { Initialized, Running, Paused, Stopped, Completed, Failed }
 
     [DesignerCategory("Code")]
     public abstract class BackgroundTask : BackgroundWorker, IBackgroundTask
@@ -35,7 +34,6 @@ namespace MTG_Collection_Tracker
         public object TaskObject { get; set; }
         public string Caption { get; set; }
         public RunWorkerCompletedEventHandler OnTaskCompleted { set => RunWorkerCompleted += value; }
-        //public abstract void OnTaskRun(object sender, DoWorkEventArgs e);
         public int Runtime { get => (int)(watch.ElapsedMilliseconds / 1000); }
         public bool Running { get => RunState == RunState.Running; }
         public BlockProgressBar ProgressBar { get; private set; }
@@ -91,7 +89,6 @@ namespace MTG_Collection_Tracker
                 MaxBlocks = 5,
                 CurrentBlocks = 0
             };
-            //DoWork += OnTaskRun;
             watch = new Stopwatch();
             RunState = RunState.Initialized;
         }

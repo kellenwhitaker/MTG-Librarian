@@ -197,6 +197,10 @@ namespace MTG_Collection_Tracker
         public string   Type { get; set; }
         public string   Block { get; set; }
         [NotMapped]
+        public MagicCard[] Cards { get; set; }
+        [NotMapped]
+        public string   MTGJSONURL { get; set; }
+        [NotMapped]
         public Image    CommonIcon { get; set; }
         public byte[]   CommonIconBytes { get => CommonIcon?.GetCopyOf().ToByteArray(); set => CommonIcon = ImageExtensions.FromByteArray(value); }
         [NotMapped]

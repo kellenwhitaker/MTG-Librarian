@@ -11,21 +11,21 @@ using System.Drawing;
 using System.IO;
 using System.Collections;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Http;
+using Newtonsoft.Json;
 //todo: add new sets to db view
 
 namespace MTG_Collection_Tracker
 {
     public class DownloadSetTask : BackgroundTask
     {
-        //private List<GathererCardDocument> docs;
-        private Dictionary<int, int> ids;
         private CardSet cardSet;
+        private Image commonIcon, uncommonIcon, rareIcon, mythicIcon;
 
-        public DownloadSetTask(string setName)
+        public DownloadSetTask(CardSet set)
         {
-            cardSet = new CardSet { Name = setName };
-            Caption = "Set: " + setName;
-            //docs = new List<GathererCardDocument>();
+            cardSet = new CardSet { Name = set.Name };
+            Caption = "Set: " + set.Name;
         }
 
         public override void Run()
@@ -36,52 +36,46 @@ namespace MTG_Collection_Tracker
 
         protected override void OnDoWork(DoWorkEventArgs e)
         {
-            //base.OnDoWork(e);
             watch.Start();
-            string set = cardSet.Name;
-            set = WebUtility.UrlEncode(set);
-            bool hasNextPage = true;
-            int pageNum = 0;
-            ids = new Dictionary<int, int>();
-            int rowNumber = 0;
-            while (hasNextPage)
+            TotalWorkUnits = 5;
+            try
             {
-                string URL = "http://gatherer.wizards.com/Pages/Search/Default.aspx?sort=cn+&page={0}&output=checklist&set=[\"{1}\"]";
-                URL = String.Format(URL, pageNum, set);
-                var web = new HtmlWeb();
-                var doc = web.Load(URL);
-                var nameLinks = doc.DocumentNode
-                                .Descendants("a")
-                                .Where(x => x.HasClass("nameLink"));
-                
-                foreach (var nameLink in nameLinks)
+                DownloadIcons();
+                CompletedWorkUnits = 4;
+                UpdateIcon();
+                string json = DownloadJSON(cardSet.MTGJSONURL);
+                cardSet = JsonConvert.DeserializeObject<CardSet>(json);
+                foreach (var card in cardSet.Cards)
+                    card.SetCode = cardSet.Code;
+                (cardSet.MythicRareIcon, cardSet.RareIcon, cardSet.UncommonIcon, cardSet.CommonIcon) = (mythicIcon, rareIcon, uncommonIcon, commonIcon);
+                using (var context = new MyDbContext())
                 {
-                    rowNumber++;
-                    string link = nameLink.Attributes["href"].Value;
-                    int id = Convert.ToInt32(link.Substring(link.IndexOf("=") + 1));
-                    if (!ids.Keys.Contains(id))
-                    {
-                        ids.Add(id, rowNumber);
-                        Console.WriteLine($"{id}, {rowNumber}");
-                    }
+                    context.Update(cardSet);
+                    context.SaveChanges();
                 }
-                
-                var pagingControls = doc.DocumentNode
-                                    .Descendants("div")
-                                    .Where(x => x.HasClass("pagingcontrols"))
-                                    .First();
-                if (pagingControls.Descendants("a").Where(x => x.InnerText.Contains("&gt;")).Count() == 0)
-                    hasNextPage = false;
-
-                pageNum++;
+                RunState = RunState.Completed;
             }
-            /*
-            var downloads = (from KV in ids
-                            select DownloadGathererCard(KV)).ToList();
+            catch (Exception ex)
+            {
+                RunState = RunState.Failed;
+            }
+            finally
+            {
+                CompletedWorkUnits = 5;
+                watch.Stop();
+            }
+        }
 
-            TotalWorkUnits = downloads.Count();
-            DownloadCards(downloads);
-            */
+        private static string DownloadJSON(string uri)
+        {
+            string json = "";
+            HttpClient client = new HttpClient();
+            try
+            {
+                json = client.GetStringAsync(uri).Result;
+            }
+            catch (Exception e) { };
+            return json;
         }
 
         private static Image DownloadRemoteImageFile(string uri)
@@ -118,13 +112,13 @@ namespace MTG_Collection_Tracker
         {
             string URL = "http://gatherer.wizards.com/Handlers/Image.ashx?type=symbol&set={0}&size=small&rarity={1}";
             string imgURL = String.Format(URL, cardSet.Code, "C");
-            Icon = cardSet.CommonIcon = DownloadRemoteImageFile(imgURL);
+            Icon = commonIcon = DownloadRemoteImageFile(imgURL);
             imgURL = String.Format(URL, cardSet.Code, "U");
-            cardSet.UncommonIcon = DownloadRemoteImageFile(imgURL);
+            uncommonIcon = DownloadRemoteImageFile(imgURL);
             imgURL = String.Format(URL, cardSet.Code, "R");
-            cardSet.RareIcon = DownloadRemoteImageFile(imgURL);
+            rareIcon = DownloadRemoteImageFile(imgURL);
             imgURL = String.Format(URL, cardSet.Code, "M");
-            cardSet.MythicRareIcon = DownloadRemoteImageFile(imgURL);
+            mythicIcon = DownloadRemoteImageFile(imgURL);
         }
 
         private void UpdateIcon()
