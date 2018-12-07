@@ -48,7 +48,7 @@ namespace MTG_Collection_Tracker
             //AddLibraryCards();
             //SetupCache();
             //AddPrices();
-            UpdateCatalogIDs();
+            //UpdateCatalogIDs();
             SetupUI();
         }
 
@@ -210,7 +210,7 @@ namespace MTG_Collection_Tracker
                     int insertionIndex = 0;
                     foreach (OLVCardItem item in e.Items)
                     {
-                        DBCardInstance card = new DBCardInstance { MVid = item.MCard.MVid, CollectionName = collectionName, InsertionIndex = insertionIndex };
+                        DBCardInstance card = new DBCardInstance { MVid = item.MagicCard.multiverseId, CollectionName = collectionName, InsertionIndex = insertionIndex };
                         context.Library.Add(card);
                         cardsAdded.Add(card);
                         insertionIndex++;
@@ -257,7 +257,7 @@ namespace MTG_Collection_Tracker
             if (dockPanel1.ActiveDocument is CollectionViewForm activeDocument)
             {
                 var collectionName = activeDocument.DocumentName;
-                DBCardInstance card = new DBCardInstance { MVid = args.MCard.MVid, CollectionName = collectionName };
+                DBCardInstance card = new DBCardInstance { MVid = args.MCard.multiverseId, CollectionName = collectionName };
                 using (MyDbContext context = new MyDbContext())
                 {
                     context.Library.Add(card);

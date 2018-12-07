@@ -83,10 +83,10 @@ namespace MTG_Collection_Tracker
             using (var context = new MyDbContext())
             {
                 var cards = from c in context.Catalog
-                            orderby new AlphaNumericString(c.ColNumber), c.Name
+                            orderby new AlphaNumericString(c.number), c.name
                             select c;
                 
-                foreach (MCard card in cards)
+                foreach (var card in cards)
                 {
                     if (!sets.TryGetValue(card.Edition, out OLVSetItem set))
                     {
@@ -156,7 +156,7 @@ namespace MTG_Collection_Tracker
 
         private void fastObjectListView1_ItemActivate(object sender, EventArgs e)
         {
-            OnCardActivated(new CardActivatedEventArgs { MCard = (fastObjectListView1.SelectedObject as OLVCardItem).MCard });
+            OnCardActivated(new CardActivatedEventArgs { MCard = (fastObjectListView1.SelectedObject as OLVCardItem).MagicCard });
         }
 
         private void fastObjectListView1_GiveFeedback(object sender, GiveFeedbackEventArgs e)

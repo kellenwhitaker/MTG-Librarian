@@ -11,61 +11,102 @@ using System.IO;
 namespace MTG_Collection_Tracker
 {
     [Table("Catalog")]
-    public class MCard : MCardBase
+    public class MagicCard : MagicCardBase
     {
         [Key]
         public int CatalogID { get; set; }
-        public int MVid { get; set; }
+        public int multiverseId { get; set; }
     }
 
-    public class MCardBase
+    public class MagicCardBase
     {
-        public List<(string, string)> _legalities;
-        public List<(string, string)> _rulings;
-        public string   Part { get; set; }
-        public string   Name { get; set; }
-        public string   ManaCost { get; set; }
-        public string   Type { get; set; }
-        public string   Power { get; set; }
-        public string   Toughness { get; set; }
-        public string   OracleText { get; set; }
-        public string   Edition { get; set; }
-        public string   Rarity { get; set; }
-        public double   Rating { get; set; }
-        public string   Artist { get; set; }
-        public string   ColNumber { get; set; }
-        public string   Text { get; set; }
-        public string   FlavorText { get; set; }
-        public string   QueryName { get; set; }
-        public string   ColorIndicator { get; set; }
+        public string artist { get; set; }
+        public string borderColor { get; set; }
+        [NotMapped]
+        public string[] colorIdentity { get; set; }
+        [NotMapped]
+        public string[] colorIndicator { get; set; }
+        [NotMapped]
+        public string[] colors { get; set; }
+        public float convertedManaCost { get; set; }
+        public string flavorText { get; set; }
+        public ForeignData[] foreignData { get; set; }
+        public string frameVersion { get; set; }
+        public bool hasFoil { get; set; }
+        public bool hasNonFoil { get; set; }
+        public bool isFoilOnly { get; set; }
+        public bool isOnlineOnly { get; set; }
+        public bool isOversized { get; set; }
+        public bool isReserved { get; set; }
+        public string layout { get; set; }
+        public string loyalty { get; set; }
+        public string manaCost { get; set; }
+        public string name { get; set; }
+        [NotMapped]
+        public string[] names { get; set; }
+        public string number { get; set; }
+        public string originalText { get; set; }
+        public string originalType { get; set; }
+        [NotMapped]
+        public string[] printings { get; set; }
+        public string power { get; set; }
+        public string rarity { get; set; }
+        public string SetCode { get; set; }
+        public string side { get; set; }
+        [NotMapped]
+        public string[] subtypes { get; set; }
+        [NotMapped]
+        public string[] supertypes { get; set; }
+        public string text { get; set; }
+        public bool timeshifted { get; set; }
+        public string toughness { get; set; }
+        public string type { get; set; }
+        [NotMapped]
+        public string[] types { get; set; }
+        public string uuid { get; set; }
+        public string watermark { get; set; }
+        public string Edition { get; set; }
+        public Dictionary<string, string> legalities = new Dictionary<string, string>();
         public string   Legalities
         {
             get
             {
-                if (_legalities == null) return null;
-                return JsonConvert.SerializeObject(_legalities);
+                if (legalities == null) return null;
+                return JsonConvert.SerializeObject(legalities);
             }
             set
             {
                 if (value == null) return;
-                _legalities = JsonConvert.DeserializeObject(value) as List<(string, string)>;
+                legalities = JsonConvert.DeserializeObject(value) as Dictionary<string, string>;
             }
         }
+        public Dictionary<string, string>[] rulings;
         public string   Rulings
         {
             get
             {
-                if (_rulings == null) return null;
-                return JsonConvert.SerializeObject(_rulings);
+                if (rulings == null) return null;
+                return JsonConvert.SerializeObject(rulings);
             }
             set
             {
                 if (value == null) return;
-                _rulings = JsonConvert.DeserializeObject(value) as List<(string, string)>;
+                rulings = JsonConvert.DeserializeObject(value) as Dictionary<string, string>[];
             }
         }
-        public int?     CMC { get; set; }
         public double?  OnlinePrice { get; set; }
+    }
+
+    public class ForeignData
+    {
+        [Key]
+        public int Id { get; set; }
+        public string flavorText { get; set; }
+        public string language { get; set; }
+        public int multiverseId { get; set; }
+        public string name { get; set; }
+        public string text { get; set; }
+        public string type { get; set; }
     }
 
     [Table("Library")]
@@ -83,7 +124,7 @@ namespace MTG_Collection_Tracker
         public int?         InsertionIndex { get; set; }
     }
 
-    public class CardInstance : MCardBase
+    public class CardInstance : MagicCardBase
     {
         [Key]
         public int          CardInstanceId { get => DBCardInstance.CardInstanceId; set => DBCardInstance.CardInstanceId = value; }
@@ -99,9 +140,9 @@ namespace MTG_Collection_Tracker
         public String       SortableTimeAdded { get; set; }
                             
         [NotMapped]
-        public string       ImageKey => $"{Edition}: {Rarity}";
+        public string       ImageKey => $"{Edition}: {rarity}";
         [NotMapped]
-        public string       PaddedName => Name.PadRight(500);
+        public string       PaddedName => name.PadRight(500);
         [NotMapped]
         public DBCardInstance DBCardInstance { get; set; } = new DBCardInstance();
 
@@ -172,7 +213,7 @@ namespace MTG_Collection_Tracker
     public class MyDbContext : DbContext
     {
         #region DbSet
-        public DbSet<MCard> Catalog { get; set; }
+        public DbSet<MagicCard> Catalog { get; set; }
         public DbSet<DBCardInstance> Library { get; set; }
         public DbSet<CardInstance> LibraryView { get; set; }
         public DbSet<CardSet> Sets { get; set; }
@@ -183,7 +224,7 @@ namespace MTG_Collection_Tracker
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Ignore<MCardBase>();
+            modelBuilder.Ignore<MagicCardBase>();
             modelBuilder.Entity<DBCardInstance>().Property(b => b.TimeAdded).HasDefaultValueSql("datetime('now','localtime')");
         }
 

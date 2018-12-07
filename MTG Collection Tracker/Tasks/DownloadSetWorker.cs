@@ -17,7 +17,7 @@ namespace MTG_Collection_Tracker
 {
     public class DownloadSetTask : BackgroundTask
     {
-        private List<GathererCardDocument> docs;
+        //private List<GathererCardDocument> docs;
         private Dictionary<int, int> ids;
         private CardSet cardSet;
 
@@ -25,7 +25,7 @@ namespace MTG_Collection_Tracker
         {
             cardSet = new CardSet { Name = setName };
             Caption = "Set: " + setName;
-            docs = new List<GathererCardDocument>();
+            //docs = new List<GathererCardDocument>();
         }
 
         public override void Run()
@@ -75,12 +75,13 @@ namespace MTG_Collection_Tracker
 
                 pageNum++;
             }
-            
+            /*
             var downloads = (from KV in ids
                             select DownloadGathererCard(KV)).ToList();
 
             TotalWorkUnits = downloads.Count();
             DownloadCards(downloads);
+            */
         }
 
         private static Image DownloadRemoteImageFile(string uri)
@@ -138,7 +139,7 @@ namespace MTG_Collection_Tracker
             else
                 Icon = cardSet.CommonIcon;
         }
-
+        /*
         private async void DownloadCards(List<Task<GathererCardDocument>> downloads)
         {
             bool iconsRetrieved = false;
@@ -201,7 +202,8 @@ namespace MTG_Collection_Tracker
             watch.Stop();
             RunState = RunState.Completed;
         }
-
+        */
+        /*
         public static Task<GathererCardDocument> DownloadGathererCard(KeyValuePair<int, int> KV)
         {
             return Task.Run(() =>
@@ -210,7 +212,7 @@ namespace MTG_Collection_Tracker
                 return doc;
             });
         }
-
+        */
         //public override void OnTaskRun(object sender, DoWorkEventArgs e)
         //{
             //throw new NotImplementedException();

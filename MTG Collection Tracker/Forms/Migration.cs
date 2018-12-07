@@ -23,7 +23,7 @@ namespace MTG_Collection_Tracker
                     int id = Convert.ToInt32(result.Element("id").Value);
                     double price = Convert.ToDouble(result.Element("dbprice").Value);
                     var card = from c in context.Catalog
-                               where c.MVid == id
+                               where c.multiverseId == id
                                select c;
                     if (card != null && card.Count() > 0)
                         card.First().OnlinePrice = price;
@@ -108,7 +108,7 @@ private void SetupCache()
             transaction.Commit();
             conn.Close();
         }
-
+        /*
         private void UpdateCatalogIDs()
         {
             var cards = new List<(int instanceID, int MVId)>();
@@ -144,6 +144,7 @@ private void SetupCache()
                 conn.Close();
             }        
         }
+        */
         /*
         private void AddSets()
         {

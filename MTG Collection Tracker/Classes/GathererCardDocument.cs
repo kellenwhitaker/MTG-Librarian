@@ -7,6 +7,7 @@ using System.Linq;
 //TODO each card variation should have own entry in OLV list
 namespace MTG_Collection_Tracker
 {
+    /*
     public class GathererCardDocument
     {
         public string DocUrl { get; private set; }
@@ -14,16 +15,16 @@ namespace MTG_Collection_Tracker
         public List<MCard> MCards { get; private set; }
         public string SetCode { get; private set; }
         public int Id { get => MCards[0].MVid; private set => MCards[0].MVid = value; }
-        public string CardName => MCards[0].Name;
-        public string ManaCost => MCards[0].ManaCost;
+        public string CardName => MCards[0].name;
+        public string ManaCost => MCards[0].manaCost;
         public string CMC { get; private set; }
-        public string Types => MCards[0].Type;
-        public string OracleText => MCards[0].OracleText;
+        public string Types => MCards[0].type;
+        public string OracleText => MCards[0].text;
         public string PrintedText
         {
             get
             {
-                if (MCards[0].Text == null) GetPrintedText();
+                if (MCards[0].originalText == null) GetPrintedText();
                 return MCards[0].Text;
             }
         }
@@ -353,4 +354,5 @@ namespace MTG_Collection_Tracker
             }
         }               
     }
+    */
 }

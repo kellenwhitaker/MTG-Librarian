@@ -9,14 +9,14 @@ namespace MTG_Collection_Tracker
     public class OLVCardItem : OLVItem
     {
         public string Name;
-        private MCard mCard;
-        public MCard MCard => mCard;
-        public string Type => mCard.Type;
-        public string Cost => mCard.ManaCost;
+        private MagicCard mCard;
+        public MagicCard MagicCard => mCard;
+        public string Type => mCard.type;
+        public string Cost => mCard.manaCost;
         public string Set => mCard.Edition;
-        public string CollectorNumber => mCard.ColNumber;
-        public string Rarity => mCard.Rarity;
-        public override string ImageKey => $"{mCard.Edition}: {mCard.Rarity}";
+        public string CollectorNumber => mCard.number;
+        public string Rarity => mCard.rarity;
+        public override string ImageKey => $"{mCard.Edition}: {mCard.rarity}";
         public override OLVItem Parent { get; set; }
         public override Predicate<object> Filter => throw new NotImplementedException();
 
@@ -25,10 +25,10 @@ namespace MTG_Collection_Tracker
             Name = name;
         }
 
-        public OLVCardItem(MCard mCard)
+        public OLVCardItem(MagicCard mCard)
         {
             this.mCard = mCard;
-            Name = mCard.Name;
+            Name = mCard.name;
         }
     }
 
@@ -97,15 +97,15 @@ namespace MTG_Collection_Tracker
             Rarities = new List<OLVRarityItem>();
         }
 
-        public void AddCard(MCard card)
+        public void AddCard(MagicCard card)
         {
-            if (card.Part != "A") return;
-            if (!Rarities.Exists(x => x.Rarity == card.Rarity))
+            if (card.side != "A") return;
+            if (!Rarities.Exists(x => x.Rarity == card.rarity))
             {
-                Rarities.Add(new OLVRarityItem(this, card.Edition, card.Rarity));
+                Rarities.Add(new OLVRarityItem(this, card.Edition, card.rarity));
                 Rarities.Sort();
             }
-            var item = Rarities.Where(x => x.Rarity == card.Rarity).First();
+            var item = Rarities.Where(x => x.Rarity == card.rarity).First();
             item.Count++;
             Cards.Add(new OLVCardItem(card));
         }

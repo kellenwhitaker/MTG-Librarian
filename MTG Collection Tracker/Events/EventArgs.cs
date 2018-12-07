@@ -26,7 +26,7 @@ namespace MTG_Collection_Tracker
 
     public class CardActivatedEventArgs : EventArgs
     {
-        public MCard MCard { get; set; }
+        public MagicCard MCard { get; set; }
     }
 
     public class CardImageRetrievedEventArgs : EventArgs

@@ -23,9 +23,9 @@ namespace MTG_Collection_Tracker
             g.FillRectangle(new SolidBrush(backColor), backgroundRect);
             string manaCost = "";
             if (ListItem.RowObject is CardInstance)
-                manaCost = (ListItem.RowObject as CardInstance).ManaCost;
+                manaCost = (ListItem.RowObject as CardInstance).manaCost;
             else if (ListItem.RowObject is OLVCardItem)
-                manaCost = (ListItem.RowObject as OLVCardItem).MCard.ManaCost;
+                manaCost = (ListItem.RowObject as OLVCardItem).MagicCard.manaCost;
             Regex reg = new Regex("{[A-Z0-9/]+}");
             var costParts = reg.Matches(manaCost);
             var imageList = MainForm.SymbolIcons16;
