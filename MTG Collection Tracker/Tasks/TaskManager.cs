@@ -102,17 +102,23 @@ namespace MTG_Collection_Tracker
             watch.Start();
             while (true)
             {
-                if (_taskQ.TryDequeue(out BackgroundTask nextTask))
+                while (_taskQ.TryDequeue(out BackgroundTask nextTask))
                 {
-                    if (!nextTask.Running)
-                        nextTask.Run();
                     _tasks.Add(nextTask);
-                    _activeTasks.Add(nextTask);
+                }
+                while (_activeTasks.Count < 10 && _tasks.FindInitialized().Count() > 0)
+                {
+                    var notStarted = _tasks.FindInitialized().FirstOrDefault();
+                    if (notStarted != null)
+                    {
+                        _activeTasks.Add(notStarted);
+                        notStarted.Run();
+                    }
                 }
                 Thread.Sleep(100);
                 if (watch.ElapsedMilliseconds > 1000)
                 {
-                    var completed = _activeTasks.Where(x => x.RunState == RunState.Completed).ToArray();                    
+                    var completed = _activeTasks.FindCompleted().ToArray();
                     foreach (var task in completed)
                     {
                         _activeTasks.Remove(task);
@@ -127,7 +133,7 @@ namespace MTG_Collection_Tracker
                     if (tasksLabel != null && progressBar != null)
                         UpdateStatusBar();
                     if (listView != null)
-                        RefreshListView();                    
+                        RefreshListView();
                 }
             }
         }
