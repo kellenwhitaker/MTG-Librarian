@@ -17,5 +17,15 @@ namespace MTG_Collection_Tracker
                 selected.Add(olv.ModelToItem(selectedObject));
             return selected;
         }
+
+        public static bool IsExpanded(this TreeListView tlv, object tlvObject)
+        {
+            foreach (var ob in tlv.ExpandedObjects)
+            {
+                if (ob == tlvObject)
+                    return true;
+            }
+            return false;
+        }
     }
 }

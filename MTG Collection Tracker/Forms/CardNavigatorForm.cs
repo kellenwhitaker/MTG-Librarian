@@ -60,10 +60,15 @@ namespace MTG_Collection_Tracker
 
         private void navigatorListView_ItemActivate(object sender, EventArgs e)
         {
-            if (navigatorListView.SelectedObject == null)
-                Console.WriteLine("null");
-            else
-                OnCollectionActivated(new CollectionActivatedEventArgs { NavigatorCollection = navigatorListView.SelectedObject as NavigatorCollection });
+            if (navigatorListView.SelectedObject is NavigatorGroup group)
+            {
+                if (!navigatorListView.IsExpanded(group))
+                    navigatorListView.Expand(group);
+                else
+                    navigatorListView.Collapse(group);
+            }
+            else if (navigatorListView.SelectedObject is NavigatorCollection collection)
+                OnCollectionActivated(new CollectionActivatedEventArgs { NavigatorCollection = collection });
         }
     }
 
@@ -83,6 +88,7 @@ namespace MTG_Collection_Tracker
     {
         public override bool CanExpand => Collections != null ? Collections.Count > 0 : false;
         public List<NavigatorCollection> Collections { get; }
+
         public NavigatorGroup()
         {
             Collections = new List<NavigatorCollection>();

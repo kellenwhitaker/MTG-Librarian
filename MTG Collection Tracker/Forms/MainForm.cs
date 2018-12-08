@@ -212,7 +212,7 @@ namespace MTG_Collection_Tracker
                 }
             }
         }
-        //TODO double click opens group on nav form
+
         private void navFormCollectionActivated(object sender, CollectionActivatedEventArgs e)
         {
             if (e.NavigatorCollection?.Name is string docName)
