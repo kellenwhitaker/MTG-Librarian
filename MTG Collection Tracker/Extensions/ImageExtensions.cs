@@ -37,7 +37,15 @@ namespace MTG_Collection_Tracker
             return Image.FromStream(ms);
         }
 
-        public static Image ScaleImage(this Image image, int width, int height, bool highquality)
+        /// <summary>
+        /// Scales down the image, maintaining original aspect ratio
+        /// </summary>
+        /// <param name="image"></param>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
+        /// <param name="highquality"></param>
+        /// <returns></returns>
+        public static Image ScaleImage(this Image image, int width, int height, bool highquality = true)
         {
             Image returnImage = null;
 
@@ -101,6 +109,14 @@ namespace MTG_Collection_Tracker
                 graphics.DrawImage(image, 0, 0, bmp.Width, bmp.Height);
             }
             return bmp;
+        }
+
+        public static Image SetCanvasSize(this Image image, int canvasWidth, int canvasHeight)
+        {
+            if (canvasWidth >= image.Width && canvasHeight >= image.Height)
+                return image.EnlargeCanvas(canvasWidth, canvasHeight);
+            else
+                return image.ScaleImage(canvasWidth, canvasHeight, true).EnlargeCanvas(canvasWidth, canvasHeight);
         }
 
         /// <summary>

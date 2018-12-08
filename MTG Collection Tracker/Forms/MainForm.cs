@@ -35,6 +35,8 @@ namespace MTG_Collection_Tracker
         internal static ImageList SymbolIcons16 => _symbolIcons16;
         internal static ImageList SmallIconList => smallIconList;
         private static MainForm thisForm;
+        private const int SmallIconWidth = 27;
+        private const int SmallIconHeight = 21;
 
         public MainForm()
         {
@@ -52,7 +54,7 @@ namespace MTG_Collection_Tracker
 
         private void SetupUI()
         {
-            smallIconList  =    new ImageList(components) { ColorDepth = ColorDepth.Depth32Bit, ImageSize = new Size(21, 21) };
+            smallIconList  =    new ImageList(components) { ColorDepth = ColorDepth.Depth32Bit, ImageSize = new Size(SmallIconWidth, SmallIconHeight) };
             _manaIcons     =    new ImageList(components) { ColorDepth = ColorDepth.Depth32Bit, ImageSize = new Size(18, 18) };
             _symbolIcons16 =    new ImageList(components) { ColorDepth = ColorDepth.Depth24Bit, ImageSize = new Size(16, 16) };
 
@@ -173,11 +175,6 @@ namespace MTG_Collection_Tracker
             }
         }
 
-        private void dbFormCardSelected(object sender, CardSelectedEventArgs args)
-        {
-
-        }
-
         private void dbFormCardActivated(object sender, CardActivatedEventArgs args)
         {
             if (dockPanel1.ActiveDocument is CollectionViewForm activeDocument)
@@ -204,10 +201,10 @@ namespace MTG_Collection_Tracker
 
                 foreach (var set in sets)
                 {
-                    if (set.CommonIcon != null)     SmallIconList.Images.Add($"{set.Name}: Common", set.CommonIcon.EnlargeCanvas(21, 21));
-                    if (set.UncommonIcon != null)   SmallIconList.Images.Add($"{set.Name}: Uncommon", set.UncommonIcon.EnlargeCanvas(21, 21));
-                    if (set.RareIcon != null)       SmallIconList.Images.Add($"{set.Name}: Rare", set.RareIcon.EnlargeCanvas(21, 21));
-                    if (set.MythicRareIcon != null) SmallIconList.Images.Add($"{set.Name}: Mythic", set.MythicRareIcon.EnlargeCanvas(21, 21));
+                    if (set.CommonIcon != null)     SmallIconList.Images.Add($"{set.Name}: Common", set.CommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.UncommonIcon != null)   SmallIconList.Images.Add($"{set.Name}: Uncommon", set.UncommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.RareIcon != null)       SmallIconList.Images.Add($"{set.Name}: Rare", set.RareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.MythicRareIcon != null) SmallIconList.Images.Add($"{set.Name}: Mythic", set.MythicRareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
                 }
             }
         }

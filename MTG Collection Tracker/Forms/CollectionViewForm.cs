@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 //TODO poor performance on fastobjectlistview
-//TODO some set icons are too large
 namespace MTG_Collection_Tracker
 {
     public partial class CollectionViewForm : DockContent
