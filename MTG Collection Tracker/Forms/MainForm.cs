@@ -14,7 +14,6 @@ using System.ComponentModel;
 //Note: editable columns - count, cost, tags
 //      date format: {0:yyyy-MMM-dd}
 //TODO restsharp
-//TODO spreadsheet link: https://docs.google.com/spreadsheets/d/1sm3lCzmUg_XjctafEOZL--FPjaw60ToF_58u7Cy-Bmg/export?format=ods
 //TODO add card preview
 //TODO improve bulk card add speed
 //TODO improve card set filter tree

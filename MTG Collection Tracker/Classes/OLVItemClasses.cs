@@ -82,7 +82,6 @@ namespace MTG_Collection_Tracker
         public List<OLVCardItem> Cards;
         public List<OLVRarityItem> Rarities;
         public CardSet CardSet { get; set; }
-        public bool Expanded;
         public override OLVItem Parent { get; set; }
         public override Predicate<object> Filter => x => (x as OLVCardItem).Set == Name;
         public override string ImageKey => $"{Rarities.Where(x => x.ImageKey != null).Last().ImageKey}";

@@ -1,11 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 using BrightIdeasSoftware;
@@ -122,16 +119,10 @@ namespace MTG_Collection_Tracker
         {
             if (treeListView1.SelectedObject is OLVSetItem item)
             {
-                if (!item.Expanded)
-                {
-                    item.Expanded = true;
+                if (!treeListView1.IsExpanded(item))
                     treeListView1.Expand(item);
-                }
                 else
-                {
-                    item.Expanded = false;
                     treeListView1.Collapse(item);
-                }
             }
         }
 
