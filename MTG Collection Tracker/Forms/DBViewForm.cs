@@ -33,8 +33,7 @@ namespace MTG_Collection_Tracker
             fastObjectListView1.GetColumn(2).Renderer = new ManaCostRenderer();
         }
 
-        public event EventHandler<CardActivatedEventArgs> CardActivated;
-
+        internal event EventHandler<CardActivatedEventArgs> CardActivated;
         private void OnCardActivated(CardActivatedEventArgs args)
         {
             CardActivated?.Invoke(this, args);
@@ -72,7 +71,7 @@ namespace MTG_Collection_Tracker
             return combinedFilter;
         }
 
-        public void LoadSets()
+        internal void LoadSets()
         {
             treeListView1.CanExpandGetter = x => x is OLVSetItem;
             treeListView1.ChildrenGetter = x => ((OLVSetItem)x).Rarities;
@@ -82,6 +81,8 @@ namespace MTG_Collection_Tracker
             sets = new Dictionary<string, OLVSetItem>();
             using (var context = new MyDbContext())
             {
+                var dbSets = from s in context.Sets
+                             select s;
                 var cards = from c in context.Catalog
                             orderby new AlphaNumericString(c.number), c.name
                             select c;
@@ -90,21 +91,22 @@ namespace MTG_Collection_Tracker
                 {
                     if (!sets.TryGetValue(card.Edition, out OLVSetItem set))
                     {
-                        set = new OLVSetItem(card.Edition);
+                        set = new OLVSetItem(dbSets.Where(x => x.Name == card.Edition).FirstOrDefault());
                         sets.Add(card.Edition, set);
                     }
                     set.AddCard(card);                    
                 }
-            }
+            }            
         }
 
-        public void LoadTree()
+        internal void LoadTree()
         {
             foreach (var set in sets.Values)
             {
                 treeListView1.AddObject(set);
                 fastObjectListView1.AddObjects(set.Cards);
             }
+            treeListView1.Sort(treeListView1.AllColumns[1], SortOrder.Descending);
         }
 
         private void treeListView1_FormatCell(object sender, FormatCellEventArgs e)
@@ -156,7 +158,7 @@ namespace MTG_Collection_Tracker
 
         private void fastObjectListView1_ItemActivate(object sender, EventArgs e)
         {
-            OnCardActivated(new CardActivatedEventArgs { MCard = (fastObjectListView1.SelectedObject as OLVCardItem).MagicCard });
+            OnCardActivated(new CardActivatedEventArgs { MagicCard = (fastObjectListView1.SelectedObject as OLVCardItem).MagicCard });
         }
 
         private void fastObjectListView1_GiveFeedback(object sender, GiveFeedbackEventArgs e)
@@ -166,10 +168,16 @@ namespace MTG_Collection_Tracker
         }
 
         internal event EventHandler<CardSelectedEventArgs> CardSelected;
-
         private void OnCardSelected(CardSelectedEventArgs args)
         {
             CardSelected?.Invoke(this, args);
+        }
+
+        private void fastObjectListView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            MagicCard card = (fastObjectListView1.SelectedObject as OLVCardItem)?.MagicCard;
+            if (card != null)
+                OnCardSelected(new CardSelectedEventArgs { Edition = card.Edition, MultiverseId = card.multiverseId });
         }
     }
 }

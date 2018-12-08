@@ -43,6 +43,7 @@ namespace MTG_Collection_Tracker
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.treeListView1 = new BrightIdeasSoftware.TreeListView();
             this.SetName = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.ReleaseDate = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.fastObjectListView1 = new BrightIdeasSoftware.FastObjectListView();
             this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn2 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -217,6 +218,7 @@ namespace MTG_Collection_Tracker
             // treeListView1
             // 
             this.treeListView1.AllColumns.Add(this.SetName);
+            this.treeListView1.AllColumns.Add(this.ReleaseDate);
             this.treeListView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.SetName});
             this.treeListView1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -246,6 +248,12 @@ namespace MTG_Collection_Tracker
             this.SetName.ImageAspectName = "ImageKey";
             this.SetName.IsTileViewColumn = true;
             this.SetName.Width = 300;
+            // 
+            // ReleaseDate
+            // 
+            this.ReleaseDate.AspectName = "ReleaseDate";
+            this.ReleaseDate.DisplayIndex = 1;
+            this.ReleaseDate.IsVisible = false;
             // 
             // fastObjectListView1
             // 
@@ -278,6 +286,7 @@ namespace MTG_Collection_Tracker
             this.fastObjectListView1.View = System.Windows.Forms.View.Details;
             this.fastObjectListView1.VirtualMode = true;
             this.fastObjectListView1.ItemActivate += new System.EventHandler(this.fastObjectListView1_ItemActivate);
+            this.fastObjectListView1.SelectedIndexChanged += new System.EventHandler(this.fastObjectListView1_SelectedIndexChanged);
             this.fastObjectListView1.GiveFeedback += new System.Windows.Forms.GiveFeedbackEventHandler(this.fastObjectListView1_GiveFeedback);
             // 
             // olvColumn1
@@ -359,5 +368,6 @@ namespace MTG_Collection_Tracker
         private CustomControls.FlatButton redManaButton;
         private CustomControls.FlatButton colorlessManaButton;
         private CustomControls.FlatButton genericManaButton;
+        private BrightIdeasSoftware.OLVColumn ReleaseDate;
     }
 }

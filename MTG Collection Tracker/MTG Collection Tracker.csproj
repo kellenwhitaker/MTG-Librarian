@@ -303,7 +303,6 @@
     <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Classes\GathererCardDocument.cs" />
     <Compile Include="Extensions\ImageExtensions.cs" />
     <Compile Include="Classes\Entities.cs" />
     <Compile Include="Forms\MainFormBGWorkers.cs">

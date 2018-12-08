@@ -61,12 +61,11 @@ namespace MTG_Collection_Tracker
         private void fastObjectListView1_ModelDropped(object sender, ModelDropEventArgs e)
         {
             
-            OnCardsDropped(new CardDroppedEventArgs { Items = e.SourceModels as ArrayList });
+            OnCardsDropped(new CardsDroppedEventArgs { Items = e.SourceModels as ArrayList });
         }
 
-        internal event EventHandler<CardDroppedEventArgs> CardsDropped;
-
-        private void OnCardsDropped(CardDroppedEventArgs args)
+        internal event EventHandler<CardsDroppedEventArgs> CardsDropped;
+        private void OnCardsDropped(CardsDroppedEventArgs args)
         {
             CardsDropped?.Invoke(this, args);
         }
@@ -147,7 +146,8 @@ namespace MTG_Collection_Tracker
             if (fastObjectListView1.SelectedObject != null)
             {
                 var card = fastObjectListView1.SelectedObject as CardInstance;
-                OnCardSelected(new CardSelectedEventArgs { MVid = card.MVid, Edition = card.Edition });
+                //OnCardSelected(new CardSelectedEventArgs { MultiverseId = card.MVid, Edition = card.Edition });
+                //OnCardSelected(new CardSelectedEventArgs { MagicCard = card });
             }
         }
     }

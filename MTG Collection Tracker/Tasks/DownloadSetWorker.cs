@@ -24,7 +24,7 @@ namespace MTG_Collection_Tracker
 
         public DownloadSetTask(CardSet set)
         {
-            cardSet = new CardSet { Name = set.Name };
+            cardSet = set;
             Caption = "Set: " + set.Name;
         }
 
@@ -32,6 +32,10 @@ namespace MTG_Collection_Tracker
         {
             RunState = RunState.Running;
             RunWorkerAsync();
+        }
+
+        protected override void OnRunWorkerCompleted(RunWorkerCompletedEventArgs e)
+        {
         }
 
         protected override void OnDoWork(DoWorkEventArgs e)
@@ -44,13 +48,19 @@ namespace MTG_Collection_Tracker
                 CompletedWorkUnits = 4;
                 UpdateIcon();
                 string json = DownloadJSON(cardSet.MTGJSONURL);
+                Console.WriteLine("URL: " + cardSet.MTGJSONURL);
                 cardSet = JsonConvert.DeserializeObject<CardSet>(json);
                 foreach (var card in cardSet.Cards)
+                {
                     card.SetCode = cardSet.Code;
+                    card.Edition = cardSet.Name;
+                }
                 (cardSet.MythicRareIcon, cardSet.RareIcon, cardSet.UncommonIcon, cardSet.CommonIcon) = (mythicIcon, rareIcon, uncommonIcon, commonIcon);
                 using (var context = new MyDbContext())
                 {
-                    context.Update(cardSet);
+                    context.Add(cardSet);
+                    foreach (var card in cardSet.Cards)
+                        context.Add(card);
                     context.SaveChanges();
                 }
                 RunState = RunState.Completed;
@@ -134,83 +144,5 @@ namespace MTG_Collection_Tracker
             else
                 Icon = cardSet.CommonIcon;
         }
-        /*
-        private async void DownloadCards(List<Task<GathererCardDocument>> downloads)
-        {
-            bool iconsRetrieved = false;
-            while (downloads.Count() > 0)
-            {
-                var t = await Task.WhenAny(downloads);
-                if (!t.Result.Ignore)
-                {
-                    cardSet.Code = t.Result.SetCode;
-                    t.Result.Edition = cardSet.Name;
-                    docs.Add(t.Result);
-                    if (t.Result.Variations != null)
-                        foreach (var variationID in t.Result.Variations)
-                            if (!docs.Exists(x => x.Id == variationID) && !ids.Keys.Contains(variationID))
-                            {
-                                ids.Add(variationID, t.Result.RowIndex);
-                                downloads.Add(DownloadGathererCard(new KeyValuePair<int, int>(variationID, t.Result.RowIndex)));
-                                TotalWorkUnits = ids.Count;
-                            }
-                    if (cardSet.Code != "" && !iconsRetrieved)
-                    {
-                        DownloadIcons();
-                        iconsRetrieved = true;
-                    }
-                }
-
-                CompletedWorkUnits++;
-                if (iconsRetrieved) UpdateIcon();
-                downloads.Remove(t);
-            }
-            
-            using (var context = new MyDbContext())
-            {                
-                using (var trans = context.Database.BeginTransaction())
-                {
-                    context.Sets.Add(cardSet);
-                    context.SaveChanges();
-                    foreach (var doc in docs)
-                    {
-                        try
-                        {
-                            foreach (var part in doc.MCards)
-                            {
-                                part.Edition = cardSet.Name;
-                                var dbPart = from p in context.Catalog
-                                             where p.Edition == part.Edition && p.ColNumber == part.ColNumber && p.Part == part.Part && p.MVid == part.MVid
-                                             select p;
-
-                                if (dbPart.FirstOrDefault() == null)
-                                    context.Catalog.Add(part);
-                            }
-                            context.SaveChanges();
-                        }
-                        catch (InvalidOperationException ex) { if (ex.Message.Contains("same key value")) continue; throw ex; }
-                        catch (DbUpdateException dex) { Console.WriteLine(dex.ToString()); if (dex.InnerException.Message.Contains("UNIQUE constraint failed")) continue; throw dex; }
-                    }
-                    trans.Commit();
-                }
-            }
-            watch.Stop();
-            RunState = RunState.Completed;
-        }
-        */
-        /*
-        public static Task<GathererCardDocument> DownloadGathererCard(KeyValuePair<int, int> KV)
-        {
-            return Task.Run(() =>
-            {
-                GathererCardDocument doc = new GathererCardDocument(KV.Key, KV.Value);
-                return doc;
-            });
-        }
-        */
-        //public override void OnTaskRun(object sender, DoWorkEventArgs e)
-        //{
-            //throw new NotImplementedException();
-        //}
     }
 }

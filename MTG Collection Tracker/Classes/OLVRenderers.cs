@@ -26,17 +26,20 @@ namespace MTG_Collection_Tracker
                 manaCost = (ListItem.RowObject as CardInstance).manaCost;
             else if (ListItem.RowObject is OLVCardItem)
                 manaCost = (ListItem.RowObject as OLVCardItem).MagicCard.manaCost;
-            Regex reg = new Regex("{[A-Z0-9/]+}");
-            var costParts = reg.Matches(manaCost);
-            var imageList = MainForm.SymbolIcons16;
-            int left = 5;
-            foreach (Match part in costParts)
+            if (manaCost != "" && manaCost != null)
             {
-                int? imgIndex = imageList?.Images?.IndexOfKey(part.Value);
-                if (imgIndex.HasValue && imgIndex.Value != -1)
-                    imageList.Draw(g, left, 3, imgIndex.Value);
+                Regex reg = new Regex("{[A-Z0-9/]+}");
+                var costParts = reg.Matches(manaCost);
+                var imageList = MainForm.SymbolIcons16;
+                int left = 5;
+                foreach (Match part in costParts)
+                {
+                    int? imgIndex = imageList?.Images?.IndexOfKey(part.Value);
+                    if (imgIndex.HasValue && imgIndex.Value != -1)
+                        imageList.Draw(g, left, 3, imgIndex.Value);
 
-                left += 18;
+                    left += 18;
+                }
             }
         }
     }

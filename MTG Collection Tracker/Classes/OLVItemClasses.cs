@@ -52,10 +52,10 @@ namespace MTG_Collection_Tracker
             Count = 0;
             switch (rarity)
             {
-                case "Common": SortValue = 0; break;
-                case "Uncommon": SortValue = 1; break;
-                case "Rare": SortValue = 2; break;
-                case "Mythic Rare": SortValue = 3; break;
+                case "common": SortValue = 0; break;
+                case "uncommon": SortValue = 1; break;
+                case "rare": SortValue = 2; break;
+                case "mythic": SortValue = 3; break;
                 default: SortValue = 4; break;
             }
         }
@@ -74,20 +74,33 @@ namespace MTG_Collection_Tracker
     public class OLVSetItem : OLVItem
     {
         public string Name;
+        public DateTime ReleaseDate {
+            get {
+                if (DateTime.TryParse(CardSet.ReleaseDate, out DateTime value)) return value;
+                else return DateTime.MinValue;
+            }}
         public List<OLVCardItem> Cards;
         public List<OLVRarityItem> Rarities;
+        public CardSet CardSet { get; set; }
         public bool Expanded;
         public override OLVItem Parent { get; set; }
         public override Predicate<object> Filter => x => (x as OLVCardItem).Set == Name;
         public override string ImageKey => $"{Rarities.Where(x => x.ImageKey != null).Last().ImageKey}";
+        public int CardCount => Cards.Count; //(from r in Rarities select r.Count).Sum();
         public string Text
         {
             get
             {
-                int cardCount = (from r in Rarities
-                                 select r.Count).Sum();
-                return $"{Name} [{cardCount}]";
+                return $"{Name} [{CardCount}]";
             }
+        }
+
+        public OLVSetItem(CardSet set)
+        {
+            Name = set.Name;
+            CardSet = set;
+            Cards = new List<OLVCardItem>();
+            Rarities = new List<OLVRarityItem>();
         }
 
         public OLVSetItem(string name)
@@ -99,7 +112,7 @@ namespace MTG_Collection_Tracker
 
         public void AddCard(MagicCard card)
         {
-            if (card.side != "A") return;
+            //if (card.side != "A") return;
             if (!Rarities.Exists(x => x.Rarity == card.rarity))
             {
                 Rarities.Add(new OLVRarityItem(this, card.Edition, card.rarity));

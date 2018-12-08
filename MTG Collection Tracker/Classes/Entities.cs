@@ -30,6 +30,7 @@ namespace MTG_Collection_Tracker
         public string[] colors { get; set; }
         public float convertedManaCost { get; set; }
         public string flavorText { get; set; }
+        [NotMapped]
         public ForeignData[] foreignData { get; set; }
         public string frameVersion { get; set; }
         public bool hasFoil { get; set; }
@@ -113,7 +114,7 @@ namespace MTG_Collection_Tracker
     public class DBCardInstance
     {
         [Key]
-        public int         CardInstanceId { get; set; }
+        public int          CardInstanceId { get; set; }
         public int?         CatalogID { get; set; }
         public string       CollectionName { get; set; }
         public int          MVid { get; set; }
@@ -197,7 +198,7 @@ namespace MTG_Collection_Tracker
         public string   Type { get; set; }
         public string   Block { get; set; }
         [NotMapped]
-        public MagicCard[] Cards { get; set; }
+        public List<MagicCard> Cards { get; set; } = new List<MagicCard>();
         [NotMapped]
         public string   MTGJSONURL { get; set; }
         [NotMapped]

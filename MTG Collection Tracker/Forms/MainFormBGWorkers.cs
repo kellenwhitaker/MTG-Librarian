@@ -82,6 +82,7 @@ namespace MTG_Collection_Tracker
         private void checkForNewSetsWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             var sets = GetMTGJSONSets();
+            sets.RemoveAll(x => x.Name == "Salvat 2011");
             using (var context = new MyDbContext())
             {
                 var DBSets = from s in context.Sets
@@ -89,9 +90,7 @@ namespace MTG_Collection_Tracker
 
                 foreach (var set in DBSets)
                 {
-                    var matchingSet = sets.Where(x => x.Name == set.Name).FirstOrDefault();
-                    if (matchingSet != null)
-                        sets.Remove(matchingSet);
+                    sets.RemoveAll(x => x.Name == set.Name);
                 }
             }
             e.Result = sets;

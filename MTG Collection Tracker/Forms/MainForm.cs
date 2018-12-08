@@ -15,7 +15,6 @@ using System.ComponentModel;
 //      date format: {0:yyyy-MMM-dd}
 //TODO restsharp
 //TODO spreadsheet link: https://docs.google.com/spreadsheets/d/1sm3lCzmUg_XjctafEOZL--FPjaw60ToF_58u7Cy-Bmg/export?format=ods
-//TODO add support for magiccards.info and make default
 //TODO add card preview
 //TODO improve bulk card add speed
 //TODO improve card set filter tree
@@ -50,84 +49,6 @@ namespace MTG_Collection_Tracker
             //AddPrices();
             //UpdateCatalogIDs();
             SetupUI();
-        }
-
-        private List<string> GetGathererSets()
-        {
-            string URL = "http://gatherer.wizards.com/Pages/Default.aspx";
-            var web = new HtmlWeb();
-            var doc = web.Load(URL);
-            var sets = new List<string>();
-            var options = doc.DocumentNode.Descendants("select")
-                .Where(x => x.Attributes["id"].Value == "ctl00_ctl00_MainContent_Content_SearchControls_setAddText")
-                .First()
-                .Descendants("option");
-            foreach (var option in options)
-                if (option.Attributes["value"].Value != "")
-                    sets.Add(WebUtility.HtmlDecode(option.Attributes["value"].Value));
-
-            return sets;
-        }
-
-        private List<CardSet> GetWikipediaSets()
-        {
-            int GetOrdinal(HtmlNode table, string headerText)
-            {
-                var prevSiblings = table.Descendants("th")
-                                        .Where(x => {
-                                            string cleanString = x.InnerText.Replace("\n", "").Replace(" ", "").ToUpper();
-                                            return cleanString.StartsWith(headerText.Replace(" ", "").ToUpper());
-                                        })
-                                        .FirstOrDefault()?.SelectNodes("preceding-sibling::th");
-                return prevSiblings != null ? prevSiblings.Count() + 1 : 1;
-            }
-
-            HtmlNode RemoveLinks(HtmlNode node)
-            {
-                var links = node?.SelectNodes($"descendant::a[contains(@href, '#')]");
-                if (links != null)
-                    foreach (var link in links)
-                        link.Remove();
-
-                return node;
-            }
-            //TODO change to user master set list or MCI
-            string URL = "https://en.wikipedia.org/wiki/List_of_Magic:_The_Gathering_sets";
-            var doc = new HtmlWeb().Load(URL);
-            var sets = new List<CardSet>();
-            var tables = doc.DocumentNode.SelectNodes(@"//table[@class='wikitable']");
-            using (var context = new MyDbContext())
-            {
-                foreach (var table in tables)
-                {
-                    var type = table.SelectSingleNode(@"(preceding-sibling::*[starts-with(name(), 'h')]) [last()]");
-                    int setOrdinal = GetOrdinal(table, "set");
-                    int releaseOrdinal = GetOrdinal(table, "release date");
-                    int codeOrdinal = GetOrdinal(table, "expansion code");
-                    var dataRows = table.SelectNodes(@"descendant::tr[descendant::td]");
-
-                    foreach (var dataRow in dataRows)
-                    {
-                        if (dataRow.SelectNodes($"descendant::td").Count == 1)
-                            continue;
-                        var set = RemoveLinks(dataRow.SelectSingleNode($"descendant::td [{setOrdinal}]"));
-                        if (set != null && set.InnerText != "")
-                        {
-                            var block = RemoveLinks(dataRow.NodesBeforeSelf()
-                                        .Where(x => x.Descendants("td").Count() == 1 && x.Descendants("td").Any(y => y.InnerText.ToUpper().Contains("BLOCK")))
-                                        .FirstOrDefault());
-                            var releaseDate = RemoveLinks(dataRow.SelectSingleNode($"descendant::td [{releaseOrdinal}]"));
-                            var code = RemoveLinks(dataRow.SelectSingleNode($"descendant::td [{codeOrdinal}]"));
-                            var cardSet = new CardSet { Block = block?.InnerText, Name = set.InnerText, ReleaseDate = releaseDate?.InnerText, Type = type?.InnerText, Code = code?.InnerText.Replace("none", "").Replace("N/A", "") };
-                            Console.WriteLine("{0}: {1} [{2}] {3} {4}", cardSet.Block, cardSet.Name, cardSet.Code, cardSet.ReleaseDate, cardSet.Type);
-                            context.Sets.Update(cardSet);
-                            //context.SaveChanges();
-                        }
-                    }
-                }
-                //context.SaveChanges();
-            }
-            return sets;
         }
 
         private void SetupUI()
@@ -192,6 +113,7 @@ namespace MTG_Collection_Tracker
             navForm = new CardNavigatorForm();
             dbViewForm = new DBViewForm();
             dbViewForm.CardActivated += dbFormCardActivated;
+            dbViewForm.CardSelected += CardSelected;
             tasksForm = new TasksForm(tasksLabel, tasksProgressBar);
             tasksForm.tasksListView.GetColumn(0).Renderer = new IconRenderer();
             tasksForm.tasksListView.GetColumn(1).Renderer = new ProgressBarRenderer();
@@ -199,7 +121,7 @@ namespace MTG_Collection_Tracker
             InitUIWorker.RunWorkerAsync();
         }
 
-        private void cvFormCardsDropped(object sender, CardDroppedEventArgs e)
+        private void cvFormCardsDropped(object sender, CardsDroppedEventArgs e)
         {
             if (dockPanel1.ActiveDocument is CollectionViewForm activeDocument)
             {
@@ -252,12 +174,17 @@ namespace MTG_Collection_Tracker
             }
         }
 
+        private void dbFormCardSelected(object sender, CardSelectedEventArgs args)
+        {
+
+        }
+
         private void dbFormCardActivated(object sender, CardActivatedEventArgs args)
         {
             if (dockPanel1.ActiveDocument is CollectionViewForm activeDocument)
             {
                 var collectionName = activeDocument.DocumentName;
-                DBCardInstance card = new DBCardInstance { MVid = args.MCard.multiverseId, CollectionName = collectionName };
+                DBCardInstance card = new DBCardInstance { MVid = args.MagicCard.multiverseId, CollectionName = collectionName };
                 using (MyDbContext context = new MyDbContext())
                 {
                     context.Library.Add(card);
@@ -267,53 +194,6 @@ namespace MTG_Collection_Tracker
                         activeDocument.AddCardInstance(cardInstance);
                 }
             }
-        }
-
-        private List<string> GetWizardsArchiveSets()
-        {
-            var sets = new List<string>();
-            string URL = "https://magic.wizards.com/en/products/card-set-archive";
-            var web = new HtmlWeb();
-            var doc = web.Load(URL);
-            var tables = doc.DocumentNode
-                         .Descendants("div")
-                         .Where(x => x.HasClass("card-set-archive-table"));
-
-            foreach (var table in tables)
-            {
-                var title = table
-                            .Descendants("li")
-                            .Where(x => x.HasClass("title"))
-                            .FirstOrDefault();
-                if (title != null && title.InnerText.Contains("Featured"))
-                    continue;
-
-                string titleText = title != null ? WebUtility.HtmlDecode(title.InnerText.Trim()) : "";
-                var tableSets = table
-                                .Descendants("li")
-                                .Where(x => !x.HasClass("title"));
-                foreach (var set in tableSets)
-                {
-                    string setName = WebUtility.HtmlDecode(set
-                                     .Descendants("span")
-                                     .Where(x => x.HasClass("nameSet"))
-                                     .FirstOrDefault()
-                                     .InnerText.Trim()).ToUpper();
-
-                    string releaseDate = WebUtility.HtmlDecode(set
-                                         .Descendants("span")
-                                         .Where(x => x.HasClass("date-display-single") || x.HasClass("releaseDate"))
-                                         .FirstOrDefault()
-                                         .InnerText.Trim());
-                    setName = setName.Replace(" & ", " AND ").Replace(" / RENAISSANCE", "");
-                    setName = setName.StripPunctuation().Trim();
-                    if (setName.EndsWith(" EDITION"))
-                        setName = setName.Replace(" EDITION", "");
-                    setName = setName.Replace("CORE SET", "").Replace("MAGIC THE GATHERING", "").Replace("DUEL DECKS", "").Trim();
-                    sets.Add(setName);
-                }
-            }
-            return sets;
         }
 
         private void AddSetIcons()
@@ -328,7 +208,7 @@ namespace MTG_Collection_Tracker
                     if (set.CommonIcon != null)     SmallIconList.Images.Add($"{set.Name}: Common", set.CommonIcon.EnlargeCanvas(21, 21));
                     if (set.UncommonIcon != null)   SmallIconList.Images.Add($"{set.Name}: Uncommon", set.UncommonIcon.EnlargeCanvas(21, 21));
                     if (set.RareIcon != null)       SmallIconList.Images.Add($"{set.Name}: Rare", set.RareIcon.EnlargeCanvas(21, 21));
-                    if (set.MythicRareIcon != null) SmallIconList.Images.Add($"{set.Name}: Mythic Rare", set.MythicRareIcon.EnlargeCanvas(21, 21));
+                    if (set.MythicRareIcon != null) SmallIconList.Images.Add($"{set.Name}: Mythic", set.MythicRareIcon.EnlargeCanvas(21, 21));
                 }
             }
         }
@@ -365,17 +245,17 @@ namespace MTG_Collection_Tracker
             using (CardImagesDbContext context = new CardImagesDbContext(e.Edition))
             {
                 var imageBytes = (from i in context.CardImages
-                                 where i.MVid == e.MVid
-                                 select i).FirstOrDefault()?.CardImageBytes;
+                                  where i.MVid == e.MultiverseId
+                                  select i).FirstOrDefault()?.CardImageBytes;
 
                 if (imageBytes != null)
                 {
                     Image img = ImageExtensions.FromByteArray(imageBytes);
-                    OnCardImageRetrieved(new CardImageRetrievedEventArgs { MVid = e.MVid, CardImage = img });
+                    OnCardImageRetrieved(new CardImageRetrievedEventArgs { MultiverseId = e.MultiverseId, CardImage = img });
                 }
                 else
                 {
-                    tasksForm.taskManager.AddTask(new DownloadResourceTask { Caption = "Image download", URL = $"http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={e.MVid}&type=card", TaskObject = new BasicCardArgs { MVid = e.MVid, Edition = e.Edition }, OnTaskCompleted = ImageDownloadCompleted });   
+                    tasksForm.taskManager.AddTask(new DownloadResourceTask { Caption = "Image download", URL = $"http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={e.MultiverseId}&type=card", TaskObject = new BasicCardArgs { MultiverseId = e.MultiverseId, Edition = e.Edition }, OnTaskCompleted = ImageDownloadCompleted });
                 }
             }
         }
@@ -385,11 +265,11 @@ namespace MTG_Collection_Tracker
             var args = e.Result as CardResourceArgs;
             using (CardImagesDbContext context = new CardImagesDbContext(args.Edition))
             {
-                context.Add(new DbCardImage { MVid = args.MVid, CardImageBytes = args.Data } );
+                context.Add(new DbCardImage { MVid = args.MultiverseId, CardImageBytes = args.Data } );
                 context.SaveChanges();
             }
             Image img = ImageExtensions.FromByteArray(args.Data);
-            OnCardImageRetrieved(new CardImageRetrievedEventArgs { MVid = args.MVid, CardImage = img });
+            OnCardImageRetrieved(new CardImageRetrievedEventArgs { MultiverseId = args.MultiverseId, CardImage = img });
         }
 
         static internal event EventHandler<CardImageRetrievedEventArgs> CardImageRetrieved;
