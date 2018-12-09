@@ -15,7 +15,8 @@ namespace MTG_Collection_Tracker
 {
     public partial class CollectionViewForm : DockContent
     {
-        public string DocumentName { get; set; }
+        public string DocumentName => Collection?.CollectionName;
+        public CardCollection Collection { get; set; }
         private bool MultiEditing = false;
 
         public CollectionViewForm()
@@ -33,12 +34,12 @@ namespace MTG_Collection_Tracker
 
         public void LoadCollection()
         {
-            if (DocumentName != null)
+            if (Collection != null)
             {
                 using (MyDbContext context = new MyDbContext())
                 {
                     var items = from c in context.LibraryView
-                                where c.CollectionName == DocumentName
+                                where c.CollectionId == Collection.Id
                                 select c;
 
                     fastObjectListView1.AddObjects(items.ToList());
@@ -145,8 +146,7 @@ namespace MTG_Collection_Tracker
             if (fastObjectListView1.SelectedObject != null)
             {
                 var card = fastObjectListView1.SelectedObject as CardInstance;
-                //OnCardSelected(new CardSelectedEventArgs { MultiverseId = card.MVid, Edition = card.Edition });
-                //OnCardSelected(new CardSelectedEventArgs { MagicCard = card });
+                OnCardSelected(new CardSelectedEventArgs { MultiverseId = card.MVid, Edition = card.Edition });
             }
         }
     }

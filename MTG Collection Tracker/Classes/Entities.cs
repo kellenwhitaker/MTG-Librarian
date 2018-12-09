@@ -20,53 +20,53 @@ namespace MTG_Collection_Tracker
 
     public class MagicCardBase
     {
-        public string artist { get; set; }
-        public string borderColor { get; set; }
+        public string   artist { get; set; }
+        public string   borderColor { get; set; }
         [NotMapped]
         public string[] colorIdentity { get; set; }
         [NotMapped]
         public string[] colorIndicator { get; set; }
         [NotMapped]
         public string[] colors { get; set; }
-        public float convertedManaCost { get; set; }
-        public string flavorText { get; set; }
+        public float    convertedManaCost { get; set; }
+        public string   flavorText { get; set; }
         [NotMapped]
         public ForeignData[] foreignData { get; set; }
-        public string frameVersion { get; set; }
-        public bool hasFoil { get; set; }
-        public bool hasNonFoil { get; set; }
-        public bool isFoilOnly { get; set; }
-        public bool isOnlineOnly { get; set; }
-        public bool isOversized { get; set; }
-        public bool isReserved { get; set; }
-        public string layout { get; set; }
-        public string loyalty { get; set; }
-        public string manaCost { get; set; }
-        public string name { get; set; }
+        public string   frameVersion { get; set; }
+        public bool     hasFoil { get; set; }
+        public bool     hasNonFoil { get; set; }
+        public bool     isFoilOnly { get; set; }
+        public bool     isOnlineOnly { get; set; }
+        public bool     isOversized { get; set; }
+        public bool     isReserved { get; set; }
+        public string   layout { get; set; }
+        public string   loyalty { get; set; }
+        public string   manaCost { get; set; }
+        public string   name { get; set; }
         [NotMapped]
         public string[] names { get; set; }
-        public string number { get; set; }
-        public string originalText { get; set; }
-        public string originalType { get; set; }
+        public string   number { get; set; }
+        public string   originalText { get; set; }
+        public string   originalType { get; set; }
         [NotMapped]
         public string[] printings { get; set; }
-        public string power { get; set; }
-        public string rarity { get; set; }
-        public string SetCode { get; set; }
-        public string side { get; set; }
+        public string   power { get; set; }
+        public string   rarity { get; set; }
+        public string   SetCode { get; set; }
+        public string   side { get; set; }
         [NotMapped]
         public string[] subtypes { get; set; }
         [NotMapped]
         public string[] supertypes { get; set; }
-        public string text { get; set; }
-        public bool timeshifted { get; set; }
-        public string toughness { get; set; }
-        public string type { get; set; }
+        public string   text { get; set; }
+        public bool     timeshifted { get; set; }
+        public string   toughness { get; set; }
+        public string   type { get; set; }
         [NotMapped]
         public string[] types { get; set; }
-        public string uuid { get; set; }
-        public string watermark { get; set; }
-        public string Edition { get; set; }
+        public string   uuid { get; set; }
+        public string   watermark { get; set; }
+        public string   Edition { get; set; }
         public Dictionary<string, string> legalities = new Dictionary<string, string>();
         public string   Legalities
         {
@@ -101,13 +101,13 @@ namespace MTG_Collection_Tracker
     public class ForeignData
     {
         [Key]
-        public int Id { get; set; }
-        public string flavorText { get; set; }
-        public string language { get; set; }
-        public int multiverseId { get; set; }
-        public string name { get; set; }
-        public string text { get; set; }
-        public string type { get; set; }
+        public int      Id { get; set; }
+        public string   flavorText { get; set; }
+        public string   language { get; set; }
+        public int      multiverseId { get; set; }
+        public string   name { get; set; }
+        public string   text { get; set; }
+        public string   type { get; set; }
     }
 
     [Table("Library")]
@@ -117,6 +117,7 @@ namespace MTG_Collection_Tracker
         public int          CardInstanceId { get; set; }
         public int?         CatalogID { get; set; }
         public string       CollectionName { get; set; }
+        public int          CollectionId { get; set; }
         public int          MVid { get; set; }
         public int?         Count { get; set; }
         public double?      Cost { get; set; }
@@ -130,7 +131,7 @@ namespace MTG_Collection_Tracker
         [Key]
         public int          CardInstanceId { get => DBCardInstance.CardInstanceId; set => DBCardInstance.CardInstanceId = value; }
         public int?         CatalogID { get => DBCardInstance.CatalogID; set => DBCardInstance.CatalogID = value; }
-        public string       CollectionName { get => DBCardInstance.CollectionName; set => DBCardInstance.CollectionName = value; }
+        public int          CollectionId { get => DBCardInstance.CollectionId; set => DBCardInstance.CollectionId = value; }
         public int          MVid { get => DBCardInstance.MVid; set => DBCardInstance.MVid = value; }
         public int?         Count { get => DBCardInstance.Count; set => DBCardInstance.Count = value; }
         public double?      Cost { get => DBCardInstance.Cost; set => DBCardInstance.Cost = value; }
@@ -158,6 +159,7 @@ namespace MTG_Collection_Tracker
     public class CollectionGroup
     {
         [Key]
+        public int      Id { get; set; }
         public string   GroupName { get; set; }
         public bool     Permanent { get; set; }
     }
@@ -166,8 +168,10 @@ namespace MTG_Collection_Tracker
     public class CardCollection
     {
         [Key]
+        public int      Id { get; set; }
         public string   CollectionName { get; set; }
         public string   GroupName { get; set; }
+        public int      GroupId { get; set; }
         public string   Type { get; set; }
         public bool     Virtual { get; set; }
         public bool     Permanent { get; set; }

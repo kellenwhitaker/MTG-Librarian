@@ -219,7 +219,7 @@ namespace MTG_Collection_Tracker
                 }
                 else
                 {
-                    document = new CollectionViewForm { DocumentName = docName, Text = e.NavigatorCollection.Text };
+                    document = new CollectionViewForm { Collection = e.NavigatorCollection.CardCollection, Text = e.NavigatorCollection.Text };
                     document.LoadCollection();
                     document.CardsDropped += cvFormCardsDropped;
                     document.CardsUpdated += cvFormCardsUpdated;
