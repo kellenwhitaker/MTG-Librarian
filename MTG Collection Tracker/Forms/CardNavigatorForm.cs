@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 
-//TODO: add creation/deletion/moving of groups/collections
+//TODO: add moving of collections
 namespace MTG_Collection_Tracker
 {
     public partial class CardNavigatorForm : DockContent
@@ -52,8 +52,7 @@ namespace MTG_Collection_Tracker
             navigatorListView.AddObjects(groupList);
         }
 
-        public event EventHandler<CollectionActivatedEventArgs> CollectionActivated;
-
+        internal event EventHandler<CollectionActivatedEventArgs> CollectionActivated;
         private void OnCollectionActivated(CollectionActivatedEventArgs args)
         {
             CollectionActivated?.Invoke(this, args);
@@ -204,6 +203,7 @@ namespace MTG_Collection_Tracker
             {
                 var newCollection = new NavigatorCollection { Name = "New Collection", GroupId = group.Id };
                 group.AddCollection(newCollection);
+                navigatorListView.RebuildAll(true);
                 navigatorListView.Expand(group);
                 navigatorListView.SelectedObject = newCollection;
                 navigatorListView.StartCellEdit(navigatorListView.SelectedItem, 0);
