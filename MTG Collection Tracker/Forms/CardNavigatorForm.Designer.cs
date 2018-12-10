@@ -33,9 +33,9 @@
             this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.newGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.newCollectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editNameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.newCollectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.navigatorListView)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
@@ -43,12 +43,14 @@
             // navigatorListView
             // 
             this.navigatorListView.AllColumns.Add(this.olvColumn1);
+            this.navigatorListView.AllowDrop = true;
             this.navigatorListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.olvColumn1});
             this.navigatorListView.ContextMenuStrip = this.contextMenuStrip1;
             this.navigatorListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.navigatorListView.FullRowSelect = true;
             this.navigatorListView.HeaderMaximumHeight = 0;
+            this.navigatorListView.IsSimpleDragSource = true;
             this.navigatorListView.Location = new System.Drawing.Point(0, 0);
             this.navigatorListView.MultiSelect = false;
             this.navigatorListView.Name = "navigatorListView";
@@ -62,6 +64,8 @@
             this.navigatorListView.CellEditStarting += new BrightIdeasSoftware.CellEditEventHandler(this.navigatorListView_CellEditStarting);
             this.navigatorListView.ItemActivate += new System.EventHandler(this.navigatorListView_ItemActivate);
             this.navigatorListView.SelectedIndexChanged += new System.EventHandler(this.navigatorListView_SelectedIndexChanged);
+            this.navigatorListView.DragDrop += new System.Windows.Forms.DragEventHandler(this.navigatorListView_DragDrop);
+            this.navigatorListView.DragOver += new System.Windows.Forms.DragEventHandler(this.navigatorListView_DragOver);
             // 
             // olvColumn1
             // 
@@ -76,19 +80,27 @@
             this.editNameToolStripMenuItem,
             this.deleteToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 114);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(156, 92);
             // 
             // newGroupToolStripMenuItem
             // 
             this.newGroupToolStripMenuItem.Name = "newGroupToolStripMenuItem";
-            this.newGroupToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.newGroupToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
             this.newGroupToolStripMenuItem.Text = "New Group";
             this.newGroupToolStripMenuItem.Click += new System.EventHandler(this.newGroupToolStripMenuItem_Click);
+            // 
+            // newCollectionToolStripMenuItem
+            // 
+            this.newCollectionToolStripMenuItem.Name = "newCollectionToolStripMenuItem";
+            this.newCollectionToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.newCollectionToolStripMenuItem.Text = "New Collection";
+            this.newCollectionToolStripMenuItem.Visible = false;
+            this.newCollectionToolStripMenuItem.Click += new System.EventHandler(this.newCollectionToolStripMenuItem_Click);
             // 
             // editNameToolStripMenuItem
             // 
             this.editNameToolStripMenuItem.Name = "editNameToolStripMenuItem";
-            this.editNameToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.editNameToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
             this.editNameToolStripMenuItem.Text = "Rename";
             this.editNameToolStripMenuItem.Visible = false;
             this.editNameToolStripMenuItem.Click += new System.EventHandler(this.editNameToolStripMenuItem_Click);
@@ -96,18 +108,10 @@
             // deleteToolStripMenuItem
             // 
             this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.deleteToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
             this.deleteToolStripMenuItem.Text = "Delete";
             this.deleteToolStripMenuItem.Visible = false;
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
-            // 
-            // newCollectionToolStripMenuItem
-            // 
-            this.newCollectionToolStripMenuItem.Name = "newCollectionToolStripMenuItem";
-            this.newCollectionToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.newCollectionToolStripMenuItem.Text = "New Collection";
-            this.newCollectionToolStripMenuItem.Visible = false;
-            this.newCollectionToolStripMenuItem.Click += new System.EventHandler(this.newCollectionToolStripMenuItem_Click);
             // 
             // CardNavigatorForm
             // 

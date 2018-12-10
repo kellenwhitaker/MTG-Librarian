@@ -209,6 +209,50 @@ namespace MTG_Collection_Tracker
                 navigatorListView.StartCellEdit(navigatorListView.SelectedItem, 0);
             }
         }
+
+        private void navigatorListView_DragOver(object sender, DragEventArgs e)
+        {
+            if (e.Data is BrightIdeasSoftware.OLVDataObject data && data.ModelObjects.Count == 1 && data.ModelObjects[0] is NavigatorCollection collection && !collection.Permanent)
+            {
+                Point client = navigatorListView.PointToClient(new Point(e.X, e.Y));
+                if (navigatorListView.OlvHitTest(client.X, client.Y).RowObject is NavigatorGroup group)
+                {
+                    navigatorListView.SelectedObject = group;
+                    e.Effect = DragDropEffects.Copy;
+                }
+                else
+                {
+                    navigatorListView.SelectedObject = null;
+                    e.Effect = DragDropEffects.Move;
+                }
+            }
+            else
+                e.Effect = DragDropEffects.None;
+        }
+
+        private void navigatorListView_DragDrop(object sender, DragEventArgs e)
+        {
+            if (e.Data is BrightIdeasSoftware.OLVDataObject data && data.ModelObjects.Count == 1 && data.ModelObjects[0] is NavigatorCollection collection && !collection.Permanent)
+            {
+                Point client = navigatorListView.PointToClient(new Point(e.X, e.Y));
+                if (navigatorListView.OlvHitTest(client.X, client.Y).RowObject is NavigatorGroup group)
+                {
+                    try
+                    {
+                        using (var context = new MyDbContext())
+                        {
+                            collection.CardCollection.GroupId = group.Id;
+                            context.Update(collection.CardCollection);
+                            context.SaveChanges();
+                            collection.RemoveFromParent();
+                            group.AddCollection(collection);
+                            navigatorListView.RebuildAll(true);
+                        }
+                    }
+                    catch (Exception ex) { }
+                }
+            }
+        }
     }
 
     public class CollectionActivatedEventArgs
@@ -231,6 +275,10 @@ namespace MTG_Collection_Tracker
         }
         public string Text => Name;
         public NavigatorGroup Parent { get; set; }
+        public void RemoveFromParent()
+        {
+            Parent?.RemoveCollection(this);
+        }
     }
 
     public class NavigatorGroup : NavigatorItem
