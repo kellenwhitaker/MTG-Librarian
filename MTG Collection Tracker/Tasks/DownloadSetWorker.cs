@@ -47,7 +47,6 @@ namespace MTG_Collection_Tracker
                 CompletedWorkUnits = 4;
                 UpdateIcon();
                 string json = DownloadJSON(CardSet.MTGJSONURL);
-                Console.WriteLine("URL: " + CardSet.MTGJSONURL);
                 CardSet = JsonConvert.DeserializeObject<CardSet>(json);
                 foreach (var card in CardSet.Cards)
                 {
@@ -72,6 +71,7 @@ namespace MTG_Collection_Tracker
             finally
             {
                 CompletedWorkUnits = 5;
+                UpdateIcon();
                 watch.Stop();
             }
         }
@@ -135,13 +135,13 @@ namespace MTG_Collection_Tracker
         { 
             int percentComplete = (int)((double)CompletedWorkUnits / TotalWorkUnits * 100);
             if (percentComplete == 100)
-                Icon = CardSet.MythicRareIcon ?? CardSet.RareIcon;
+                Icon = mythicIcon ?? rareIcon;
             else if (percentComplete > 66)
-                Icon = CardSet.RareIcon;
+                Icon = rareIcon;
             else if (percentComplete > 33)
-                Icon = CardSet.UncommonIcon;
+                Icon = uncommonIcon;
             else
-                Icon = CardSet.CommonIcon;
+                Icon = commonIcon;
         }
     }
 }
