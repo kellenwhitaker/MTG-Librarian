@@ -68,10 +68,32 @@ namespace MTG_Collection_Tracker
             return combinedFilter;
         }
 
+        internal void LoadSet(string SetCode)
+        {
+            using (var context = new MyDbContext())
+            {
+                var dbSet = (from s in context.Sets
+                            where s.Code == SetCode
+                            select s).FirstOrDefault();
+                if (dbSet != null)
+                {
+                    var set = new OLVSetItem(dbSet);
+                    var cards = from c in context.Catalog
+                                where c.SetCode == SetCode
+                                orderby new AlphaNumericString(c.number), c.name
+                                select c;
+                    foreach (var card in cards)
+                        set.AddCard(card);
+
+                    treeListView1.AddObject(set);
+                }
+            }
+        }
+
         internal void LoadSets()
         {
             treeListView1.CanExpandGetter = x => x is OLVSetItem;
-            treeListView1.ChildrenGetter = x => ((OLVSetItem)x).Rarities;
+            treeListView1.ChildrenGetter = x => (x as OLVSetItem).Rarities;
             var renderer = treeListView1.TreeColumnRenderer;
             renderer.IsShowLines = false;
             renderer.UseTriangles = true;

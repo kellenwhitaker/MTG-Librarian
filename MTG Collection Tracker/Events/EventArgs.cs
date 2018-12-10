@@ -8,6 +8,11 @@ using System.Threading.Tasks;
 //TODO make card properties uniform
 namespace MTG_Collection_Tracker
 {
+    public class SetDownloadedEventArgs: EventArgs
+    {
+        public string SetCode { get; set; }
+    }
+
     public class CardsDroppedEventArgs : EventArgs
     {
         public ArrayList Items { get; set; }

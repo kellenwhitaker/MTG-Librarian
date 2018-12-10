@@ -54,15 +54,31 @@ namespace MTG_Collection_Tracker
 
         private void SetupUI()
         {
-            smallIconList  =    new ImageList(components) { ColorDepth = ColorDepth.Depth32Bit, ImageSize = new Size(SmallIconWidth, SmallIconHeight) };
-            _manaIcons     =    new ImageList(components) { ColorDepth = ColorDepth.Depth32Bit, ImageSize = new Size(18, 18) };
-            _symbolIcons16 =    new ImageList(components) { ColorDepth = ColorDepth.Depth24Bit, ImageSize = new Size(16, 16) };
+            SetupImageLists();
+            cardInfoForm = new CardInfoForm();
+            navForm = new CardNavigatorForm();
+            dbViewForm = new DBViewForm();
+            dbViewForm.CardActivated += dbFormCardActivated;
+            dbViewForm.CardSelected += CardSelected;
+            tasksForm = new TasksForm(tasksLabel, tasksProgressBar);
+            tasksForm.tasksListView.GetColumn(0).Renderer = new IconRenderer();
+            tasksForm.tasksListView.GetColumn(1).Renderer = new ProgressBarRenderer();
+            tasksForm.TaskManager.SetDownloaded += SetDownloaded;
+            splitContainer1.SplitterDistance = Height;
+            InitUIWorker.RunWorkerAsync();
+        }
+
+        private void SetupImageLists()
+        {
+            smallIconList = new ImageList(components) { ColorDepth = ColorDepth.Depth32Bit, ImageSize = new Size(SmallIconWidth, SmallIconHeight) };
+            _manaIcons = new ImageList(components) { ColorDepth = ColorDepth.Depth32Bit, ImageSize = new Size(18, 18) };
+            _symbolIcons16 = new ImageList(components) { ColorDepth = ColorDepth.Depth24Bit, ImageSize = new Size(16, 16) };
 
             #region Add mana icons
-            ManaIcons.Images.Add("{W}", Properties.Resources.W_20);            
-            ManaIcons.Images.Add("{U}", Properties.Resources.U_20);            
-            ManaIcons.Images.Add("{B}", Properties.Resources.B_20);            
-            ManaIcons.Images.Add("{R}", Properties.Resources.R_20);            
+            ManaIcons.Images.Add("{W}", Properties.Resources.W_20);
+            ManaIcons.Images.Add("{U}", Properties.Resources.U_20);
+            ManaIcons.Images.Add("{B}", Properties.Resources.B_20);
+            ManaIcons.Images.Add("{R}", Properties.Resources.R_20);
             ManaIcons.Images.Add("{G}", Properties.Resources.G_20);
             ManaIcons.Images.Add("{C}", Properties.Resources.C_20);
             ManaIcons.Images.Add("{X}", Properties.Resources.X_20);
@@ -110,16 +126,12 @@ namespace MTG_Collection_Tracker
             SymbolIcons16.Images.Add("{2/R}", Properties.Resources.C2R_16);
             SymbolIcons16.Images.Add("{2/G}", Properties.Resources.C2G_16);
             #endregion
-            cardInfoForm = new CardInfoForm();
-            navForm = new CardNavigatorForm();
-            dbViewForm = new DBViewForm();
-            dbViewForm.CardActivated += dbFormCardActivated;
-            dbViewForm.CardSelected += CardSelected;
-            tasksForm = new TasksForm(tasksLabel, tasksProgressBar);
-            tasksForm.tasksListView.GetColumn(0).Renderer = new IconRenderer();
-            tasksForm.tasksListView.GetColumn(1).Renderer = new ProgressBarRenderer();
-            splitContainer1.SplitterDistance = Height;
-            InitUIWorker.RunWorkerAsync();
+        }
+
+        private void SetDownloaded(object sender, SetDownloadedEventArgs e)
+        {
+            AddSetIcon(e.SetCode);
+            dbViewForm.LoadSet(e.SetCode);
         }
 
         private void cvFormCardsDropped(object sender, CardsDroppedEventArgs e)
@@ -192,6 +204,23 @@ namespace MTG_Collection_Tracker
             }
         }
 
+        private void AddSetIcon(string SetCode)
+        {
+            using (var context = new MyDbContext())
+            {
+                var set = (from s in context.Sets
+                           where s.Code == SetCode
+                           select s).FirstOrDefault();
+                if (set != null)
+                {
+                    if (set.CommonIcon != null)     SmallIconList.Images.Add($"{set.Name}: Common",     set.CommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.UncommonIcon != null)   SmallIconList.Images.Add($"{set.Name}: Uncommon",   set.UncommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.RareIcon != null)       SmallIconList.Images.Add($"{set.Name}: Rare",       set.RareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.MythicRareIcon != null) SmallIconList.Images.Add($"{set.Name}: Mythic",     set.MythicRareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                }
+            }
+        }
+
         private void AddSetIcons()
         {
             using (var context = new MyDbContext())
@@ -201,10 +230,10 @@ namespace MTG_Collection_Tracker
 
                 foreach (var set in sets)
                 {
-                    if (set.CommonIcon != null)     SmallIconList.Images.Add($"{set.Name}: Common", set.CommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
-                    if (set.UncommonIcon != null)   SmallIconList.Images.Add($"{set.Name}: Uncommon", set.UncommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
-                    if (set.RareIcon != null)       SmallIconList.Images.Add($"{set.Name}: Rare", set.RareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
-                    if (set.MythicRareIcon != null) SmallIconList.Images.Add($"{set.Name}: Mythic", set.MythicRareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.CommonIcon != null)     SmallIconList.Images.Add($"{set.Name}: Common",     set.CommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.UncommonIcon != null)   SmallIconList.Images.Add($"{set.Name}: Uncommon",   set.UncommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.RareIcon != null)       SmallIconList.Images.Add($"{set.Name}: Rare",       set.RareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.MythicRareIcon != null) SmallIconList.Images.Add($"{set.Name}: Mythic",     set.MythicRareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
                 }
             }
         }
@@ -251,7 +280,7 @@ namespace MTG_Collection_Tracker
                 }
                 else
                 {
-                    tasksForm.taskManager.AddTask(new DownloadResourceTask { Caption = "Image download", URL = $"http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={e.MultiverseId}&type=card", TaskObject = new BasicCardArgs { MultiverseId = e.MultiverseId, Edition = e.Edition }, OnTaskCompleted = ImageDownloadCompleted });
+                    tasksForm.TaskManager.AddTask(new DownloadResourceTask { Caption = "Image download", URL = $"http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={e.MultiverseId}&type=card", TaskObject = new BasicCardArgs { MultiverseId = e.MultiverseId, Edition = e.Edition }, OnTaskCompleted = ImageDownloadCompleted });
                 }
             }
         }

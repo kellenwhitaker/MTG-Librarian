@@ -110,7 +110,7 @@ namespace MTG_Collection_Tracker
                     foreach (var set in sets)
                     {
                         DownloadSetTask task = new DownloadSetTask(set);
-                        tasksForm.taskManager.AddTask(task);
+                        tasksForm.TaskManager.AddTask(task);
                     }
                 }
             }

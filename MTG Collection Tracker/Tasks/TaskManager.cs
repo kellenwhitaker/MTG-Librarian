@@ -19,13 +19,15 @@ namespace MTG_Collection_Tracker
         private BlockingCollection<BackgroundTask> _tasks;
         private List<BackgroundTask> _activeTasks;
         private List<BackgroundTask> _completedTasks;
+        private TasksForm TasksForm;
         private EnhancedOLV listView;
         private Label tasksLabel;
         private BlockProgressBar progressBar;
 
-        public TaskManager(EnhancedOLV lv, Label label, BlockProgressBar progressBar)
+        public TaskManager(TasksForm tasksForm, Label label, BlockProgressBar progressBar)
         {
-            listView = lv;
+            TasksForm = tasksForm;
+            listView = tasksForm.tasksListView;
             tasksLabel = label;
             this.progressBar = progressBar;
             _taskQ = new ConcurrentQueue<BackgroundTask>();
@@ -96,6 +98,12 @@ namespace MTG_Collection_Tracker
             _completedTasks.Clear();
         }
 
+        internal event EventHandler<SetDownloadedEventArgs> SetDownloaded;
+        private void OnSetDownloaded(SetDownloadedEventArgs args)
+        {
+            SetDownloaded?.Invoke(this, args);
+        }
+
         protected override void OnDoWork(DoWorkEventArgs e)
         {
             Stopwatch watch = new Stopwatch();
@@ -125,6 +133,8 @@ namespace MTG_Collection_Tracker
                         _completedTasks.Add(task);
                         if (_activeTasks.Count == 0 && _taskQ.Count == 0)
                             ResetState();
+                        if (task is DownloadSetTask downloadTask)
+                            OnSetDownloaded(new SetDownloadedEventArgs { SetCode = downloadTask.CardSet.Code });
                     }
                     if (completed.Count() > 0 && listView.Objects != null)
                         MoveLVObjects(completed);

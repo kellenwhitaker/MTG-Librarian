@@ -14,12 +14,12 @@ namespace MTG_Collection_Tracker
 {
     public partial class TasksForm : DockContent
     {
-        protected internal TaskManager taskManager;
+        internal TaskManager TaskManager { get; private set; }
 
         public TasksForm(Label tasksLabel, BlockProgressBar progressBar)
         {
             InitializeComponent();
-            taskManager = new TaskManager(tasksListView, tasksLabel, progressBar);
+            TaskManager = new TaskManager(this, tasksLabel, progressBar);
             tasksListView.BackColor = Color.Transparent;
         }
     }

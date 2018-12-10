@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
-
+//TODO: only change card image if it's the one selected
 namespace MTG_Collection_Tracker
 {
     public partial class CardInfoForm : DockContent

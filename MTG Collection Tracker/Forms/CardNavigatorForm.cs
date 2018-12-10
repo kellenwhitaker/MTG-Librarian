@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 
-//TODO: add moving of collections
 namespace MTG_Collection_Tracker
 {
     public partial class CardNavigatorForm : DockContent
@@ -20,7 +19,7 @@ namespace MTG_Collection_Tracker
         {
             InitializeComponent();
             navigatorListView.CanExpandGetter = x => (x as NavigatorItem).CanExpand;
-            navigatorListView.ChildrenGetter = x => ((NavigatorGroup)x).Collections;
+            navigatorListView.ChildrenGetter = x => (x as NavigatorGroup).Collections;
             var renderer = navigatorListView.TreeColumnRenderer;
             renderer.IsShowLines = false;
             renderer.UseTriangles = true;
