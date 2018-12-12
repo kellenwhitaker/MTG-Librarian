@@ -41,7 +41,7 @@ namespace MTG_Collection_Tracker
             this.whiteManaButton = new CustomControls.FlatButton();
             this.setFilterBox = new EnhancedTextBox.EnhancedTextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.treeListView1 = new BrightIdeasSoftware.TreeListView();
+            this.setListView = new BrightIdeasSoftware.TreeListView();
             this.SetName = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.ReleaseDate = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.fastObjectListView1 = new BrightIdeasSoftware.FastObjectListView();
@@ -58,7 +58,7 @@ namespace MTG_Collection_Tracker
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.treeListView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.setListView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.fastObjectListView1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -206,7 +206,7 @@ namespace MTG_Collection_Tracker
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.treeListView1);
+            this.splitContainer1.Panel1.Controls.Add(this.setListView);
             // 
             // splitContainer1.Panel2
             // 
@@ -215,32 +215,32 @@ namespace MTG_Collection_Tracker
             this.splitContainer1.SplitterDistance = 312;
             this.splitContainer1.TabIndex = 2;
             // 
-            // treeListView1
+            // setListView
             // 
-            this.treeListView1.AllColumns.Add(this.SetName);
-            this.treeListView1.AllColumns.Add(this.ReleaseDate);
-            this.treeListView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.setListView.AllColumns.Add(this.SetName);
+            this.setListView.AllColumns.Add(this.ReleaseDate);
+            this.setListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.SetName});
-            this.treeListView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.treeListView1.HeaderMaximumHeight = 0;
-            this.treeListView1.HideSelection = false;
-            this.treeListView1.Location = new System.Drawing.Point(0, 0);
-            this.treeListView1.MultiSelect = false;
-            this.treeListView1.Name = "treeListView1";
-            this.treeListView1.OverlayText.Text = "";
-            this.treeListView1.SelectedBackColor = System.Drawing.Color.SteelBlue;
-            this.treeListView1.SelectedForeColor = System.Drawing.Color.White;
-            this.treeListView1.ShowGroups = false;
-            this.treeListView1.Size = new System.Drawing.Size(312, 432);
-            this.treeListView1.TabIndex = 3;
-            this.treeListView1.UnfocusedSelectedBackColor = System.Drawing.Color.LightGray;
-            this.treeListView1.UseCellFormatEvents = true;
-            this.treeListView1.UseCompatibleStateImageBehavior = false;
-            this.treeListView1.View = System.Windows.Forms.View.Details;
-            this.treeListView1.VirtualMode = true;
-            this.treeListView1.FormatCell += new System.EventHandler<BrightIdeasSoftware.FormatCellEventArgs>(this.treeListView1_FormatCell);
-            this.treeListView1.ItemActivate += new System.EventHandler(this.treeListView1_ItemActivate);
-            this.treeListView1.SelectedIndexChanged += new System.EventHandler(this.treeListView1_SelectedIndexChanged);
+            this.setListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.setListView.HeaderMaximumHeight = 0;
+            this.setListView.HideSelection = false;
+            this.setListView.Location = new System.Drawing.Point(0, 0);
+            this.setListView.MultiSelect = false;
+            this.setListView.Name = "setListView";
+            this.setListView.OverlayText.Text = "";
+            this.setListView.SelectedBackColor = System.Drawing.Color.SteelBlue;
+            this.setListView.SelectedForeColor = System.Drawing.Color.White;
+            this.setListView.ShowGroups = false;
+            this.setListView.Size = new System.Drawing.Size(312, 432);
+            this.setListView.TabIndex = 3;
+            this.setListView.UnfocusedSelectedBackColor = System.Drawing.Color.LightGray;
+            this.setListView.UseCellFormatEvents = true;
+            this.setListView.UseCompatibleStateImageBehavior = false;
+            this.setListView.View = System.Windows.Forms.View.Details;
+            this.setListView.VirtualMode = true;
+            this.setListView.FormatCell += new System.EventHandler<BrightIdeasSoftware.FormatCellEventArgs>(this.treeListView1_FormatCell);
+            this.setListView.ItemActivate += new System.EventHandler(this.treeListView1_ItemActivate);
+            this.setListView.SelectedIndexChanged += new System.EventHandler(this.treeListView1_SelectedIndexChanged);
             // 
             // SetName
             // 
@@ -342,7 +342,7 @@ namespace MTG_Collection_Tracker
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.treeListView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.setListView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.fastObjectListView1)).EndInit();
             this.ResumeLayout(false);
 
@@ -352,7 +352,7 @@ namespace MTG_Collection_Tracker
 
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        protected internal BrightIdeasSoftware.TreeListView treeListView1;
+        protected internal BrightIdeasSoftware.TreeListView setListView;
         private BrightIdeasSoftware.OLVColumn SetName;
         private EnhancedTextBox.EnhancedTextBox setFilterBox;
         private BrightIdeasSoftware.FastObjectListView fastObjectListView1;

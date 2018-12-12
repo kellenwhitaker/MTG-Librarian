@@ -18,8 +18,8 @@ namespace MTG_Collection_Tracker
         {
             InitializeComponent();
             setNameFilter = new ModelFilter(x => !(x is OLVSetItem) || (x is OLVSetItem && (x as OLVSetItem).Name.ToUpper().Contains(setFilterBox.Text.ToUpper())));
-            treeListView1.SmallImageList = MainForm.SmallIconList;
-            treeListView1.TreeColumnRenderer = new SetRenderer();
+            setListView.SmallImageList = MainForm.SmallIconList;
+            setListView.TreeColumnRenderer = new SetRenderer();
             fastObjectListView1.SmallImageList = MainForm.SmallIconList;
             whiteManaButton.ImageList = blueManaButton.ImageList = blackManaButton.ImageList = redManaButton.ImageList = greenManaButton.ImageList 
                                       = colorlessManaButton.ImageList = genericManaButton.ImageList = MainForm.ManaIcons;
@@ -58,9 +58,9 @@ namespace MTG_Collection_Tracker
         private Predicate<object> GetTreeViewFilter()
         {
             Predicate<object> combinedFilter = x => true;
-            if (treeListView1.SelectedIndex != -1)
+            if (setListView.SelectedIndex != -1)
             {
-                var lvItem = treeListView1.SelectedItem.RowObject as OLVItem;
+                var lvItem = setListView.SelectedItem.RowObject as OLVItem;
                 do
                 {
                     combinedFilter = combinedFilter.And(lvItem.Filter);
@@ -96,19 +96,19 @@ namespace MTG_Collection_Tracker
                     foreach (var card in cards)
                         set.AddCard(card);
 
-                    treeListView1.AddObject(set);
+                    setListView.AddObject(set);
                     fastObjectListView1.AddObjects(set.Cards);
-                    if (treeListView1.Objects.Count() == 1) // first set added, must sort the tree
-                        treeListView1.Sort(treeListView1.AllColumns[1], SortOrder.Descending);
+                    if (setListView.Objects.Count() == 1) // first set added, must sort the tree
+                        setListView.Sort(setListView.AllColumns[1], SortOrder.Descending);
                 }
             }
         }
 
         internal void LoadSets()
         {
-            treeListView1.CanExpandGetter = x => x is OLVSetItem;
-            treeListView1.ChildrenGetter = x => (x as OLVSetItem).Rarities;
-            var renderer = treeListView1.TreeColumnRenderer;
+            setListView.CanExpandGetter = x => x is OLVSetItem;
+            setListView.ChildrenGetter = x => (x as OLVSetItem).Rarities;
+            var renderer = setListView.TreeColumnRenderer;
             renderer.IsShowLines = false;
             renderer.UseTriangles = true;
             sets = new Dictionary<string, OLVSetItem>();
@@ -137,10 +137,10 @@ namespace MTG_Collection_Tracker
         {
             foreach (var set in sets.Values)
             {
-                treeListView1.AddObject(set);
+                setListView.AddObject(set);
                 fastObjectListView1.AddObjects(set.Cards);
             }
-            treeListView1.Sort(treeListView1.AllColumns[1], SortOrder.Descending);
+            setListView.Sort(setListView.AllColumns[1], SortOrder.Descending);
         }
 
         private void treeListView1_FormatCell(object sender, FormatCellEventArgs e)
@@ -154,12 +154,12 @@ namespace MTG_Collection_Tracker
 
         private void treeListView1_ItemActivate(object sender, EventArgs e)
         {
-            if (treeListView1.SelectedObject is OLVSetItem item)
+            if (setListView.SelectedObject is OLVSetItem item)
             {
-                if (!treeListView1.IsExpanded(item))
-                    treeListView1.Expand(item);
+                if (!setListView.IsExpanded(item))
+                    setListView.Expand(item);
                 else
-                    treeListView1.Collapse(item);
+                    setListView.Collapse(item);
             }
         }
 
@@ -167,11 +167,11 @@ namespace MTG_Collection_Tracker
         {
             if (setFilterBox.Text != "")
             {
-                treeListView1.ModelFilter = setNameFilter;
-                treeListView1.UseFiltering = true;
+                setListView.ModelFilter = setNameFilter;
+                setListView.UseFiltering = true;
             }
             else
-                treeListView1.UseFiltering = false;
+                setListView.UseFiltering = false;
         }
 
         private void treeListView1_SelectedIndexChanged(object sender, EventArgs e)
