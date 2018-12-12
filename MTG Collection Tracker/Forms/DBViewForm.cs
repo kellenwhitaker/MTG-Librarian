@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 using BrightIdeasSoftware;
 //todo: change highlighting in treeview
+//TODO: figure out why sets are out of order when they are added to a blank tree
 namespace MTG_Collection_Tracker
 {
     public partial class DBViewForm : DockContent

@@ -81,14 +81,12 @@ namespace MTG_Collection_Tracker
             {
                 if (_activeTasks.Count > 0)
                 {
-                    double totalWorkUnits = (from t in _AllTasks
-                                             select t.TotalWorkUnits).Sum();
-                    int completedUnits = (from t in _AllTasks
-                                          select t.CompletedWorkUnits).Sum();
+                    double totalWorkUnits = _AllTasks.Count;
+                    int completedUnits = _completedTasks.Count;
 
                     if (progressBar.MaxBlocks == 0) progressBar.MaxBlocks = 5;
                     progressBar.CurrentBlocks = (int)(completedUnits / totalWorkUnits * progressBar.MaxBlocks);
-                    int percentDone = totalWorkUnits != 0 ? (int)(completedUnits / totalWorkUnits * 100) : 0;
+                    int percentDone = (int)(completedUnits / totalWorkUnits * 100);
                     tasksLabel.Text = string.Format("{0} / {1} tasks completed —— {2}%", _completedTasks.Count, _AllTasks.Count, percentDone);
                 }
                 else
