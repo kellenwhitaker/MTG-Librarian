@@ -6,7 +6,7 @@ using System.Linq;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 using BrightIdeasSoftware;
-//todo: change highlighting in treeview
+
 namespace MTG_Collection_Tracker
 {
     public partial class DBViewForm : DockContent
@@ -19,6 +19,7 @@ namespace MTG_Collection_Tracker
             InitializeComponent();
             setNameFilter = new ModelFilter(x => !(x is OLVSetItem) || (x is OLVSetItem && (x as OLVSetItem).Name.ToUpper().Contains(setFilterBox.Text.ToUpper())));
             treeListView1.SmallImageList = MainForm.SmallIconList;
+            treeListView1.TreeColumnRenderer = new SetRenderer();
             fastObjectListView1.SmallImageList = MainForm.SmallIconList;
             whiteManaButton.ImageList = blueManaButton.ImageList = blackManaButton.ImageList = redManaButton.ImageList = greenManaButton.ImageList 
                                       = colorlessManaButton.ImageList = genericManaButton.ImageList = MainForm.ManaIcons;
