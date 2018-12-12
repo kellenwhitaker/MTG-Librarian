@@ -40,7 +40,7 @@ namespace MTG_Collection_Tracker
             this.panel2 = new System.Windows.Forms.Panel();
             this.tasksProgressBar = new CustomControls.BlockProgressBar();
             this.tasksLabel = new System.Windows.Forms.Label();
-            this.largeIconList = new System.Windows.Forms.ImageList(this.components);            
+            this.largeIconList = new System.Windows.Forms.ImageList(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -116,9 +116,9 @@ namespace MTG_Collection_Tracker
             this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.Controls.Add(this.tasksProgressBar);
             this.panel2.Controls.Add(this.tasksLabel);
-            this.panel2.Location = new System.Drawing.Point(1200, 109);
+            this.panel2.Location = new System.Drawing.Point(831, 109);
             this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(262, 25);
+            this.panel2.Size = new System.Drawing.Size(631, 25);
             this.panel2.TabIndex = 0;
             // 
             // tasksProgressBar
@@ -127,7 +127,7 @@ namespace MTG_Collection_Tracker
             this.tasksProgressBar.BlankBarColor = System.Drawing.Color.DodgerBlue;
             this.tasksProgressBar.BorderColor = System.Drawing.Color.White;
             this.tasksProgressBar.CurrentBlocks = 3;
-            this.tasksProgressBar.Location = new System.Drawing.Point(153, 9);
+            this.tasksProgressBar.Location = new System.Drawing.Point(522, 11);
             this.tasksProgressBar.MaxBlocks = 0;
             this.tasksProgressBar.Name = "tasksProgressBar";
             this.tasksProgressBar.Progress = 0;
@@ -136,13 +136,13 @@ namespace MTG_Collection_Tracker
             // 
             // tasksLabel
             // 
-            this.tasksLabel.AutoSize = true;
             this.tasksLabel.ForeColor = System.Drawing.Color.White;
-            this.tasksLabel.Location = new System.Drawing.Point(3, 6);
+            this.tasksLabel.Location = new System.Drawing.Point(197, 7);
             this.tasksLabel.Name = "tasksLabel";
-            this.tasksLabel.Size = new System.Drawing.Size(81, 13);
+            this.tasksLabel.Size = new System.Drawing.Size(319, 13);
             this.tasksLabel.TabIndex = 0;
             this.tasksLabel.Text = "No active tasks";
+            this.tasksLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // largeIconList
             // 
@@ -166,7 +166,6 @@ namespace MTG_Collection_Tracker
             this.splitContainer1.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
-            this.panel2.PerformLayout();
             this.ResumeLayout(false);
 
         }
