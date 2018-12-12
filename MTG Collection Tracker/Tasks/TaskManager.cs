@@ -87,7 +87,7 @@ namespace MTG_Collection_Tracker
                     if (progressBar.MaxBlocks == 0) progressBar.MaxBlocks = 5;
                     progressBar.CurrentBlocks = (int)(completedUnits / totalWorkUnits * progressBar.MaxBlocks);
                     int percentDone = (int)(completedUnits / totalWorkUnits * 100);
-                    tasksLabel.Text = string.Format("{0} / {1} tasks completed —— {2}%", _completedTasks.Count, _AllTasks.Count, percentDone);
+                    tasksLabel.Text = $"{_completedTasks.Count} / {_AllTasks.Count} tasks completed —— {percentDone}%";
                 }
                 else
                 {
