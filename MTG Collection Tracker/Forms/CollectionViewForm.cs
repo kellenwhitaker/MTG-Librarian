@@ -46,7 +46,7 @@ namespace MTG_Collection_Tracker
             }
         }
 
-        internal void AddCardInstance(CardInstance cardInstance)
+        internal void AddCardInstance(FullInventoryCard cardInstance)
         {
             fastObjectListView1.AddObject(cardInstance);
         }
@@ -82,11 +82,11 @@ namespace MTG_Collection_Tracker
                     {
                         Console.WriteLine(e.Column.AspectName);
                         if (e.Column.AspectName == "Tags")
-                            (row as CardInstance).Tags = (e.RowObject as CardInstance).Tags;
+                            (row as FullInventoryCard).Tags = (e.RowObject as FullInventoryCard).Tags;
                         else if (e.Column.AspectName == "Count")
-                            (row as CardInstance).Count = (e.RowObject as CardInstance).Count;
+                            (row as FullInventoryCard).Count = (e.RowObject as FullInventoryCard).Count;
                         else if (e.Column.AspectName == "Cost")
-                            (row as CardInstance).Cost = (e.RowObject as CardInstance).Cost;
+                            (row as FullInventoryCard).Cost = (e.RowObject as FullInventoryCard).Cost;
                         args.Items.Add(row);
                     }
                 }
@@ -114,14 +114,14 @@ namespace MTG_Collection_Tracker
                 if (e.KeyChar == '=' || e.KeyChar == '+')
                 {
                     e.Handled = true;
-                    foreach (CardInstance item in fastObjectListView1.SelectedObjects)
+                    foreach (FullInventoryCard item in fastObjectListView1.SelectedObjects)
                         item.Count++;
                     OnCardsUpdated(new CardsUpdatedEventArgs { Items = fastObjectListView1.SelectedObjects as ArrayList });
                 }
                 else if (e.KeyChar == '-' || e.KeyChar == '_')
                 {
                     e.Handled = true;
-                    foreach (CardInstance item in fastObjectListView1.SelectedObjects)
+                    foreach (FullInventoryCard item in fastObjectListView1.SelectedObjects)
                         item.Count--;
                     OnCardsUpdated(new CardsUpdatedEventArgs { Items = fastObjectListView1.SelectedObjects as ArrayList });
                 }
@@ -142,7 +142,7 @@ namespace MTG_Collection_Tracker
         {
             if (fastObjectListView1.SelectedObject != null)
             {
-                var card = fastObjectListView1.SelectedObject as CardInstance;
+                var card = fastObjectListView1.SelectedObject as FullInventoryCard;
                 OnCardSelected(new CardSelectedEventArgs { uuid = card.uuid, Edition = card.Edition, MultiverseId = card.MVid, Name = card.name });
             }
         }

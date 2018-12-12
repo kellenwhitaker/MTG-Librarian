@@ -182,14 +182,14 @@ namespace MTG_Collection_Tracker
                 {
                     try
                     {
-                        foreach (CardInstance card in e.Items)
+                        foreach (FullInventoryCard card in e.Items)
                             context.Library.Update(card.InventoryCard);
                         
                         context.SaveChanges();
                     }
                     catch (Exception ex)
                     {
-                        foreach (CardInstance card in e.Items)
+                        foreach (FullInventoryCard card in e.Items)
                             context.Entry(card).Reload();
 
                         MessageBox.Show(ex.ToString());

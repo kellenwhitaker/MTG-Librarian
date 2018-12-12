@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MTG_Collection_Tracker
 {
-    public class CardInstance : MagicCardBase
+    public class FullInventoryCard : MagicCardBase
     {
         [Key]
         public int          CardInstanceId { get => InventoryCard.CardInstanceId; set => InventoryCard.CardInstanceId = value; }

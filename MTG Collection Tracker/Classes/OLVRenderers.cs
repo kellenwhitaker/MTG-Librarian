@@ -22,8 +22,8 @@ namespace MTG_Collection_Tracker
 
             g.FillRectangle(new SolidBrush(backColor), backgroundRect);
             string manaCost = "";
-            if (ListItem.RowObject is CardInstance)
-                manaCost = (ListItem.RowObject as CardInstance).manaCost;
+            if (ListItem.RowObject is FullInventoryCard)
+                manaCost = (ListItem.RowObject as FullInventoryCard).manaCost;
             else if (ListItem.RowObject is OLVCardItem)
                 manaCost = (ListItem.RowObject as OLVCardItem).MagicCard.manaCost;
             if (manaCost != "" && manaCost != null)
@@ -48,7 +48,7 @@ namespace MTG_Collection_Tracker
     {
         public override void Render(Graphics g, Rectangle r)
         {
-            var cardInstance = ListItem.RowObject as CardInstance;
+            var cardInstance = ListItem.RowObject as FullInventoryCard;
             int? imgIndex = ListView.SmallImageList?.Images?.IndexOfKey(cardInstance.ImageKey);
             Rectangle backgroundRect = new Rectangle(r.Left - 1, r.Top - 1, r.Width + 1, r.Height + 1);
             if (IsItemSelected)

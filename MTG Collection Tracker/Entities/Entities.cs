@@ -32,7 +32,7 @@ namespace MTG_Collection_Tracker
         #region DbSet
         public DbSet<MagicCard> Catalog { get; set; }
         public DbSet<InventoryCard> Library { get; set; }
-        public DbSet<CardInstance> LibraryView { get; set; }
+        public DbSet<FullInventoryCard> LibraryView { get; set; }
         public DbSet<CardSet> Sets { get; set; }
         public DbSet<CardCollection> Collections { get; set; }
         public DbSet<CollectionGroup> CollectionGroups { get; set; }

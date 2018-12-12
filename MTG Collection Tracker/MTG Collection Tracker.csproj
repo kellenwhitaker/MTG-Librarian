@@ -251,7 +251,7 @@
     <Compile Include="Classes\AlphaNumericString.cs" />
     <Compile Include="Classes\ConcurrentDeque.cs" />
     <Compile Include="Entities\CardCollection.cs" />
-    <Compile Include="Entities\CardInstance.cs" />
+    <Compile Include="Entities\FullInventoryCard.cs" />
     <Compile Include="Entities\CardSet.cs" />
     <Compile Include="Entities\CollectionGroup.cs" />
     <Compile Include="Entities\DbCardImage.cs" />
