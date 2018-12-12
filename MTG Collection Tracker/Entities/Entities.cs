@@ -31,7 +31,7 @@ namespace MTG_Collection_Tracker
     {
         #region DbSet
         public DbSet<MagicCard> Catalog { get; set; }
-        public DbSet<DBCardInstance> Library { get; set; }
+        public DbSet<InventoryCard> Library { get; set; }
         public DbSet<CardInstance> LibraryView { get; set; }
         public DbSet<CardSet> Sets { get; set; }
         public DbSet<CardCollection> Collections { get; set; }
@@ -42,7 +42,7 @@ namespace MTG_Collection_Tracker
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Ignore<MagicCardBase>();
-            modelBuilder.Entity<DBCardInstance>().Property(b => b.TimeAdded).HasDefaultValueSql("datetime('now','localtime')");
+            modelBuilder.Entity<InventoryCard>().Property(b => b.TimeAdded).HasDefaultValueSql("datetime('now','localtime')");
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

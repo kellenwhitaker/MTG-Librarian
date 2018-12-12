@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace MTG_Collection_Tracker
 {
     [Table("Library")]
-    public class DBCardInstance
+    public class InventoryCard
     {
         [Key]
         public int          CardInstanceId { get; set; }

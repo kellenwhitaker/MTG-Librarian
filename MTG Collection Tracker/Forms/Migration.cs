@@ -59,7 +59,7 @@ private void SetupCache()
         {
             XElement root = XElement.Load("Owned.xml");
             var results = root.Element("list").Elements("mcp");
-            var failed = new List<DBCardInstance>();
+            var failed = new List<InventoryCard>();
             
             SQLiteConnection conn = new SQLiteConnection("Data Source=cards.db;Version=3;");
             conn.Open();            
@@ -103,7 +103,7 @@ private void SetupCache()
                         addCard.Parameters["TimeAdded"].Value = DBNull.Value;
                     addCard.ExecuteNonQuery();
                 }
-                catch { failed.Add(new DBCardInstance { CatalogID = Convert.ToInt32(addCard.Parameters["id"].Value) }); };
+                catch { failed.Add(new InventoryCard { CatalogID = Convert.ToInt32(addCard.Parameters["id"].Value) }); };
             }
             transaction.Commit();
             conn.Close();

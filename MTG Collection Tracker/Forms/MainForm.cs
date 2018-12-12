@@ -153,17 +153,17 @@ namespace MTG_Collection_Tracker
                 var collectionName = activeDocument.DocumentName;
                 using (MyDbContext context = new MyDbContext())
                 {
-                    List<DBCardInstance> cardsAdded = new List<DBCardInstance>();
+                    List<InventoryCard> cardsAdded = new List<InventoryCard>();
                     int insertionIndex = 0;
                     foreach (OLVCardItem item in e.Items)
                     {
-                        DBCardInstance card = new DBCardInstance { uuid = item.MagicCard.uuid, MVid = item.MagicCard.multiverseId, CollectionId = activeDocument.Collection.Id, InsertionIndex = insertionIndex };
+                        InventoryCard card = new InventoryCard { uuid = item.MagicCard.uuid, MVid = item.MagicCard.multiverseId, CollectionId = activeDocument.Collection.Id, InsertionIndex = insertionIndex };
                         context.Library.Add(card);
                         cardsAdded.Add(card);
                         insertionIndex++;
                     }
                     context.SaveChanges();
-                    foreach (DBCardInstance card in cardsAdded)
+                    foreach (InventoryCard card in cardsAdded)
                     {
                         var cardInstance = card.ToCardInstance(context);
                         if (cardInstance != null)
@@ -183,7 +183,7 @@ namespace MTG_Collection_Tracker
                     try
                     {
                         foreach (CardInstance card in e.Items)
-                            context.Library.Update(card.DBCardInstance);
+                            context.Library.Update(card.InventoryCard);
                         
                         context.SaveChanges();
                     }
@@ -204,7 +204,7 @@ namespace MTG_Collection_Tracker
             if (dockPanel1.ActiveDocument is CollectionViewForm activeDocument)
             {
                 var collectionName = activeDocument.DocumentName;
-                DBCardInstance card = new DBCardInstance { uuid = args.MagicCard.uuid, MVid = args.MagicCard.multiverseId, CollectionId = activeDocument.Collection.Id };
+                InventoryCard card = new InventoryCard { uuid = args.MagicCard.uuid, MVid = args.MagicCard.multiverseId, CollectionId = activeDocument.Collection.Id };
                 using (MyDbContext context = new MyDbContext())
                 {
                     context.Library.Add(card);
