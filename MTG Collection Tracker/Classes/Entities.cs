@@ -18,7 +18,7 @@ namespace MTG_Collection_Tracker
         public int multiverseId { get; set; }
     }
 
-    public class MagicCardBase
+    public class MTGJSONCard
     {
         public string   artist { get; set; }
         public string   borderColor { get; set; }
@@ -52,7 +52,6 @@ namespace MTG_Collection_Tracker
         public string[] printings { get; set; }
         public string   power { get; set; }
         public string   rarity { get; set; }
-        public string   SetCode { get; set; }
         public string   side { get; set; }
         [NotMapped]
         public string[] subtypes { get; set; }
@@ -66,7 +65,6 @@ namespace MTG_Collection_Tracker
         public string[] types { get; set; }
         public string   uuid { get; set; }
         public string   watermark { get; set; }
-        public string   Edition { get; set; }
         public Dictionary<string, string> legalities = new Dictionary<string, string>();
         public string   Legalities
         {
@@ -95,6 +93,12 @@ namespace MTG_Collection_Tracker
                 rulings = JsonConvert.DeserializeObject(value) as Dictionary<string, string>[];
             }
         }
+    }
+
+    public class MagicCardBase : MTGJSONCard
+    {
+        public string   SetCode { get; set; }
+        public string   Edition { get; set; }
         public double?  OnlinePrice { get; set; }
     }
 
