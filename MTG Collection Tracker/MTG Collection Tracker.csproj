@@ -248,7 +248,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Classes\AdvancedList.cs" />
     <Compile Include="Classes\AlphaNumericString.cs" />
     <Compile Include="Classes\ConcurrentDeque.cs" />
     <Compile Include="Events\EventArgs.cs" />
