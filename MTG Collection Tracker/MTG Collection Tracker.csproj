@@ -250,6 +250,14 @@
   <ItemGroup>
     <Compile Include="Classes\AlphaNumericString.cs" />
     <Compile Include="Classes\ConcurrentDeque.cs" />
+    <Compile Include="Entities\CardCollection.cs" />
+    <Compile Include="Entities\CardInstance.cs" />
+    <Compile Include="Entities\CardSet.cs" />
+    <Compile Include="Entities\CollectionGroup.cs" />
+    <Compile Include="Entities\DbCardImage.cs" />
+    <Compile Include="Entities\DBCardInstance.cs" />
+    <Compile Include="Entities\MagicCard.cs" />
+    <Compile Include="Entities\MTGJSONCard.cs" />
     <Compile Include="Events\EventArgs.cs" />
     <Compile Include="Extensions\HtmlAgilityPackExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
@@ -305,7 +313,7 @@
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Extensions\ImageExtensions.cs" />
-    <Compile Include="Classes\Entities.cs" />
+    <Compile Include="Entities\Entities.cs" />
     <Compile Include="Forms\MainFormBGWorkers.cs">
       <SubType>Form</SubType>
     </Compile>
