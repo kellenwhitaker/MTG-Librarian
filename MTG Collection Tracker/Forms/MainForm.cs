@@ -143,6 +143,8 @@ namespace MTG_Collection_Tracker
             {
                 AddSetIcon(e.SetCode);
                 dbViewForm.LoadSet(e.SetCode);
+                if (tasksForm.TaskManager.TaskCount == 0)
+                    dbViewForm.SortCardListView();
             }
         }
 

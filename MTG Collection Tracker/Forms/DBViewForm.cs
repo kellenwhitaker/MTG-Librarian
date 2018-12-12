@@ -68,6 +68,16 @@ namespace MTG_Collection_Tracker
             return combinedFilter;
         }
 
+        internal void SortCardListView()
+        {
+            if (fastObjectListView1.PrimarySortColumn == null) // sort by set if not already sorted
+            {
+                fastObjectListView1.PrimarySortColumn = fastObjectListView1.AllColumns[3];
+                fastObjectListView1.SecondarySortColumn = fastObjectListView1.AllColumns[4];
+                fastObjectListView1.Sort();
+            }
+        }
+
         internal void LoadSet(string SetCode)
         {
             using (var context = new MyDbContext())
@@ -104,9 +114,10 @@ namespace MTG_Collection_Tracker
             using (var context = new MyDbContext())
             {
                 var dbSets = from s in context.Sets
+                             orderby s.Name
                              select s;
                 var cards = from c in context.Catalog
-                            orderby new AlphaNumericString(c.number), c.name
+                            orderby c.Edition, new AlphaNumericString(c.number), c.name
                             select c;
                 
                 foreach (var card in cards)

@@ -23,6 +23,7 @@ namespace MTG_Collection_Tracker
         private EnhancedOLV listView;
         private Label tasksLabel;
         private BlockProgressBar progressBar;
+        public int TaskCount => _AllTasks.Count;
 
         public TaskManager(TasksForm tasksForm, Label label, BlockProgressBar progressBar)
         {
