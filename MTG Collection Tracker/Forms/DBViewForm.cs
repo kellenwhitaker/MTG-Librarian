@@ -175,6 +175,7 @@ namespace MTG_Collection_Tracker
 
         private void treeListView1_SelectedIndexChanged(object sender, EventArgs e)
         {
+            fastObjectListView1.SelectedObject = null;
             fastObjectListView1.ModelFilter = new ModelFilter(GetCardFilter());
         }
 

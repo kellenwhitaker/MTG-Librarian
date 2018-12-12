@@ -16,8 +16,6 @@ using System.ComponentModel;
 //TODO restsharp
 //TODO add card preview
 //TODO improve bulk card add speed
-//TODO improve card set filter tree
-//      deselect on change
 //TODO only show part A in collection view
 //TODO unknown error: collection unmodified
 namespace MTG_Collection_Tracker
