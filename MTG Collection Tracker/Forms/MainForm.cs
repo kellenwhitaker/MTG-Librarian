@@ -60,6 +60,7 @@ namespace MTG_Collection_Tracker
             dbViewForm = new DBViewForm();
             dbViewForm.CardActivated += dbFormCardActivated;
             dbViewForm.CardSelected += CardSelected;
+            dbViewForm.CardFocused += CardFocused;
             tasksForm = new TasksForm(tasksLabel, tasksProgressBar);
             tasksForm.tasksListView.GetColumn(0).Renderer = new IconRenderer();
             tasksForm.tasksListView.GetColumn(1).Renderer = new ProgressBarRenderer();
@@ -128,6 +129,11 @@ namespace MTG_Collection_Tracker
             #endregion
         }
 
+        internal static void CardFocused(object sender, CardFocusedEventArgs e)
+        {
+            cardInfoForm.CardFocusedUuid = e.uuid;
+        }
+
         private void SetDownloaded(object sender, SetDownloadedEventArgs e)
         {
             AddSetIcon(e.SetCode);
@@ -145,7 +151,7 @@ namespace MTG_Collection_Tracker
                     int insertionIndex = 0;
                     foreach (OLVCardItem item in e.Items)
                     {
-                        DBCardInstance card = new DBCardInstance { MVid = item.MagicCard.multiverseId, CollectionName = collectionName, InsertionIndex = insertionIndex };
+                        DBCardInstance card = new DBCardInstance { uuid = item.MagicCard.uuid, MVid = item.MagicCard.multiverseId, CollectionId = activeDocument.Collection.Id, InsertionIndex = insertionIndex };
                         context.Library.Add(card);
                         cardsAdded.Add(card);
                         insertionIndex++;
@@ -192,7 +198,7 @@ namespace MTG_Collection_Tracker
             if (dockPanel1.ActiveDocument is CollectionViewForm activeDocument)
             {
                 var collectionName = activeDocument.DocumentName;
-                DBCardInstance card = new DBCardInstance { MVid = args.MagicCard.multiverseId, CollectionName = collectionName };
+                DBCardInstance card = new DBCardInstance { uuid = args.MagicCard.uuid, MVid = args.MagicCard.multiverseId, CollectionId = activeDocument.Collection.Id };
                 using (MyDbContext context = new MyDbContext())
                 {
                     context.Library.Add(card);
@@ -252,6 +258,7 @@ namespace MTG_Collection_Tracker
                     document.LoadCollection();
                     document.CardsDropped += cvFormCardsDropped;
                     document.CardsUpdated += cvFormCardsUpdated;
+                    document.CardSelected += CardSelected;
                     document.fastObjectListView1.SmallImageList = SmallIconList;
                     document.Show(dockPanel1, DockState.Document);
                     dockPanel1.ActiveDocumentPane.SetDoubleBuffered();
@@ -267,20 +274,21 @@ namespace MTG_Collection_Tracker
 
         internal static void CardSelected(object sender, CardSelectedEventArgs e)
         {
+            CardFocused(sender, new CardFocusedEventArgs { uuid = e.uuid });
             using (CardImagesDbContext context = new CardImagesDbContext(e.Edition))
             {
                 var imageBytes = (from i in context.CardImages
-                                  where i.MVid == e.MultiverseId
+                                  where i.uuid == e.uuid
                                   select i).FirstOrDefault()?.CardImageBytes;
 
                 if (imageBytes != null)
                 {
                     Image img = ImageExtensions.FromByteArray(imageBytes);
-                    OnCardImageRetrieved(new CardImageRetrievedEventArgs { MultiverseId = e.MultiverseId, CardImage = img });
+                    OnCardImageRetrieved(new CardImageRetrievedEventArgs { uuid = e.uuid, CardImage = img });
                 }
                 else
                 {
-                    tasksForm.TaskManager.AddTask(new DownloadResourceTask { Caption = "Image download", URL = $"http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={e.MultiverseId}&type=card", TaskObject = new BasicCardArgs { MultiverseId = e.MultiverseId, Edition = e.Edition }, OnTaskCompleted = ImageDownloadCompleted });
+                    tasksForm.TaskManager.AddTask(new DownloadResourceTask { ForDisplay = true, Caption = $"Card Image: {e.Name}", URL = $"http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={e.MultiverseId}&type=card", TaskObject = new BasicCardArgs { uuid = e.uuid, MultiverseId = e.MultiverseId, Edition = e.Edition }, OnTaskCompleted = ImageDownloadCompleted });
                 }
             }
         }
@@ -290,11 +298,11 @@ namespace MTG_Collection_Tracker
             var args = e.Result as CardResourceArgs;
             using (CardImagesDbContext context = new CardImagesDbContext(args.Edition))
             {
-                context.Add(new DbCardImage { MVid = args.MultiverseId, CardImageBytes = args.Data } );
+                context.Add(new DbCardImage { uuid = args.uuid, CardImageBytes = args.Data } );
                 context.SaveChanges();
             }
             Image img = ImageExtensions.FromByteArray(args.Data);
-            OnCardImageRetrieved(new CardImageRetrievedEventArgs { MultiverseId = args.MultiverseId, CardImage = img });
+            OnCardImageRetrieved(new CardImageRetrievedEventArgs { uuid = args.uuid, MultiverseId = args.MultiverseId, CardImage = img });
         }
 
         static internal event EventHandler<CardImageRetrievedEventArgs> CardImageRetrieved;

@@ -9,14 +9,14 @@ using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Windows.Forms;
 using CustomControls;
-
+//TODO: figure out why task manager quits partway through a queue of tasks
 namespace MTG_Collection_Tracker
 {
     [DesignerCategory("Code")]
     public class TaskManager : BackgroundWorker
     {
-        private ConcurrentQueue<BackgroundTask> _taskQ;
-        private BlockingCollection<BackgroundTask> _tasks;
+        private ConcurrentDeque<BackgroundTask> _IncomingTasks;
+        private ConcurrentDeque<BackgroundTask> _AllTasks;
         private List<BackgroundTask> _activeTasks;
         private List<BackgroundTask> _completedTasks;
         private TasksForm TasksForm;
@@ -30,8 +30,8 @@ namespace MTG_Collection_Tracker
             listView = tasksForm.tasksListView;
             tasksLabel = label;
             this.progressBar = progressBar;
-            _taskQ = new ConcurrentQueue<BackgroundTask>();
-            _tasks = new BlockingCollection<BackgroundTask>();
+            _IncomingTasks = new ConcurrentDeque<BackgroundTask>();
+            _AllTasks = new ConcurrentDeque<BackgroundTask>();
             _completedTasks = new List<BackgroundTask>();
             _activeTasks = new List<BackgroundTask>();
             RunWorkerAsync();
@@ -41,9 +41,16 @@ namespace MTG_Collection_Tracker
         {
             if (task != null)
             {
-                _taskQ.Enqueue(task);
-                if (listView != null)
-                    listView.AddObject(task);
+                if (task.ForDisplay)
+                {
+                    _IncomingTasks.AddFirst(task);
+                    listView?.InsertObject(0, task);
+                }
+                else
+                {
+                    _IncomingTasks.Enqueue(task);
+                    listView?.AddObject(task);
+                }
             }
         }
 
@@ -74,15 +81,15 @@ namespace MTG_Collection_Tracker
             {
                 if (_activeTasks.Count > 0)
                 {
-                    double totalWorkUnits = (from t in _tasks
+                    double totalWorkUnits = (from t in _AllTasks
                                              select t.TotalWorkUnits).Sum();
-                    int completedUnits = (from t in _tasks
+                    int completedUnits = (from t in _AllTasks
                                           select t.CompletedWorkUnits).Sum();
 
                     if (progressBar.MaxBlocks == 0) progressBar.MaxBlocks = 5;
                     progressBar.CurrentBlocks = (int)(completedUnits / totalWorkUnits * progressBar.MaxBlocks);
                     int percentDone = totalWorkUnits != 0 ? (int)(completedUnits / totalWorkUnits * 100) : 0;
-                    tasksLabel.Text = string.Format("{0} / {1} tasks completed —— {2}%", _completedTasks.Count, _tasks.Count, percentDone);
+                    tasksLabel.Text = string.Format("{0} / {1} tasks completed —— {2}%", _completedTasks.Count, _AllTasks.Count, percentDone);
                 }
                 else
                 {
@@ -94,7 +101,7 @@ namespace MTG_Collection_Tracker
 
         private void ResetState()
         {
-            while (_tasks.TryTake(out var _)) ;
+            while (_AllTasks.TryTake(out var _));
             _completedTasks.Clear();
         }
 
@@ -110,13 +117,16 @@ namespace MTG_Collection_Tracker
             watch.Start();
             while (true)
             {
-                while (_taskQ.TryDequeue(out BackgroundTask nextTask))
+                while (_IncomingTasks.TryDequeue(out BackgroundTask nextTask))
                 {
-                    _tasks.Add(nextTask);
+                    if (nextTask.ForDisplay)
+                        _AllTasks.AddFirst(nextTask);
+                    else
+                        _AllTasks.Enqueue(nextTask);
                 }
-                while (_activeTasks.Count < 10 && _tasks.FindInitialized().Count() > 0)
+                while (_activeTasks.Count < 10 && _AllTasks.FindInitialized().Count() > 0)
                 {
-                    var notStarted = _tasks.FindInitialized().FirstOrDefault();
+                    var notStarted = _AllTasks.FindInitialized().FirstOrDefault();
                     if (notStarted != null)
                     {
                         _activeTasks.Add(notStarted);
@@ -124,14 +134,14 @@ namespace MTG_Collection_Tracker
                     }
                 }
                 Thread.Sleep(100);
-                if (watch.ElapsedMilliseconds > 1000)
+                if (watch.ElapsedMilliseconds > 500)
                 {
                     var completed = _activeTasks.FindCompleted().ToArray();
                     foreach (var task in completed)
                     {
                         _activeTasks.Remove(task);
                         _completedTasks.Add(task);
-                        if (_activeTasks.Count == 0 && _taskQ.Count == 0)
+                        if (_activeTasks.Count == 0 && _IncomingTasks.Count == 0)
                             ResetState();
                         if (task is DownloadSetTask downloadTask)
                             OnSetDownloaded(new SetDownloadedEventArgs { SetCode = downloadTask.CardSet.Code });

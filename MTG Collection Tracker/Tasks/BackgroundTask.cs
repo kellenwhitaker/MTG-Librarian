@@ -37,6 +37,7 @@ namespace MTG_Collection_Tracker
         public int Runtime { get => (int)(watch.ElapsedMilliseconds / 1000); }
         public bool Running { get => RunState == RunState.Running; }
         public BlockProgressBar ProgressBar { get; private set; }
+        public bool ForDisplay { get; set; } = false;
         public RunState RunState { get; protected set; }
         private Image _icon;
         public Image Icon

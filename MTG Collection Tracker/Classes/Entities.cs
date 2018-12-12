@@ -116,7 +116,6 @@ namespace MTG_Collection_Tracker
         [Key]
         public int          CardInstanceId { get; set; }
         public int?         CatalogID { get; set; }
-        public string       CollectionName { get; set; }
         public int          CollectionId { get; set; }
         public int          MVid { get; set; }
         public int?         Count { get; set; }
@@ -124,6 +123,7 @@ namespace MTG_Collection_Tracker
         public string       Tags { get; set; }
         public DateTime?    TimeAdded { get; set; }
         public int?         InsertionIndex { get; set; }
+        public string       uuid { get; set; }
     }
 
     public class CardInstance : MagicCardBase
@@ -247,7 +247,7 @@ namespace MTG_Collection_Tracker
     public class DbCardImage
     {
         [Key]
-        public int MVid { get; set; }
+        public string uuid { get; set; }
         public byte[] CardImageBytes { get; set; }
     }
 
@@ -268,7 +268,7 @@ namespace MTG_Collection_Tracker
             if (!fi.Exists)
             {
                 using (SqliteConnection conn = new SqliteConnection($"Data Source={FileName}"))
-                using (SqliteCommand createDB = new SqliteCommand("CREATE TABLE CardImages (MVid INTEGER PRIMARY KEY, CardImageBytes BLOB); ", conn))
+                using (SqliteCommand createDB = new SqliteCommand("CREATE TABLE CardImages (uuid TEXT PRIMARY KEY, MVid INTEGER, CardImageBytes BLOB); ", conn))
                 {
                     conn.Open();
                     createDB.ExecuteNonQuery();

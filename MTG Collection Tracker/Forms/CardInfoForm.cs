@@ -8,11 +8,13 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
-//TODO: only change card image if it's the one selected
+
 namespace MTG_Collection_Tracker
 {
     public partial class CardInfoForm : DockContent
     {
+        internal string CardFocusedUuid { get; set; }
+
         public CardInfoForm()
         {
             InitializeComponent();
@@ -21,7 +23,8 @@ namespace MTG_Collection_Tracker
 
         private void cardImageRetrieved(object sender, CardImageRetrievedEventArgs e)
         {
-            pictureBox1.Image = e.CardImage;
+            if (e.uuid == CardFocusedUuid)
+                pictureBox1.Image = e.CardImage;
         }
     }
 }

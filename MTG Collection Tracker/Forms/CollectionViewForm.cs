@@ -29,7 +29,6 @@ namespace MTG_Collection_Tracker
             var billboard = (fastObjectListView1.DropSink as SimpleDropSink).Billboard;
             billboard.BackColor = Color.DodgerBlue;
             billboard.TextColor = Color.White;
-            CardSelected += MainForm.CardSelected;
         }
 
         public void LoadCollection()
@@ -97,14 +96,12 @@ namespace MTG_Collection_Tracker
         }
 
         internal event EventHandler<CardsUpdatedEventArgs> CardsUpdated;
-
         private void OnCardsUpdated(CardsUpdatedEventArgs args)
         {
             CardsUpdated?.Invoke(this, args);
         }
 
         internal event EventHandler<CardSelectedEventArgs> CardSelected;
-
         private void OnCardSelected(CardSelectedEventArgs args)
         {
             CardSelected?.Invoke(this, args);
@@ -146,7 +143,7 @@ namespace MTG_Collection_Tracker
             if (fastObjectListView1.SelectedObject != null)
             {
                 var card = fastObjectListView1.SelectedObject as CardInstance;
-                OnCardSelected(new CardSelectedEventArgs { MultiverseId = card.MVid, Edition = card.Edition });
+                OnCardSelected(new CardSelectedEventArgs { uuid = card.uuid, Edition = card.Edition, MultiverseId = card.MVid, Name = card.name });
             }
         }
     }

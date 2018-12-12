@@ -18,6 +18,11 @@ namespace MTG_Collection_Tracker
             return selected;
         }
 
+        public static void InsertObject(this ObjectListView olv, int index, object o)
+        {
+            olv.InsertObjects(index, new ArrayList { o });
+        }
+
         public static bool IsExpanded(this TreeListView tlv, object tlvObject)
         {
             foreach (var ob in tlv.ExpandedObjects)

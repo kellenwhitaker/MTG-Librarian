@@ -23,10 +23,18 @@ namespace MTG_Collection_Tracker
         public ArrayList Items { get; set; }
     }
 
+    public class CardFocusedEventArgs : EventArgs
+    {
+        public string uuid { get; set; }
+        public string Edition { get; set; }
+    }
+
     public class CardSelectedEventArgs : EventArgs
     {
-        public int MultiverseId { get; set; }
+        public string uuid { get; set; }
+        public int MultiverseId { get; set; } 
         public string Edition { get; set; }
+        public string Name { get; set; }
     }
 
     public class CardActivatedEventArgs : EventArgs
@@ -36,6 +44,7 @@ namespace MTG_Collection_Tracker
 
     public class CardImageRetrievedEventArgs : EventArgs
     {
+        public string uuid { get; set; }
         public int MultiverseId { get; set; }
         public Image CardImage { get; set; }
     }
@@ -43,11 +52,12 @@ namespace MTG_Collection_Tracker
     public class CardResourceArgs : BasicCardArgs
     {
         public byte[] Data { get; set; }
-        public BasicCardArgs BasicCardArgs { set { MultiverseId = value.MultiverseId; Edition = value.Edition; } }
+        public BasicCardArgs BasicCardArgs { set { uuid = value.uuid; MultiverseId = value.MultiverseId; Edition = value.Edition; } }
     }
 
     public class BasicCardArgs
     {
+        public string uuid { get; set; }
         public int MultiverseId { get; set; }
         public string Edition { get; set; }
     }

@@ -250,6 +250,7 @@
   <ItemGroup>
     <Compile Include="Classes\AdvancedList.cs" />
     <Compile Include="Classes\AlphaNumericString.cs" />
+    <Compile Include="Classes\ConcurrentDeque.cs" />
     <Compile Include="Events\EventArgs.cs" />
     <Compile Include="Extensions\HtmlAgilityPackExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />

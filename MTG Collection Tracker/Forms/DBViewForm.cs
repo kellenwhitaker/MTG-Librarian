@@ -186,11 +186,17 @@ namespace MTG_Collection_Tracker
             CardSelected?.Invoke(this, args);
         }
 
+        internal event EventHandler<CardFocusedEventArgs> CardFocused;
+        private void OnCardFocused(CardFocusedEventArgs e)
+        {
+            CardFocused?.Invoke(this, e);
+        }
+
         private void fastObjectListView1_SelectedIndexChanged(object sender, EventArgs e)
         {
             MagicCard card = (fastObjectListView1.SelectedObject as OLVCardItem)?.MagicCard;
             if (card != null)
-                OnCardSelected(new CardSelectedEventArgs { Edition = card.Edition, MultiverseId = card.multiverseId });
+                OnCardSelected(new CardSelectedEventArgs { Edition = card.Edition, uuid = card.uuid, MultiverseId = card.multiverseId, Name = card.name });
         }
     }
 }
