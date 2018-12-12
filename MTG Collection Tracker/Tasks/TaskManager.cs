@@ -134,8 +134,8 @@ namespace MTG_Collection_Tracker
                 Thread.Sleep(100);
                 if (watch.ElapsedMilliseconds > 500)
                 {
-                    var completed = _activeTasks.FindCompleted().ToArray();
-                    foreach (var task in completed)
+                    var completedOrFailed = _activeTasks.FindCompletedOrFailed().ToArray();
+                    foreach (var task in completedOrFailed)
                     {
                         _activeTasks.Remove(task);
                         _completedTasks.Add(task);
@@ -144,8 +144,8 @@ namespace MTG_Collection_Tracker
                         if (task is DownloadSetTask downloadTask)
                             OnSetDownloaded(new SetDownloadedEventArgs { SetCode = downloadTask.CardSet.Code });
                     }
-                    if (completed.Count() > 0 && listView.Objects != null)
-                        MoveLVObjects(completed);
+                    if (completedOrFailed.Count() > 0 && listView.Objects != null)
+                        MoveLVObjects(completedOrFailed);
 
                     watch.Restart();
                     if (tasksLabel != null && progressBar != null)
