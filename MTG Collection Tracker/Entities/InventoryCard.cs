@@ -8,7 +8,7 @@ namespace MTG_Collection_Tracker
     public class InventoryCard
     {
         [Key]
-        public int          CardInstanceId { get; set; }
+        public int          InventoryId { get; set; }
         public int?         CatalogID { get; set; }
         public int          CollectionId { get; set; }
         public int          MVid { get; set; }

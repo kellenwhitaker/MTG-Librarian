@@ -12,7 +12,7 @@ namespace MTG_Collection_Tracker
         {
             var instance =
             (from c in context.LibraryView
-             where c.CardInstanceId == dbInstance.CardInstanceId
+             where c.CardInstanceId == dbInstance.InventoryId
              select c).FirstOrDefault();
             return instance;
         }

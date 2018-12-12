@@ -7,7 +7,7 @@ namespace MTG_Collection_Tracker
     public class FullInventoryCard : MagicCardBase
     {
         [Key]
-        public int          CardInstanceId { get => InventoryCard.CardInstanceId; set => InventoryCard.CardInstanceId = value; }
+        public int          CardInstanceId { get => InventoryCard.InventoryId; set => InventoryCard.InventoryId = value; }
         public int?         CatalogID { get => InventoryCard.CatalogID; set => InventoryCard.CatalogID = value; }
         public int          CollectionId { get => InventoryCard.CollectionId; set => InventoryCard.CollectionId = value; }
         public int          MVid { get => InventoryCard.MVid; set =>InventoryCard.MVid = value; }
