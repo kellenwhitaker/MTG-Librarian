@@ -143,7 +143,7 @@ namespace MTG_Collection_Tracker
             if (fastObjectListView1.SelectedObject != null)
             {
                 var card = fastObjectListView1.SelectedObject as FullInventoryCard;
-                OnCardSelected(new CardSelectedEventArgs { uuid = card.uuid, Edition = card.Edition, MultiverseId = card.MVid, Name = card.name });
+                OnCardSelected(new CardSelectedEventArgs { uuid = card.uuid, Edition = card.Edition, MultiverseId = card.multiverseId, Name = card.name });
             }
         }
     }

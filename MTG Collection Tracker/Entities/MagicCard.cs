@@ -8,6 +8,5 @@ namespace MTG_Collection_Tracker
     {
         [Key]
         public int CatalogID { get; set; }
-        public int multiverseId { get; set; }
     }
 }

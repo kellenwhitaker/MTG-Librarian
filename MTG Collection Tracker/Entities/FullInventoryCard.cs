@@ -10,12 +10,12 @@ namespace MTG_Collection_Tracker
         public int          CardInstanceId { get => InventoryCard.InventoryId; set => InventoryCard.InventoryId = value; }
         public int?         CatalogID { get => InventoryCard.CatalogID; set => InventoryCard.CatalogID = value; }
         public int          CollectionId { get => InventoryCard.CollectionId; set => InventoryCard.CollectionId = value; }
-        public int          MVid { get => InventoryCard.MVid; set =>InventoryCard.MVid = value; }
-        public int?         Count { get =>InventoryCard.Count; set =>InventoryCard.Count = value; }
-        public double?      Cost { get =>InventoryCard.Cost; set =>InventoryCard.Cost = value; }
-        public string       Tags { get =>InventoryCard.Tags; set =>InventoryCard.Tags = value; }
-        public DateTime?    TimeAdded { get =>InventoryCard.TimeAdded; set {InventoryCard.TimeAdded = value; UpdateSortableTimeAdded(); } }
-        public int?         InsertionIndex { get =>InventoryCard.InsertionIndex; set {InventoryCard.InsertionIndex = value; UpdateSortableTimeAdded();  } }
+        new public int      multiverseId { get => InventoryCard.MVid; set => InventoryCard.MVid = value; }
+        public int?         Count { get => InventoryCard.Count; set => InventoryCard.Count = value; }
+        public double?      Cost { get => InventoryCard.Cost; set => InventoryCard.Cost = value; }
+        public string       Tags { get => InventoryCard.Tags; set => InventoryCard.Tags = value; }
+        public DateTime?    TimeAdded { get => InventoryCard.TimeAdded; set { InventoryCard.TimeAdded = value; UpdateSortableTimeAdded(); } }
+        public int?         InsertionIndex { get => InventoryCard.InsertionIndex; set { InventoryCard.InsertionIndex = value; UpdateSortableTimeAdded();  } }
         [NotMapped]
         public String       SortableTimeAdded { get; set; }
                             
@@ -28,7 +28,7 @@ namespace MTG_Collection_Tracker
 
         private void UpdateSortableTimeAdded()
         {
-            if (TimeAdded.HasValue) SortableTimeAdded = $"{ TimeAdded.Value.ToString("s") } {InsertionIndex.ToString().PadLeft(5) }";
+            if (TimeAdded.HasValue) SortableTimeAdded = $"{ TimeAdded.Value.ToString("s") } { InsertionIndex.ToString().PadLeft(5) }";
             //else return "";
         }
     }

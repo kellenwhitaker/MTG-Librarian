@@ -11,53 +11,54 @@ namespace MTG_Collection_Tracker
 {
     public class MTGJSONCard
     {
-        public string artist { get; set; }
-        public string borderColor { get; set; }
+        public string   artist { get; set; }
+        public string   borderColor { get; set; }
         [NotMapped]
         public string[] colorIdentity { get; set; }
         [NotMapped]
         public string[] colorIndicator { get; set; }
         [NotMapped]
         public string[] colors { get; set; }
-        public float convertedManaCost { get; set; }
-        public string flavorText { get; set; }
+        public float    convertedManaCost { get; set; }
+        public string   flavorText { get; set; }
         [NotMapped]
         public ForeignData[] foreignData { get; set; }
-        public string frameVersion { get; set; }
-        public bool hasFoil { get; set; }
-        public bool hasNonFoil { get; set; }
-        public bool isFoilOnly { get; set; }
-        public bool isOnlineOnly { get; set; }
-        public bool isOversized { get; set; }
-        public bool isReserved { get; set; }
-        public string layout { get; set; }
-        public string loyalty { get; set; }
-        public string manaCost { get; set; }
-        public string name { get; set; }
+        public string   frameVersion { get; set; }
+        public bool     hasFoil { get; set; }
+        public bool     hasNonFoil { get; set; }
+        public bool     isFoilOnly { get; set; }
+        public bool     isOnlineOnly { get; set; }
+        public bool     isOversized { get; set; }
+        public bool     isReserved { get; set; }
+        public string   layout { get; set; }
+        public string   loyalty { get; set; }
+        public string   manaCost { get; set; }
+        public int      multiverseId { get; set; }
+        public string   name { get; set; }
         [NotMapped]
         public string[] names { get; set; }
-        public string number { get; set; }
-        public string originalText { get; set; }
-        public string originalType { get; set; }
+        public string   number { get; set; }
+        public string   originalText { get; set; }
+        public string   originalType { get; set; }
         [NotMapped]
         public string[] printings { get; set; }
-        public string power { get; set; }
-        public string rarity { get; set; }
-        public string side { get; set; }
+        public string   power { get; set; }
+        public string   rarity { get; set; }
+        public string   side { get; set; }
         [NotMapped]
         public string[] subtypes { get; set; }
         [NotMapped]
         public string[] supertypes { get; set; }
-        public string text { get; set; }
-        public bool timeshifted { get; set; }
-        public string toughness { get; set; }
-        public string type { get; set; }
+        public string   text { get; set; }
+        public bool     timeshifted { get; set; }
+        public string   toughness { get; set; }
+        public string   type { get; set; }
         [NotMapped]
         public string[] types { get; set; }
-        public string uuid { get; set; }
-        public string watermark { get; set; }
+        public string   uuid { get; set; }
+        public string   watermark { get; set; }
         public Dictionary<string, string> legalities = new Dictionary<string, string>();
-        public string Legalities
+        public string   Legalities
         {
             get
             {
@@ -71,7 +72,7 @@ namespace MTG_Collection_Tracker
             }
         }
         public Dictionary<string, string>[] rulings;
-        public string Rulings
+        public string   Rulings
         {
             get
             {
