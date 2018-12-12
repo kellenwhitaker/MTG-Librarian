@@ -20,15 +20,15 @@ namespace MTG_Collection_Tracker
             setNameFilter = new ModelFilter(x => !(x is OLVSetItem) || (x is OLVSetItem && (x as OLVSetItem).Name.ToUpper().Contains(setFilterBox.Text.ToUpper())));
             setListView.SmallImageList = MainForm.SmallIconList;
             setListView.TreeColumnRenderer = new SetRenderer();
-            fastObjectListView1.SmallImageList = MainForm.SmallIconList;
+            cardListView.SmallImageList = MainForm.SmallIconList;
             whiteManaButton.ImageList = blueManaButton.ImageList = blackManaButton.ImageList = redManaButton.ImageList = greenManaButton.ImageList 
                                       = colorlessManaButton.ImageList = genericManaButton.ImageList = MainForm.ManaIcons;
             (whiteManaButton.ImageKey, blueManaButton.ImageKey, blackManaButton.ImageKey, redManaButton.ImageKey, greenManaButton.ImageKey)
             = ("{W}",                  "{U}",                   "{B}",                    "{R}",                  "{G}");
             (colorlessManaButton.ImageKey, genericManaButton.ImageKey) = ("{C}", "{X}");
-            fastObjectListView1.UseFiltering = true;
-            fastObjectListView1.SetDoubleBuffered();
-            fastObjectListView1.GetColumn(2).Renderer = new ManaCostRenderer();
+            cardListView.UseFiltering = true;
+            cardListView.SetDoubleBuffered();
+            cardListView.GetColumn(2).Renderer = new ManaCostRenderer();
         }
 
         internal event EventHandler<CardActivatedEventArgs> CardActivated;
@@ -71,11 +71,11 @@ namespace MTG_Collection_Tracker
 
         internal void SortCardListView()
         {
-            if (fastObjectListView1.PrimarySortColumn == null) // sort by set if not already sorted
+            if (cardListView.PrimarySortColumn == null) // sort by set if not already sorted
             {
-                fastObjectListView1.PrimarySortColumn = fastObjectListView1.AllColumns[3];
-                fastObjectListView1.SecondarySortColumn = fastObjectListView1.AllColumns[4];
-                fastObjectListView1.Sort();
+                cardListView.PrimarySortColumn = cardListView.AllColumns[3];
+                cardListView.SecondarySortColumn = cardListView.AllColumns[4];
+                cardListView.Sort();
             }
         }
 
@@ -97,7 +97,7 @@ namespace MTG_Collection_Tracker
                         set.AddCard(card);
 
                     setListView.AddObject(set);
-                    fastObjectListView1.AddObjects(set.Cards);
+                    cardListView.AddObjects(set.Cards);
                     if (setListView.Objects.Count() == 1) // first set added, must sort the tree
                         setListView.Sort(setListView.AllColumns[1], SortOrder.Descending);
                 }
@@ -138,7 +138,7 @@ namespace MTG_Collection_Tracker
             foreach (var set in sets.Values)
             {
                 setListView.AddObject(set);
-                fastObjectListView1.AddObjects(set.Cards);
+                cardListView.AddObjects(set.Cards);
             }
             setListView.Sort(setListView.AllColumns[1], SortOrder.Descending);
         }
@@ -176,18 +176,18 @@ namespace MTG_Collection_Tracker
 
         private void treeListView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            fastObjectListView1.SelectedObject = null;
-            fastObjectListView1.ModelFilter = new ModelFilter(GetCardFilter());
+            cardListView.SelectedObject = null;
+            cardListView.ModelFilter = new ModelFilter(GetCardFilter());
         }
 
         private void whiteManaButton_Click(object sender, EventArgs e)
         {
-            fastObjectListView1.ModelFilter = new ModelFilter(GetCardFilter());
+            cardListView.ModelFilter = new ModelFilter(GetCardFilter());
         }
 
         private void fastObjectListView1_ItemActivate(object sender, EventArgs e)
         {
-            OnCardActivated(new CardActivatedEventArgs { MagicCard = (fastObjectListView1.SelectedObject as OLVCardItem).MagicCard });
+            OnCardActivated(new CardActivatedEventArgs { MagicCard = (cardListView.SelectedObject as OLVCardItem).MagicCard });
         }
 
         private void fastObjectListView1_GiveFeedback(object sender, GiveFeedbackEventArgs e)
@@ -210,7 +210,7 @@ namespace MTG_Collection_Tracker
 
         private void fastObjectListView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            MagicCard card = (fastObjectListView1.SelectedObject as OLVCardItem)?.MagicCard;
+            MagicCard card = (cardListView.SelectedObject as OLVCardItem)?.MagicCard;
             if (card != null)
                 OnCardSelected(new CardSelectedEventArgs { Edition = card.Edition, uuid = card.uuid, MultiverseId = card.multiverseId, Name = card.name });
         }

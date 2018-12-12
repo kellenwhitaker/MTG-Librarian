@@ -44,7 +44,7 @@ namespace MTG_Collection_Tracker
             this.setListView = new BrightIdeasSoftware.TreeListView();
             this.SetName = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.ReleaseDate = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.fastObjectListView1 = new BrightIdeasSoftware.FastObjectListView();
+            this.cardListView = new BrightIdeasSoftware.FastObjectListView();
             this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn2 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn3 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -59,7 +59,7 @@ namespace MTG_Collection_Tracker
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.setListView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.fastObjectListView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cardListView)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer2
@@ -210,7 +210,7 @@ namespace MTG_Collection_Tracker
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.fastObjectListView1);
+            this.splitContainer1.Panel2.Controls.Add(this.cardListView);
             this.splitContainer1.Size = new System.Drawing.Size(799, 432);
             this.splitContainer1.SplitterDistance = 312;
             this.splitContainer1.TabIndex = 2;
@@ -255,39 +255,39 @@ namespace MTG_Collection_Tracker
             this.ReleaseDate.DisplayIndex = 1;
             this.ReleaseDate.IsVisible = false;
             // 
-            // fastObjectListView1
+            // cardListView
             // 
-            this.fastObjectListView1.AllColumns.Add(this.olvColumn1);
-            this.fastObjectListView1.AllColumns.Add(this.olvColumn2);
-            this.fastObjectListView1.AllColumns.Add(this.olvColumn3);
-            this.fastObjectListView1.AllColumns.Add(this.olvColumn4);
-            this.fastObjectListView1.AllColumns.Add(this.olvColumn5);
-            this.fastObjectListView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.cardListView.AllColumns.Add(this.olvColumn1);
+            this.cardListView.AllColumns.Add(this.olvColumn2);
+            this.cardListView.AllColumns.Add(this.olvColumn3);
+            this.cardListView.AllColumns.Add(this.olvColumn4);
+            this.cardListView.AllColumns.Add(this.olvColumn5);
+            this.cardListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.olvColumn1,
             this.olvColumn2,
             this.olvColumn3,
             this.olvColumn4,
             this.olvColumn5});
-            this.fastObjectListView1.Cursor = System.Windows.Forms.Cursors.Default;
-            this.fastObjectListView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.fastObjectListView1.EmptyListMsg = "No cards";
-            this.fastObjectListView1.FullRowSelect = true;
-            this.fastObjectListView1.HideSelection = false;
-            this.fastObjectListView1.IsSimpleDragSource = true;
-            this.fastObjectListView1.Location = new System.Drawing.Point(0, 0);
-            this.fastObjectListView1.Name = "fastObjectListView1";
-            this.fastObjectListView1.SelectedBackColor = System.Drawing.Color.SteelBlue;
-            this.fastObjectListView1.SelectedForeColor = System.Drawing.Color.White;
-            this.fastObjectListView1.ShowGroups = false;
-            this.fastObjectListView1.Size = new System.Drawing.Size(483, 432);
-            this.fastObjectListView1.TabIndex = 0;
-            this.fastObjectListView1.UnfocusedSelectedBackColor = System.Drawing.Color.LightGray;
-            this.fastObjectListView1.UseCompatibleStateImageBehavior = false;
-            this.fastObjectListView1.View = System.Windows.Forms.View.Details;
-            this.fastObjectListView1.VirtualMode = true;
-            this.fastObjectListView1.ItemActivate += new System.EventHandler(this.fastObjectListView1_ItemActivate);
-            this.fastObjectListView1.SelectedIndexChanged += new System.EventHandler(this.fastObjectListView1_SelectedIndexChanged);
-            this.fastObjectListView1.GiveFeedback += new System.Windows.Forms.GiveFeedbackEventHandler(this.fastObjectListView1_GiveFeedback);
+            this.cardListView.Cursor = System.Windows.Forms.Cursors.Default;
+            this.cardListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cardListView.EmptyListMsg = "No cards";
+            this.cardListView.FullRowSelect = true;
+            this.cardListView.HideSelection = false;
+            this.cardListView.IsSimpleDragSource = true;
+            this.cardListView.Location = new System.Drawing.Point(0, 0);
+            this.cardListView.Name = "cardListView";
+            this.cardListView.SelectedBackColor = System.Drawing.Color.SteelBlue;
+            this.cardListView.SelectedForeColor = System.Drawing.Color.White;
+            this.cardListView.ShowGroups = false;
+            this.cardListView.Size = new System.Drawing.Size(483, 432);
+            this.cardListView.TabIndex = 0;
+            this.cardListView.UnfocusedSelectedBackColor = System.Drawing.Color.LightGray;
+            this.cardListView.UseCompatibleStateImageBehavior = false;
+            this.cardListView.View = System.Windows.Forms.View.Details;
+            this.cardListView.VirtualMode = true;
+            this.cardListView.ItemActivate += new System.EventHandler(this.fastObjectListView1_ItemActivate);
+            this.cardListView.SelectedIndexChanged += new System.EventHandler(this.fastObjectListView1_SelectedIndexChanged);
+            this.cardListView.GiveFeedback += new System.Windows.Forms.GiveFeedbackEventHandler(this.fastObjectListView1_GiveFeedback);
             // 
             // olvColumn1
             // 
@@ -343,7 +343,7 @@ namespace MTG_Collection_Tracker
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.setListView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.fastObjectListView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cardListView)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -355,7 +355,7 @@ namespace MTG_Collection_Tracker
         protected internal BrightIdeasSoftware.TreeListView setListView;
         private BrightIdeasSoftware.OLVColumn SetName;
         private EnhancedTextBox.EnhancedTextBox setFilterBox;
-        private BrightIdeasSoftware.FastObjectListView fastObjectListView1;
+        private BrightIdeasSoftware.FastObjectListView cardListView;
         private BrightIdeasSoftware.OLVColumn olvColumn1;
         private BrightIdeasSoftware.OLVColumn olvColumn2;
         private BrightIdeasSoftware.OLVColumn olvColumn3;
