@@ -86,6 +86,7 @@ namespace MTG_Collection_Tracker
                         set.AddCard(card);
 
                     treeListView1.AddObject(set);
+                    fastObjectListView1.AddObjects(set.Cards);
                     if (treeListView1.Objects.Count() == 1) // first set added, must sort the tree
                         treeListView1.Sort(treeListView1.AllColumns[1], SortOrder.Descending);
                 }

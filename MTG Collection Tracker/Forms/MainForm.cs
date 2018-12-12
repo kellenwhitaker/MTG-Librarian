@@ -134,10 +134,16 @@ namespace MTG_Collection_Tracker
             cardInfoForm.CardFocusedUuid = e.uuid;
         }
 
+        private delegate void SetDownloadedDelegate(object sender, SetDownloadedEventArgs e);
         private void SetDownloaded(object sender, SetDownloadedEventArgs e)
         {
-            AddSetIcon(e.SetCode);
-            dbViewForm.LoadSet(e.SetCode);
+            if (InvokeRequired)
+                BeginInvoke(new SetDownloadedDelegate(SetDownloaded), sender, e);
+            else
+            {
+                AddSetIcon(e.SetCode);
+                dbViewForm.LoadSet(e.SetCode);
+            }
         }
 
         private void cvFormCardsDropped(object sender, CardsDroppedEventArgs e)
