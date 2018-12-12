@@ -91,11 +91,21 @@ namespace MTG_Collection_Tracker
                 g.DrawString(GetText(), font, Brushes.Black, r.Left + 3, r.Top + 2);
                 g.DrawString(task.Runtime.ToString() + "s", new Font(font, FontStyle.Bold), Brushes.Green, r.Left + 5 + (int)g.MeasureString(task.Caption, font).Width, r.Top + 2);
             }
-            else
+            else if (task.RunState == RunState.Completed)
             {
                 Font font = new Font(FontFamily.Families.Where(x => x.Name == "Segoe UI").First(), 10, FontStyle.Bold);
                 g.DrawString(task.Caption, font, Brushes.Black, r.Left + 3, r.Top + 7);
                 g.DrawString(task.Runtime.ToString() + "s", new Font(font, FontStyle.Regular), Brushes.Black, r.Left + 5 + (int)g.MeasureString(task.Caption, font).Width, r.Top + 7);
+            }
+            else if (task.RunState == RunState.Initialized)
+            {
+                Font font = new Font(FontFamily.Families.Where(x => x.Name == "Segoe UI").First(), 10, FontStyle.Regular);
+                g.DrawString(task.Caption, font, Brushes.Black, r.Left + 3, r.Top + 7);
+            }
+            else if (task.RunState == RunState.Failed)
+            {
+                Font font = new Font(FontFamily.Families.Where(x => x.Name == "Segoe UI").First(), 10, FontStyle.Bold);
+                g.DrawString(task.Caption, font, Brushes.DarkRed, r.Left + 3, r.Top + 7);
             }
         }
     }

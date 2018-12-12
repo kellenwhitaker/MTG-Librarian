@@ -38,14 +38,12 @@ namespace MTG_Collection_Tracker
         public bool Running { get => RunState == RunState.Running; }
         public BlockProgressBar ProgressBar { get; private set; }
         public bool ForDisplay { get; set; } = false;
-        public RunState RunState { get; protected set; }
+        private RunState _runState;
+        public RunState RunState { get => _runState; protected set { _runState = value; if (_runState == RunState.Failed) Caption = $"[Failed] {Caption}"; } }
         private Image _icon;
         public Image Icon
         {
-            get
-            {
-                return _icon;
-            }
+            get => _icon;
             protected set
             {
                 if (value != null)
