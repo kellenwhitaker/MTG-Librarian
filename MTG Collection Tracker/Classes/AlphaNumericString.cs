@@ -1,5 +1,5 @@
 ﻿using System;
-//todo: change highlighting in treeview
+
 namespace MTG_Collection_Tracker
 {
     public class AlphaNumericString : IComparable<AlphaNumericString>
