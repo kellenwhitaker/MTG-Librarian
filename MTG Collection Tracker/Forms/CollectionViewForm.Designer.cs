@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.fastObjectListView1 = new BrightIdeasSoftware.FastObjectListView();
+            this.cardListView = new BrightIdeasSoftware.FastObjectListView();
             this.CardName = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn10 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn11 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -41,27 +41,27 @@
             this.TagsColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn9 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            ((System.ComponentModel.ISupportInitialize)(this.fastObjectListView1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cardListView)).BeginInit();
             this.SuspendLayout();
             // 
-            // fastObjectListView1
+            // cardListView
             // 
-            this.fastObjectListView1.AllColumns.Add(this.CardName);
-            this.fastObjectListView1.AllColumns.Add(this.olvColumn10);
-            this.fastObjectListView1.AllColumns.Add(this.olvColumn11);
-            this.fastObjectListView1.AllColumns.Add(this.olvColumn2);
-            this.fastObjectListView1.AllColumns.Add(this.ManaCost);
-            this.fastObjectListView1.AllColumns.Add(this.olvColumn4);
-            this.fastObjectListView1.AllColumns.Add(this.olvColumn5);
-            this.fastObjectListView1.AllColumns.Add(this.CountColumn);
-            this.fastObjectListView1.AllColumns.Add(this.CostColumn);
-            this.fastObjectListView1.AllColumns.Add(this.TagsColumn);
-            this.fastObjectListView1.AllColumns.Add(this.olvColumn9);
-            this.fastObjectListView1.AllColumns.Add(this.olvColumn1);
-            this.fastObjectListView1.AllowDrop = true;
-            this.fastObjectListView1.BackColor = System.Drawing.Color.White;
-            this.fastObjectListView1.CellEditActivation = BrightIdeasSoftware.ObjectListView.CellEditActivateMode.DoubleClick;
-            this.fastObjectListView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.cardListView.AllColumns.Add(this.CardName);
+            this.cardListView.AllColumns.Add(this.olvColumn10);
+            this.cardListView.AllColumns.Add(this.olvColumn11);
+            this.cardListView.AllColumns.Add(this.olvColumn2);
+            this.cardListView.AllColumns.Add(this.ManaCost);
+            this.cardListView.AllColumns.Add(this.olvColumn4);
+            this.cardListView.AllColumns.Add(this.olvColumn5);
+            this.cardListView.AllColumns.Add(this.CountColumn);
+            this.cardListView.AllColumns.Add(this.CostColumn);
+            this.cardListView.AllColumns.Add(this.TagsColumn);
+            this.cardListView.AllColumns.Add(this.olvColumn9);
+            this.cardListView.AllColumns.Add(this.olvColumn1);
+            this.cardListView.AllowDrop = true;
+            this.cardListView.BackColor = System.Drawing.Color.White;
+            this.cardListView.CellEditActivation = BrightIdeasSoftware.ObjectListView.CellEditActivateMode.DoubleClick;
+            this.cardListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.CardName,
             this.olvColumn11,
             this.olvColumn2,
@@ -73,29 +73,29 @@
             this.TagsColumn,
             this.olvColumn9,
             this.olvColumn1});
-            this.fastObjectListView1.Cursor = System.Windows.Forms.Cursors.Default;
-            this.fastObjectListView1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.fastObjectListView1.FullRowSelect = true;
-            this.fastObjectListView1.GridLines = true;
-            this.fastObjectListView1.HideSelection = false;
-            this.fastObjectListView1.IsSimpleDropSink = true;
-            this.fastObjectListView1.Location = new System.Drawing.Point(0, 0);
-            this.fastObjectListView1.Name = "fastObjectListView1";
-            this.fastObjectListView1.SelectedBackColor = System.Drawing.Color.SteelBlue;
-            this.fastObjectListView1.SelectedForeColor = System.Drawing.Color.White;
-            this.fastObjectListView1.ShowGroups = false;
-            this.fastObjectListView1.Size = new System.Drawing.Size(975, 435);
-            this.fastObjectListView1.TabIndex = 0;
-            this.fastObjectListView1.UnfocusedSelectedBackColor = System.Drawing.Color.LightGray;
-            this.fastObjectListView1.UseCompatibleStateImageBehavior = false;
-            this.fastObjectListView1.View = System.Windows.Forms.View.Details;
-            this.fastObjectListView1.VirtualMode = true;
-            this.fastObjectListView1.CellEditFinished += new BrightIdeasSoftware.CellEditEventHandler(this.fastObjectListView1_CellEditFinished);
-            this.fastObjectListView1.CellClick += new System.EventHandler<BrightIdeasSoftware.CellClickEventArgs>(this.fastObjectListView1_CellClick);
-            this.fastObjectListView1.ModelCanDrop += new System.EventHandler<BrightIdeasSoftware.ModelDropEventArgs>(this.fastObjectListView1_ModelCanDrop);
-            this.fastObjectListView1.ModelDropped += new System.EventHandler<BrightIdeasSoftware.ModelDropEventArgs>(this.fastObjectListView1_ModelDropped);
-            this.fastObjectListView1.SelectionChanged += new System.EventHandler(this.fastObjectListView1_SelectionChanged);
-            this.fastObjectListView1.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.fastObjectListView1_KeyPress);
+            this.cardListView.Cursor = System.Windows.Forms.Cursors.Default;
+            this.cardListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cardListView.FullRowSelect = true;
+            this.cardListView.GridLines = true;
+            this.cardListView.HideSelection = false;
+            this.cardListView.IsSimpleDropSink = true;
+            this.cardListView.Location = new System.Drawing.Point(0, 0);
+            this.cardListView.Name = "cardListView";
+            this.cardListView.SelectedBackColor = System.Drawing.Color.SteelBlue;
+            this.cardListView.SelectedForeColor = System.Drawing.Color.White;
+            this.cardListView.ShowGroups = false;
+            this.cardListView.Size = new System.Drawing.Size(975, 435);
+            this.cardListView.TabIndex = 0;
+            this.cardListView.UnfocusedSelectedBackColor = System.Drawing.Color.LightGray;
+            this.cardListView.UseCompatibleStateImageBehavior = false;
+            this.cardListView.View = System.Windows.Forms.View.Details;
+            this.cardListView.VirtualMode = true;
+            this.cardListView.CellEditFinished += new BrightIdeasSoftware.CellEditEventHandler(this.fastObjectListView1_CellEditFinished);
+            this.cardListView.CellClick += new System.EventHandler<BrightIdeasSoftware.CellClickEventArgs>(this.fastObjectListView1_CellClick);
+            this.cardListView.ModelCanDrop += new System.EventHandler<BrightIdeasSoftware.ModelDropEventArgs>(this.fastObjectListView1_ModelCanDrop);
+            this.cardListView.ModelDropped += new System.EventHandler<BrightIdeasSoftware.ModelDropEventArgs>(this.fastObjectListView1_ModelDropped);
+            this.cardListView.SelectionChanged += new System.EventHandler(this.fastObjectListView1_SelectionChanged);
+            this.cardListView.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.fastObjectListView1_KeyPress);
             // 
             // CardName
             // 
@@ -187,11 +187,11 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(975, 435);
-            this.Controls.Add(this.fastObjectListView1);
+            this.Controls.Add(this.cardListView);
             this.DoubleBuffered = true;
             this.Name = "CollectionViewForm";
             this.Text = "Collection View";
-            ((System.ComponentModel.ISupportInitialize)(this.fastObjectListView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cardListView)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -202,7 +202,7 @@
         private BrightIdeasSoftware.OLVColumn ManaCost;
         private BrightIdeasSoftware.OLVColumn olvColumn4;
         private BrightIdeasSoftware.OLVColumn olvColumn5;
-        internal BrightIdeasSoftware.FastObjectListView fastObjectListView1;
+        internal BrightIdeasSoftware.FastObjectListView cardListView;
         private BrightIdeasSoftware.OLVColumn CountColumn;
         private BrightIdeasSoftware.OLVColumn CostColumn;
         private BrightIdeasSoftware.OLVColumn TagsColumn;

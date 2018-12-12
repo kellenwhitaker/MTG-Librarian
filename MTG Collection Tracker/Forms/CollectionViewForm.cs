@@ -22,11 +22,11 @@ namespace MTG_Collection_Tracker
         public CollectionViewForm()
         {
             InitializeComponent();
-            fastObjectListView1.SetDoubleBuffered();
-            fastObjectListView1.GetColumn("Card").Renderer = new CardInstanceNameRenderer();
-            fastObjectListView1.GetColumn("Mana Cost").Renderer = new ManaCostRenderer();
-            fastObjectListView1.AddDecoration(new EditingCellBorderDecoration { UseLightbox = false, BorderPen = new Pen(Brushes.DodgerBlue, 3), BoundsPadding = new Size(1, 0) });
-            var billboard = (fastObjectListView1.DropSink as SimpleDropSink).Billboard;
+            cardListView.SetDoubleBuffered();
+            cardListView.GetColumn("Card").Renderer = new CardInstanceNameRenderer();
+            cardListView.GetColumn("Mana Cost").Renderer = new ManaCostRenderer();
+            cardListView.AddDecoration(new EditingCellBorderDecoration { UseLightbox = false, BorderPen = new Pen(Brushes.DodgerBlue, 3), BoundsPadding = new Size(1, 0) });
+            var billboard = (cardListView.DropSink as SimpleDropSink).Billboard;
             billboard.BackColor = Color.DodgerBlue;
             billboard.TextColor = Color.White;
         }
@@ -41,14 +41,14 @@ namespace MTG_Collection_Tracker
                                 where c.CollectionId == Collection.Id
                                 select c;
 
-                    fastObjectListView1.AddObjects(items.ToList());
+                    cardListView.AddObjects(items.ToList());
                 }
             }
         }
 
         internal void AddCardInstance(FullInventoryCard cardInstance)
         {
-            fastObjectListView1.AddObject(cardInstance);
+            cardListView.AddObject(cardInstance);
         }
 
         private void fastObjectListView1_ModelCanDrop(object sender, ModelDropEventArgs e)
@@ -73,10 +73,10 @@ namespace MTG_Collection_Tracker
         {
             var args = new CardsUpdatedEventArgs { Items = new ArrayList { e.RowObject } };
             
-            var rowItem = fastObjectListView1.ModelToItem(e.RowObject);
+            var rowItem = cardListView.ModelToItem(e.RowObject);
             if (MultiEditing)
             {
-                foreach (var row in fastObjectListView1.SelectedObjects)
+                foreach (var row in cardListView.SelectedObjects)
                 {
                     if (row != e.RowObject)
                     {
@@ -109,28 +109,28 @@ namespace MTG_Collection_Tracker
 
         private void fastObjectListView1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (fastObjectListView1.SelectedItems != null)
+            if (cardListView.SelectedItems != null)
             {
                 if (e.KeyChar == '=' || e.KeyChar == '+')
                 {
                     e.Handled = true;
-                    foreach (FullInventoryCard item in fastObjectListView1.SelectedObjects)
+                    foreach (FullInventoryCard item in cardListView.SelectedObjects)
                         item.Count++;
-                    OnCardsUpdated(new CardsUpdatedEventArgs { Items = fastObjectListView1.SelectedObjects as ArrayList });
+                    OnCardsUpdated(new CardsUpdatedEventArgs { Items = cardListView.SelectedObjects as ArrayList });
                 }
                 else if (e.KeyChar == '-' || e.KeyChar == '_')
                 {
                     e.Handled = true;
-                    foreach (FullInventoryCard item in fastObjectListView1.SelectedObjects)
+                    foreach (FullInventoryCard item in cardListView.SelectedObjects)
                         item.Count--;
-                    OnCardsUpdated(new CardsUpdatedEventArgs { Items = fastObjectListView1.SelectedObjects as ArrayList });
+                    OnCardsUpdated(new CardsUpdatedEventArgs { Items = cardListView.SelectedObjects as ArrayList });
                 }
             }
         }
 
         private void fastObjectListView1_CellClick(object sender, CellClickEventArgs e)
         {
-            if (e.ClickCount == 2 && e.ModifierKeys == Keys.Shift && fastObjectListView1.SelectedObjects.Count > 1)
+            if (e.ClickCount == 2 && e.ModifierKeys == Keys.Shift && cardListView.SelectedObjects.Count > 1)
             {
                 MultiEditing = true;
                 e.ListView.StartCellEdit(e.Item, e.Item.SubItems.IndexOf(e.SubItem));
@@ -140,9 +140,9 @@ namespace MTG_Collection_Tracker
 
         private void fastObjectListView1_SelectionChanged(object sender, EventArgs e)
         {
-            if (fastObjectListView1.SelectedObject != null)
+            if (cardListView.SelectedObject != null)
             {
-                var card = fastObjectListView1.SelectedObject as FullInventoryCard;
+                var card = cardListView.SelectedObject as FullInventoryCard;
                 OnCardSelected(new CardSelectedEventArgs { uuid = card.uuid, Edition = card.Edition, MultiverseId = card.multiverseId, Name = card.name });
             }
         }

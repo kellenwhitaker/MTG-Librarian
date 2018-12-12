@@ -194,7 +194,7 @@ namespace MTG_Collection_Tracker
 
                         MessageBox.Show(ex.ToString());
                     }
-                    finally { activeDocument.fastObjectListView1.Refresh(); }
+                    finally { activeDocument.cardListView.Refresh(); }
                 }
             }
         }
@@ -265,7 +265,7 @@ namespace MTG_Collection_Tracker
                     document.CardsDropped += cvFormCardsDropped;
                     document.CardsUpdated += cvFormCardsUpdated;
                     document.CardSelected += CardSelected;
-                    document.fastObjectListView1.SmallImageList = SmallIconList;
+                    document.cardListView.SmallImageList = SmallIconList;
                     document.Show(dockPanel1, DockState.Document);
                     dockPanel1.ActiveDocumentPane.SetDoubleBuffered();
                     dockPanel1.SetDoubleBuffered();
