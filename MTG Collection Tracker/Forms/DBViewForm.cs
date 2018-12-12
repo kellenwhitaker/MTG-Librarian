@@ -7,7 +7,6 @@ using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 using BrightIdeasSoftware;
 //todo: change highlighting in treeview
-//TODO: figure out why sets are out of order when they are added to a blank tree
 namespace MTG_Collection_Tracker
 {
     public partial class DBViewForm : DockContent
@@ -87,6 +86,8 @@ namespace MTG_Collection_Tracker
                         set.AddCard(card);
 
                     treeListView1.AddObject(set);
+                    if (treeListView1.Objects.Count() == 1) // first set added, must sort the tree
+                        treeListView1.Sort(treeListView1.AllColumns[1], SortOrder.Descending);
                 }
             }
         }
