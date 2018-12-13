@@ -41,12 +41,15 @@
             this.TagsColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn9 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.TimeAddedColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.FoilColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             ((System.ComponentModel.ISupportInitialize)(this.cardListView)).BeginInit();
             this.SuspendLayout();
             // 
             // cardListView
             // 
             this.cardListView.AllColumns.Add(this.CardName);
+            this.cardListView.AllColumns.Add(this.FoilColumn);
             this.cardListView.AllColumns.Add(this.olvColumn10);
             this.cardListView.AllColumns.Add(this.olvColumn11);
             this.cardListView.AllColumns.Add(this.olvColumn2);
@@ -58,12 +61,13 @@
             this.cardListView.AllColumns.Add(this.TagsColumn);
             this.cardListView.AllColumns.Add(this.olvColumn9);
             this.cardListView.AllColumns.Add(this.olvColumn1);
+            this.cardListView.AllColumns.Add(this.TimeAddedColumn);
             this.cardListView.AllowDrop = true;
             this.cardListView.BackColor = System.Drawing.Color.White;
             this.cardListView.CellEditActivation = BrightIdeasSoftware.ObjectListView.CellEditActivateMode.DoubleClick;
             this.cardListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.CardName,
-            this.olvColumn11,
+            this.FoilColumn,
             this.olvColumn2,
             this.ManaCost,
             this.olvColumn4,
@@ -71,8 +75,7 @@
             this.CountColumn,
             this.CostColumn,
             this.TagsColumn,
-            this.olvColumn9,
-            this.olvColumn1});
+            this.TimeAddedColumn});
             this.cardListView.Cursor = System.Windows.Forms.Cursors.Default;
             this.cardListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cardListView.FullRowSelect = true;
@@ -116,6 +119,8 @@
             // olvColumn11
             // 
             this.olvColumn11.AspectName = "CardInstanceId";
+            this.olvColumn11.DisplayIndex = 1;
+            this.olvColumn11.IsVisible = false;
             this.olvColumn11.Text = "CardInstanceId";
             // 
             // olvColumn2
@@ -172,7 +177,9 @@
             // 
             this.olvColumn9.AspectName = "SortableTimeAdded";
             this.olvColumn9.AspectToStringFormat = "";
+            this.olvColumn9.DisplayIndex = 8;
             this.olvColumn9.IsEditable = false;
+            this.olvColumn9.IsVisible = false;
             this.olvColumn9.MinimumWidth = 100;
             this.olvColumn9.Text = "Added";
             this.olvColumn9.Width = 100;
@@ -180,7 +187,21 @@
             // olvColumn1
             // 
             this.olvColumn1.AspectName = "InsertionIndex";
+            this.olvColumn1.DisplayIndex = 9;
+            this.olvColumn1.IsVisible = false;
             this.olvColumn1.Text = "InsertionIndex";
+            // 
+            // TimeAddedColumn
+            // 
+            this.TimeAddedColumn.AspectName = "TimeAdded";
+            this.TimeAddedColumn.Text = "Added";
+            this.TimeAddedColumn.Width = 200;
+            // 
+            // FoilColumn
+            // 
+            this.FoilColumn.CheckBoxes = true;
+            this.FoilColumn.Text = "Foil";
+            this.FoilColumn.Width = 30;
             // 
             // CollectionViewForm
             // 
@@ -210,5 +231,7 @@
         private BrightIdeasSoftware.OLVColumn olvColumn10;
         private BrightIdeasSoftware.OLVColumn olvColumn11;
         private BrightIdeasSoftware.OLVColumn olvColumn1;
+        private BrightIdeasSoftware.OLVColumn TimeAddedColumn;
+        private BrightIdeasSoftware.OLVColumn FoilColumn;
     }
 }
