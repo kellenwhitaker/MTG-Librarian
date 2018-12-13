@@ -62,7 +62,7 @@ namespace MTG_Collection_Tracker
 
         private Predicate<object> GetCardNameFilter()
         {
-            return x => (x as OLVCardItem).Name.ToLower().Contains(cardNameFilterBox.Text.ToLower());
+            return x => cardNameFilterBox.Text == "Card Name Filter" || cardNameFilterBox.Text == "" ? true : (x as OLVCardItem).Name.ToLower().Contains(cardNameFilterBox.Text.ToLower());
         }
 
         private Predicate<object> GetManaCostFilter()
@@ -236,7 +236,6 @@ namespace MTG_Collection_Tracker
         private void whiteManaButton_Click(object sender, EventArgs e)
         {
             UpdateModelFilter();
-
         }
 
         private void fastObjectListView1_ItemActivate(object sender, EventArgs e)

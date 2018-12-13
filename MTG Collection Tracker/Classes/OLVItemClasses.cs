@@ -9,14 +9,13 @@ namespace MTG_Collection_Tracker
     public class OLVCardItem : OLVItem
     {
         public string Name;
-        private MagicCard mCard;
-        public MagicCard MagicCard => mCard;
-        public string Type => mCard.type;
-        public string Cost => mCard.manaCost;
-        public string Set => mCard.Edition;
-        public string CollectorNumber => mCard.number;
-        public string Rarity => mCard.rarity;
-        public override string ImageKey => $"{mCard.Edition}: {mCard.rarity}";
+        public MagicCard MagicCard { get; set; }
+        public string Type => MagicCard.type;
+        public string Cost => MagicCard.manaCost;
+        public string Set => MagicCard.Edition;
+        public string CollectorNumber => MagicCard.number;
+        public string Rarity => MagicCard.rarity;
+        public override string ImageKey => $"{MagicCard.Edition}: {MagicCard.rarity}";
         public override OLVItem Parent { get; set; }
         public override Predicate<object> Filter => throw new NotImplementedException();
 
@@ -27,7 +26,7 @@ namespace MTG_Collection_Tracker
 
         public OLVCardItem(MagicCard mCard)
         {
-            this.mCard = mCard;
+            this.MagicCard = mCard;
             Name = mCard.name;
         }
     }
