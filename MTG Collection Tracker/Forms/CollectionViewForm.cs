@@ -22,6 +22,7 @@ namespace MTG_Collection_Tracker
         public CollectionViewForm()
         {
             InitializeComponent();
+            //FoilColumn.CellPadding = new Rectangle(8, 0, 0, 0);
             cardListView.SetDoubleBuffered();
             cardListView.GetColumn("Card").Renderer = new CardInstanceNameRenderer();
             cardListView.GetColumn("Mana Cost").Renderer = new ManaCostRenderer();
@@ -71,22 +72,22 @@ namespace MTG_Collection_Tracker
 
         private void fastObjectListView1_CellEditFinished(object sender, CellEditEventArgs e)
         {
-            var args = new CardsUpdatedEventArgs { Items = new ArrayList { e.RowObject } };
+            var rowObject = e.ListViewItem.RowObject;
+            var args = new CardsUpdatedEventArgs { Items = new ArrayList { rowObject } };
             
-            var rowItem = cardListView.ModelToItem(e.RowObject);
+            var rowItem = cardListView.ModelToItem(rowObject);
             if (MultiEditing)
             {
                 foreach (var row in cardListView.SelectedObjects)
                 {
-                    if (row != e.RowObject)
+                    if (row != rowObject)
                     {
-                        Console.WriteLine(e.Column.AspectName);
                         if (e.Column.AspectName == "Tags")
-                            (row as FullInventoryCard).Tags = (e.RowObject as FullInventoryCard).Tags;
+                            (row as FullInventoryCard).Tags = (rowObject as FullInventoryCard).Tags;
                         else if (e.Column.AspectName == "Count")
-                            (row as FullInventoryCard).Count = (e.RowObject as FullInventoryCard).Count;
+                            (row as FullInventoryCard).Count = (rowObject as FullInventoryCard).Count;
                         else if (e.Column.AspectName == "Cost")
-                            (row as FullInventoryCard).Cost = (e.RowObject as FullInventoryCard).Cost;
+                            (row as FullInventoryCard).Cost = (rowObject as FullInventoryCard).Cost;
                         args.Items.Add(row);
                     }
                 }
@@ -144,6 +145,21 @@ namespace MTG_Collection_Tracker
             {
                 var card = cardListView.SelectedObject as FullInventoryCard;
                 OnCardSelected(new CardSelectedEventArgs { uuid = card.uuid, Edition = card.Edition, MultiverseId = card.multiverseId, Name = card.name });
+            }
+        }
+
+        private void cardListView_SubItemChecking(object sender, SubItemCheckingEventArgs e)
+        {
+            if (e.RowObject is FullInventoryCard card)
+            {
+                if (card.isFoilOnly || !card.hasFoil)
+                    e.Canceled = true;
+                else
+                {
+                    card.Foil = e.NewValue == CheckState.Checked ? true : false;
+                    var cellEditArgs = new CellEditEventArgs(e.Column, null, new Rectangle(), e.ListViewItem, e.SubItemIndex);
+                    fastObjectListView1_CellEditFinished(sender, cellEditArgs);
+                }
             }
         }
     }

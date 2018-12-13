@@ -157,18 +157,25 @@ namespace MTG_Collection_Tracker
                     int insertionIndex = 0;
                     foreach (OLVCardItem item in e.Items)
                     {
-                        InventoryCard card = new InventoryCard { uuid = item.MagicCard.uuid, multiverseId_Inv = item.MagicCard.multiverseId, CollectionId = activeDocument.Collection.Id, InsertionIndex = insertionIndex };
-                        context.Library.Add(card);
-                        cardsAdded.Add(card);
+                        MagicCard magicCard = item.MagicCard;
+                        InventoryCard inventoryCard = new InventoryCard { uuid = magicCard.uuid, multiverseId_Inv = magicCard.multiverseId, CollectionId = activeDocument.Collection.Id, InsertionIndex = insertionIndex };
+                        if (magicCard.isFoilOnly)
+                            inventoryCard.Foil = true;
+                        else
+                            inventoryCard.Foil = false;
+                        context.Library.Add(inventoryCard);
+                        cardsAdded.Add(inventoryCard);
                         insertionIndex++;
                     }
                     context.SaveChanges();
+                    activeDocument.cardListView.Freeze();
                     foreach (InventoryCard card in cardsAdded)
                     {
                         var cardInstance = card.ToFullCard(context);
                         if (cardInstance != null)
                             activeDocument.AddCardInstance(cardInstance);
                     }
+                    activeDocument.cardListView.Unfreeze();
                 }
             }
         }

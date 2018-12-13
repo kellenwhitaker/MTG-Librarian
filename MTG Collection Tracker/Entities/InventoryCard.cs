@@ -18,5 +18,6 @@ namespace MTG_Collection_Tracker
         public DateTime?    TimeAdded { get; set; }
         public int?         InsertionIndex { get; set; }
         public string       uuid { get; set; }
+        public bool         Foil { get; set; }
     }
 }

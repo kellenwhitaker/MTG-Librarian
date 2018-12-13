@@ -14,6 +14,7 @@ namespace MTG_Collection_Tracker
         public int?         Count { get; set; }
         public double?      Cost { get; set; }
         public string       Tags { get; set; }
+        public bool         Foil { get; set; }
         private DateTime?   _timeAdded;
         public DateTime?    TimeAdded { get => _timeAdded; set { _timeAdded = value; UpdateSortableTimeAdded(); } }
         private int?        _insertionIndex;
@@ -40,7 +41,8 @@ namespace MTG_Collection_Tracker
                     multiverseId_Inv = multiverseId,
                     Tags = Tags,
                     TimeAdded = TimeAdded,
-                    uuid = uuid
+                    uuid = uuid,
+                    Foil = Foil
                 };
             }
         }

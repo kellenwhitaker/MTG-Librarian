@@ -92,11 +92,13 @@
             this.cardListView.Size = new System.Drawing.Size(975, 435);
             this.cardListView.TabIndex = 0;
             this.cardListView.UnfocusedSelectedBackColor = System.Drawing.Color.LightGray;
+            this.cardListView.UseCellFormatEvents = true;
             this.cardListView.UseCompatibleStateImageBehavior = false;
             this.cardListView.View = System.Windows.Forms.View.Details;
             this.cardListView.VirtualMode = true;
             this.cardListView.CellEditFinished += new BrightIdeasSoftware.CellEditEventHandler(this.fastObjectListView1_CellEditFinished);
             this.cardListView.CellClick += new System.EventHandler<BrightIdeasSoftware.CellClickEventArgs>(this.fastObjectListView1_CellClick);
+            this.cardListView.SubItemChecking += new System.EventHandler<BrightIdeasSoftware.SubItemCheckingEventArgs>(this.cardListView_SubItemChecking);
             this.cardListView.ModelCanDrop += new System.EventHandler<BrightIdeasSoftware.ModelDropEventArgs>(this.fastObjectListView1_ModelCanDrop);
             this.cardListView.ModelDropped += new System.EventHandler<BrightIdeasSoftware.ModelDropEventArgs>(this.fastObjectListView1_ModelDropped);
             this.cardListView.SelectionChanged += new System.EventHandler(this.fastObjectListView1_SelectionChanged);
@@ -113,6 +115,7 @@
             // 
             // FoilColumn
             // 
+            this.FoilColumn.AspectName = "Foil";
             this.FoilColumn.CheckBoxes = true;
             this.FoilColumn.Text = "Foil";
             this.FoilColumn.Width = 30;
