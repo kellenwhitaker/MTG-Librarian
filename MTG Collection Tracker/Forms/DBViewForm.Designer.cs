@@ -32,6 +32,7 @@ namespace MTG_Collection_Tracker
         {
             this.components = new System.ComponentModel.Container();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.cardNameFilterBox = new EnhancedTextBox.EnhancedTextBox();
             this.genericManaButton = new CustomControls.FlatButton();
             this.colorlessManaButton = new CustomControls.FlatButton();
             this.greenManaButton = new CustomControls.FlatButton();
@@ -72,6 +73,7 @@ namespace MTG_Collection_Tracker
             // 
             // splitContainer2.Panel1
             // 
+            this.splitContainer2.Panel1.Controls.Add(this.cardNameFilterBox);
             this.splitContainer2.Panel1.Controls.Add(this.genericManaButton);
             this.splitContainer2.Panel1.Controls.Add(this.colorlessManaButton);
             this.splitContainer2.Panel1.Controls.Add(this.greenManaButton);
@@ -88,6 +90,18 @@ namespace MTG_Collection_Tracker
             this.splitContainer2.SplitterDistance = 30;
             this.splitContainer2.SplitterWidth = 1;
             this.splitContainer2.TabIndex = 2;
+            // 
+            // cardNameFilterBox
+            // 
+            this.cardNameFilterBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic);
+            this.cardNameFilterBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.cardNameFilterBox.Location = new System.Drawing.Point(479, 6);
+            this.cardNameFilterBox.Name = "cardNameFilterBox";
+            this.cardNameFilterBox.Placeholder = "Card Name Filter";
+            this.cardNameFilterBox.Size = new System.Drawing.Size(201, 20);
+            this.cardNameFilterBox.TabIndex = 8;
+            this.cardNameFilterBox.Text = "Card Name Filter";
+            this.cardNameFilterBox.TextChanged += new System.EventHandler(this.cardNameFilterBox_TextChanged);
             // 
             // genericManaButton
             // 
@@ -369,5 +383,6 @@ namespace MTG_Collection_Tracker
         private CustomControls.FlatButton colorlessManaButton;
         private CustomControls.FlatButton genericManaButton;
         private BrightIdeasSoftware.OLVColumn ReleaseDate;
+        private EnhancedTextBox.EnhancedTextBox cardNameFilterBox;
     }
 }

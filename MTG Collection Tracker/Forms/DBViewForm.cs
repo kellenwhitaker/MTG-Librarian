@@ -4,6 +4,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using System.Timers;
 using WeifenLuo.WinFormsUI.Docking;
 using BrightIdeasSoftware;
 
@@ -13,6 +14,7 @@ namespace MTG_Collection_Tracker
     {
         private Dictionary<string, OLVSetItem> sets;
         private ModelFilter setNameFilter;
+        private System.Timers.Timer TextChangedWaitTimer = new System.Timers.Timer();
 
         public DBViewForm()
         {
@@ -21,15 +23,31 @@ namespace MTG_Collection_Tracker
             setListView.SmallImageList = MainForm.SmallIconList;
             setListView.TreeColumnRenderer = new SetRenderer();
             cardListView.SmallImageList = MainForm.SmallIconList;
-            whiteManaButton.ImageList = blueManaButton.ImageList = blackManaButton.ImageList = redManaButton.ImageList = greenManaButton.ImageList 
+            whiteManaButton.ImageList = blueManaButton.ImageList = blackManaButton.ImageList = redManaButton.ImageList = greenManaButton.ImageList
                                       = colorlessManaButton.ImageList = genericManaButton.ImageList = MainForm.ManaIcons;
             (whiteManaButton.ImageKey, blueManaButton.ImageKey, blackManaButton.ImageKey, redManaButton.ImageKey, greenManaButton.ImageKey)
-            = ("{W}",                  "{U}",                   "{B}",                    "{R}",                  "{G}");
+            = ("{W}", "{U}", "{B}", "{R}", "{G}");
             (colorlessManaButton.ImageKey, genericManaButton.ImageKey) = ("{C}", "{X}");
             cardListView.UseFiltering = true;
             cardListView.SetDoubleBuffered();
             cardListView.GetColumn(2).Renderer = new ManaCostRenderer();
+            TextChangedWaitTimer.Interval = 400;
+            TextChangedWaitTimer.Elapsed += (sender, e) =>
+            {
+                TextChangedWaitTimer.Stop();
+                UpdateModelFilter();
+            };
         }
+
+        private delegate void UpdateModelFilterDelegate();
+        private void UpdateModelFilter()
+        {
+            if (InvokeRequired)
+                BeginInvoke(new UpdateModelFilterDelegate(UpdateModelFilter));
+            else
+                cardListView.ModelFilter = new ModelFilter(GetCardFilter());
+        }
+
 
         internal event EventHandler<CardActivatedEventArgs> CardActivated;
         private void OnCardActivated(CardActivatedEventArgs args)
@@ -39,7 +57,12 @@ namespace MTG_Collection_Tracker
 
         private Predicate<object> GetCardFilter()
         {
-            return GetManaCostFilter().And(GetTreeViewFilter());
+            return GetManaCostFilter().And(GetTreeViewFilter()).And(GetCardNameFilter());
+        }
+
+        private Predicate<object> GetCardNameFilter()
+        {
+            return x => (x as OLVCardItem).Name.ToLower().Contains(cardNameFilterBox.Text.ToLower());
         }
 
         private Predicate<object> GetManaCostFilter()
@@ -207,12 +230,13 @@ namespace MTG_Collection_Tracker
         private void treeListView1_SelectedIndexChanged(object sender, EventArgs e)
         {
             cardListView.SelectedObject = null;
-            cardListView.ModelFilter = new ModelFilter(GetCardFilter());
+            UpdateModelFilter();
         }
 
         private void whiteManaButton_Click(object sender, EventArgs e)
         {
-            cardListView.ModelFilter = new ModelFilter(GetCardFilter());
+            UpdateModelFilter();
+
         }
 
         private void fastObjectListView1_ItemActivate(object sender, EventArgs e)
@@ -243,6 +267,12 @@ namespace MTG_Collection_Tracker
             MagicCard card = (cardListView.SelectedObject as OLVCardItem)?.MagicCard;
             if (card != null)
                 OnCardSelected(new CardSelectedEventArgs { Edition = card.Edition, uuid = card.uuid, MultiverseId = card.multiverseId, Name = card.name });
+        }
+
+        private void cardNameFilterBox_TextChanged(object sender, EventArgs e)
+        {
+            TextChangedWaitTimer.Stop();
+            TextChangedWaitTimer.Start();
         }
     }
 }
