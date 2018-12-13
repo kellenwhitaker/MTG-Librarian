@@ -24,7 +24,7 @@ namespace MTG_Collection_Tracker
         private void cardImageRetrieved(object sender, CardImageRetrievedEventArgs e)
         {
             if (e.uuid == CardFocusedUuid)
-                pictureBox1.Image = e.CardImage;
+                pictureBox1.Image = e.CardImage.ScaleImage(pictureBox1.Width, pictureBox1.Height);
         }
     }
 }
