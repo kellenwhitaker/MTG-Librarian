@@ -31,10 +31,7 @@ namespace MTG_Collection_Tracker
 
     public class CardSelectedEventArgs : EventArgs
     {
-        public string uuid { get; set; }
-        public int MultiverseId { get; set; } 
-        public string Edition { get; set; }
-        public string Name { get; set; }
+        public MagicCardBase MagicCard { get; set; }
     }
 
     public class CardActivatedEventArgs : EventArgs

@@ -11,22 +11,20 @@ using System.Drawing;
 using BrightIdeasSoftware;
 using System.Collections;
 using System.ComponentModel;
-//Note: editable columns - count, cost, tags
-//      date format: {0:yyyy-MMM-dd}
+//Note: editable columns - count, cost, tags, foil
 //TODO restsharp
 //TODO add card preview
 //TODO improve bulk card add speed
-//TODO only show part A in collection view
 //TODO unknown error: collection unmodified
 namespace MTG_Collection_Tracker
 {
     public partial class MainForm : Form
     {
-        static CardInfoForm cardInfoForm;
-        CardNavigatorForm navForm;
-        DBViewForm dbViewForm;
-        static TasksForm tasksForm;
-        SplashForm splash = new SplashForm();
+        private static CardInfoForm cardInfoForm;
+        private static CardNavigatorForm navForm;
+        private static DBViewForm dbViewForm;
+        private static TasksForm tasksForm;
+        private static SplashForm splash = new SplashForm();
         private static ImageList _manaIcons;
         private static ImageList _symbolIcons16;
         internal static ImageList ManaIcons => _manaIcons;
@@ -295,21 +293,24 @@ namespace MTG_Collection_Tracker
 
         internal static void CardSelected(object sender, CardSelectedEventArgs e)
         {
-            CardFocused(sender, new CardFocusedEventArgs { uuid = e.uuid });
-            using (CardImagesDbContext context = new CardImagesDbContext(e.Edition))
+            MagicCardBase card = e.MagicCard;
+            cardInfoForm.CardSelected(card);
+            CardFocused(sender, new CardFocusedEventArgs { uuid = card.uuid });
+            
+            using (CardImagesDbContext context = new CardImagesDbContext(card.Edition))
             {
                 var imageBytes = (from i in context.CardImages
-                                  where i.uuid == e.uuid
+                                  where i.uuid == card.uuid
                                   select i).FirstOrDefault()?.CardImageBytes;
 
                 if (imageBytes != null)
                 {
                     Image img = ImageExtensions.FromByteArray(imageBytes);
-                    OnCardImageRetrieved(new CardImageRetrievedEventArgs { uuid = e.uuid, CardImage = img });
+                    OnCardImageRetrieved(new CardImageRetrievedEventArgs { uuid = card.uuid, CardImage = img });
                 }
                 else
                 {
-                    tasksForm.TaskManager.AddTask(new DownloadResourceTask { ForDisplay = true, Caption = $"Card Image: {e.Name}", URL = $"http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={e.MultiverseId}&type=card", TaskObject = new BasicCardArgs { uuid = e.uuid, MultiverseId = e.MultiverseId, Edition = e.Edition }, OnTaskCompleted = ImageDownloadCompleted });
+                    tasksForm.TaskManager.AddTask(new DownloadResourceTask { ForDisplay = true, Caption = $"Card Image: {card.name}", URL = $"http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={card.multiverseId}&type=card", TaskObject = new BasicCardArgs { uuid = card.uuid, MultiverseId = card.multiverseId, Edition = card.Edition }, OnTaskCompleted = ImageDownloadCompleted });
                 }
             }
         }

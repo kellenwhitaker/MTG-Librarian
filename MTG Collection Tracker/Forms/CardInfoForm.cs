@@ -26,5 +26,10 @@ namespace MTG_Collection_Tracker
             if (e.uuid == CardFocusedUuid)
                 pictureBox1.Image = e.CardImage.ScaleImage(pictureBox1.Width, pictureBox1.Height);
         }
+
+        internal void CardSelected(MagicCardBase card)
+        {
+            cardTextHtmlPanel.Text = $"<b>{card.name}<br>{card.type}</b><br><br>{card.text.Replace("\n", "<br>")}<br><br><i>{card.flavorText}</i>";
+        }
     }
 }

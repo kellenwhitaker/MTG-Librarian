@@ -8,7 +8,5 @@ namespace MTG_Collection_Tracker
     {
         [Key]
         public int CatalogID { get; set; }
-        [NotMapped]
-        public MagicCard PartB { get; set; }
     }
 }

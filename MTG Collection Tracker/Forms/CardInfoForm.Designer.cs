@@ -29,22 +29,35 @@
         private void InitializeComponent()
         {
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.cardTextHtmlPanel = new TheArtOfDev.HtmlRenderer.WinForms.HtmlPanel();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Location = new System.Drawing.Point(31, 12);
+            this.pictureBox1.Location = new System.Drawing.Point(12, 12);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(223, 310);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
+            // cardTextHtmlPanel
+            // 
+            this.cardTextHtmlPanel.AutoScroll = true;
+            this.cardTextHtmlPanel.BackColor = System.Drawing.SystemColors.Control;
+            this.cardTextHtmlPanel.BaseStylesheet = null;
+            this.cardTextHtmlPanel.Location = new System.Drawing.Point(12, 328);
+            this.cardTextHtmlPanel.Name = "cardTextHtmlPanel";
+            this.cardTextHtmlPanel.Size = new System.Drawing.Size(223, 448);
+            this.cardTextHtmlPanel.TabIndex = 1;
+            this.cardTextHtmlPanel.Text = null;
+            // 
             // CardInfoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 514);
+            this.ClientSize = new System.Drawing.Size(284, 788);
+            this.Controls.Add(this.cardTextHtmlPanel);
             this.Controls.Add(this.pictureBox1);
             this.Name = "CardInfoForm";
             this.Text = "Card Info";
@@ -56,5 +69,6 @@
         #endregion
 
         private System.Windows.Forms.PictureBox pictureBox1;
+        private TheArtOfDev.HtmlRenderer.WinForms.HtmlPanel cardTextHtmlPanel;
     }
 }

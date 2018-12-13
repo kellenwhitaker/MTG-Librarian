@@ -146,8 +146,8 @@ namespace MTG_Collection_Tracker
         {
             if (cardListView.SelectedObject != null)
             {
-                var card = cardListView.SelectedObject as FullInventoryCard;
-                OnCardSelected(new CardSelectedEventArgs { uuid = card.uuid, Edition = card.Edition, MultiverseId = card.multiverseId, Name = card.name });
+                var card = cardListView.SelectedObject as MagicCardBase;
+                OnCardSelected(new CardSelectedEventArgs { MagicCard = card });
             }
         }
 

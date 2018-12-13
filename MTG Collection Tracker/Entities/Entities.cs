@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
 
 namespace MTG_Collection_Tracker
@@ -11,6 +12,8 @@ namespace MTG_Collection_Tracker
         public string   SetCode { get; set; }
         public string   Edition { get; set; }
         public double?  OnlinePrice { get; set; }
+        [NotMapped]
+        public MagicCard PartB { get; set; }
     }
     
     public class CardCollectionItem

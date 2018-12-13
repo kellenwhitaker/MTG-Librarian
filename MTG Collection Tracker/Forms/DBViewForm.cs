@@ -266,7 +266,7 @@ namespace MTG_Collection_Tracker
         {
             MagicCard card = (cardListView.SelectedObject as OLVCardItem)?.MagicCard;
             if (card != null)
-                OnCardSelected(new CardSelectedEventArgs { Edition = card.Edition, uuid = card.uuid, MultiverseId = card.multiverseId, Name = card.name });
+                OnCardSelected(new CardSelectedEventArgs { MagicCard = card });
         }
 
         private void cardNameFilterBox_TextChanged(object sender, EventArgs e)
