@@ -52,7 +52,8 @@ namespace MTG_Collection_Tracker
                     Tags = Tags,
                     TimeAdded = TimeAdded,
                     uuid = uuid,
-                    Foil = Foil
+                    Foil = Foil,
+                    DisplayName = DisplayName
                 };
             }
         }

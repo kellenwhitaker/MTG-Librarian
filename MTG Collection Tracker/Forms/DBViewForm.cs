@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using System.Timers;
 using WeifenLuo.WinFormsUI.Docking;
 using BrightIdeasSoftware;
+//TODO: improve filtering performance
 
 namespace MTG_Collection_Tracker
 {
@@ -68,13 +69,14 @@ namespace MTG_Collection_Tracker
         private Predicate<object> GetManaCostFilter()
         {
             Predicate<object> combinedFilter = x => true;
-            if (whiteManaButton.Checked)    combinedFilter = combinedFilter.And(x => (x as OLVCardItem).Cost.Contains("W"));
-            if (blueManaButton.Checked)     combinedFilter = combinedFilter.And(x => (x as OLVCardItem).Cost.Contains("U"));
-            if (blackManaButton.Checked)    combinedFilter = combinedFilter.And(x => (x as OLVCardItem).Cost.Contains("B"));
-            if (redManaButton.Checked)      combinedFilter = combinedFilter.And(x => (x as OLVCardItem).Cost.Contains("R"));
-            if (greenManaButton.Checked)    combinedFilter = combinedFilter.And(x => (x as OLVCardItem).Cost.Contains("G"));
-            if (colorlessManaButton.Checked)combinedFilter = combinedFilter.And(x => (x as OLVCardItem).Cost.Contains("C"));
-            if (genericManaButton.Checked)  combinedFilter = combinedFilter.And(x => (x as OLVCardItem).Cost.Contains("X") || (x as OLVCardItem).Cost.Any(c => char.IsDigit(c)));
+
+            if (whiteManaButton.Checked)    combinedFilter = combinedFilter.And(x => (x as OLVCardItem).Cost?.Contains("W") ?? false);
+            if (blueManaButton.Checked)     combinedFilter = combinedFilter.And(x => (x as OLVCardItem).Cost?.Contains("U") ?? false);
+            if (blackManaButton.Checked)    combinedFilter = combinedFilter.And(x => (x as OLVCardItem).Cost?.Contains("B") ?? false);
+            if (redManaButton.Checked)      combinedFilter = combinedFilter.And(x => (x as OLVCardItem).Cost?.Contains("R") ?? false);
+            if (greenManaButton.Checked)    combinedFilter = combinedFilter.And(x => (x as OLVCardItem).Cost?.Contains("G") ?? false);
+            if (colorlessManaButton.Checked)combinedFilter = combinedFilter.And(x => (x as OLVCardItem).Cost?.Contains("C") ?? false);
+            if (genericManaButton.Checked)  combinedFilter = combinedFilter.And(x => ((x as OLVCardItem).Cost?.Contains("X") ?? false) || ((x as OLVCardItem).Cost?.Any(c => char.IsDigit(c)) ?? false));
             return combinedFilter;
         }
 
