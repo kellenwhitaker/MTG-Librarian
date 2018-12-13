@@ -96,6 +96,7 @@ namespace MTG_Collection_Tracker
                     foreach (var card in cards)
                         set.AddCard(card);
 
+                    CollapseParts(set);
                     setListView.AddObject(set);
                     cardListView.AddObjects(set.Cards);
                     if (setListView.Objects.Count() == 1) // first set added, must sort the tree
@@ -130,7 +131,36 @@ namespace MTG_Collection_Tracker
                     }
                     set.AddCard(card);                    
                 }
-            }            
+            }
+            CollapseParts(sets);
+        }
+
+        private void CollapseParts(OLVSetItem set)
+        {
+            var cardsToRemove = new List<OLVCardItem>();
+            var olvCards = set.Cards;
+            foreach (var olvCard in olvCards)
+            {
+                MagicCard magicCard = olvCard.MagicCard;
+                if (magicCard.side == "b")
+                {
+                    OLVCardItem PartA = olvCards.Where(x => x.MagicCard.side == "a" && x.MagicCard.number == magicCard.number).FirstOrDefault();
+                    if (PartA != null)
+                    {
+                        PartA.MagicCard.PartB = magicCard;
+                        PartA.Name = PartA.MagicCard.name = $"{PartA.MagicCard.name} // {magicCard.name}";
+                        cardsToRemove.Add(olvCard);
+                    }
+                }
+            }
+            foreach (var card in cardsToRemove)
+                olvCards.Remove(card);
+        }
+
+        private void CollapseParts(Dictionary<string, OLVSetItem> sets)
+        {
+            foreach (var OLVSet in sets.Values)
+                CollapseParts(OLVSet);
         }
 
         internal void LoadTree()

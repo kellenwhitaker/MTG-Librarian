@@ -51,6 +51,7 @@ namespace MTG_Collection_Tracker
         {
             var cardInstance = ListItem.RowObject as FullInventoryCard;
             int? imgIndex = ListView.SmallImageList?.Images?.IndexOfKey(cardInstance.ImageKey);
+            int imgWidth = ListView.SmallImageList?.ImageSize.Width ?? 0;
             Rectangle backgroundRect = new Rectangle(r.Left - 1, r.Top - 1, r.Width + 1, r.Height + 1);
             if (IsItemSelected)
             {
@@ -66,7 +67,7 @@ namespace MTG_Collection_Tracker
             if (imgIndex.HasValue && imgIndex.Value != -1)
             {
                 ListView.SmallImageList.Draw(g, 2, 0, imgIndex.Value);
-                g.DrawString(GetText(), Font, fontColor, r.Left + 25, r.Top + 3);
+                g.DrawString(GetText(), Font, fontColor, r.Left + imgWidth + 3, r.Top + 3);
             }
             else
                 g.DrawString(GetText(), Font, fontColor, r.Left + 5, r.Top + 3);

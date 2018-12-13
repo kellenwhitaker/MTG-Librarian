@@ -19,5 +19,7 @@ namespace MTG_Collection_Tracker
         public int?         InsertionIndex { get; set; }
         public string       uuid { get; set; }
         public bool         Foil { get; set; }
+        public string       PartB_uuid { get; set; }
+        public string       DisplayName { get; set; }
     }
 }

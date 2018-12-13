@@ -15,6 +15,7 @@ namespace MTG_Collection_Tracker
         public double?      Cost { get; set; }
         public string       Tags { get; set; }
         public bool         Foil { get; set; }
+        public string       DisplayName { get; set; }
         private DateTime?   _timeAdded;
         public DateTime?    TimeAdded { get => _timeAdded; set { _timeAdded = value; UpdateSortableTimeAdded(); } }
         private int?        _insertionIndex;
@@ -33,7 +34,7 @@ namespace MTG_Collection_Tracker
         [NotMapped]
         public string       ImageKey => $"{Edition}: {rarity}";
         [NotMapped]
-        public string       PaddedName => name.PadRight(500);
+        public string       PaddedName => DisplayName.PadRight(500);
         [NotMapped]
         public InventoryCard InventoryCard
         {

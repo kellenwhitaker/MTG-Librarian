@@ -146,6 +146,19 @@ namespace MTG_Collection_Tracker
             }
         }
 
+        private InventoryCard AddMagicCardToCollection(MyDbContext context, MagicCard magicCard, int CollectionId, int insertionIndex = 0)
+        {
+            InventoryCard inventoryCard = new InventoryCard { DisplayName = magicCard.name, uuid = magicCard.uuid, multiverseId_Inv = magicCard.multiverseId, CollectionId = CollectionId, InsertionIndex = insertionIndex };
+            if (magicCard.isFoilOnly)
+                inventoryCard.Foil = true;
+            else
+                inventoryCard.Foil = false;
+            if (magicCard.PartB != null)
+                inventoryCard.PartB_uuid = magicCard.PartB.uuid;
+            context.Library.Add(inventoryCard);
+            return inventoryCard;
+        }
+
         private void cvFormCardsDropped(object sender, CardsDroppedEventArgs e)
         {
             if (dockPanel1.ActiveDocument is CollectionViewForm activeDocument)
@@ -158,12 +171,7 @@ namespace MTG_Collection_Tracker
                     foreach (OLVCardItem item in e.Items)
                     {
                         MagicCard magicCard = item.MagicCard;
-                        InventoryCard inventoryCard = new InventoryCard { uuid = magicCard.uuid, multiverseId_Inv = magicCard.multiverseId, CollectionId = activeDocument.Collection.Id, InsertionIndex = insertionIndex };
-                        if (magicCard.isFoilOnly)
-                            inventoryCard.Foil = true;
-                        else
-                            inventoryCard.Foil = false;
-                        context.Library.Add(inventoryCard);
+                        var inventoryCard = AddMagicCardToCollection(context, magicCard, activeDocument.Collection.Id, insertionIndex);
                         cardsAdded.Add(inventoryCard);
                         insertionIndex++;
                     }
@@ -211,12 +219,12 @@ namespace MTG_Collection_Tracker
             if (dockPanel1.ActiveDocument is CollectionViewForm activeDocument)
             {
                 var collectionName = activeDocument.DocumentName;
-                InventoryCard card = new InventoryCard { uuid = args.MagicCard.uuid, multiverseId_Inv = args.MagicCard.multiverseId, CollectionId = activeDocument.Collection.Id };
                 using (MyDbContext context = new MyDbContext())
                 {
-                    context.Library.Add(card);
+                    var inventoryCard = AddMagicCardToCollection(context, args.MagicCard, activeDocument.Collection.Id);
+                    context.Library.Add(inventoryCard);
                     context.SaveChanges();
-                    var cardInstance = card.ToFullCard(context);
+                    var cardInstance = inventoryCard.ToFullCard(context);
                     if (cardInstance != null)
                         activeDocument.AddCardInstance(cardInstance);
                 }

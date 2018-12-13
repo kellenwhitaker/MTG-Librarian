@@ -77,7 +77,6 @@
             this.CountColumn,
             this.CostColumn,
             this.TagsColumn,
-            this.SortableTimeAdded,
             this.TimeAddedColumn});
             this.cardListView.Cursor = System.Windows.Forms.Cursors.Default;
             this.cardListView.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -189,7 +188,9 @@
             // 
             this.SortableTimeAdded.AspectName = "SortableTimeAdded";
             this.SortableTimeAdded.AspectToStringFormat = "";
+            this.SortableTimeAdded.DisplayIndex = 9;
             this.SortableTimeAdded.IsEditable = false;
+            this.SortableTimeAdded.IsVisible = false;
             this.SortableTimeAdded.MinimumWidth = 100;
             this.SortableTimeAdded.Text = "SortableTimeAdded";
             this.SortableTimeAdded.Width = 100;
