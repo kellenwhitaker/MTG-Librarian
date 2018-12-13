@@ -18,9 +18,18 @@ namespace MTG_Collection_Tracker
         private DateTime?   _timeAdded;
         public DateTime?    TimeAdded { get => _timeAdded; set { _timeAdded = value; UpdateSortableTimeAdded(); } }
         private int?        _insertionIndex;
-        public int?         InsertionIndex { get => _insertionIndex; set { _insertionIndex = value; UpdateSortableTimeAdded();  } }
+        public int?         InsertionIndex { get => _insertionIndex; set { _insertionIndex = value; UpdateSortableTimeAdded(); } }
         [NotMapped]
-        public String       SortableTimeAdded { get; set; }                            
+        public string       SortableTimeAdded
+        {
+            get
+            {
+                if (_sortableTimeAdded == null)
+                    _sortableTimeAdded = TimeAdded.HasValue ? $"{ TimeAdded.Value.ToString("s") } { InsertionIndex.ToString().PadLeft(5) }" : "";
+                return _sortableTimeAdded;               
+            }
+        }
+        private string      _sortableTimeAdded = null;
         [NotMapped]
         public string       ImageKey => $"{Edition}: {rarity}";
         [NotMapped]
@@ -49,8 +58,7 @@ namespace MTG_Collection_Tracker
 
         private void UpdateSortableTimeAdded()
         {
-            if (TimeAdded.HasValue) SortableTimeAdded = $"{ TimeAdded.Value.ToString("s") } { InsertionIndex.ToString().PadLeft(5) }";
-            //else return "";
+            if (TimeAdded.HasValue && InsertionIndex.HasValue) _sortableTimeAdded = $"{ TimeAdded.Value.ToString("s") } { InsertionIndex.ToString().PadLeft(10) }";
         }
     }
 }

@@ -40,7 +40,7 @@
             this.CountColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.CostColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.TagsColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumn9 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.SortableTimeAdded = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.TimeAddedColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn3 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -60,7 +60,7 @@
             this.cardListView.AllColumns.Add(this.CountColumn);
             this.cardListView.AllColumns.Add(this.CostColumn);
             this.cardListView.AllColumns.Add(this.TagsColumn);
-            this.cardListView.AllColumns.Add(this.olvColumn9);
+            this.cardListView.AllColumns.Add(this.SortableTimeAdded);
             this.cardListView.AllColumns.Add(this.olvColumn1);
             this.cardListView.AllColumns.Add(this.TimeAddedColumn);
             this.cardListView.AllColumns.Add(this.olvColumn3);
@@ -77,6 +77,7 @@
             this.CountColumn,
             this.CostColumn,
             this.TagsColumn,
+            this.SortableTimeAdded,
             this.TimeAddedColumn});
             this.cardListView.Cursor = System.Windows.Forms.Cursors.Default;
             this.cardListView.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -184,16 +185,14 @@
             this.TagsColumn.Text = "Tags";
             this.TagsColumn.Width = 200;
             // 
-            // olvColumn9
+            // SortableTimeAdded
             // 
-            this.olvColumn9.AspectName = "SortableTimeAdded";
-            this.olvColumn9.AspectToStringFormat = "";
-            this.olvColumn9.DisplayIndex = 8;
-            this.olvColumn9.IsEditable = false;
-            this.olvColumn9.IsVisible = false;
-            this.olvColumn9.MinimumWidth = 100;
-            this.olvColumn9.Text = "Added";
-            this.olvColumn9.Width = 100;
+            this.SortableTimeAdded.AspectName = "SortableTimeAdded";
+            this.SortableTimeAdded.AspectToStringFormat = "";
+            this.SortableTimeAdded.IsEditable = false;
+            this.SortableTimeAdded.MinimumWidth = 100;
+            this.SortableTimeAdded.Text = "SortableTimeAdded";
+            this.SortableTimeAdded.Width = 100;
             // 
             // olvColumn1
             // 
@@ -239,7 +238,7 @@
         private BrightIdeasSoftware.OLVColumn CountColumn;
         private BrightIdeasSoftware.OLVColumn CostColumn;
         private BrightIdeasSoftware.OLVColumn TagsColumn;
-        private BrightIdeasSoftware.OLVColumn olvColumn9;
+        private BrightIdeasSoftware.OLVColumn SortableTimeAdded;
         private BrightIdeasSoftware.OLVColumn olvColumn10;
         private BrightIdeasSoftware.OLVColumn olvColumn11;
         private BrightIdeasSoftware.OLVColumn olvColumn1;

@@ -44,6 +44,11 @@ namespace MTG_Collection_Tracker
 
                     cardListView.AddObjects(items.ToList());
                 }
+                if (cardListView.PrimarySortColumn == null) // not yet sorted
+                {
+                    //cardListView.PrimarySortColumn = cardListView.GetColumn(11);
+                    cardListView.Sort(cardListView.AllColumns[11], SortOrder.Ascending);
+                }
             }
         }
 
