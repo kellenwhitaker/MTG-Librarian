@@ -7,13 +7,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-//TODO: clean up EnhancedTextBox
+
 namespace EnhancedTextBox
 {
     public partial class EnhancedTextBox : TextBox
     {
         public string Placeholder { get; set; }
-        private bool NoUserText = true;
         public string UserText = "";
 
         public EnhancedTextBox()
@@ -25,30 +24,27 @@ namespace EnhancedTextBox
         {
             if (Text == Placeholder)
             {
-                if (!NoUserText)
+                if (UserText != "")
                     base.OnTextChanged(e);
             }
             else if (Text == "")
             {
-                if (!NoUserText)
-                {
+                if (UserText != "")
                     base.OnTextChanged(e);
-                    NoUserText = true;
-                }
+
                 UserText = "";
             }
             else
             {
-                base.OnTextChanged(e);
-                NoUserText = false;
                 UserText = Text;
+                base.OnTextChanged(e);
             }
         }
 
         protected override void OnLostFocus(EventArgs e)
         {
             base.OnLostFocus(e);
-            if (NoUserText)
+            if (UserText == "")
             {
                 Text = Placeholder;
                 Font = new Font(Font, FontStyle.Italic);
@@ -60,7 +56,7 @@ namespace EnhancedTextBox
         protected override void OnGotFocus(EventArgs e)
         {
             base.OnGotFocus(e);
-            if (NoUserText && Text == Placeholder)
+            if (UserText == "" && Text == Placeholder)
             {
                 Text = "";
                 Font = Parent.Font;
@@ -72,10 +68,7 @@ namespace EnhancedTextBox
         {
             base.OnCreateControl();
             if (Text == "")
-            {
-                NoUserText = true;
                 InvokeLostFocus(this, null);
-            }
         }
     }
 }

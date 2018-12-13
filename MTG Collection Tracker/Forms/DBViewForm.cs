@@ -219,8 +219,9 @@ namespace MTG_Collection_Tracker
 
         private void setFilterBox_TextChanged(object sender, EventArgs e)
         {
-            if (setFilterBox.Text != "")
+            if (setFilterBox.UserText != "")
             {
+                Console.WriteLine("filter on");
                 setListView.ModelFilter = setNameFilter;
                 setListView.UseFiltering = true;
             }
