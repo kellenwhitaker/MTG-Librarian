@@ -7,7 +7,6 @@ using System.Windows.Forms;
 using System.Timers;
 using WeifenLuo.WinFormsUI.Docking;
 using BrightIdeasSoftware;
-//TODO: improve filtering performance
 
 namespace MTG_Collection_Tracker
 {
@@ -63,7 +62,7 @@ namespace MTG_Collection_Tracker
 
         private Predicate<object> GetCardNameFilter()
         {
-            return x => cardNameFilterBox.Text == "Card Name Filter" || cardNameFilterBox.Text == "" ? true : (x as OLVCardItem).Name.ToLower().Contains(cardNameFilterBox.Text.ToLower());
+            return x => cardNameFilterBox.UserText == "" ? true : (x as OLVCardItem).Name.ToLower().Contains(cardNameFilterBox.UserText.ToLower());
         }
 
         private Predicate<object> GetManaCostFilter()

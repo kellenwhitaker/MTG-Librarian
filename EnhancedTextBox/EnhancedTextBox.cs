@@ -7,13 +7,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+//TODO: clean up EnhancedTextBox
 namespace EnhancedTextBox
 {
     public partial class EnhancedTextBox : TextBox
     {
         public string Placeholder { get; set; }
         private bool NoUserText = true;
+        public string UserText = "";
 
         public EnhancedTextBox()
         {
@@ -34,11 +35,13 @@ namespace EnhancedTextBox
                     base.OnTextChanged(e);
                     NoUserText = true;
                 }
+                UserText = "";
             }
             else
             {
                 base.OnTextChanged(e);
                 NoUserText = false;
+                UserText = Text;
             }
         }
 
