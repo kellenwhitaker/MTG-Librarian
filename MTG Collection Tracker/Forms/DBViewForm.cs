@@ -19,14 +19,14 @@ namespace MTG_Collection_Tracker
         public DBViewForm()
         {
             InitializeComponent();
-            setNameFilter = new ModelFilter(x => !(x is OLVSetItem) || (x is OLVSetItem && (x as OLVSetItem).Name.ToUpper().Contains(setFilterBox.Text.ToUpper())));
+            setNameFilter = new ModelFilter(x => !(x is OLVSetItem) || (x is OLVSetItem setItem && setItem.Name.ToUpper().Contains(setFilterBox.Text.ToUpper())));
             setListView.SmallImageList = MainForm.SmallIconList;
             setListView.TreeColumnRenderer = new SetRenderer();
             cardListView.SmallImageList = MainForm.SmallIconList;
             whiteManaButton.ImageList = blueManaButton.ImageList = blackManaButton.ImageList = redManaButton.ImageList = greenManaButton.ImageList
                                       = colorlessManaButton.ImageList = genericManaButton.ImageList = MainForm.ManaIcons;
-            (whiteManaButton.ImageKey, blueManaButton.ImageKey, blackManaButton.ImageKey, redManaButton.ImageKey, greenManaButton.ImageKey)
-            = ("{W}", "{U}", "{B}", "{R}", "{G}");
+            (whiteManaButton.ImageKey, blueManaButton.ImageKey) = ("{W}", "{U}");
+            (blackManaButton.ImageKey, redManaButton.ImageKey, greenManaButton.ImageKey) = ("{B}", "{R}", "{G}");
             (colorlessManaButton.ImageKey, genericManaButton.ImageKey) = ("{C}", "{X}");
             cardListView.UseFiltering = true;
             cardListView.SetDoubleBuffered();
@@ -62,7 +62,7 @@ namespace MTG_Collection_Tracker
 
         private Predicate<object> GetCardNameFilter()
         {
-            return x => cardNameFilterBox.UserText == "" ? true : (x as OLVCardItem).Name.ToLower().Contains(cardNameFilterBox.UserText.ToLower());
+            return x => cardNameFilterBox.UserText == "" ? true : (x as OLVCardItem).Name.ToUpper().Contains(cardNameFilterBox.UserText.ToUpper());
         }
 
         private Predicate<object> GetManaCostFilter()
