@@ -221,7 +221,6 @@ namespace MTG_Collection_Tracker
         {
             if (setFilterBox.UserText != "")
             {
-                Console.WriteLine("filter on");
                 setListView.ModelFilter = setNameFilter;
                 setListView.UseFiltering = true;
             }

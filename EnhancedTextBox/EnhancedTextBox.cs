@@ -25,14 +25,18 @@ namespace EnhancedTextBox
             if (Text == Placeholder)
             {
                 if (UserText != "")
+                {
+                    UserText = Text;
                     base.OnTextChanged(e);
+                }
             }
             else if (Text == "")
             {
                 if (UserText != "")
+                {
+                    UserText = "";
                     base.OnTextChanged(e);
-
-                UserText = "";
+                }
             }
             else
             {
