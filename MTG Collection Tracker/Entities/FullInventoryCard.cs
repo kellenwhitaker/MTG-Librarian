@@ -7,15 +7,17 @@ namespace MTG_Collection_Tracker
     public class FullInventoryCard : MagicCardBase
     {
         [Key]
-        public int          InventoryId { get => InventoryCard.InventoryId; set => InventoryCard.InventoryId = value; }
-        public int?         CatalogID { get => InventoryCard.CatalogID; set => InventoryCard.CatalogID = value; }
-        public int          CollectionId { get => InventoryCard.CollectionId; set => InventoryCard.CollectionId = value; }
+        public int          InventoryId { get; set; }
+        public int?         CatalogID { get; set; }
+        public int          CollectionId { get; set; }
         public new int      multiverseId { get; set; }
-        public int?         Count { get => InventoryCard.Count; set => InventoryCard.Count = value; }
-        public double?      Cost { get => InventoryCard.Cost; set => InventoryCard.Cost = value; }
-        public string       Tags { get => InventoryCard.Tags; set => InventoryCard.Tags = value; }
-        public DateTime?    TimeAdded { get => InventoryCard.TimeAdded; set { InventoryCard.TimeAdded = value; UpdateSortableTimeAdded(); } }
-        public int?         InsertionIndex { get => InventoryCard.InsertionIndex; set { InventoryCard.InsertionIndex = value; UpdateSortableTimeAdded();  } }
+        public int?         Count { get; set; }
+        public double?      Cost { get; set; }
+        public string       Tags { get; set; }
+        private DateTime?   _timeAdded;
+        public DateTime?    TimeAdded { get => _timeAdded; set { _timeAdded = value; UpdateSortableTimeAdded(); } }
+        private int?        _insertionIndex;
+        public int?         InsertionIndex { get => _insertionIndex; set { _insertionIndex = value; UpdateSortableTimeAdded();  } }
         [NotMapped]
         public String       SortableTimeAdded { get; set; }                            
         [NotMapped]
@@ -23,7 +25,25 @@ namespace MTG_Collection_Tracker
         [NotMapped]
         public string       PaddedName => name.PadRight(500);
         [NotMapped]
-        public InventoryCard InventoryCard { get; set; } = new InventoryCard();
+        public InventoryCard InventoryCard
+        {
+            get
+            {
+                return new InventoryCard
+                {
+                    CatalogID = CatalogID,
+                    CollectionId = CollectionId,
+                    Cost = Cost,
+                    Count = Count,
+                    InsertionIndex = InsertionIndex,
+                    InventoryId = InventoryId,
+                    multiverseId_Inv = multiverseId,
+                    Tags = Tags,
+                    TimeAdded = TimeAdded,
+                    uuid = uuid
+                };
+            }
+        }
 
         private void UpdateSortableTimeAdded()
         {

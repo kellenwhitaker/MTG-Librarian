@@ -44,7 +44,6 @@
             this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.TimeAddedColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn3 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumn6 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             ((System.ComponentModel.ISupportInitialize)(this.cardListView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -65,7 +64,6 @@
             this.cardListView.AllColumns.Add(this.olvColumn1);
             this.cardListView.AllColumns.Add(this.TimeAddedColumn);
             this.cardListView.AllColumns.Add(this.olvColumn3);
-            this.cardListView.AllColumns.Add(this.olvColumn6);
             this.cardListView.AllowDrop = true;
             this.cardListView.BackColor = System.Drawing.Color.White;
             this.cardListView.CellEditActivation = BrightIdeasSoftware.ObjectListView.CellEditActivateMode.DoubleClick;
@@ -79,9 +77,7 @@
             this.CountColumn,
             this.CostColumn,
             this.TagsColumn,
-            this.TimeAddedColumn,
-            this.olvColumn3,
-            this.olvColumn6});
+            this.TimeAddedColumn});
             this.cardListView.Cursor = System.Windows.Forms.Cursors.Default;
             this.cardListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cardListView.FullRowSelect = true;
@@ -212,12 +208,9 @@
             // olvColumn3
             // 
             this.olvColumn3.AspectName = "multiverseId";
+            this.olvColumn3.DisplayIndex = 10;
+            this.olvColumn3.IsVisible = false;
             this.olvColumn3.Text = "multiverseId";
-            // 
-            // olvColumn6
-            // 
-            this.olvColumn6.AspectName = "multiverseId_1";
-            this.olvColumn6.Text = "MVid";
             // 
             // CollectionViewForm
             // 
@@ -250,6 +243,5 @@
         private BrightIdeasSoftware.OLVColumn TimeAddedColumn;
         private BrightIdeasSoftware.OLVColumn FoilColumn;
         private BrightIdeasSoftware.OLVColumn olvColumn3;
-        private BrightIdeasSoftware.OLVColumn olvColumn6;
     }
 }
