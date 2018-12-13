@@ -157,7 +157,7 @@ namespace MTG_Collection_Tracker
                     int insertionIndex = 0;
                     foreach (OLVCardItem item in e.Items)
                     {
-                        InventoryCard card = new InventoryCard { uuid = item.MagicCard.uuid, MVid = item.MagicCard.multiverseId, CollectionId = activeDocument.Collection.Id, InsertionIndex = insertionIndex };
+                        InventoryCard card = new InventoryCard { uuid = item.MagicCard.uuid, multiverseId_Inv = item.MagicCard.multiverseId, CollectionId = activeDocument.Collection.Id, InsertionIndex = insertionIndex };
                         context.Library.Add(card);
                         cardsAdded.Add(card);
                         insertionIndex++;
@@ -165,7 +165,7 @@ namespace MTG_Collection_Tracker
                     context.SaveChanges();
                     foreach (InventoryCard card in cardsAdded)
                     {
-                        var cardInstance = card.ToCardInstance(context);
+                        var cardInstance = card.ToFullCard(context);
                         if (cardInstance != null)
                             activeDocument.AddCardInstance(cardInstance);
                     }
@@ -204,12 +204,12 @@ namespace MTG_Collection_Tracker
             if (dockPanel1.ActiveDocument is CollectionViewForm activeDocument)
             {
                 var collectionName = activeDocument.DocumentName;
-                InventoryCard card = new InventoryCard { uuid = args.MagicCard.uuid, MVid = args.MagicCard.multiverseId, CollectionId = activeDocument.Collection.Id };
+                InventoryCard card = new InventoryCard { uuid = args.MagicCard.uuid, multiverseId_Inv = args.MagicCard.multiverseId, CollectionId = activeDocument.Collection.Id };
                 using (MyDbContext context = new MyDbContext())
                 {
                     context.Library.Add(card);
                     context.SaveChanges();
-                    var cardInstance = card.ToCardInstance(context);
+                    var cardInstance = card.ToFullCard(context);
                     if (cardInstance != null)
                         activeDocument.AddCardInstance(cardInstance);
                 }

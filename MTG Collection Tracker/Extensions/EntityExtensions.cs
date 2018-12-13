@@ -8,13 +8,13 @@ namespace MTG_Collection_Tracker
 {
     public static class DBInstanceExtensions
     {
-        public static FullInventoryCard ToCardInstance(this InventoryCard dbInstance, MyDbContext context)
+        public static FullInventoryCard ToFullCard(this InventoryCard inventoryCard, MyDbContext context)
         {
-            var instance =
+            var fullCard =
             (from c in context.LibraryView
-             where c.CardInstanceId == dbInstance.InventoryId
+             where c.InventoryId == inventoryCard.InventoryId
              select c).FirstOrDefault();
-            return instance;
+            return fullCard;
         }
     }
 }

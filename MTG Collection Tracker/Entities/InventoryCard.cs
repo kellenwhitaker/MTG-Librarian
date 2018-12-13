@@ -11,7 +11,7 @@ namespace MTG_Collection_Tracker
         public int          InventoryId { get; set; }
         public int?         CatalogID { get; set; }
         public int          CollectionId { get; set; }
-        public int          MVid { get; set; }
+        public int          multiverseId_Inv { get; set; }
         public int?         Count { get; set; }
         public double?      Cost { get; set; }
         public string       Tags { get; set; }
