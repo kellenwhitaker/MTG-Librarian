@@ -244,7 +244,7 @@ namespace MTG_Collection_Tracker
 
         private void fastObjectListView1_ItemActivate(object sender, EventArgs e)
         {
-            OnCardActivated(new CardActivatedEventArgs { MagicCard = (cardListView.SelectedObject as OLVCardItem).MagicCard });
+            OnCardActivated(new CardActivatedEventArgs { CardItem = cardListView.SelectedObject as OLVCardItem });
         }
 
         private void fastObjectListView1_GiveFeedback(object sender, GiveFeedbackEventArgs e)

@@ -237,19 +237,7 @@ namespace MTG_Collection_Tracker
 
         private void dbFormCardActivated(object sender, CardActivatedEventArgs args)
         {
-            if (dockPanel1.ActiveDocument is CollectionViewForm activeDocument)
-            {
-                var collectionName = activeDocument.DocumentName;
-                using (MyDbContext context = new MyDbContext())
-                {
-                    var inventoryCard = AddMagicCardToCollection(context, args.MagicCard, activeDocument.Collection.Id);
-                    context.Library.Add(inventoryCard);
-                    context.SaveChanges();
-                    var cardInstance = inventoryCard.ToFullCard(context);
-                    if (cardInstance != null)
-                        activeDocument.AddCardInstance(cardInstance);
-                }
-            }
+            cvFormCardsDropped(sender, new CardsDroppedEventArgs { Items = new ArrayList { args.CardItem } });
         }
 
         private void AddSetIcon(string SetCode)
