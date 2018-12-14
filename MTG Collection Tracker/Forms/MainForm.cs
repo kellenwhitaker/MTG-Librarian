@@ -54,7 +54,7 @@ namespace MTG_Collection_Tracker
             cardInfoForm = new CardInfoForm();
             navForm = new CardNavigatorForm();
             dbViewForm = new DBViewForm();
-            dbViewForm.CardActivated += dbFormCardActivated;
+            dbViewForm.CardsActivated += dbFormCardActivated;
             dbViewForm.CardSelected += CardSelected;
             dbViewForm.CardFocused += CardFocused;
             tasksForm = new TasksForm(tasksLabel, tasksProgressBar);
@@ -250,9 +250,9 @@ namespace MTG_Collection_Tracker
             }
         }
 
-        private void dbFormCardActivated(object sender, CardActivatedEventArgs args)
+        private void dbFormCardActivated(object sender, CardsActivatedEventArgs args)
         {
-            cvFormCardsDropped(sender, new CardsDroppedEventArgs { Items = new ArrayList { args.CardItem } });
+            cvFormCardsDropped(sender, new CardsDroppedEventArgs { Items = args.CardItems });
         }
 
         private void AddSetIcon(string SetCode)

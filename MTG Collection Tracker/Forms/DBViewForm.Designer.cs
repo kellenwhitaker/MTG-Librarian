@@ -45,14 +45,14 @@ namespace MTG_Collection_Tracker
             this.setListView = new BrightIdeasSoftware.TreeListView();
             this.SetName = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.ReleaseDate = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.completeColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.complete4Column = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.cardListView = new BrightIdeasSoftware.FastObjectListView();
             this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn2 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn3 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn4 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn5 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.completeColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.complete4Column = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
@@ -275,6 +275,16 @@ namespace MTG_Collection_Tracker
             this.ReleaseDate.DisplayIndex = 1;
             this.ReleaseDate.IsVisible = false;
             // 
+            // completeColumn
+            // 
+            this.completeColumn.AspectName = "Complete";
+            this.completeColumn.Text = "Complete";
+            // 
+            // complete4Column
+            // 
+            this.complete4Column.AspectName = "Complete4";
+            this.complete4Column.Text = "Complete (4)";
+            // 
             // cardListView
             // 
             this.cardListView.AllColumns.Add(this.olvColumn1);
@@ -308,6 +318,7 @@ namespace MTG_Collection_Tracker
             this.cardListView.ItemActivate += new System.EventHandler(this.fastObjectListView1_ItemActivate);
             this.cardListView.SelectedIndexChanged += new System.EventHandler(this.fastObjectListView1_SelectedIndexChanged);
             this.cardListView.GiveFeedback += new System.Windows.Forms.GiveFeedbackEventHandler(this.fastObjectListView1_GiveFeedback);
+            this.cardListView.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cardListView_KeyPress);
             // 
             // olvColumn1
             // 
@@ -344,16 +355,6 @@ namespace MTG_Collection_Tracker
             this.olvColumn5.MinimumWidth = 100;
             this.olvColumn5.Text = "#";
             this.olvColumn5.Width = 100;
-            // 
-            // completeColumn
-            // 
-            this.completeColumn.AspectName = "Complete";
-            this.completeColumn.Text = "Complete";
-            // 
-            // complete4Column
-            // 
-            this.complete4Column.AspectName = "Complete4";
-            this.complete4Column.Text = "Complete (4)";
             // 
             // DBViewForm
             // 

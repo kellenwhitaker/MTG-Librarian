@@ -34,9 +34,9 @@ namespace MTG_Collection_Tracker
         public MagicCardBase MagicCard { get; set; }
     }
 
-    public class CardActivatedEventArgs : EventArgs
+    public class CardsActivatedEventArgs : EventArgs
     {
-        public OLVCardItem CardItem { get; set; }
+        public ArrayList CardItems { get; set; }
     }
 
     public class CardImageRetrievedEventArgs : EventArgs

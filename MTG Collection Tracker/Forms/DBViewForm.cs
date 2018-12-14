@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using System.Timers;
 using WeifenLuo.WinFormsUI.Docking;
 using BrightIdeasSoftware;
+using System.Collections;
 
 namespace MTG_Collection_Tracker
 {
@@ -40,10 +41,10 @@ namespace MTG_Collection_Tracker
             };
         }
 
-        internal event EventHandler<CardActivatedEventArgs> CardActivated;
-        private void OnCardActivated(CardActivatedEventArgs args)
+        internal event EventHandler<CardsActivatedEventArgs> CardsActivated;
+        private void OnCardsActivated(CardsActivatedEventArgs args)
         {
-            CardActivated?.Invoke(this, args);
+            CardsActivated?.Invoke(this, args);
         }
         #region Filters
         private delegate void UpdateModelFilterDelegate();
@@ -244,7 +245,7 @@ namespace MTG_Collection_Tracker
 
         private void fastObjectListView1_ItemActivate(object sender, EventArgs e)
         {
-            OnCardActivated(new CardActivatedEventArgs { CardItem = cardListView.SelectedObject as OLVCardItem });
+            OnCardsActivated(new CardsActivatedEventArgs { CardItems = new ArrayList { cardListView.SelectedObject as OLVCardItem } });
         }
 
         private void fastObjectListView1_GiveFeedback(object sender, GiveFeedbackEventArgs e)
@@ -278,5 +279,12 @@ namespace MTG_Collection_Tracker
             TextChangedWaitTimer.Start();
         }
         #endregion
+
+        private void cardListView_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (cardListView.SelectedItems != null)
+                if (e.KeyChar == '\r')
+                    e.Handled = true;
+        }
     }
 }
