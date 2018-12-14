@@ -29,7 +29,34 @@ namespace MTG_Collection_Tracker
 
         internal void CardSelected(MagicCardBase card)
         {
-            cardTextHtmlPanel.Text = $"<b>{card.name}<br>{card.type}</b><br><br>{card.text.Replace("\n", "<br>")}<br><br><i>{card.flavorText}</i>";
+            string html = $"<table width='100%'>" +
+                $"<tr>" +
+                $"<td width='70%'><b>{card.name}</b></td><td>{card.manaCost}</td>" +
+                $"</tr>" +
+                $"<tr>" +
+                $"<td colspan=2><b>{card.type}</b></td>" +
+                $"</tr>";
+            if (card.power != null && card.toughness != null)
+            {
+                html += $"<tr>" +
+                    $"<td><b>{card.power} / {card.toughness}</b></td>" +
+                    $"</tr>";
+            }
+            html += $"<tr>" +
+                $"<td colspan=2><br><br>{card.text.Replace("\n", "<br>")}</td>" +
+                $"</tr>";
+            if (card.flavorText != null)
+                html += $"<tr>" +
+                    $"<td colspan=2><br><br><i>{card.flavorText}</i></td>" +
+                    $"</tr>";
+            html += "<tr>" +
+                $"<td colspan=2><hr><b>{card.Edition} [{card.SetCode.ToUpper()}] - #{card.number}</b></td>" +
+                $"</tr>" +
+                $"<tr>" +
+                $"<td colspan=2>Artist: {card.artist}</td>" +
+                $"</tr>";
+            html += "</table>";
+            cardTextHtmlPanel.Text = html;
         }
     }
 }

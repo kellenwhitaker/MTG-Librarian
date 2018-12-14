@@ -318,13 +318,17 @@ namespace MTG_Collection_Tracker
         private static void ImageDownloadCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             var args = e.Result as CardResourceArgs;
-            using (CardImagesDbContext context = new CardImagesDbContext(args.Edition))
+            try
             {
-                context.Add(new DbCardImage { uuid = args.uuid, CardImageBytes = args.Data } );
-                context.SaveChanges();
+                using (CardImagesDbContext context = new CardImagesDbContext(args.Edition))
+                {
+                    context.Add(new DbCardImage { uuid = args.uuid, CardImageBytes = args.Data });
+                    context.SaveChanges();
+                }
+                Image img = ImageExtensions.FromByteArray(args.Data);
+                OnCardImageRetrieved(new CardImageRetrievedEventArgs { uuid = args.uuid, MultiverseId = args.MultiverseId, CardImage = img });
             }
-            Image img = ImageExtensions.FromByteArray(args.Data);
-            OnCardImageRetrieved(new CardImageRetrievedEventArgs { uuid = args.uuid, MultiverseId = args.MultiverseId, CardImage = img });
+            catch (Exception ex) { }
         }
 
         static internal event EventHandler<CardImageRetrievedEventArgs> CardImageRetrieved;
