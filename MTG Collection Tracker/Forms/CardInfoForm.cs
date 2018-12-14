@@ -40,7 +40,6 @@ namespace MTG_Collection_Tracker
                     imgs += $"<img src='Icons/{part.Groups[1].Value.Replace("/", "")}_16.png'>";
                 }
             }
-            Console.WriteLine(imgs);
             return imgs;
         }
 

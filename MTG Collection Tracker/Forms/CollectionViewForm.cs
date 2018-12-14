@@ -11,6 +11,10 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 //TODO: improve appearance of checkboxes
+//TODO: don't let card count go below 1
+//TODO: enable deletion of cards from collection
+//TODO: enable dropping of whole sets (from the set tree view) onto a collection
+//TODO: moving a collection view out of the panel breaks any updates to it
 namespace MTG_Collection_Tracker
 {
     public partial class CollectionViewForm : DockContent

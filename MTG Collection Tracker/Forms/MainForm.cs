@@ -214,14 +214,29 @@ namespace MTG_Collection_Tracker
             if (dockPanel1.ActiveDocument is CollectionViewForm activeDocument)
             {
                 var collectionName = activeDocument.DocumentName;
+                var setItems = new Dictionary<string, OLVSetItem>();
                 using (MyDbContext context = new MyDbContext())
                 {
                     try
                     {
                         foreach (FullInventoryCard card in e.Items)
+                        {
                             context.Library.Update(card.InventoryCard);
-                        
+                            if (!setItems.TryGetValue(card.Edition, out OLVSetItem setItem))
+                                if ((setItem = dbViewForm.SetItems.Where(x => x.Name == card.Edition).FirstOrDefault()) != null)
+                                    setItems.Add(card.Edition, setItem);
+
+                        }
                         context.SaveChanges();
+                        foreach (FullInventoryCard card in e.Items)
+                        {
+                            var allCopiesSum = (from c in context.LibraryView
+                                            where c.uuid == card.uuid
+                                            select c.Count).Sum();
+                            if (allCopiesSum.HasValue && Globals.AllCards.TryGetValue(card.uuid, out MagicCard magicCard))
+                                magicCard.CopiesOwned = allCopiesSum.Value;
+                        }
+                        dbViewForm.setListView.RefreshObjects(setItems.Values.ToArray());
                     }
                     catch (Exception ex)
                     {
