@@ -7,10 +7,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using WeifenLuo.WinFormsUI.Docking;
 
-namespace MTG_Collection_Tracker.Forms
+namespace MTG_Collection_Tracker
 {
-    public partial class CollectorViewForm : Form
+    public partial class CollectorViewForm : DockContent
     {
         public CollectorViewForm()
         {

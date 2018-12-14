@@ -51,6 +51,8 @@ namespace MTG_Collection_Tracker
             this.olvColumn3 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn4 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn5 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.completeColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.complete4Column = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
@@ -233,8 +235,12 @@ namespace MTG_Collection_Tracker
             // 
             this.setListView.AllColumns.Add(this.SetName);
             this.setListView.AllColumns.Add(this.ReleaseDate);
+            this.setListView.AllColumns.Add(this.completeColumn);
+            this.setListView.AllColumns.Add(this.complete4Column);
             this.setListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.SetName});
+            this.SetName,
+            this.completeColumn,
+            this.complete4Column});
             this.setListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.setListView.HeaderMaximumHeight = 0;
             this.setListView.HideSelection = false;
@@ -339,6 +345,16 @@ namespace MTG_Collection_Tracker
             this.olvColumn5.Text = "#";
             this.olvColumn5.Width = 100;
             // 
+            // completeColumn
+            // 
+            this.completeColumn.AspectName = "Complete";
+            this.completeColumn.Text = "Complete";
+            // 
+            // complete4Column
+            // 
+            this.complete4Column.AspectName = "Complete4";
+            this.complete4Column.Text = "Complete (4)";
+            // 
             // DBViewForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -384,5 +400,7 @@ namespace MTG_Collection_Tracker
         private CustomControls.FlatButton genericManaButton;
         private BrightIdeasSoftware.OLVColumn ReleaseDate;
         private EnhancedTextBox.EnhancedTextBox cardNameFilterBox;
+        private BrightIdeasSoftware.OLVColumn completeColumn;
+        private BrightIdeasSoftware.OLVColumn complete4Column;
     }
 }

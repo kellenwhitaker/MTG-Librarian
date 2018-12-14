@@ -8,13 +8,14 @@ namespace MTG_Collection_Tracker
 {
     public class OLVCardItem : OLVItem
     {
-        public string Name;
+        public string    Name;
         public MagicCard MagicCard { get; set; }
-        public string Type => MagicCard.type;
-        public string Cost => MagicCard.manaCost;
-        public string Set => MagicCard.Edition;
-        public string CollectorNumber => MagicCard.number;
-        public string Rarity => MagicCard.rarity;
+        public string    Type => MagicCard.type;
+        public string    Cost => MagicCard.manaCost;
+        public string    Set => MagicCard.Edition;
+        public string    CollectorNumber => MagicCard.number;
+        public string    Rarity => MagicCard.rarity;
+        public int       CopiesOwned => MagicCard.CopiesOwned;
         public override string ImageKey => $"{MagicCard.Edition}: {MagicCard.rarity}";
         public override OLVItem Parent { get; set; }
         public override Predicate<object> Filter => throw new NotImplementedException();
@@ -26,16 +27,19 @@ namespace MTG_Collection_Tracker
 
         public OLVCardItem(MagicCard mCard)
         {
-            this.MagicCard = mCard;
+            MagicCard = mCard;
             Name = mCard.name;
         }
     }
 
     public class OLVRarityItem : OLVItem, IComparable<OLVRarityItem>
     {
-        public string Rarity;
-        public string Set;
-        public int Count;
+        public List<MagicCard> Cards { get; set; } = new List<MagicCard>();
+        public string Rarity { get; set; }
+        public string Set { get; set; }
+        public int Count => Cards?.Count ?? 0;
+        public string Complete => $"{100 * Cards.TakeWhile(x => x.CopiesOwned > 0).Count() / Cards.Count}%";
+        public string Complete4 => $"{100 * Cards.TakeWhile(x => x.CopiesOwned > 3).Count() / Cards.Count}%";
         public string Text => ToString();
         public override OLVItem Parent { get; set; }
         public override string ImageKey => Rarity != "Basic Land" ? $"{Set}: {Rarity}" : null;
@@ -48,14 +52,14 @@ namespace MTG_Collection_Tracker
             Parent = parent;
             Set = set;
             Rarity = rarity;
-            Count = 0;
             switch (rarity)
             {
-                case "common": SortValue = 0; break;
-                case "uncommon": SortValue = 1; break;
-                case "rare": SortValue = 2; break;
-                case "mythic": SortValue = 3; break;
-                default: SortValue = 4; break;
+                case "basic land": SortValue = 0; break;
+                case "common": SortValue = 1; break;
+                case "uncommon": SortValue = 2; break;
+                case "rare": SortValue = 3; break;
+                case "mythic": SortValue = 4; break;
+                default: SortValue = 5; break;
             }
         }
 
@@ -73,26 +77,17 @@ namespace MTG_Collection_Tracker
     public class OLVSetItem : OLVItem
     {
         public string Name;
-        public DateTime ReleaseDate {
-            get {
-                if (DateTime.TryParse(CardSet.ReleaseDate, out DateTime value)) return value;
-                else return DateTime.MinValue;
-            }}
+        public DateTime ReleaseDate => DateTime.TryParse(CardSet.ReleaseDate, out DateTime value) ? value : DateTime.MinValue;
         public List<OLVCardItem> Cards;
         public List<OLVRarityItem> Rarities;
         public CardSet CardSet { get; set; }
         public override OLVItem Parent { get; set; }
         public override Predicate<object> Filter => x => (x as OLVCardItem).Set == Name;
         public override string ImageKey => $"{Rarities.Where(x => x.ImageKey != null).Last().ImageKey}";
-        public int CardCount => Cards.Count; //(from r in Rarities select r.Count).Sum();
-        public string Text
-        {
-            get
-            {
-                return $"{Name} [{CardCount}]";
-            }
-        }
-
+        public int CardCount => Cards.Count;
+        public string Complete => $"{100 * Cards.TakeWhile(x => x.CopiesOwned > 0).Count() / Cards.Count}%";
+        public string Complete4 => $"{100 * Cards.TakeWhile(x => x.CopiesOwned > 3).Count() / Cards.Count}%";
+        public string Text => $"{Name} [{CardCount}]";
         public OLVSetItem(CardSet set)
         {
             Name = set.Name;
@@ -110,14 +105,18 @@ namespace MTG_Collection_Tracker
 
         public void AddCard(MagicCard card)
         {
-            //if (card.side != "A") return;
-            if (!Rarities.Exists(x => x.Rarity == card.rarity))
+            string rarity = "basic land";
+            if (!card.type.Contains("Basic Land")) // workaround needed because mtgjson thinks basic lands are not a separate rarity
+                rarity = card.rarity;
+            else
+                card.rarity = "basic land";
+            if (!(Rarities.Where(x => x.Rarity == rarity).FirstOrDefault() is OLVRarityItem rarityItem))
             {
-                Rarities.Add(new OLVRarityItem(this, card.Edition, card.rarity));
+                rarityItem = new OLVRarityItem(this, card.Edition, rarity);
+                Rarities.Add(rarityItem);
                 Rarities.Sort();
             }
-            var item = Rarities.Where(x => x.Rarity == card.rarity).First();
-            item.Count++;
+            rarityItem.Cards.Add(card);
             Cards.Add(new OLVCardItem(card));
         }
 

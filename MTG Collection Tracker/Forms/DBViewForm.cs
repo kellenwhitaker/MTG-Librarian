@@ -39,6 +39,12 @@ namespace MTG_Collection_Tracker
             };
         }
 
+        internal event EventHandler<CardActivatedEventArgs> CardActivated;
+        private void OnCardActivated(CardActivatedEventArgs args)
+        {
+            CardActivated?.Invoke(this, args);
+        }
+        #region Filters
         private delegate void UpdateModelFilterDelegate();
         private void UpdateModelFilter()
         {
@@ -46,13 +52,6 @@ namespace MTG_Collection_Tracker
                 BeginInvoke(new UpdateModelFilterDelegate(UpdateModelFilter));
             else
                 cardListView.ModelFilter = new ModelFilter(GetCardFilter());
-        }
-
-
-        internal event EventHandler<CardActivatedEventArgs> CardActivated;
-        private void OnCardActivated(CardActivatedEventArgs args)
-        {
-            CardActivated?.Invoke(this, args);
         }
 
         private Predicate<object> GetCardFilter()
@@ -92,7 +91,7 @@ namespace MTG_Collection_Tracker
             }
             return combinedFilter;
         }
-
+        #endregion
         internal void SortCardListView()
         {
             if (cardListView.PrimarySortColumn == null) // sort by set if not already sorted
@@ -153,7 +152,8 @@ namespace MTG_Collection_Tracker
                         set = new OLVSetItem(dbSets.Where(x => x.Name == card.Edition).FirstOrDefault());
                         sets.Add(card.Edition, set);
                     }
-                    set.AddCard(card);                    
+                    set.AddCard(card);
+                    Globals.AllCards.Add(card.uuid, card);
                 }
             }
             CollapseParts(sets);
@@ -196,7 +196,7 @@ namespace MTG_Collection_Tracker
             }
             setListView.Sort(setListView.AllColumns[1], SortOrder.Descending);
         }
-
+        #region Events
         private void treeListView1_FormatCell(object sender, FormatCellEventArgs e)
         {
             if (e.Model is OLVCardItem)
@@ -274,5 +274,6 @@ namespace MTG_Collection_Tracker
             TextChangedWaitTimer.Stop();
             TextChangedWaitTimer.Start();
         }
+        #endregion
     }
 }

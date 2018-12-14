@@ -21,6 +21,7 @@ namespace MTG_Collection_Tracker
             dbViewForm.LoadSets();
             InitUIWorker.ReportProgress(0, new SplashProgressObject("Loading collections...", 2));
             navForm.LoadGroups();
+            CountInventory();
             AddSetIcons();
             InitUIWorker.ReportProgress(0, new SplashProgressObject("Starting application...", 3));
             Thread.Sleep(100);

@@ -24,6 +24,7 @@ namespace MTG_Collection_Tracker
         private static CardNavigatorForm navForm;
         private static DBViewForm dbViewForm;
         private static TasksForm tasksForm;
+        private static CollectorViewForm collectorForm;
         private static SplashForm splash = new SplashForm();
         private static ImageList _manaIcons;
         private static ImageList _symbolIcons16;
@@ -123,6 +124,22 @@ namespace MTG_Collection_Tracker
             SymbolIcons16.Images.Add("{2/R}", Properties.Resources.C2R_16);
             SymbolIcons16.Images.Add("{2/G}", Properties.Resources.C2G_16);
             #endregion
+        }
+
+        private void CountInventory()
+        {
+            using (var context = new MyDbContext())
+            {
+                var inventoryCards = from c in context.Library
+                            select c;
+
+                MagicCard magicCard;
+                foreach (var inventoryCard in inventoryCards)
+                {
+                    if (inventoryCard.Count.HasValue && Globals.AllCards.TryGetValue(inventoryCard.uuid, out magicCard))
+                        magicCard.CopiesOwned += inventoryCard.Count.Value;
+                }
+            }
         }
 
         internal static void CardFocused(object sender, CardFocusedEventArgs e)

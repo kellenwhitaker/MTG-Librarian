@@ -8,5 +8,7 @@ namespace MTG_Collection_Tracker
     {
         [Key]
         public int CatalogID { get; set; }
+        [NotMapped]
+        public int CopiesOwned { get; set; }
     }
 }
