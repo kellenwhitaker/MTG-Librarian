@@ -196,8 +196,11 @@ namespace MTG_Collection_Tracker
                         var cardInstance = card.ToFullCard(context);
                         if (cardInstance != null)
                             activeDocument.AddCardInstance(cardInstance);
+                        if (card.Count.HasValue && Globals.AllCards.TryGetValue(card.uuid, out MagicCard magicCard))
+                            magicCard.CopiesOwned += card.Count.Value;
                     }
                     activeDocument.cardListView.Unfreeze();
+                    //dbViewForm.setListView.RefreshObject();
                 }
             }
         }

@@ -38,8 +38,8 @@ namespace MTG_Collection_Tracker
         public string Rarity { get; set; }
         public string Set { get; set; }
         public int Count => Cards?.Count ?? 0;
-        public string Complete => $"{100 * Cards.TakeWhile(x => x.CopiesOwned > 0).Count() / Cards.Count}%";
-        public string Complete4 => $"{100 * Cards.TakeWhile(x => x.CopiesOwned > 3).Count() / Cards.Count}%";
+        public string Complete => $"{100 * Cards.Count(x => x.CopiesOwned > 0) / Cards.Count}%";
+        public string Complete4 => $"{100 * Cards.Count(x => x.CopiesOwned > 3) / Cards.Count}%";
         public string Text => ToString();
         public override OLVItem Parent { get; set; }
         public override string ImageKey => Rarity != "Basic Land" ? $"{Set}: {Rarity}" : null;
@@ -86,8 +86,8 @@ namespace MTG_Collection_Tracker
         public override Predicate<object> Filter => x => (x as OLVCardItem).Set == Name;
         public override string ImageKey => $"{Rarities.Where(x => x.ImageKey != null).Last().ImageKey}";
         public int CardCount => Cards.Count;
-        public string Complete => $"{100 * Cards.TakeWhile(x => x.CopiesOwned > 0).Count() / Cards.Count}%";
-        public string Complete4 => $"{100 * Cards.TakeWhile(x => x.CopiesOwned > 3).Count() / Cards.Count}%";
+        public string Complete => $"{100 * Cards.Count(x => x.CopiesOwned > 0) / Cards.Count}%";
+        public string Complete4 => $"{100 * Cards.Count(x => x.CopiesOwned > 3) / Cards.Count}%";
         public string Text => $"{Name} [{CardCount}]";
         public OLVSetItem(CardSet set)
         {
