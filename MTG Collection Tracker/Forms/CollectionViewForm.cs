@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
-//TODO poor performance on fastobjectlistview
+//TODO: improve appearance of checkboxes
 namespace MTG_Collection_Tracker
 {
     public partial class CollectionViewForm : DockContent

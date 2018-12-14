@@ -12,6 +12,7 @@ using WeifenLuo.WinFormsUI.Docking;
 
 namespace MTG_Collection_Tracker
 {
+    [DesignerCategory("Code")]
     public partial class MainForm : Form
     {
         private void InitUIWorker_DoWork(object sender, DoWorkEventArgs e)

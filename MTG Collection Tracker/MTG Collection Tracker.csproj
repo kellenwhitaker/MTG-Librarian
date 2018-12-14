@@ -275,6 +275,21 @@
     <Compile Include="Forms\CollectorViewForm.Designer.cs">
       <DependentUpon>CollectorViewForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="OLVRenderers\CardInstanceNameRenderer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="OLVRenderers\IconRenderer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="OLVRenderers\ManaCostRenderer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="OLVRenderers\ProgressBarRenderer.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="OLVRenderers\SetRenderer.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Properties\Resources1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -328,7 +343,6 @@
     </Compile>
     <Compile Include="Extensions\ObjectExtensions.cs" />
     <Compile Include="Classes\OLVItemClasses.cs" />
-    <Compile Include="Classes\OLVRenderers.cs" />
     <Compile Include="Extensions\PredicateExtensions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

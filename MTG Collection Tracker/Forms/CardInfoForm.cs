@@ -5,10 +5,11 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
-
+//TODO: improve formatting with long mana costs (Chromium, Progenitus, B.F.M.)
 namespace MTG_Collection_Tracker
 {
     public partial class CardInfoForm : DockContent
@@ -27,11 +28,27 @@ namespace MTG_Collection_Tracker
                 pictureBox1.Image = e.CardImage.ScaleImage(pictureBox1.Width, pictureBox1.Height);
         }
 
+        private string ManaCostToImgs(string manaCost)
+        {
+            string imgs = "";
+            if (manaCost != null && manaCost != "")
+            {
+                Regex reg = new Regex("{([A-Z0-9/]+)}");
+                var costParts = reg.Matches(manaCost);
+                foreach (Match part in costParts)
+                {
+                    imgs += $"<img src='Icons/{part.Groups[1].Value.Replace("/", "")}_16.png'>";
+                }
+            }
+            Console.WriteLine(imgs);
+            return imgs;
+        }
+
         internal void CardSelected(MagicCardBase card)
         {
             string html = $"<table width='100%'>" +
                 $"<tr>" +
-                $"<td width='70%'><b>{card.name}</b></td><td>{card.manaCost}</td>" +
+                $"<td width='60%' align='top'><b>{card.name}</b></td><td align='top'>{ManaCostToImgs(card.manaCost)}</td>" +
                 $"</tr>" +
                 $"<tr>" +
                 $"<td colspan=2><b>{card.type}</b></td>" +
