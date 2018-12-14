@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 //TODO: improve appearance of checkboxes
-//TODO: don't let card count go below 1
 //TODO: enable deletion of cards from collection
 //TODO: enable dropping of whole sets (from the set tree view) onto a collection
 //TODO: moving a collection view out of the panel breaks any updates to it
@@ -79,28 +78,32 @@ namespace MTG_Collection_Tracker
 
         private void fastObjectListView1_CellEditFinished(object sender, CellEditEventArgs e)
         {
-            var rowObject = e.ListViewItem.RowObject;
-            var args = new CardsUpdatedEventArgs { Items = new ArrayList { rowObject } };
-            
-            var rowItem = cardListView.ModelToItem(rowObject);
-            if (MultiEditing)
+            if (e.RowObject is FullInventoryCard rowObject)
             {
-                foreach (var row in cardListView.SelectedObjects)
+                var args = new CardsUpdatedEventArgs { Items = new ArrayList { rowObject } };
+                var rowItem = cardListView.ModelToItem(rowObject);
+                if (e.Column.AspectName == "Count" && rowObject.Count < 1)
+                    rowObject.Count = 1;
+
+                if (MultiEditing)
                 {
-                    if (row != rowObject)
+                    foreach (var row in cardListView.SelectedObjects)
                     {
-                        if (e.Column.AspectName == "Tags")
-                            (row as FullInventoryCard).Tags = (rowObject as FullInventoryCard).Tags;
-                        else if (e.Column.AspectName == "Count")
-                            (row as FullInventoryCard).Count = (rowObject as FullInventoryCard).Count;
-                        else if (e.Column.AspectName == "Cost")
-                            (row as FullInventoryCard).Cost = (rowObject as FullInventoryCard).Cost;
-                        args.Items.Add(row);
+                        if (row != rowObject)
+                        {
+                            if (e.Column.AspectName == "Tags")
+                                (row as FullInventoryCard).Tags = rowObject.Tags;
+                            else if (e.Column.AspectName == "Count")
+                                (row as FullInventoryCard).Count = rowObject.Count;
+                            else if (e.Column.AspectName == "Cost")
+                                (row as FullInventoryCard).Cost = rowObject.Cost;
+                            args.Items.Add(row);
+                        }
                     }
+                    MultiEditing = false;
                 }
-                MultiEditing = false;
+                OnCardsUpdated(args);
             }
-            OnCardsUpdated(args);
         }
 
         internal event EventHandler<CardsUpdatedEventArgs> CardsUpdated;
@@ -130,7 +133,10 @@ namespace MTG_Collection_Tracker
                 {
                     e.Handled = true;
                     foreach (FullInventoryCard item in cardListView.SelectedObjects)
-                        item.Count--;
+                    {
+                        if (item.Count > 1)
+                            item.Count--;
+                    }
                     OnCardsUpdated(new CardsUpdatedEventArgs { Items = cardListView.SelectedObjects as ArrayList });
                 }
             }
