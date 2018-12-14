@@ -17,10 +17,10 @@ namespace MTG_Collection_Tracker
     {
         private void InitUIWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            InitUIWorker.ReportProgress(0, new SplashProgressObject("Loading collections...", 1));
-            navForm.LoadGroups();
-            InitUIWorker.ReportProgress(0, new SplashProgressObject("Loading catalog...", 2));
+            InitUIWorker.ReportProgress(0, new SplashProgressObject("Loading catalog...", 1));
             dbViewForm.LoadSets();
+            InitUIWorker.ReportProgress(0, new SplashProgressObject("Loading collections...", 2));
+            navForm.LoadGroups();
             AddSetIcons();
             InitUIWorker.ReportProgress(0, new SplashProgressObject("Starting application...", 3));
             Thread.Sleep(100);
