@@ -79,8 +79,6 @@ namespace MTG_Collection_Tracker
             return sets;
         }
 
-
-
         private void checkForNewSetsWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             var sets = GetMTGJSONSets();

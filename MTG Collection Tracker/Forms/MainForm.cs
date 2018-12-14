@@ -24,7 +24,6 @@ namespace MTG_Collection_Tracker
         private static CardNavigatorForm navForm;
         private static DBViewForm dbViewForm;
         private static TasksForm tasksForm;
-        private static CollectorViewForm collectorForm;
         private static SplashForm splash = new SplashForm();
         private static ImageList _manaIcons;
         private static ImageList _symbolIcons16;

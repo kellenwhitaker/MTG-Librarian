@@ -44,6 +44,7 @@ namespace MTG_Collection_Tracker
         public override OLVItem Parent { get; set; }
         public override string ImageKey => Rarity != "Basic Land" ? $"{Set}: {Rarity}" : null;
         public override Predicate<object> Filter => x => (x as OLVCardItem).Rarity == Rarity;
+        public string ReleaseDate => SortValue.ToString(); // ensures correct sorting when TreeListView is sorted by ReleaseDate
 
         public int SortValue;
 
