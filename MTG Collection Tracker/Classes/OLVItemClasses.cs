@@ -79,8 +79,8 @@ namespace MTG_Collection_Tracker
     {
         public string Name;
         public DateTime ReleaseDate => DateTime.TryParse(CardSet.ReleaseDate, out DateTime value) ? value : DateTime.MinValue;
-        public List<OLVCardItem> Cards;
-        public List<OLVRarityItem> Rarities;
+        public List<OLVCardItem> Cards = new List<OLVCardItem>();
+        public List<OLVRarityItem> Rarities = new List<OLVRarityItem>();
         public CardSet CardSet { get; set; }
         public override OLVItem Parent { get; set; }
         public override Predicate<object> Filter => x => (x as OLVCardItem).Set == Name;
@@ -93,15 +93,11 @@ namespace MTG_Collection_Tracker
         {
             Name = set.Name;
             CardSet = set;
-            Cards = new List<OLVCardItem>();
-            Rarities = new List<OLVRarityItem>();
         }
 
         public OLVSetItem(string name)
         {
             Name = name;
-            Cards = new List<OLVCardItem>();
-            Rarities = new List<OLVRarityItem>();
         }
 
         public void AddCard(MagicCard card)

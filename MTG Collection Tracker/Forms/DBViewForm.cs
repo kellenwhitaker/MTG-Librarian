@@ -15,6 +15,7 @@ namespace MTG_Collection_Tracker
         private Dictionary<string, OLVSetItem> sets;
         private ModelFilter setNameFilter;
         private System.Timers.Timer TextChangedWaitTimer = new System.Timers.Timer();
+        internal List<OLVSetItem> SetItems = new List<OLVSetItem>();
 
         public DBViewForm()
         {
@@ -124,6 +125,7 @@ namespace MTG_Collection_Tracker
                     cardListView.AddObjects(set.Cards);
                     if (setListView.Objects.Count() == 1) // first set added, must sort the tree
                         setListView.Sort(setListView.AllColumns[1], SortOrder.Descending);
+                    SetItems.Add(set);
                 }
             }
         }
@@ -157,6 +159,7 @@ namespace MTG_Collection_Tracker
                 }
             }
             CollapseParts(sets);
+            SetItems.AddRange(sets.Values);
         }
 
         private void CollapseParts(OLVSetItem set)

@@ -178,6 +178,7 @@ namespace MTG_Collection_Tracker
             if (dockPanel1.ActiveDocument is CollectionViewForm activeDocument)
             {
                 var collectionName = activeDocument.DocumentName;
+                var setItems = new Dictionary<string, OLVSetItem>();
                 using (MyDbContext context = new MyDbContext())
                 {
                     List<InventoryCard> cardsAdded = new List<InventoryCard>();
@@ -188,6 +189,9 @@ namespace MTG_Collection_Tracker
                         var inventoryCard = AddMagicCardToCollection(context, magicCard, activeDocument.Collection.Id, insertionIndex);
                         cardsAdded.Add(inventoryCard);
                         insertionIndex++;
+                        if (!setItems.TryGetValue(item.MagicCard.Edition, out OLVSetItem setItem))
+                            if ((setItem = dbViewForm.SetItems.Where(x => x.Name == item.MagicCard.Edition).FirstOrDefault()) != null)
+                                setItems.Add(item.MagicCard.Edition, setItem);
                     }
                     context.SaveChanges();
                     activeDocument.cardListView.Freeze();
@@ -196,11 +200,11 @@ namespace MTG_Collection_Tracker
                         var cardInstance = card.ToFullCard(context);
                         if (cardInstance != null)
                             activeDocument.AddCardInstance(cardInstance);
-                        if (card.Count.HasValue && Globals.AllCards.TryGetValue(card.uuid, out MagicCard magicCard))
-                            magicCard.CopiesOwned += card.Count.Value;
+                        if (Globals.AllCards.TryGetValue(card.uuid, out MagicCard magicCard))
+                            magicCard.CopiesOwned++;
                     }
                     activeDocument.cardListView.Unfreeze();
-                    //dbViewForm.setListView.RefreshObject();
+                    dbViewForm.setListView.RefreshObjects(setItems.Values.ToArray());
                 }
             }
         }

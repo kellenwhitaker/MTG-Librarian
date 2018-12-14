@@ -10,7 +10,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
-//TODO: update inventory counts when cards are dropped
 //TODO: improve appearance of checkboxes
 namespace MTG_Collection_Tracker
 {
