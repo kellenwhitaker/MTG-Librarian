@@ -42,10 +42,20 @@ namespace MTG_Librarian
             navForm.Activate();
             dbViewForm.LoadTree();
             dbViewForm.Show(dockPanel1, DockState.DockBottom);
+            LoadCollections();
             dockPanel1.UpdateDockWindowZOrder(DockStyle.Left, true);
             dockPanel1.UpdateDockWindowZOrder(DockStyle.Right, true);
             CheckForNewSetsWorker.RunWorkerAsync();
             Show();
+        }
+
+        private void LoadCollections()
+        {
+            var docs = Properties.Settings.Default.OpenCollections;
+            if (docs != null)
+                foreach (var doc in docs)
+                    if (Int32.TryParse(doc, out int collectionId))
+                        LoadCollection(collectionId);
         }
 
         private List<CardSet> GetMTGJSONSets()

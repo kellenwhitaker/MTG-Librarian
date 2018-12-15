@@ -304,26 +304,40 @@ namespace MTG_Librarian
             }
         }
 
+        public void LoadCollection(int id)
+        {
+            CardCollection collection;
+            using (var context = new MyDbContext())
+            {
+                collection = (from c in context.Collections
+                              where c.Id == id
+                              select c).FirstOrDefault();
+            }
+            if (collection != null)
+                LoadCollection(collection);
+        }
+
+        public void LoadCollection(CardCollection collection)
+        {
+            var document = new CollectionViewForm { Collection = collection, Text = collection.CollectionName };
+            document.LoadCollection();
+            document.CardsDropped += cvFormCardsDropped;
+            document.CardsUpdated += cvFormCardsUpdated;
+            document.CardSelected += CardSelected;
+            document.cardListView.SmallImageList = SmallIconList;
+            document.Show(dockPanel1, DockState.Document);
+            dockPanel1.ActiveDocumentPane.SetDoubleBuffered();
+            dockPanel1.SetDoubleBuffered();
+        }
+
         private void navFormCollectionActivated(object sender, CollectionActivatedEventArgs e)
         {
             if (e.NavigatorCollection?.Name is string docName)
             {
                 if (dockPanel1.Documents.FirstOrDefault(x => (x as CollectionViewForm).DocumentName == docName) is CollectionViewForm document)
-                {
                     document.Activate();
-                }
                 else
-                {
-                    document = new CollectionViewForm { Collection = e.NavigatorCollection.CardCollection, Text = e.NavigatorCollection.Text };
-                    document.LoadCollection();
-                    document.CardsDropped += cvFormCardsDropped;
-                    document.CardsUpdated += cvFormCardsUpdated;
-                    document.CardSelected += CardSelected;
-                    document.cardListView.SmallImageList = SmallIconList;
-                    document.Show(dockPanel1, DockState.Document);
-                    dockPanel1.ActiveDocumentPane.SetDoubleBuffered();
-                    dockPanel1.SetDoubleBuffered();
-                }
+                    LoadCollection(e.NavigatorCollection.CardCollection);
             }
         }
 
@@ -376,6 +390,15 @@ namespace MTG_Librarian
         private static void OnCardImageRetrieved(CardImageRetrievedEventArgs args)
         {
             CardImageRetrieved?.Invoke(thisForm, args);
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            Properties.Settings.Default.OpenCollections = new System.Collections.Specialized.StringCollection();
+            foreach (var doc in dockPanel1.Documents)
+                if (doc is CollectionViewForm collectionDoc)
+                    Properties.Settings.Default.OpenCollections.Add(collectionDoc.Collection.Id.ToString());
+            Properties.Settings.Default.Save();
         }
     }
 
