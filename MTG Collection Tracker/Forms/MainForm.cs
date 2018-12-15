@@ -173,7 +173,7 @@ namespace MTG_Librarian
             return inventoryCard;
         }
 
-        private void cvFormCardsDropped(object sender, CardsDroppedEventArgs e)
+        private void AddMagicCardsToActiveDocument(List<OLVCardItem> cards)
         {
             if (dockPanel1.ActiveDocument is CollectionViewForm activeDocument)
             {
@@ -183,15 +183,15 @@ namespace MTG_Librarian
                 {
                     List<InventoryCard> cardsAdded = new List<InventoryCard>();
                     int insertionIndex = 0;
-                    foreach (OLVCardItem item in e.Items)
+                    foreach (OLVCardItem cardItem in cards)
                     {
-                        MagicCard magicCard = item.MagicCard;
-                        var inventoryCard = AddMagicCardToCollection(context, magicCard, activeDocument.Collection.Id, insertionIndex);
+                        MagicCard card = cardItem.MagicCard;
+                        var inventoryCard = AddMagicCardToCollection(context, card, activeDocument.Collection.Id, insertionIndex);
                         cardsAdded.Add(inventoryCard);
                         insertionIndex++;
-                        if (!setItems.TryGetValue(item.MagicCard.Edition, out OLVSetItem setItem))
-                            if ((setItem = dbViewForm.SetItems.Where(x => x.Name == item.MagicCard.Edition).FirstOrDefault()) != null)
-                                setItems.Add(item.MagicCard.Edition, setItem);
+                        if (!setItems.TryGetValue(card.Edition, out OLVSetItem setItem))
+                            if ((setItem = dbViewForm.SetItems.Where(x => x.Name == card.Edition).FirstOrDefault()) != null)
+                                setItems.Add(card.Edition, setItem);
                     }
                     context.SaveChanges();
                     activeDocument.cardListView.Freeze();
@@ -207,6 +207,21 @@ namespace MTG_Librarian
                     dbViewForm.setListView.RefreshObjects(setItems.Values.ToArray());
                 }
             }
+        }
+
+        private void cvFormCardsDropped(object sender, CardsDroppedEventArgs e)
+        {
+            if (e.Items[0] is OLVCardItem)
+            {
+                var cardItems = new List<OLVCardItem>();
+                foreach (OLVCardItem cardItem in e.Items)
+                    cardItems.Add(cardItem);
+                AddMagicCardsToActiveDocument(cardItems);
+            }
+            else if (e.Items[0] is OLVSetItem setItem)
+                AddMagicCardsToActiveDocument(setItem.Cards);
+            else if (e.Items[0] is OLVRarityItem rarityItem)
+                AddMagicCardsToActiveDocument(rarityItem.Cards);
         }
 
         private void cvFormCardsUpdated(object sender, CardsUpdatedEventArgs e)

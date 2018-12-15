@@ -12,7 +12,6 @@ using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 //TODO: improve appearance of checkboxes
 //TODO: enable deletion of cards from collection
-//TODO: enable dropping of whole sets (from the set tree view) onto a collection
 //TODO: moving a collection view out of the panel breaks any updates to it
 namespace MTG_Librarian
 {
@@ -61,12 +60,16 @@ namespace MTG_Librarian
         private void fastObjectListView1_ModelCanDrop(object sender, ModelDropEventArgs e)
         {
             e.Effect = DragDropEffects.Move;
-            e.InfoMessage = $"Add to {DocumentName}";
+            if (e.SourceModels[0] is OLVCardItem)
+                e.InfoMessage = $"Add {e.SourceModels.Count} card{(e.SourceModels.Count == 1 ? "" : "s")} to {DocumentName}";
+            else if (e.SourceModels[0] is OLVSetItem setItem)
+                e.InfoMessage = $"Add set [{setItem.Name}] to {DocumentName}";
+            else if (e.SourceModels[0] is OLVRarityItem rarityItem)
+                e.InfoMessage = $"Add {rarityItem.Rarity}s from [{(rarityItem.Parent as OLVSetItem).Name}] to {DocumentName}";
         }
 
         private void fastObjectListView1_ModelDropped(object sender, ModelDropEventArgs e)
         {
-            
             OnCardsDropped(new CardsDroppedEventArgs { Items = e.SourceModels as ArrayList });
         }
 

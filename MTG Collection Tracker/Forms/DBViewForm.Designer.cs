@@ -244,6 +244,7 @@ namespace MTG_Librarian
             this.setListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.setListView.HeaderMaximumHeight = 0;
             this.setListView.HideSelection = false;
+            this.setListView.IsSimpleDragSource = true;
             this.setListView.Location = new System.Drawing.Point(0, 0);
             this.setListView.MultiSelect = false;
             this.setListView.Name = "setListView";

@@ -34,7 +34,7 @@ namespace MTG_Librarian
 
     public class OLVRarityItem : OLVItem, IComparable<OLVRarityItem>
     {
-        public List<MagicCard> Cards { get; set; } = new List<MagicCard>();
+        public List<OLVCardItem> Cards { get; set; } = new List<OLVCardItem>();
         public string Rarity { get; set; }
         public string Set { get; set; }
         public int Count => Cards?.Count ?? 0;
@@ -113,8 +113,9 @@ namespace MTG_Librarian
                 Rarities.Add(rarityItem);
                 Rarities.Sort();
             }
-            rarityItem.Cards.Add(card);
-            Cards.Add(new OLVCardItem(card));
+            OLVCardItem cardItem = new OLVCardItem(card);
+            rarityItem.Cards.Add(cardItem);
+            Cards.Add(cardItem);
         }
 
         public void AddRarity(OLVRarityItem rarity)
