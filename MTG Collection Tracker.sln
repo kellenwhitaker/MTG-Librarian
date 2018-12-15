@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTG Collection Tracker", "MTG Collection Tracker\MTG Collection Tracker.csproj", "{8ABE8061-8692-4D31-B515-5A450E317631}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTG Librarian", "MTG Collection Tracker\MTG Librarian.csproj", "{8ABE8061-8692-4D31-B515-5A450E317631}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlockProgressBar", "BlockProgressBar\BlockProgressBar.csproj", "{341BF109-563F-4D39-8641-67165526A6BF}"
 EndProject
