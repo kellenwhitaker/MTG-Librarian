@@ -149,7 +149,7 @@ namespace MTG_Collection_Tracker
         }
     }
 
-    internal static class ColorRemapper
+    public static class ColorRemapper
     {
         public static ImageAttributes GetImageAttributes(Color oldColor, Color newColor)
         {

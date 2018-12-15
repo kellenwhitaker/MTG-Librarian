@@ -51,7 +51,7 @@ namespace MTG_Collection_Tracker
             navigatorListView.AddObjects(groupList);
         }
 
-        internal event EventHandler<CollectionActivatedEventArgs> CollectionActivated;
+        public event EventHandler<CollectionActivatedEventArgs> CollectionActivated;
         private void OnCollectionActivated(CollectionActivatedEventArgs args)
         {
             CollectionActivated?.Invoke(this, args);

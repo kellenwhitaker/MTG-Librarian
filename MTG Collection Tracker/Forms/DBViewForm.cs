@@ -8,7 +8,7 @@ using System.Timers;
 using WeifenLuo.WinFormsUI.Docking;
 using BrightIdeasSoftware;
 using System.Collections;
-
+//TODO: expanded sets are not filtered
 namespace MTG_Collection_Tracker
 {
     public partial class DBViewForm : DockContent
@@ -16,7 +16,7 @@ namespace MTG_Collection_Tracker
         private Dictionary<string, OLVSetItem> sets;
         private ModelFilter setNameFilter;
         private System.Timers.Timer TextChangedWaitTimer = new System.Timers.Timer();
-        internal List<OLVSetItem> SetItems = new List<OLVSetItem>();
+        public List<OLVSetItem> SetItems = new List<OLVSetItem>();
 
         public DBViewForm()
         {
@@ -41,7 +41,7 @@ namespace MTG_Collection_Tracker
             };
         }
 
-        internal event EventHandler<CardsActivatedEventArgs> CardsActivated;
+        public event EventHandler<CardsActivatedEventArgs> CardsActivated;
         private void OnCardsActivated(CardsActivatedEventArgs args)
         {
             CardsActivated?.Invoke(this, args);
@@ -94,7 +94,7 @@ namespace MTG_Collection_Tracker
             return combinedFilter;
         }
         #endregion
-        internal void SortCardListView()
+        public void SortCardListView()
         {
             if (cardListView.PrimarySortColumn == null) // sort by set if not already sorted
             {
@@ -104,7 +104,7 @@ namespace MTG_Collection_Tracker
             }
         }
 
-        internal void LoadSet(string SetCode)
+        public void LoadSet(string SetCode)
         {
             using (var context = new MyDbContext())
             {
@@ -131,7 +131,7 @@ namespace MTG_Collection_Tracker
             }
         }
 
-        internal void LoadSets()
+        public void LoadSets()
         {
             setListView.CanExpandGetter = x => x is OLVSetItem;
             setListView.ChildrenGetter = x => (x as OLVSetItem).Rarities;
@@ -191,7 +191,7 @@ namespace MTG_Collection_Tracker
                 CollapseParts(OLVSet);
         }
 
-        internal void LoadTree()
+        public void LoadTree()
         {
             foreach (var set in sets.Values)
             {
@@ -254,13 +254,13 @@ namespace MTG_Collection_Tracker
             Cursor.Current = new Cursor(Properties.Resources.hand.GetHicon());
         }
 
-        internal event EventHandler<CardSelectedEventArgs> CardSelected;
+        public event EventHandler<CardSelectedEventArgs> CardSelected;
         private void OnCardSelected(CardSelectedEventArgs args)
         {
             CardSelected?.Invoke(this, args);
         }
 
-        internal event EventHandler<CardFocusedEventArgs> CardFocused;
+        public event EventHandler<CardFocusedEventArgs> CardFocused;
         private void OnCardFocused(CardFocusedEventArgs e)
         {
             CardFocused?.Invoke(this, e);

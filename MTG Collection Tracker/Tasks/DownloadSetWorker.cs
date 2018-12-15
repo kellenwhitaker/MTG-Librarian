@@ -18,7 +18,7 @@ namespace MTG_Collection_Tracker
 {
     public class DownloadSetTask : BackgroundTask
     {
-        internal CardSet CardSet { get; private set; }
+        public CardSet CardSet { get; private set; }
         private Image commonIcon, uncommonIcon, rareIcon, mythicIcon;
 
         public DownloadSetTask(CardSet set)

@@ -106,8 +106,7 @@
 
         #endregion
         private BrightIdeasSoftware.OLVColumn olvColumn1;
-        //protected internal BrightIdeasSoftware.ObjectListView tasksListView;
-        protected internal EnhancedOLV tasksListView;
+        public EnhancedOLV tasksListView;
         private BrightIdeasSoftware.OLVColumn olvColumn3;
         private System.Windows.Forms.PictureBox pictureBox1;
     }

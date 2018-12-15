@@ -129,7 +129,7 @@
 
         #endregion
         private BrightIdeasSoftware.OLVColumn olvColumn1;
-        internal BrightIdeasSoftware.TreeListView navigatorListView;
+        public BrightIdeasSoftware.TreeListView navigatorListView;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem newGroupToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editNameToolStripMenuItem;

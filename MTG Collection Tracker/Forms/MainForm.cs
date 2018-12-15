@@ -27,9 +27,9 @@ namespace MTG_Collection_Tracker
         private static SplashForm splash = new SplashForm();
         private static ImageList _manaIcons;
         private static ImageList _symbolIcons16;
-        internal static ImageList ManaIcons => _manaIcons;
-        internal static ImageList SymbolIcons16 => _symbolIcons16;
-        internal static ImageList SmallIconList => smallIconList;
+        public static ImageList ManaIcons => _manaIcons;
+        public static ImageList SymbolIcons16 => _symbolIcons16;
+        public static ImageList SmallIconList => smallIconList;
         private static MainForm thisForm;
         private const int SmallIconWidth = 27;
         private const int SmallIconHeight = 21;
@@ -141,7 +141,7 @@ namespace MTG_Collection_Tracker
             }
         }
 
-        internal static void CardFocused(object sender, CardFocusedEventArgs e)
+        public static void CardFocused(object sender, CardFocusedEventArgs e)
         {
             cardInfoForm.CardFocusedUuid = e.uuid;
         }
@@ -317,7 +317,7 @@ namespace MTG_Collection_Tracker
             Application.Exit();
         }
 
-        internal static void CardSelected(object sender, CardSelectedEventArgs e)
+        public static void CardSelected(object sender, CardSelectedEventArgs e)
         {
             MagicCardBase card = e.MagicCard;
             cardInfoForm.CardSelected(card);
@@ -357,7 +357,7 @@ namespace MTG_Collection_Tracker
             catch (Exception ex) { }
         }
 
-        static internal event EventHandler<CardImageRetrievedEventArgs> CardImageRetrieved;
+        static public event EventHandler<CardImageRetrievedEventArgs> CardImageRetrieved;
         private static void OnCardImageRetrieved(CardImageRetrievedEventArgs args)
         {
             CardImageRetrieved?.Invoke(thisForm, args);

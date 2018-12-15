@@ -14,7 +14,7 @@ namespace MTG_Collection_Tracker
 {
     public partial class CardInfoForm : DockContent
     {
-        internal string CardFocusedUuid { get; set; }
+        public string CardFocusedUuid { get; set; }
 
         public CardInfoForm()
         {
@@ -43,7 +43,7 @@ namespace MTG_Collection_Tracker
             return imgs;
         }
 
-        internal void CardSelected(MagicCardBase card)
+        public void CardSelected(MagicCardBase card)
         {
             string html = $"<table width='100%'>" +
                 $"<tr>" +

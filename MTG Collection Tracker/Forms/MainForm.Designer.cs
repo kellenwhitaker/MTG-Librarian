@@ -181,7 +181,7 @@ namespace MTG_Collection_Tracker
         private System.Windows.Forms.Label tasksLabel;
         private CustomControls.BlockProgressBar tasksProgressBar;
         private static System.Windows.Forms.ImageList smallIconList;
-        protected internal System.Windows.Forms.ImageList largeIconList;
+        public System.Windows.Forms.ImageList largeIconList;
     }
 }
 

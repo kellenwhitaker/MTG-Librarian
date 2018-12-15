@@ -14,7 +14,7 @@ namespace MTG_Collection_Tracker
 {
     public partial class TasksForm : DockContent
     {
-        internal TaskManager TaskManager { get; private set; }
+        public TaskManager TaskManager { get; private set; }
 
         public TasksForm(Label tasksLabel, BlockProgressBar progressBar)
         {

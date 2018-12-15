@@ -104,7 +104,7 @@ namespace MTG_Collection_Tracker
             _completedTasks.Clear();
         }
 
-        internal event EventHandler<SetDownloadedEventArgs> SetDownloaded;
+        public event EventHandler<SetDownloadedEventArgs> SetDownloaded;
         private void OnSetDownloaded(SetDownloadedEventArgs args)
         {
             SetDownloaded?.Invoke(this, args);

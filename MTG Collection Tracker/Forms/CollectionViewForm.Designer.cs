@@ -235,7 +235,7 @@
         private BrightIdeasSoftware.OLVColumn ManaCost;
         private BrightIdeasSoftware.OLVColumn olvColumn4;
         private BrightIdeasSoftware.OLVColumn olvColumn5;
-        internal BrightIdeasSoftware.FastObjectListView cardListView;
+        public BrightIdeasSoftware.FastObjectListView cardListView;
         private BrightIdeasSoftware.OLVColumn CountColumn;
         private BrightIdeasSoftware.OLVColumn CostColumn;
         private BrightIdeasSoftware.OLVColumn TagsColumn;

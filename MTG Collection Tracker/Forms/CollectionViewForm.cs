@@ -53,7 +53,7 @@ namespace MTG_Collection_Tracker
             }
         }
 
-        internal void AddCardInstance(FullInventoryCard cardInstance)
+        public void AddCardInstance(FullInventoryCard cardInstance)
         {
             cardListView.AddObject(cardInstance);
         }
@@ -70,7 +70,7 @@ namespace MTG_Collection_Tracker
             OnCardsDropped(new CardsDroppedEventArgs { Items = e.SourceModels as ArrayList });
         }
 
-        internal event EventHandler<CardsDroppedEventArgs> CardsDropped;
+        public event EventHandler<CardsDroppedEventArgs> CardsDropped;
         private void OnCardsDropped(CardsDroppedEventArgs args)
         {
             CardsDropped?.Invoke(this, args);
@@ -106,13 +106,13 @@ namespace MTG_Collection_Tracker
             }
         }
 
-        internal event EventHandler<CardsUpdatedEventArgs> CardsUpdated;
+        public event EventHandler<CardsUpdatedEventArgs> CardsUpdated;
         private void OnCardsUpdated(CardsUpdatedEventArgs args)
         {
             CardsUpdated?.Invoke(this, args);
         }
 
-        internal event EventHandler<CardSelectedEventArgs> CardSelected;
+        public event EventHandler<CardSelectedEventArgs> CardSelected;
         private void OnCardSelected(CardSelectedEventArgs args)
         {
             CardSelected?.Invoke(this, args);

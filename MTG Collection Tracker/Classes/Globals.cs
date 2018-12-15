@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace MTG_Collection_Tracker
 {
-    internal static class Globals
+    public static class Globals
     {
-        internal static Dictionary<string, MagicCard> AllCards = new Dictionary<string, MagicCard>();
+        public static Dictionary<string, MagicCard> AllCards = new Dictionary<string, MagicCard>();
     }
 }

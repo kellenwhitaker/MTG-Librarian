@@ -383,7 +383,7 @@ namespace MTG_Collection_Tracker
 
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        protected internal BrightIdeasSoftware.TreeListView setListView;
+        public BrightIdeasSoftware.TreeListView setListView;
         private BrightIdeasSoftware.OLVColumn SetName;
         private EnhancedTextBox.EnhancedTextBox setFilterBox;
         private BrightIdeasSoftware.FastObjectListView cardListView;
