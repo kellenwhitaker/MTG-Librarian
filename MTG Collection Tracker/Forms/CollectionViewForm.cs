@@ -20,6 +20,15 @@ namespace MTG_Librarian
         public string DocumentName => Collection?.CollectionName;
         public CardCollection Collection { get; set; }
         private bool MultiEditing = false;
+        public override string Text
+        {
+            get => Collection?.CollectionName;
+            set
+            {
+                if (Collection != null)
+                    Collection.CollectionName = value;
+            }
+        }
 
         public CollectionViewForm()
         {

@@ -16,6 +16,7 @@ using System.ComponentModel;
 //TODO add card preview
 //TODO improve bulk card add speed
 //TODO unknown error: collection unmodified
+//TODO: save activated collection to settings
 namespace MTG_Librarian
 {
     public partial class MainForm : Form
@@ -37,6 +38,7 @@ namespace MTG_Librarian
         public MainForm()
         {
             InitializeComponent();
+            Globals.DockPanel = dockPanel1;
             thisForm = this;
             splash.Show();
             //AddSets();
