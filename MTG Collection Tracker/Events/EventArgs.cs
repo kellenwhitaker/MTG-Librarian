@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 //TODO make card properties uniform
-namespace MTG_Collection_Tracker
+namespace MTG_Librarian
 {
     public class SetDownloadedEventArgs: EventArgs
     {

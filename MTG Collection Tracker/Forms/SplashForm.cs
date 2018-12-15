@@ -4,7 +4,7 @@ using System.Drawing.Imaging;
 using System.Windows.Forms;
 using System.Threading;
 
-namespace MTG_Collection_Tracker
+namespace MTG_Librarian
 {
     public partial class SplashForm : Form
     {

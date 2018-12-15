@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MTG_Collection_Tracker
+namespace MTG_Librarian
 {
     public class AlphaNumericString : IComparable<AlphaNumericString>
     {

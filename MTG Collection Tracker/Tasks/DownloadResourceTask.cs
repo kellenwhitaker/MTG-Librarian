@@ -7,7 +7,7 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MTG_Collection_Tracker
+namespace MTG_Librarian
 {
     public class DownloadResourceTask : BackgroundTask
     {

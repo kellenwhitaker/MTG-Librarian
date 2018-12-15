@@ -10,7 +10,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using CustomControls;
 //TODO: figure out why task manager quits partway through a queue of tasks
-namespace MTG_Collection_Tracker
+namespace MTG_Librarian
 {
     [DesignerCategory("Code")]
     public class TaskManager : BackgroundWorker

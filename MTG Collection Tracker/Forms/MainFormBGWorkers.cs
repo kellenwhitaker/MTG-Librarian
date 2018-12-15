@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 
-namespace MTG_Collection_Tracker
+namespace MTG_Librarian
 {
     [DesignerCategory("Code")]
     public partial class MainForm : Form

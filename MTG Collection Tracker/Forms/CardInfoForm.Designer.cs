@@ -1,4 +1,4 @@
-﻿namespace MTG_Collection_Tracker
+﻿namespace MTG_Librarian
 {
     partial class CardInfoForm
     {

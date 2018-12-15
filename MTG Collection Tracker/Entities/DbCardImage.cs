@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MTG_Collection_Tracker
+namespace MTG_Librarian
 {
     public class DbCardImage
     {

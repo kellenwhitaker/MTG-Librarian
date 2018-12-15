@@ -2,7 +2,7 @@
 using System.Drawing;
 using static BrightIdeasSoftware.TreeListView;
 
-namespace MTG_Collection_Tracker
+namespace MTG_Librarian
 {
     public class SetRenderer : TreeRenderer
     {

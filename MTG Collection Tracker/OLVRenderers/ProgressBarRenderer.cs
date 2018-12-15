@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Linq;
 
-namespace MTG_Collection_Tracker
+namespace MTG_Librarian
 {
     public class ProgressBarRenderer : BaseRenderer
     {

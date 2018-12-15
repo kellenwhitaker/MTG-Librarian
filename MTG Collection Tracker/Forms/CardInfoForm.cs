@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 //TODO: improve formatting with long mana costs (Chromium, Progenitus, B.F.M.)
-namespace MTG_Collection_Tracker
+namespace MTG_Librarian
 {
     public partial class CardInfoForm : DockContent
     {

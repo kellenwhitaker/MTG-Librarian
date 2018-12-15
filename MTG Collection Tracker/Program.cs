@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace MTG_Collection_Tracker
+namespace MTG_Librarian
 {
     static class Program
     {

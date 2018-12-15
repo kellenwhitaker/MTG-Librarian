@@ -10,7 +10,7 @@ using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 using CustomControls;
 
-namespace MTG_Collection_Tracker
+namespace MTG_Librarian
 {
     public partial class TasksForm : DockContent
     {

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml.Linq;
 
-namespace MTG_Collection_Tracker
+namespace MTG_Librarian
 {
     public partial class MainForm : Form
     {

@@ -1,7 +1,7 @@
 ﻿using BrightIdeasSoftware;
 using System.Drawing;
 
-namespace MTG_Collection_Tracker
+namespace MTG_Librarian
 {
     public class CardInstanceNameRenderer : BaseRenderer
     {

@@ -14,7 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using System.Net.Http;
 using Newtonsoft.Json;
 
-namespace MTG_Collection_Tracker
+namespace MTG_Librarian
 {
     public class DownloadSetTask : BackgroundTask
     {

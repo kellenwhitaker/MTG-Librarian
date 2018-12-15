@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MTG_Collection_Tracker
+namespace MTG_Librarian
 {
     [Table("Sets")]
     public class CardSet

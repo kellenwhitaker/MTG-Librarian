@@ -2,7 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MTG_Collection_Tracker
+namespace MTG_Librarian
 {
     public class FullInventoryCard : MagicCardBase
     {

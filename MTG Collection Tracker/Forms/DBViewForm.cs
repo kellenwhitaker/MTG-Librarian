@@ -9,7 +9,7 @@ using WeifenLuo.WinFormsUI.Docking;
 using BrightIdeasSoftware;
 using System.Collections;
 //TODO: expanded sets are not filtered
-namespace MTG_Collection_Tracker
+namespace MTG_Librarian
 {
     public partial class DBViewForm : DockContent
     {

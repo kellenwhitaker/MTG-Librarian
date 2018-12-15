@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace MTG_Collection_Tracker
+namespace MTG_Librarian
 {
     public class EnhancedOLV : ObjectListView
     {

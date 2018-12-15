@@ -16,7 +16,7 @@ using System.ComponentModel;
 //TODO add card preview
 //TODO improve bulk card add speed
 //TODO unknown error: collection unmodified
-namespace MTG_Collection_Tracker
+namespace MTG_Librarian
 {
     public partial class MainForm : Form
     {

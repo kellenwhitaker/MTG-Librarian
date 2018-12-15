@@ -1,6 +1,6 @@
 ﻿using EnhancedTextBox;
 
-namespace MTG_Collection_Tracker
+namespace MTG_Librarian
 {
     partial class DBViewForm
     {

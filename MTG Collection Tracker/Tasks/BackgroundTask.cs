@@ -8,7 +8,7 @@ using System.Drawing;
 using System.Diagnostics;
 using CustomControls;
 
-namespace MTG_Collection_Tracker
+namespace MTG_Librarian
 {
     public interface IBackgroundTask
     {

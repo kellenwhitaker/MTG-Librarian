@@ -1,4 +1,4 @@
-﻿namespace MTG_Collection_Tracker
+﻿namespace MTG_Librarian
 {
     partial class SplashForm
     {
@@ -80,7 +80,7 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::MTG_Collection_Tracker.Properties.Resources.mtgl_logo;
+            this.pictureBox1.Image = global::MTG_Librarian .Properties.Resources.mtgl_logo;
             this.pictureBox1.Location = new System.Drawing.Point(29, 26);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(475, 282);

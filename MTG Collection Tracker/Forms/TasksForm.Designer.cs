@@ -1,4 +1,4 @@
-﻿namespace MTG_Collection_Tracker
+﻿namespace MTG_Librarian
 {
     partial class TasksForm
     {
@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.tasksListView = new MTG_Collection_Tracker.EnhancedOLV();
+            this.tasksListView = new MTG_Librarian.EnhancedOLV();
             this.olvColumn3 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();

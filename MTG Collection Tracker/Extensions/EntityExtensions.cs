@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MTG_Collection_Tracker
+namespace MTG_Librarian
 {
     public static class DBInstanceExtensions
     {

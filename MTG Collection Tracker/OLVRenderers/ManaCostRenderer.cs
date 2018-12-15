@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace MTG_Collection_Tracker
+namespace MTG_Librarian
 {
     public class ManaCostRenderer : BaseRenderer
     {
