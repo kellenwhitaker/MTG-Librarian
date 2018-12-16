@@ -14,8 +14,6 @@ namespace MTG_Librarian
 {
     public partial class CardInfoForm : DockContent
     {
-        public string CardFocusedUuid { get; set; }
-
         public CardInfoForm()
         {
             InitializeComponent();
@@ -24,7 +22,7 @@ namespace MTG_Librarian
 
         private void cardImageRetrieved(object sender, CardImageRetrievedEventArgs e)
         {
-            if (e.uuid == CardFocusedUuid)
+            if (e.uuid == Globals.States.CardFocusedUuid)
                 pictureBox1.Image = e.CardImage.ScaleImage(pictureBox1.Width, pictureBox1.Height);
         }
 

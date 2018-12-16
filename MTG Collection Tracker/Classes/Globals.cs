@@ -14,6 +14,11 @@ namespace MTG_Librarian
             public static Dictionary<string, MagicCard> AllMagicCards { get; set; } = new Dictionary<string, MagicCard>();
         }
 
+        public static class States
+        {  
+            public static string CardFocusedUuid { get; set; }
+        }
+    
         public static class Forms
         {
             public static WeifenLuo.WinFormsUI.Docking.DockPanel DockPanel { get; set; }
