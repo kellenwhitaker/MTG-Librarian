@@ -43,7 +43,8 @@ namespace MTG_Librarian
             Globals.Forms.DBViewForm.CardsActivated += dbFormCardActivated;
             Globals.Forms.DBViewForm.CardSelected += CardSelected;
             Globals.Forms.DBViewForm.CardFocused += CardFocused;
-            Globals.Forms.TasksForm = new TasksForm(tasksLabel, tasksProgressBar);
+            Globals.Forms.TasksForm = new TasksForm();
+            Globals.Forms.TasksForm.InitializeTaskManager();
             Globals.Forms.TasksForm.tasksListView.GetColumn(0).Renderer = new IconRenderer();
             Globals.Forms.TasksForm.tasksListView.GetColumn(1).Renderer = new ProgressBarRenderer();
             Globals.Forms.TasksForm.TaskManager.SetDownloaded += SetDownloaded;

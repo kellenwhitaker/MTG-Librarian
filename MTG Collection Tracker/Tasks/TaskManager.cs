@@ -19,16 +19,14 @@ namespace MTG_Librarian
         private ConcurrentDeque<BackgroundTask> _AllTasks;
         private List<BackgroundTask> _activeTasks;
         private List<BackgroundTask> _completedTasks;
-        private TasksForm TasksForm;
         private EnhancedOLV listView;
         private Label tasksLabel;
         private BlockProgressBar progressBar;
         public int TaskCount => _AllTasks.Count;
 
-        public TaskManager(TasksForm tasksForm, Label label, BlockProgressBar progressBar)
+        public TaskManager(Label label, BlockProgressBar progressBar)
         {
-            TasksForm = tasksForm;
-            listView = tasksForm.tasksListView;
+            listView = Globals.Forms.TasksForm.tasksListView;
             tasksLabel = label;
             this.progressBar = progressBar;
             _IncomingTasks = new ConcurrentDeque<BackgroundTask>();

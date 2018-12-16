@@ -16,11 +16,15 @@ namespace MTG_Librarian
     {
         public TaskManager TaskManager { get; private set; }
 
-        public TasksForm(Label tasksLabel, BlockProgressBar progressBar)
+        public TasksForm()
         {
             InitializeComponent();
-            TaskManager = new TaskManager(this, tasksLabel, progressBar);
             tasksListView.BackColor = Color.Transparent;
+        }
+
+        public void InitializeTaskManager()
+        {
+            TaskManager = new TaskManager(Globals.Forms.MainForm.TasksLabel, Globals.Forms.MainForm.TasksProgressBar);
         }
     }
 }

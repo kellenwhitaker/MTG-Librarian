@@ -38,8 +38,8 @@ namespace MTG_Librarian
             this.dockPanel1 = new WeifenLuo.WinFormsUI.Docking.DockPanel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
-            this.tasksProgressBar = new CustomControls.BlockProgressBar();
-            this.tasksLabel = new System.Windows.Forms.Label();
+            this.TasksProgressBar = new CustomControls.BlockProgressBar();
+            this.TasksLabel = new System.Windows.Forms.Label();
             this.largeIconList = new System.Windows.Forms.ImageList(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -114,35 +114,35 @@ namespace MTG_Librarian
             // panel2
             // 
             this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel2.Controls.Add(this.tasksProgressBar);
-            this.panel2.Controls.Add(this.tasksLabel);
+            this.panel2.Controls.Add(this.TasksProgressBar);
+            this.panel2.Controls.Add(this.TasksLabel);
             this.panel2.Location = new System.Drawing.Point(831, 109);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(631, 25);
             this.panel2.TabIndex = 0;
             // 
-            // tasksProgressBar
+            // TasksProgressBar
             // 
-            this.tasksProgressBar.BarColor = System.Drawing.Color.White;
-            this.tasksProgressBar.BlankBarColor = System.Drawing.Color.DodgerBlue;
-            this.tasksProgressBar.BorderColor = System.Drawing.Color.White;
-            this.tasksProgressBar.CurrentBlocks = 3;
-            this.tasksProgressBar.Location = new System.Drawing.Point(522, 11);
-            this.tasksProgressBar.MaxBlocks = 0;
-            this.tasksProgressBar.Name = "tasksProgressBar";
-            this.tasksProgressBar.Progress = 0;
-            this.tasksProgressBar.Size = new System.Drawing.Size(100, 7);
-            this.tasksProgressBar.TabIndex = 1;
+            this.TasksProgressBar.BarColor = System.Drawing.Color.White;
+            this.TasksProgressBar.BlankBarColor = System.Drawing.Color.DodgerBlue;
+            this.TasksProgressBar.BorderColor = System.Drawing.Color.White;
+            this.TasksProgressBar.CurrentBlocks = 3;
+            this.TasksProgressBar.Location = new System.Drawing.Point(522, 11);
+            this.TasksProgressBar.MaxBlocks = 0;
+            this.TasksProgressBar.Name = "TasksProgressBar";
+            this.TasksProgressBar.Progress = 0;
+            this.TasksProgressBar.Size = new System.Drawing.Size(100, 7);
+            this.TasksProgressBar.TabIndex = 1;
             // 
-            // tasksLabel
+            // TasksLabel
             // 
-            this.tasksLabel.ForeColor = System.Drawing.Color.White;
-            this.tasksLabel.Location = new System.Drawing.Point(197, 7);
-            this.tasksLabel.Name = "tasksLabel";
-            this.tasksLabel.Size = new System.Drawing.Size(319, 13);
-            this.tasksLabel.TabIndex = 0;
-            this.tasksLabel.Text = "No active tasks";
-            this.tasksLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.TasksLabel.ForeColor = System.Drawing.Color.White;
+            this.TasksLabel.Location = new System.Drawing.Point(197, 7);
+            this.TasksLabel.Name = "TasksLabel";
+            this.TasksLabel.Size = new System.Drawing.Size(319, 13);
+            this.TasksLabel.TabIndex = 0;
+            this.TasksLabel.Text = "No active tasks";
+            this.TasksLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // largeIconList
             // 
@@ -179,10 +179,10 @@ namespace MTG_Librarian
         private WeifenLuo.WinFormsUI.Docking.DockPanel dockPanel1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
-        private System.Windows.Forms.Label tasksLabel;
-        private CustomControls.BlockProgressBar tasksProgressBar;
         private static System.Windows.Forms.ImageList smallIconList;
         public System.Windows.Forms.ImageList largeIconList;
+        public System.Windows.Forms.Label TasksLabel;
+        public CustomControls.BlockProgressBar TasksProgressBar;
     }
 }
 
