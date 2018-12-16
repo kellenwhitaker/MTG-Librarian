@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
-//TODO: improve formatting with long mana costs (Chromium, Progenitus, B.F.M.)
+
 namespace MTG_Librarian
 {
     public partial class CardInfoForm : DockContent
@@ -45,10 +45,13 @@ namespace MTG_Librarian
         {
             string html = $"<table width='100%'>" +
                 $"<tr>" +
-                $"<td width='60%' align='top'><b>{card.name}</b></td><td align='top'>{ManaCostToImgs(card.manaCost)}</td>" +
+                $"<td>{ManaCostToImgs(card.manaCost)}</td>" +
                 $"</tr>" +
                 $"<tr>" +
-                $"<td colspan=2><b>{card.type}</b></td>" +
+                $"<td><b>{card.name}</b></td>" +
+                $"</tr>" +
+                $"<tr>" +
+                $"<td><b>{card.type}</b></td>" +
                 $"</tr>";
             if (card.power != null && card.toughness != null)
             {
@@ -57,17 +60,17 @@ namespace MTG_Librarian
                     $"</tr>";
             }
             html += $"<tr>" +
-                $"<td colspan=2><br><br>{card.text.Replace("\n", "<br>")}</td>" +
+                $"<td><br><br>{card.text.Replace("\n", "<br>")}</td>" +
                 $"</tr>";
             if (card.flavorText != null)
                 html += $"<tr>" +
-                    $"<td colspan=2><br><br><i>{card.flavorText}</i></td>" +
+                    $"<td><br><br><i>{card.flavorText}</i></td>" +
                     $"</tr>";
             html += "<tr>" +
-                $"<td colspan=2><hr><b>{card.Edition} [{card.SetCode.ToUpper()}] - #{card.number}</b></td>" +
+                $"<td><hr><b>{card.Edition} [{card.SetCode.ToUpper()}] - #{card.number}</b></td>" +
                 $"</tr>" +
                 $"<tr>" +
-                $"<td colspan=2>Artist: {card.artist}</td>" +
+                $"<td>Artist: {card.artist}</td>" +
                 $"</tr>";
             html += "</table>";
             cardTextHtmlPanel.Text = html;
