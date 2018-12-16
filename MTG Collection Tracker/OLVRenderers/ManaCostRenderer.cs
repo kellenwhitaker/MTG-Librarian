@@ -28,7 +28,7 @@ namespace MTG_Librarian
             {
                 Regex reg = new Regex("{[A-Z0-9/]+}");
                 var costParts = reg.Matches(manaCost);
-                var imageList = MainForm.SymbolIcons16;
+                var imageList = Globals.ImageLists.SymbolIcons16;
                 int left = 5;
                 foreach (Match part in costParts)
                 {

@@ -26,11 +26,6 @@ namespace MTG_Librarian
         private static DBViewForm dbViewForm;
         private static TasksForm tasksForm;
         private static SplashForm splash = new SplashForm();
-        private static ImageList _manaIcons;
-        private static ImageList _symbolIcons16;
-        public static ImageList ManaIcons => _manaIcons;
-        public static ImageList SymbolIcons16 => _symbolIcons16;
-        public static ImageList SmallIconList => smallIconList;
         private static MainForm thisForm;
         private const int SmallIconWidth = 27;
         private const int SmallIconHeight = 21;
@@ -63,61 +58,61 @@ namespace MTG_Librarian
 
         private void SetupImageLists()
         {
-            smallIconList = new ImageList(components) { ColorDepth = ColorDepth.Depth32Bit, ImageSize = new Size(SmallIconWidth, SmallIconHeight) };
-            _manaIcons = new ImageList(components) { ColorDepth = ColorDepth.Depth32Bit, ImageSize = new Size(18, 18) };
-            _symbolIcons16 = new ImageList(components) { ColorDepth = ColorDepth.Depth24Bit, ImageSize = new Size(16, 16) };
+            Globals.ImageLists.SmallIconList = new ImageList(components) { ColorDepth = ColorDepth.Depth32Bit, ImageSize = new Size(SmallIconWidth, SmallIconHeight) };
+            Globals.ImageLists.ManaIcons = new ImageList(components) { ColorDepth = ColorDepth.Depth32Bit, ImageSize = new Size(18, 18) };
+            Globals.ImageLists.SymbolIcons16 = new ImageList(components) { ColorDepth = ColorDepth.Depth24Bit, ImageSize = new Size(16, 16) };
 
             #region Add mana icons
-            ManaIcons.Images.Add("{W}", Properties.Resources.W_20);
-            ManaIcons.Images.Add("{U}", Properties.Resources.U_20);
-            ManaIcons.Images.Add("{B}", Properties.Resources.B_20);
-            ManaIcons.Images.Add("{R}", Properties.Resources.R_20);
-            ManaIcons.Images.Add("{G}", Properties.Resources.G_20);
-            ManaIcons.Images.Add("{C}", Properties.Resources.C_20);
-            ManaIcons.Images.Add("{X}", Properties.Resources.X_20);
-            SymbolIcons16.Images.Add("{B}", Properties.Resources.B_16);
-            SymbolIcons16.Images.Add("{R}", Properties.Resources.R_16);
-            SymbolIcons16.Images.Add("{G}", Properties.Resources.G_16);
-            SymbolIcons16.Images.Add("{W}", Properties.Resources.W_16);
-            SymbolIcons16.Images.Add("{U}", Properties.Resources.U_16);
-            SymbolIcons16.Images.Add("{0}", Properties.Resources.C0_16);
-            SymbolIcons16.Images.Add("{1}", Properties.Resources.C1_16);
-            SymbolIcons16.Images.Add("{2}", Properties.Resources.C2_16);
-            SymbolIcons16.Images.Add("{3}", Properties.Resources.C3_16);
-            SymbolIcons16.Images.Add("{4}", Properties.Resources.C4_16);
-            SymbolIcons16.Images.Add("{5}", Properties.Resources.C5_16);
-            SymbolIcons16.Images.Add("{6}", Properties.Resources.C6_16);
-            SymbolIcons16.Images.Add("{7}", Properties.Resources.C7_16);
-            SymbolIcons16.Images.Add("{8}", Properties.Resources.C8_16);
-            SymbolIcons16.Images.Add("{9}", Properties.Resources.C9_16);
-            SymbolIcons16.Images.Add("{10}", Properties.Resources.C10_16);
-            SymbolIcons16.Images.Add("{11}", Properties.Resources.C11_16);
-            SymbolIcons16.Images.Add("{12}", Properties.Resources.C12_16);
-            SymbolIcons16.Images.Add("{13}", Properties.Resources.C13_16);
-            SymbolIcons16.Images.Add("{14}", Properties.Resources.C14_16);
-            SymbolIcons16.Images.Add("{15}", Properties.Resources.C15_16);
-            SymbolIcons16.Images.Add("{16}", Properties.Resources.C16_16);
-            SymbolIcons16.Images.Add("{17}", Properties.Resources.C17_16);
-            SymbolIcons16.Images.Add("{18}", Properties.Resources.C18_16);
-            SymbolIcons16.Images.Add("{19}", Properties.Resources.C19_16);
-            SymbolIcons16.Images.Add("{20}", Properties.Resources.C20_16);
-            SymbolIcons16.Images.Add("{X}", Properties.Resources.CX_16);
-            SymbolIcons16.Images.Add("{C}", Properties.Resources.C_16);
-            SymbolIcons16.Images.Add("{B/G}", Properties.Resources.BG_16);
-            SymbolIcons16.Images.Add("{B/R}", Properties.Resources.BR_16);
-            SymbolIcons16.Images.Add("{G/U}", Properties.Resources.GU_16);
-            SymbolIcons16.Images.Add("{G/W}", Properties.Resources.GW_16);
-            SymbolIcons16.Images.Add("{R/G}", Properties.Resources.RG_16);
-            SymbolIcons16.Images.Add("{R/W}", Properties.Resources.RW_16);
-            SymbolIcons16.Images.Add("{U/B}", Properties.Resources.UB_16);
-            SymbolIcons16.Images.Add("{U/R}", Properties.Resources.UR_16);
-            SymbolIcons16.Images.Add("{W/B}", Properties.Resources.WB_16);
-            SymbolIcons16.Images.Add("{W/U}", Properties.Resources.WU_16);
-            SymbolIcons16.Images.Add("{2/W}", Properties.Resources.C2W_16);
-            SymbolIcons16.Images.Add("{2/U}", Properties.Resources.C2U_16);
-            SymbolIcons16.Images.Add("{2/B}", Properties.Resources.C2B_16);
-            SymbolIcons16.Images.Add("{2/R}", Properties.Resources.C2R_16);
-            SymbolIcons16.Images.Add("{2/G}", Properties.Resources.C2G_16);
+            Globals.ImageLists.ManaIcons.Images.Add("{W}", Properties.Resources.W_20);
+            Globals.ImageLists.ManaIcons.Images.Add("{U}", Properties.Resources.U_20);
+            Globals.ImageLists.ManaIcons.Images.Add("{B}", Properties.Resources.B_20);
+            Globals.ImageLists.ManaIcons.Images.Add("{R}", Properties.Resources.R_20);
+            Globals.ImageLists.ManaIcons.Images.Add("{G}", Properties.Resources.G_20);
+            Globals.ImageLists.ManaIcons.Images.Add("{C}", Properties.Resources.C_20);
+            Globals.ImageLists.ManaIcons.Images.Add("{X}", Properties.Resources.X_20);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{B}", Properties.Resources.B_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{R}", Properties.Resources.R_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{G}", Properties.Resources.G_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{W}", Properties.Resources.W_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{U}", Properties.Resources.U_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{0}", Properties.Resources.C0_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{1}", Properties.Resources.C1_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{2}", Properties.Resources.C2_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{3}", Properties.Resources.C3_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{4}", Properties.Resources.C4_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{5}", Properties.Resources.C5_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{6}", Properties.Resources.C6_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{7}", Properties.Resources.C7_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{8}", Properties.Resources.C8_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{9}", Properties.Resources.C9_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{10}", Properties.Resources.C10_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{11}", Properties.Resources.C11_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{12}", Properties.Resources.C12_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{13}", Properties.Resources.C13_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{14}", Properties.Resources.C14_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{15}", Properties.Resources.C15_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{16}", Properties.Resources.C16_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{17}", Properties.Resources.C17_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{18}", Properties.Resources.C18_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{19}", Properties.Resources.C19_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{20}", Properties.Resources.C20_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{X}", Properties.Resources.CX_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{C}", Properties.Resources.C_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{B/G}", Properties.Resources.BG_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{B/R}", Properties.Resources.BR_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{G/U}", Properties.Resources.GU_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{G/W}", Properties.Resources.GW_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{R/G}", Properties.Resources.RG_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{R/W}", Properties.Resources.RW_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{U/B}", Properties.Resources.UB_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{U/R}", Properties.Resources.UR_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{W/B}", Properties.Resources.WB_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{W/U}", Properties.Resources.WU_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{2/W}", Properties.Resources.C2W_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{2/U}", Properties.Resources.C2U_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{2/B}", Properties.Resources.C2B_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{2/R}", Properties.Resources.C2R_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{2/G}", Properties.Resources.C2G_16);
             #endregion
         }
 
@@ -275,10 +270,10 @@ namespace MTG_Librarian
                            select s).FirstOrDefault();
                 if (set != null)
                 {
-                    if (set.CommonIcon != null)     SmallIconList.Images.Add($"{set.Name}: Common",     set.CommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
-                    if (set.UncommonIcon != null)   SmallIconList.Images.Add($"{set.Name}: Uncommon",   set.UncommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
-                    if (set.RareIcon != null)       SmallIconList.Images.Add($"{set.Name}: Rare",       set.RareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
-                    if (set.MythicRareIcon != null) SmallIconList.Images.Add($"{set.Name}: Mythic",     set.MythicRareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.CommonIcon != null)     Globals.ImageLists.SmallIconList.Images.Add($"{set.Name}: Common",     set.CommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.UncommonIcon != null)   Globals.ImageLists.SmallIconList.Images.Add($"{set.Name}: Uncommon",   set.UncommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.RareIcon != null)       Globals.ImageLists.SmallIconList.Images.Add($"{set.Name}: Rare",       set.RareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.MythicRareIcon != null) Globals.ImageLists.SmallIconList.Images.Add($"{set.Name}: Mythic",     set.MythicRareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
                 }
             }
         }
@@ -292,10 +287,10 @@ namespace MTG_Librarian
 
                 foreach (var set in sets)
                 {
-                    if (set.CommonIcon != null)     SmallIconList.Images.Add($"{set.Name}: Common",     set.CommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
-                    if (set.UncommonIcon != null)   SmallIconList.Images.Add($"{set.Name}: Uncommon",   set.UncommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
-                    if (set.RareIcon != null)       SmallIconList.Images.Add($"{set.Name}: Rare",       set.RareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
-                    if (set.MythicRareIcon != null) SmallIconList.Images.Add($"{set.Name}: Mythic",     set.MythicRareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.CommonIcon != null)     Globals.ImageLists.SmallIconList.Images.Add($"{set.Name}: Common",     set.CommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.UncommonIcon != null)   Globals.ImageLists.SmallIconList.Images.Add($"{set.Name}: Uncommon",   set.UncommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.RareIcon != null)       Globals.ImageLists.SmallIconList.Images.Add($"{set.Name}: Rare",       set.RareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.MythicRareIcon != null) Globals.ImageLists.SmallIconList.Images.Add($"{set.Name}: Mythic",     set.MythicRareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
                 }
             }
         }
@@ -320,7 +315,7 @@ namespace MTG_Librarian
             document.CardsDropped += cvFormCardsDropped;
             document.CardsUpdated += cvFormCardsUpdated;
             document.CardSelected += CardSelected;
-            document.cardListView.SmallImageList = SmallIconList;
+            document.cardListView.SmallImageList = Globals.ImageLists.SmallIconList;
             document.Show(dockPanel1, DockState.Document);
             dockPanel1.ActiveDocumentPane.SetDoubleBuffered();
             dockPanel1.SetDoubleBuffered();
