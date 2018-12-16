@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-//TODO make card properties uniform
+//TODO2 make card properties uniform
 namespace MTG_Librarian
 {
     public class SetDownloadedEventArgs: EventArgs

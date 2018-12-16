@@ -10,9 +10,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
-//TODO: improve appearance of checkboxes
-//TODO: enable deletion of cards from collection
-//TODO: moving a collection view out of the panel breaks any updates to it
+//TODO3: improve appearance of checkboxes
+//TODO5: enable deletion of cards from collection
+//TODO4: moving a collection view out of the panel breaks any updates to it
 namespace MTG_Librarian
 {
     public partial class CollectionViewForm : DockContent
@@ -53,7 +53,6 @@ namespace MTG_Librarian
                                 where c.CollectionId == Collection.Id
                                 select c;
 
-                    var cardList = items.ToList();
                     cardListView.AddObjects(items.ToList());
                 }
                 if (cardListView.PrimarySortColumn == null) // not yet sorted

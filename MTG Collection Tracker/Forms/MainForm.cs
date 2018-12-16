@@ -13,7 +13,7 @@ using System.Collections;
 using System.ComponentModel;
 //Note: editable columns - count, cost, tags, foil
 //TODO restsharp
-//TODO add card preview
+//TODO2 add card preview
 //TODO improve bulk card add speed
 //TODO unknown error: collection unmodified
 namespace MTG_Librarian
