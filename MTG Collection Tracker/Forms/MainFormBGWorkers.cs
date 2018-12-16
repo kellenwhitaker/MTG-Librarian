@@ -18,9 +18,9 @@ namespace MTG_Librarian
         private void InitUIWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             InitUIWorker.ReportProgress(0, new SplashProgressObject("Loading catalog...", 1));
-            dbViewForm.LoadSets();
+            Globals.Forms.DBViewForm.LoadSets();
             InitUIWorker.ReportProgress(0, new SplashProgressObject("Loading collections...", 2));
-            navForm.LoadGroups();
+            Globals.Forms.NavigationForm.LoadGroups();
             CountInventory();
             AddSetIcons();
             InitUIWorker.ReportProgress(0, new SplashProgressObject("Starting application...", 3));
@@ -34,14 +34,14 @@ namespace MTG_Librarian
 
         private void InitUIWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            cardInfoForm.Show(dockPanel1, DockState.DockLeft);
-            navForm.LoadTree();
-            navForm.CollectionActivated += navFormCollectionActivated;
-            navForm.Show(dockPanel1, DockState.DockRight);
-            tasksForm.Show(dockPanel1, DockState.DockRight);
-            navForm.Activate();
-            dbViewForm.LoadTree();
-            dbViewForm.Show(dockPanel1, DockState.DockBottom);
+            Globals.Forms.CardInfoForm.Show(dockPanel1, DockState.DockLeft);
+            Globals.Forms.NavigationForm.LoadTree();
+            Globals.Forms.NavigationForm.CollectionActivated += navFormCollectionActivated;
+            Globals.Forms.NavigationForm.Show(dockPanel1, DockState.DockRight);
+            Globals.Forms.TasksForm.Show(dockPanel1, DockState.DockRight);
+            Globals.Forms.NavigationForm.Activate();
+            Globals.Forms.DBViewForm.LoadTree();
+            Globals.Forms.DBViewForm.Show(dockPanel1, DockState.DockBottom);
             LoadCollections();
             dockPanel1.UpdateDockWindowZOrder(DockStyle.Left, true);
             dockPanel1.UpdateDockWindowZOrder(DockStyle.Right, true);
@@ -124,7 +124,7 @@ namespace MTG_Librarian
                     foreach (var set in sets)
                     {
                         DownloadSetTask task = new DownloadSetTask(set);
-                        tasksForm.TaskManager.AddTask(task);
+                        Globals.Forms.TasksForm.TaskManager.AddTask(task);
                     }
                 }
             }

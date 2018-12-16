@@ -13,6 +13,11 @@ namespace MTG_Librarian
         public static class Forms
         {
             public static WeifenLuo.WinFormsUI.Docking.DockPanel DockPanel { get; set; }
+            public static CardInfoForm CardInfoForm { get; set; }
+            public static CardNavigatorForm NavigationForm { get; set; }
+            public static DBViewForm DBViewForm { get; set; }
+            public static TasksForm TasksForm { get; set; }
+            public static MainForm MainForm { get; set; }
         }
 
         public static class ImageLists

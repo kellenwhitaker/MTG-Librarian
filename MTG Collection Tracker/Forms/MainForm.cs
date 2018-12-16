@@ -21,12 +21,7 @@ namespace MTG_Librarian
 {
     public partial class MainForm : Form
     {
-        private static CardInfoForm cardInfoForm;
-        private static CardNavigatorForm navForm;
-        private static DBViewForm dbViewForm;
-        private static TasksForm tasksForm;
         private static SplashForm splash = new SplashForm();
-        private static MainForm thisForm;
         private const int SmallIconWidth = 27;
         private const int SmallIconHeight = 21;
 
@@ -34,7 +29,7 @@ namespace MTG_Librarian
         {
             InitializeComponent();
             Globals.Forms.DockPanel = dockPanel1;
-            thisForm = this;
+            Globals.Forms.MainForm = this;
             splash.Show();
             SetupUI();
         }
@@ -42,16 +37,16 @@ namespace MTG_Librarian
         private void SetupUI()
         {
             SetupImageLists();
-            cardInfoForm = new CardInfoForm();
-            navForm = new CardNavigatorForm();
-            dbViewForm = new DBViewForm();
-            dbViewForm.CardsActivated += dbFormCardActivated;
-            dbViewForm.CardSelected += CardSelected;
-            dbViewForm.CardFocused += CardFocused;
-            tasksForm = new TasksForm(tasksLabel, tasksProgressBar);
-            tasksForm.tasksListView.GetColumn(0).Renderer = new IconRenderer();
-            tasksForm.tasksListView.GetColumn(1).Renderer = new ProgressBarRenderer();
-            tasksForm.TaskManager.SetDownloaded += SetDownloaded;
+            Globals.Forms.CardInfoForm = new CardInfoForm();
+            Globals.Forms.NavigationForm = new CardNavigatorForm();
+            Globals.Forms.DBViewForm = new DBViewForm();
+            Globals.Forms.DBViewForm.CardsActivated += dbFormCardActivated;
+            Globals.Forms.DBViewForm.CardSelected += CardSelected;
+            Globals.Forms.DBViewForm.CardFocused += CardFocused;
+            Globals.Forms.TasksForm = new TasksForm(tasksLabel, tasksProgressBar);
+            Globals.Forms.TasksForm.tasksListView.GetColumn(0).Renderer = new IconRenderer();
+            Globals.Forms.TasksForm.tasksListView.GetColumn(1).Renderer = new ProgressBarRenderer();
+            Globals.Forms.TasksForm.TaskManager.SetDownloaded += SetDownloaded;
             splitContainer1.SplitterDistance = Height;
             InitUIWorker.RunWorkerAsync();
         }
@@ -134,7 +129,7 @@ namespace MTG_Librarian
 
         public static void CardFocused(object sender, CardFocusedEventArgs e)
         {
-            cardInfoForm.CardFocusedUuid = e.uuid;
+            Globals.Forms.CardInfoForm.CardFocusedUuid = e.uuid;
         }
 
         private delegate void SetDownloadedDelegate(object sender, SetDownloadedEventArgs e);
@@ -145,9 +140,9 @@ namespace MTG_Librarian
             else
             {
                 AddSetIcon(e.SetCode);
-                dbViewForm.LoadSet(e.SetCode);
-                if (tasksForm.TaskManager.TaskCount == 0)
-                    dbViewForm.SortCardListView();
+                Globals.Forms.DBViewForm.LoadSet(e.SetCode);
+                if (Globals.Forms.TasksForm.TaskManager.TaskCount == 0)
+                    Globals.Forms.DBViewForm.SortCardListView();
             }
         }
 
@@ -181,7 +176,7 @@ namespace MTG_Librarian
                         cardsAdded.Add(inventoryCard);
                         insertionIndex++;
                         if (!setItems.TryGetValue(card.Edition, out OLVSetItem setItem))
-                            if ((setItem = dbViewForm.SetItems.Where(x => x.Name == card.Edition).FirstOrDefault()) != null)
+                            if ((setItem = Globals.Forms.DBViewForm.SetItems.Where(x => x.Name == card.Edition).FirstOrDefault()) != null)
                                 setItems.Add(card.Edition, setItem);
                     }
                     context.SaveChanges();
@@ -195,7 +190,7 @@ namespace MTG_Librarian
                             magicCard.CopiesOwned++;
                     }
                     activeDocument.cardListView.Unfreeze();
-                    dbViewForm.setListView.RefreshObjects(setItems.Values.ToArray());
+                    Globals.Forms.DBViewForm.setListView.RefreshObjects(setItems.Values.ToArray());
                 }
             }
         }
@@ -229,7 +224,7 @@ namespace MTG_Librarian
                         {
                             context.Library.Update(card.InventoryCard);
                             if (!setItems.TryGetValue(card.Edition, out OLVSetItem setItem))
-                                if ((setItem = dbViewForm.SetItems.Where(x => x.Name == card.Edition).FirstOrDefault()) != null)
+                                if ((setItem = Globals.Forms.DBViewForm.SetItems.Where(x => x.Name == card.Edition).FirstOrDefault()) != null)
                                     setItems.Add(card.Edition, setItem);
 
                         }
@@ -242,7 +237,7 @@ namespace MTG_Librarian
                             if (allCopiesSum.HasValue && Globals.AllCards.TryGetValue(card.uuid, out MagicCard magicCard))
                                 magicCard.CopiesOwned = allCopiesSum.Value;
                         }
-                        dbViewForm.setListView.RefreshObjects(setItems.Values.ToArray());
+                        Globals.Forms.DBViewForm.setListView.RefreshObjects(setItems.Values.ToArray());
                     }
                     catch (Exception ex)
                     {
@@ -340,7 +335,7 @@ namespace MTG_Librarian
         public static void CardSelected(object sender, CardSelectedEventArgs e)
         {
             MagicCardBase card = e.MagicCard;
-            cardInfoForm.CardSelected(card);
+            Globals.Forms.CardInfoForm.CardSelected(card);
             CardFocused(sender, new CardFocusedEventArgs { uuid = card.uuid });
             
             using (CardImagesDbContext context = new CardImagesDbContext(card.Edition))
@@ -356,7 +351,7 @@ namespace MTG_Librarian
                 }
                 else
                 {
-                    tasksForm.TaskManager.AddTask(new DownloadResourceTask { ForDisplay = true, Caption = $"Card Image: {card.name}", URL = $"http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={card.multiverseId}&type=card", TaskObject = new BasicCardArgs { uuid = card.uuid, MultiverseId = card.multiverseId, Edition = card.Edition }, OnTaskCompleted = ImageDownloadCompleted });
+                    Globals.Forms.TasksForm.TaskManager.AddTask(new DownloadResourceTask { ForDisplay = true, Caption = $"Card Image: {card.name}", URL = $"http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={card.multiverseId}&type=card", TaskObject = new BasicCardArgs { uuid = card.uuid, MultiverseId = card.multiverseId, Edition = card.Edition }, OnTaskCompleted = ImageDownloadCompleted });
                 }
             }
         }
@@ -380,7 +375,7 @@ namespace MTG_Librarian
         static public event EventHandler<CardImageRetrievedEventArgs> CardImageRetrieved;
         private static void OnCardImageRetrieved(CardImageRetrievedEventArgs args)
         {
-            CardImageRetrieved?.Invoke(thisForm, args);
+            CardImageRetrieved?.Invoke(Globals.Forms.MainForm, args);
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
