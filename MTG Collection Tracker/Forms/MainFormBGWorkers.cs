@@ -56,6 +56,10 @@ namespace MTG_Librarian
                 foreach (var doc in docs)
                     if (Int32.TryParse(doc, out int collectionId))
                         LoadCollection(collectionId);
+            int activeCollectionIndex = Properties.Settings.Default.ActiveCollectionIndex;
+            if (activeCollectionIndex >= 0 && activeCollectionIndex <= Globals.Forms.DockPanel.DocumentsCount)
+                if (Globals.Forms.DockPanel.DocumentsToArray()[activeCollectionIndex] is CollectionViewForm collectionViewForm)
+                    collectionViewForm.Activate();
         }
 
         private List<CardSet> GetMTGJSONSets()

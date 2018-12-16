@@ -9,6 +9,9 @@ namespace MTG_Librarian
     public static class Globals
     {
         public static Dictionary<string, MagicCard> AllCards = new Dictionary<string, MagicCard>();
-        public static WeifenLuo.WinFormsUI.Docking.DockPanel DockPanel { get; set; }
+        public static class Forms
+        {
+            public static WeifenLuo.WinFormsUI.Docking.DockPanel DockPanel { get; set; }
+        }
     }
 }

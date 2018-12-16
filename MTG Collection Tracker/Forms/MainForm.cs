@@ -38,15 +38,9 @@ namespace MTG_Librarian
         public MainForm()
         {
             InitializeComponent();
-            Globals.DockPanel = dockPanel1;
+            Globals.Forms.DockPanel = dockPanel1;
             thisForm = this;
             splash.Show();
-            //AddSets();
-            //FillGatherer();
-            //AddLibraryCards();
-            //SetupCache();
-            //AddPrices();
-            //UpdateCatalogIDs();
             SetupUI();
         }
 
@@ -397,9 +391,17 @@ namespace MTG_Librarian
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             Properties.Settings.Default.OpenCollections = new System.Collections.Specialized.StringCollection();
+            int index = 0;
             foreach (var doc in dockPanel1.Documents)
+            {
                 if (doc is CollectionViewForm collectionDoc)
+                {
                     Properties.Settings.Default.OpenCollections.Add(collectionDoc.Collection.Id.ToString());
+                    if (collectionDoc.IsActivated)
+                        Properties.Settings.Default.ActiveCollectionIndex = index;
+                }
+                index++;
+            }
             Properties.Settings.Default.Save();
         }
     }

@@ -33,5 +33,17 @@ namespace MTG_Librarian.Properties {
                 this["OpenCollections"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("-1")]
+        public int ActiveCollectionIndex {
+            get {
+                return ((int)(this["ActiveCollectionIndex"]));
+            }
+            set {
+                this["ActiveCollectionIndex"] = value;
+            }
+        }
     }
 }
