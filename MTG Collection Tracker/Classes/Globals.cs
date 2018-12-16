@@ -9,7 +9,11 @@ namespace MTG_Librarian
 {
     public static class Globals
     {
-        public static Dictionary<string, MagicCard> AllCards = new Dictionary<string, MagicCard>();
+        public static class Collections
+        {
+            public static Dictionary<string, MagicCard> AllMagicCards { get; set; } = new Dictionary<string, MagicCard>();
+        }
+
         public static class Forms
         {
             public static WeifenLuo.WinFormsUI.Docking.DockPanel DockPanel { get; set; }

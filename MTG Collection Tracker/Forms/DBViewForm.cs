@@ -156,7 +156,7 @@ namespace MTG_Librarian
                         sets.Add(card.Edition, set);
                     }
                     set.AddCard(card);
-                    Globals.AllCards.Add(card.uuid, card);
+                    Globals.Collections.AllMagicCards.Add(card.uuid, card);
                 }
             }
             CollapseParts(sets);

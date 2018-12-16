@@ -121,7 +121,7 @@ namespace MTG_Librarian
                 MagicCard magicCard;
                 foreach (var inventoryCard in inventoryCards)
                 {
-                    if (inventoryCard.Count.HasValue && Globals.AllCards.TryGetValue(inventoryCard.uuid, out magicCard))
+                    if (inventoryCard.Count.HasValue && Globals.Collections.AllMagicCards.TryGetValue(inventoryCard.uuid, out magicCard))
                         magicCard.CopiesOwned += inventoryCard.Count.Value;
                 }
             }
@@ -186,7 +186,7 @@ namespace MTG_Librarian
                         var cardInstance = card.ToFullCard(context);
                         if (cardInstance != null)
                             activeDocument.AddCardInstance(cardInstance);
-                        if (Globals.AllCards.TryGetValue(card.uuid, out MagicCard magicCard))
+                        if (Globals.Collections.AllMagicCards.TryGetValue(card.uuid, out MagicCard magicCard))
                             magicCard.CopiesOwned++;
                     }
                     activeDocument.cardListView.Unfreeze();
@@ -234,7 +234,7 @@ namespace MTG_Librarian
                             var allCopiesSum = (from c in context.LibraryView
                                             where c.uuid == card.uuid
                                             select c.Count).Sum();
-                            if (allCopiesSum.HasValue && Globals.AllCards.TryGetValue(card.uuid, out MagicCard magicCard))
+                            if (allCopiesSum.HasValue && Globals.Collections.AllMagicCards.TryGetValue(card.uuid, out MagicCard magicCard))
                                 magicCard.CopiesOwned = allCopiesSum.Value;
                         }
                         Globals.Forms.DBViewForm.setListView.RefreshObjects(setItems.Values.ToArray());
