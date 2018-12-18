@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 //TODO3: improve appearance of checkboxes
-//TODO5: enable deletion of cards from collection
 //TODO4: moving a collection view out of the panel breaks any updates to it
 namespace MTG_Librarian
 {
@@ -87,28 +86,42 @@ namespace MTG_Librarian
             CardsDropped?.Invoke(this, args);
         }
 
+        private DialogResult ConfirmCardDeletion(string message = "The highlighted card(s) will be deleted. Are you sure you wish to continue?")
+        {
+            return MessageBox.Show(message, "Pending delete", MessageBoxButtons.YesNo);
+        }
+
         private void fastObjectListView1_CellEditFinished(object sender, CellEditEventArgs e)
         {
-            if (e.RowObject is FullInventoryCard rowObject)
+            if (e.RowObject is FullInventoryCard editedCard)
             {
-                var args = new CardsUpdatedEventArgs { Items = new ArrayList { rowObject } };
-                var rowItem = cardListView.ModelToItem(rowObject);
-                if (e.Column.AspectName == "Count" && rowObject.Count < 1)
-                    rowObject.Count = 1;
+                var args = new CardsUpdatedEventArgs { Items = new ArrayList { editedCard } };
+                var rowItem = cardListView.ModelToItem(editedCard);
+                if (e.Column.AspectName == "Count" && editedCard.Count < 1)
+                {
+                    if (ConfirmCardDeletion() != DialogResult.Yes)
+                    {
+                        if (Int32.TryParse(e.Value.ToString(), out int oldCount))
+                            editedCard.Count = oldCount;
+                        else
+                            editedCard.Count = 1;
+                        return;
+                    }
+                }
 
                 if (MultiEditing)
                 {
-                    foreach (var row in cardListView.SelectedObjects)
+                    foreach (FullInventoryCard card in cardListView.SelectedObjects)
                     {
-                        if (row != rowObject)
+                        if (card != editedCard)
                         {
                             if (e.Column.AspectName == "Tags")
-                                (row as FullInventoryCard).Tags = rowObject.Tags;
+                                card.Tags = editedCard.Tags;
                             else if (e.Column.AspectName == "Count")
-                                (row as FullInventoryCard).Count = rowObject.Count;
+                                card.Count = editedCard.Count;
                             else if (e.Column.AspectName == "Cost")
-                                (row as FullInventoryCard).Cost = rowObject.Cost;
-                            args.Items.Add(row);
+                                card.Cost = editedCard.Cost;
+                            args.Items.Add(card);
                         }
                     }
                     MultiEditing = false;
@@ -131,7 +144,7 @@ namespace MTG_Librarian
 
         private void fastObjectListView1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (cardListView.SelectedItems != null)
+            if (cardListView.SelectedObjects?.Count > 0)
             {
                 if (e.KeyChar == '=' || e.KeyChar == '+')
                 {
@@ -143,10 +156,21 @@ namespace MTG_Librarian
                 else if (e.KeyChar == '-' || e.KeyChar == '_')
                 {
                     e.Handled = true;
+                    bool pendingDeletion = false;
                     foreach (FullInventoryCard item in cardListView.SelectedObjects)
                     {
-                        if (item.Count > 1)
-                            item.Count--;
+                        item.Count--;
+                        if (item.Count < 1)
+                            pendingDeletion = true;
+                    }
+                    if (pendingDeletion)
+                    {
+                        if (ConfirmCardDeletion("Some of the highlighted cards will be deleted. Are you sure you wish to continue?") != DialogResult.Yes)
+                        {
+                            foreach (FullInventoryCard item in cardListView.SelectedObjects)
+                                item.Count++;
+                            return;
+                        }
                     }
                     OnCardsUpdated(new CardsUpdatedEventArgs { Items = cardListView.SelectedObjects as ArrayList });
                 }
@@ -185,6 +209,39 @@ namespace MTG_Librarian
                     fastObjectListView1_CellEditFinished(sender, cellEditArgs);
                 }
             }
+        }
+
+        private void cardListView_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (cardListView.SelectedObjects?.Count > 0)
+            {
+                if (e.KeyCode == Keys.Delete)
+                    if (ConfirmCardDeletion() == DialogResult.Yes)
+                    {
+                        foreach (FullInventoryCard cardItem in cardListView.SelectedObjects)
+                            cardItem.Count = 0;
+                        OnCardsUpdated(new CardsUpdatedEventArgs { Items = cardListView.SelectedObjects as ArrayList });
+                    }
+            }
+        }
+
+        private void deleteCardsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (cardListView.SelectedObjects?.Count > 0)
+            {
+                if (ConfirmCardDeletion() == DialogResult.Yes)
+                {
+                    foreach (FullInventoryCard cardItem in cardListView.SelectedObjects)
+                        cardItem.Count = 0;
+                    OnCardsUpdated(new CardsUpdatedEventArgs { Items = cardListView.SelectedObjects as ArrayList });
+                }
+            }
+        }
+
+        private void cardListViewMenuStrip_Opening(object sender, CancelEventArgs e)
+        {
+            if (cardListView.SelectedObjects?.Count < 1)
+                e.Cancel = true;
         }
     }
 }

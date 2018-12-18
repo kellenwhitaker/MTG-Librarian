@@ -222,11 +222,15 @@ namespace MTG_Librarian
                     {
                         foreach (FullInventoryCard card in e.Items)
                         {
-                            context.Library.Update(card.InventoryCard);
-                            if (!setItems.TryGetValue(card.Edition, out OLVSetItem setItem))
-                                if ((setItem = Globals.Forms.DBViewForm.SetItems.Where(x => x.Name == card.Edition).FirstOrDefault()) != null)
-                                    setItems.Add(card.Edition, setItem);
-
+                            if (card.Count > 0)
+                            {
+                                context.Library.Update(card.InventoryCard);
+                                if (!setItems.TryGetValue(card.Edition, out OLVSetItem setItem))
+                                    if ((setItem = Globals.Forms.DBViewForm.SetItems.Where(x => x.Name == card.Edition).FirstOrDefault()) != null)
+                                        setItems.Add(card.Edition, setItem);
+                            }
+                            else
+                                context.Library.Remove(card.InventoryCard);
                         }
                         context.SaveChanges();
                         foreach (FullInventoryCard card in e.Items)
@@ -236,6 +240,8 @@ namespace MTG_Librarian
                                             select c.Count).Sum();
                             if (allCopiesSum.HasValue && Globals.Collections.AllMagicCards.TryGetValue(card.uuid, out MagicCard magicCard))
                                 magicCard.CopiesOwned = allCopiesSum.Value;
+                            if (card.Count < 1)
+                                activeDocument.cardListView.RemoveObject(card);
                         }
                         Globals.Forms.DBViewForm.setListView.RefreshObjects(setItems.Values.ToArray());
                     }

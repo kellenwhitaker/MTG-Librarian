@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.cardListView = new BrightIdeasSoftware.FastObjectListView();
             this.CardName = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.FoilColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -44,7 +45,10 @@
             this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.TimeAddedColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn3 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.cardListViewMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.deleteCardsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.cardListView)).BeginInit();
+            this.cardListViewMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // cardListView
@@ -78,6 +82,7 @@
             this.CostColumn,
             this.TagsColumn,
             this.TimeAddedColumn});
+            this.cardListView.ContextMenuStrip = this.cardListViewMenuStrip;
             this.cardListView.Cursor = System.Windows.Forms.Cursors.Default;
             this.cardListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cardListView.FullRowSelect = true;
@@ -103,6 +108,7 @@
             this.cardListView.ModelDropped += new System.EventHandler<BrightIdeasSoftware.ModelDropEventArgs>(this.fastObjectListView1_ModelDropped);
             this.cardListView.SelectionChanged += new System.EventHandler(this.fastObjectListView1_SelectionChanged);
             this.cardListView.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.fastObjectListView1_KeyPress);
+            this.cardListView.KeyUp += new System.Windows.Forms.KeyEventHandler(this.cardListView_KeyUp);
             // 
             // CardName
             // 
@@ -215,6 +221,21 @@
             this.olvColumn3.IsVisible = false;
             this.olvColumn3.Text = "multiverseId";
             // 
+            // cardListViewMenuStrip
+            // 
+            this.cardListViewMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.deleteCardsToolStripMenuItem});
+            this.cardListViewMenuStrip.Name = "cardListViewMenuStrip";
+            this.cardListViewMenuStrip.Size = new System.Drawing.Size(147, 26);
+            this.cardListViewMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.cardListViewMenuStrip_Opening);
+            // 
+            // deleteCardsToolStripMenuItem
+            // 
+            this.deleteCardsToolStripMenuItem.Name = "deleteCardsToolStripMenuItem";
+            this.deleteCardsToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.deleteCardsToolStripMenuItem.Text = "Delete card(s)";
+            this.deleteCardsToolStripMenuItem.Click += new System.EventHandler(this.deleteCardsToolStripMenuItem_Click);
+            // 
             // CollectionViewForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -225,6 +246,7 @@
             this.Name = "CollectionViewForm";
             this.Text = "Collection View";
             ((System.ComponentModel.ISupportInitialize)(this.cardListView)).EndInit();
+            this.cardListViewMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -246,5 +268,7 @@
         private BrightIdeasSoftware.OLVColumn TimeAddedColumn;
         private BrightIdeasSoftware.OLVColumn FoilColumn;
         private BrightIdeasSoftware.OLVColumn olvColumn3;
+        private System.Windows.Forms.ContextMenuStrip cardListViewMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem deleteCardsToolStripMenuItem;
     }
 }
