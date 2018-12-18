@@ -100,22 +100,28 @@ namespace MTG_Librarian
             Name = name;
         }
 
-        public void AddCard(MagicCard card)
+        public void BuildRarityItems()
         {
             string rarity = "basic land";
-            if (!card.type.Contains("Basic Land")) // workaround needed because mtgjson thinks basic lands are not a separate rarity
-                rarity = card.rarity;
-            else
-                card.rarity = "basic land";
-            if (!(Rarities.Where(x => x.Rarity == rarity).FirstOrDefault() is OLVRarityItem rarityItem))
+            foreach (var cardItem in Cards)
             {
-                rarityItem = new OLVRarityItem(this, card.Edition, rarity);
-                Rarities.Add(rarityItem);
-                Rarities.Sort();
+                if (!cardItem.MagicCard.type.Contains("Basic Land")) // workaround needed because mtgjson thinks basic land is not a separate rarity
+                    rarity = cardItem.MagicCard.rarity;
+                else
+                    cardItem.MagicCard.rarity = rarity = "basic land";
+                if (!(Rarities.Where(x => x.Rarity == rarity).FirstOrDefault() is OLVRarityItem rarityItem))
+                {
+                    rarityItem = new OLVRarityItem(this, cardItem.MagicCard.Edition, rarity);
+                    Rarities.Add(rarityItem);
+                    Rarities.Sort();
+                }
+                rarityItem.Cards.Add(cardItem);
             }
-            OLVCardItem cardItem = new OLVCardItem(card);
-            rarityItem.Cards.Add(cardItem);
-            Cards.Add(cardItem);
+        }
+
+        public void AddCard(MagicCard card)
+        {
+            Cards.Add(new OLVCardItem(card));
         }
 
         public void AddRarity(OLVRarityItem rarity)

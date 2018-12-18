@@ -122,6 +122,7 @@ namespace MTG_Librarian
                         set.AddCard(card);
 
                     CollapseParts(set);
+                    set.BuildRarityItems();
                     setListView.AddObject(set);
                     cardListView.AddObjects(set.Cards);
                     if (setListView.Objects.Count() == 1) // first set added, must sort the tree
@@ -160,6 +161,8 @@ namespace MTG_Librarian
                 }
             }
             CollapseParts(sets);
+            foreach (var set in sets.Values)
+                set.BuildRarityItems();
             SetItems.AddRange(sets.Values);
         }
 
