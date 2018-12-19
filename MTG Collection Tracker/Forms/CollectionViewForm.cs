@@ -59,9 +59,14 @@ namespace MTG_Librarian
             }
         }
 
-        public void AddCardInstance(FullInventoryCard cardInstance)
+        public void AddFullInventoryCard(FullInventoryCard cardInstance)
         {
             cardListView.AddObject(cardInstance);
+        }
+
+        public void AddFullInventoryCards(List<FullInventoryCard> cards)
+        {
+            cardListView.AddObjects(cards);
         }
 
         private void fastObjectListView1_ModelCanDrop(object sender, ModelDropEventArgs e)

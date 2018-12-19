@@ -180,16 +180,16 @@ namespace MTG_Librarian
                                 setItems.Add(card.Edition, setItem);
                     }
                     context.SaveChanges();
-                    activeDocument.cardListView.Freeze();
+                    var fullCardsAdded = new List<FullInventoryCard>();
                     foreach (InventoryCard card in cardsAdded)
                     {
-                        var cardInstance = card.ToFullCard(context);
-                        if (cardInstance != null)
-                            activeDocument.AddCardInstance(cardInstance);
+                        var fullCard = card.ToFullCard(context);
+                        if (fullCard != null)
+                            fullCardsAdded.Add(fullCard);
                         if (Globals.Collections.AllMagicCards.TryGetValue(card.uuid, out MagicCard magicCard))
                             magicCard.CopiesOwned++;
                     }
-                    activeDocument.cardListView.Unfreeze();
+                    activeDocument.AddFullInventoryCards(fullCardsAdded);
                     Globals.Forms.DBViewForm.setListView.RefreshObjects(setItems.Values.ToArray());
                 }
             }

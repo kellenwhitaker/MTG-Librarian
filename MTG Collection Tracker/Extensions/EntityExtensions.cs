@@ -10,11 +10,10 @@ namespace MTG_Librarian
     {
         public static FullInventoryCard ToFullCard(this InventoryCard inventoryCard, MyDbContext context)
         {
-            var fullCard =
+            return
             (from c in context.LibraryView
              where c.InventoryId == inventoryCard.InventoryId
              select c).FirstOrDefault();
-            return fullCard;
         }
     }
 }
