@@ -233,6 +233,7 @@ namespace MTG_Librarian
                                 context.Library.Remove(card.InventoryCard);
                         }
                         context.SaveChanges();
+                        var cardsStillSelected = new List<FullInventoryCard>();
                         foreach (FullInventoryCard card in e.Items)
                         {
                             var allCopiesSum = (from c in context.LibraryView
@@ -242,7 +243,10 @@ namespace MTG_Librarian
                                 magicCard.CopiesOwned = allCopiesSum.Value;
                             if (card.Count < 1)
                                 activeDocument.cardListView.RemoveObject(card);
+                            else
+                                cardsStillSelected.Add(card);
                         }
+                        activeDocument.cardListView.SelectedObjects = cardsStillSelected; // workaround: list view will not actually update selected items when removing from SelectedObjects
                         Globals.Forms.DBViewForm.setListView.RefreshObjects(setItems.Values.ToArray());
                     }
                     catch (Exception ex)
