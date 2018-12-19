@@ -408,18 +408,4 @@ namespace MTG_Librarian
             Properties.Settings.Default.Save();
         }
     }
-    // no longer needed
-    class MyCustomSortingDataSource : FastObjectListDataSource
-    {
-        public MyCustomSortingDataSource(FastObjectListView lv) : base(lv) { }
-        override public void Sort(OLVColumn column, SortOrder order)
-        {
-            if (order != SortOrder.None)
-            {
-                ArrayList objects = (ArrayList)listView.Objects;
-                objects.Sort(new ModelObjectComparer(listView.AllColumns.Where(x => x.AspectName == "TimeAdded").FirstOrDefault(), order));
-            }
-            RebuildIndexMap();
-        }
-    }
 }
