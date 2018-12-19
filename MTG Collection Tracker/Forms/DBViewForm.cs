@@ -8,7 +8,7 @@ using System.Timers;
 using WeifenLuo.WinFormsUI.Docking;
 using BrightIdeasSoftware;
 using System.Collections;
-//TODO5: expanded sets are not filtered
+
 namespace MTG_Librarian
 {
     public partial class DBViewForm : DockContent
@@ -21,7 +21,8 @@ namespace MTG_Librarian
         public DBViewForm()
         {
             InitializeComponent();
-            setNameFilter = new ModelFilter(x => !(x is OLVSetItem) || (x is OLVSetItem setItem && setItem.Name.ToUpper().Contains(setFilterBox.Text.ToUpper())));
+            setNameFilter = new ModelFilter(x => (x is OLVRarityItem && ((x as OLVRarityItem).Parent as OLVSetItem).Name.ToUpper().Contains(setFilterBox.Text.ToUpper())) 
+                || (x is OLVSetItem && (x as OLVSetItem).Name.ToUpper().Contains(setFilterBox.Text.ToUpper())));
             setListView.SmallImageList = Globals.ImageLists.SmallIconList;
             setListView.TreeColumnRenderer = new SetRenderer();
             cardListView.SmallImageList = Globals.ImageLists.SmallIconList;
