@@ -17,6 +17,7 @@ namespace MTG_Librarian
         public static class States
         {  
             public static string CardFocusedUuid { get; set; }
+            public static CollectionViewForm ActiveCollectionForm { get; set; }
         }
     
         public static class Forms
@@ -27,6 +28,7 @@ namespace MTG_Librarian
             public static DBViewForm DBViewForm { get; set; }
             public static TasksForm TasksForm { get; set; }
             public static MainForm MainForm { get; set; }
+            public static List<CollectionViewForm> OpenCollectionForms { get; set; } = new List<CollectionViewForm>();
         }
 
         public static class ImageLists

@@ -245,6 +245,8 @@
             this.DoubleBuffered = true;
             this.Name = "CollectionViewForm";
             this.Text = "Collection View";
+            this.Activated += new System.EventHandler(this.CollectionViewForm_Activated);
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.CollectionViewForm_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.cardListView)).EndInit();
             this.cardListViewMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);

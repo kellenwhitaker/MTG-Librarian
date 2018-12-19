@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using WeifenLuo.WinFormsUI.Docking;
 //TODO3: improve appearance of checkboxes
-//TODO4: moving a collection view out of the panel breaks any updates to it
+
 namespace MTG_Librarian
 {
     public partial class CollectionViewForm : DockContent
@@ -40,6 +40,7 @@ namespace MTG_Librarian
             var billboard = (cardListView.DropSink as SimpleDropSink).Billboard;
             billboard.BackColor = Color.DodgerBlue;
             billboard.TextColor = Color.White;
+            Globals.Forms.OpenCollectionForms.Add(this);
         }
 
         public void LoadCollection()
@@ -247,6 +248,16 @@ namespace MTG_Librarian
         {
             if (cardListView.SelectedObjects?.Count < 1)
                 e.Cancel = true;
+        }
+
+        private void CollectionViewForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            Globals.Forms.OpenCollectionForms.Remove(this);
+        }
+
+        private void CollectionViewForm_Activated(object sender, EventArgs e)
+        {
+            Globals.States.ActiveCollectionForm = this;
         }
     }
 }

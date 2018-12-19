@@ -161,8 +161,10 @@ namespace MTG_Librarian
 
         private void AddMagicCardsToActiveDocument(List<OLVCardItem> cards)
         {
-            if (dockPanel1.ActiveDocument is CollectionViewForm activeDocument)
+            var activeDocument = Globals.States.ActiveCollectionForm;
+            if (activeDocument != null)
             {
+                Console.WriteLine("active document");
                 var collectionName = activeDocument.DocumentName;
                 var setItems = new Dictionary<string, OLVSetItem>();
                 using (MyDbContext context = new MyDbContext())
@@ -212,7 +214,8 @@ namespace MTG_Librarian
 
         private void cvFormCardsUpdated(object sender, CardsUpdatedEventArgs e)
         {
-            if (dockPanel1.ActiveDocument is CollectionViewForm activeDocument)
+            var activeDocument = Globals.States.ActiveCollectionForm;
+            if (activeDocument != null)
             {
                 var collectionName = activeDocument.DocumentName;
                 var setItems = new Dictionary<string, OLVSetItem>();
@@ -405,7 +408,7 @@ namespace MTG_Librarian
             Properties.Settings.Default.Save();
         }
     }
-
+    // no longer needed
     class MyCustomSortingDataSource : FastObjectListDataSource
     {
         public MyCustomSortingDataSource(FastObjectListView lv) : base(lv) { }

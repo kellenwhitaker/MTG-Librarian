@@ -126,7 +126,7 @@ namespace MTG_Librarian
                         {
                             collection.CardCollection.CollectionName = e.Control.Text;
                             context.Collections.Update(collection.CardCollection);
-                            var doc = Globals.Forms.DockPanel.Documents.Where(x => (x is CollectionViewForm form) && form.Collection.Id == collection.CardCollection.Id).FirstOrDefault();
+                            var doc = Globals.Forms.OpenCollectionForms.Where(x => (x is CollectionViewForm form) && form.Collection.Id == collection.CardCollection.Id).FirstOrDefault();
                             if (doc is CollectionViewForm collectionForm)
                             {
                                 collectionForm.Text = collection.Name;
