@@ -80,6 +80,9 @@ namespace MTG_Librarian
             Globals.Forms.NavigationForm.LoadTree();
             Globals.Forms.DBViewForm.LoadTree();
             Globals.Forms.NavigationForm.CollectionActivated += navFormCollectionActivated;
+            Globals.Forms.DockPanel.DockLeftPortion = ApplicationSettings.DockLeftPortion;
+            Globals.Forms.DockPanel.DockRightPortion = ApplicationSettings.DockRightPortion;
+            Globals.Forms.DockPanel.DockBottomPortion = ApplicationSettings.DockBottomPortion;
             Globals.Forms.DockPanel.UpdateDockWindowZOrder(DockStyle.Left, true);
             Globals.Forms.DockPanel.UpdateDockWindowZOrder(DockStyle.Right, true);
             Show();

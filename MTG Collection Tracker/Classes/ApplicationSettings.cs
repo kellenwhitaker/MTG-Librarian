@@ -28,6 +28,30 @@ namespace MTG_Librarian
         }
 
         [UserScopedSetting()]
+        [DefaultSettingValue("0.25")]
+        public double DockLeftPortion
+        {
+            get => (double)this["DockLeftPortion"];
+            set => this["DockLeftPortion"] = value;
+        }
+
+        [UserScopedSetting()]
+        [DefaultSettingValue("0.25")]
+        public double DockRightPortion
+        {
+            get => (double)this["DockRightPortion"];
+            set => this["DockRightPortion"] = value;
+        }
+
+        [UserScopedSetting()]
+        [DefaultSettingValue("0.45")]
+        public double DockBottomPortion
+        {
+            get => (double)this["DockBottomPortion"];
+            set => this["DockBottomPortion"] = value;
+        }
+
+        [UserScopedSetting()]
         [DefaultSettingValue("0,0")]
         public Point MainFormLocation
         {

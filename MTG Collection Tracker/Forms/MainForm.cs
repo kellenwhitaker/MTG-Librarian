@@ -407,6 +407,9 @@ namespace MTG_Librarian
             ApplicationSettings.MainFormWindowState = WindowState;
             ApplicationSettings.MainFormLocation = Location;
             ApplicationSettings.MainFormSize = Size;
+            ApplicationSettings.DockLeftPortion = Globals.Forms.DockPanel.DockLeftPortion;
+            ApplicationSettings.DockRightPortion = Globals.Forms.DockPanel.DockRightPortion;
+            ApplicationSettings.DockBottomPortion = Globals.Forms.DockPanel.DockBottomPortion;
             SaveDockState(DockState.DockLeft);
             SaveDockState(DockState.Document);
             SaveDockState(DockState.DockBottom);
@@ -416,7 +419,8 @@ namespace MTG_Librarian
 
         private void SaveDockState(DockState dockState)
         {
-            ApplicationSettings.GetDockPaneSettings(dockState).ContentPanes = new List<ApplicationSettings.DockContentSettings>();
+            var settings = ApplicationSettings.GetDockPaneSettings(dockState);
+            settings.ContentPanes = new List<ApplicationSettings.DockContentSettings>();
             var dockWindow = Globals.Forms.DockPanel.DockWindows[dockState];
             if (dockWindow != null && dockWindow.NestedPanes.Count > 0)
             {
@@ -425,15 +429,15 @@ namespace MTG_Librarian
                 foreach (var dockContent in contentArray)
                 {
                     if (dockContent is CardInfoForm cardInfoForm)
-                        ApplicationSettings.GetDockPaneSettings(dockState).ContentPanes.Add(new ApplicationSettings.DockContentSettings { ContentType = ApplicationSettings.DockContentEnum.CardInfoForm, IsActivated = cardInfoForm == activeContent });
+                        settings.ContentPanes.Add(new ApplicationSettings.DockContentSettings { ContentType = ApplicationSettings.DockContentEnum.CardInfoForm, IsActivated = cardInfoForm == activeContent });
                     else if (dockContent is DBViewForm dBViewForm)
-                        ApplicationSettings.GetDockPaneSettings(dockState).ContentPanes.Add(new ApplicationSettings.DockContentSettings { ContentType = ApplicationSettings.DockContentEnum.DBViewForm, IsActivated = dBViewForm == activeContent });
+                        settings.ContentPanes.Add(new ApplicationSettings.DockContentSettings { ContentType = ApplicationSettings.DockContentEnum.DBViewForm, IsActivated = dBViewForm == activeContent });
                     else if (dockContent is CardNavigatorForm cardNavigatorForm)
-                        ApplicationSettings.GetDockPaneSettings(dockState).ContentPanes.Add(new ApplicationSettings.DockContentSettings { ContentType = ApplicationSettings.DockContentEnum.NavigatorForm, IsActivated = cardNavigatorForm == activeContent });
+                        settings.ContentPanes.Add(new ApplicationSettings.DockContentSettings { ContentType = ApplicationSettings.DockContentEnum.NavigatorForm, IsActivated = cardNavigatorForm == activeContent });
                     else if (dockContent is TasksForm tasksForm)
-                        ApplicationSettings.GetDockPaneSettings(dockState).ContentPanes.Add(new ApplicationSettings.DockContentSettings { ContentType = ApplicationSettings.DockContentEnum.TasksForm, IsActivated = tasksForm == activeContent });
+                        settings.ContentPanes.Add(new ApplicationSettings.DockContentSettings { ContentType = ApplicationSettings.DockContentEnum.TasksForm, IsActivated = tasksForm == activeContent });
                     else if (dockContent is CollectionViewForm collectionViewForm)
-                        ApplicationSettings.GetDockPaneSettings(dockState).ContentPanes.Add(new ApplicationSettings.DockContentSettings { ContentType = ApplicationSettings.DockContentEnum.CollectionViewForm, IsActivated = collectionViewForm == activeContent, DocumentId = collectionViewForm.Collection.Id });
+                        settings.ContentPanes.Add(new ApplicationSettings.DockContentSettings { ContentType = ApplicationSettings.DockContentEnum.CollectionViewForm, IsActivated = collectionViewForm == activeContent, DocumentId = collectionViewForm.Collection.Id });
                 }
             }
         }
