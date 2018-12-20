@@ -234,7 +234,6 @@ namespace MTG_Librarian
         private KW.WinFormsUI.Docking.DockPanel dockPanel1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
-        private static System.Windows.Forms.ImageList smallIconList;
         public System.Windows.Forms.ImageList largeIconLists;
         public System.Windows.Forms.Label TasksLabel;
         public CustomControls.BlockProgressBar TasksProgressBar;
