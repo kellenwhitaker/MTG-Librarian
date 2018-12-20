@@ -20,6 +20,7 @@ using System.ComponentModel;
 //TODO4 add scrapedname field to sets, using that to check against instead of the set name when checking for new sets
 //TODO4 allow updating of sets
 //TODO4 add debugging output for debug/release builds
+//TODO4 add portion and autohide to dockpanel layout persistence
 //TODO3 keep status bar constant height
 //TODO unknown error: collection unmodified
 namespace MTG_Librarian

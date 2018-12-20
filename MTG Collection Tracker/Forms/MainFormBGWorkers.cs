@@ -68,6 +68,11 @@ namespace MTG_Librarian
         private void InitUIWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             ApplicationSettings = new ApplicationSettings();
+            Globals.Forms.DockPanel.SuspendLayout();
+            Globals.Forms.DBViewForm.SuspendLayout();
+            Globals.Forms.CardInfoForm.SuspendLayout();
+            Globals.Forms.NavigationForm.SuspendLayout();
+            Globals.Forms.TasksForm.SuspendLayout();
             SetupDockPanel(DockState.DockBottom);
             SetupDockPanel(DockState.DockLeft);
             SetupDockPanel(DockState.DockRight);
@@ -77,11 +82,16 @@ namespace MTG_Librarian
             Globals.Forms.NavigationForm.CollectionActivated += navFormCollectionActivated;
             Globals.Forms.DockPanel.UpdateDockWindowZOrder(DockStyle.Left, true);
             Globals.Forms.DockPanel.UpdateDockWindowZOrder(DockStyle.Right, true);
-            CheckForNewSetsWorker.RunWorkerAsync();
             Show();
             WindowState = ApplicationSettings.MainFormWindowState;
             Location = ApplicationSettings.MainFormLocation;
             Size = ApplicationSettings.MainFormSize;
+            Globals.Forms.DockPanel.ResumeLayout();
+            Globals.Forms.DBViewForm.ResumeLayout();
+            Globals.Forms.CardInfoForm.ResumeLayout();
+            Globals.Forms.NavigationForm.ResumeLayout();
+            Globals.Forms.TasksForm.ResumeLayout();
+            CheckForNewSetsWorker.RunWorkerAsync();
         }
 
         private List<CardSet> GetMTGJSONSets()
