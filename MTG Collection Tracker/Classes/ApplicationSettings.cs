@@ -36,7 +36,7 @@ namespace MTG_Librarian
         }
 
         [UserScopedSetting()]
-        [DefaultSettingValue("0,0")]
+        [DefaultSettingValue("1024,768")]
         public Size MainFormSize
         {
             get => (Size)this["MainFormSize"];
