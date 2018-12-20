@@ -19,7 +19,6 @@ namespace MTG_Librarian
         public TasksForm()
         {
             InitializeComponent();
-            tasksListView.BackColor = Color.Transparent;
         }
 
         public void InitializeTaskManager()

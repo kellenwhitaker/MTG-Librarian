@@ -19,7 +19,7 @@ namespace MTG_Librarian
         private ConcurrentDeque<BackgroundTask> _AllTasks;
         private List<BackgroundTask> _activeTasks;
         private List<BackgroundTask> _completedTasks;
-        private EnhancedOLV listView;
+        private BrightIdeasSoftware.ObjectListView listView;
         private Label tasksLabel;
         private BlockProgressBar progressBar;
         public int TaskCount => _AllTasks.Count;

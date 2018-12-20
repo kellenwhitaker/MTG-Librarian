@@ -346,9 +346,6 @@
     </Compile>
     <Compile Include="Tasks\DownloadResourceTask.cs" />
     <Compile Include="Tasks\DownloadSetWorker.cs" />
-    <Compile Include="EnhancedOLV.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="Extensions\EntityExtensions.cs" />
     <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>

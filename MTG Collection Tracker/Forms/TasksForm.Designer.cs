@@ -29,7 +29,7 @@
         private void InitializeComponent()
         {
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.tasksListView = new MTG_Librarian.EnhancedOLV();
+            this.tasksListView = new BrightIdeasSoftware.ObjectListView();
             this.olvColumn3 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -49,7 +49,6 @@
             // 
             this.tasksListView.AllColumns.Add(this.olvColumn3);
             this.tasksListView.AllColumns.Add(this.olvColumn1);
-            this.tasksListView.BackColor = System.Drawing.Color.Transparent;
             this.tasksListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.olvColumn3,
             this.olvColumn1});
@@ -106,7 +105,7 @@
 
         #endregion
         private BrightIdeasSoftware.OLVColumn olvColumn1;
-        public EnhancedOLV tasksListView;
+        public BrightIdeasSoftware.ObjectListView tasksListView;
         private BrightIdeasSoftware.OLVColumn olvColumn3;
         private System.Windows.Forms.PictureBox pictureBox1;
     }
