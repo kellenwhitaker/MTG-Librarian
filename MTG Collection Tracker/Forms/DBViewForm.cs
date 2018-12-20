@@ -5,7 +5,7 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using System.Timers;
-using WeifenLuo.WinFormsUI.Docking;
+using KW.WinFormsUI.Docking;
 using BrightIdeasSoftware;
 using System.Collections;
 

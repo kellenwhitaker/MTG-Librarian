@@ -31,11 +31,17 @@ namespace MTG_Librarian
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this.vS2015LightTheme1 = new WeifenLuo.WinFormsUI.Docking.VS2015LightTheme();
+            this.vS2015LightTheme1 = new KW.WinFormsUI.Docking.VS2015LightTheme();
             this.CheckForNewSetsWorker = new System.ComponentModel.BackgroundWorker();
             this.InitUIWorker = new System.ComponentModel.BackgroundWorker();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.dockPanel1 = new WeifenLuo.WinFormsUI.Docking.DockPanel();
+            this.dockPanel1 = new KW.WinFormsUI.Docking.DockPanel();
+            this.mainMenuStrip = new System.Windows.Forms.MenuStrip();
+            this.windowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cardInfoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.dBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.navigatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tasksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.TasksProgressBar = new CustomControls.BlockProgressBar();
@@ -45,6 +51,7 @@ namespace MTG_Librarian
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.mainMenuStrip.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panel2.SuspendLayout();
             this.SuspendLayout();
@@ -71,6 +78,7 @@ namespace MTG_Librarian
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.Controls.Add(this.dockPanel1);
+            this.splitContainer1.Panel1.Controls.Add(this.mainMenuStrip);
             this.splitContainer1.Panel1MinSize = 250;
             // 
             // splitContainer1.Panel2
@@ -91,15 +99,64 @@ namespace MTG_Librarian
             this.dockPanel1.DockLeftPortion = 0.15D;
             this.dockPanel1.DockRightPortion = 0.15D;
             this.dockPanel1.DockTopPortion = 0.5D;
-            this.dockPanel1.DocumentStyle = WeifenLuo.WinFormsUI.Docking.DocumentStyle.DockingWindow;
-            this.dockPanel1.Location = new System.Drawing.Point(0, 0);
+            this.dockPanel1.Theme = this.vS2015LightTheme1;
+            this.dockPanel1.DocumentStyle = KW.WinFormsUI.Docking.DocumentStyle.DockingWindow;
+            this.dockPanel1.Location = new System.Drawing.Point(0, 24);
             this.dockPanel1.Margin = new System.Windows.Forms.Padding(1);
             this.dockPanel1.Name = "dockPanel1";
             this.dockPanel1.Padding = new System.Windows.Forms.Padding(6);
             this.dockPanel1.ShowAutoHideContentOnHover = false;
-            this.dockPanel1.Size = new System.Drawing.Size(1465, 500);
+            this.dockPanel1.Size = new System.Drawing.Size(1465, 476);
             this.dockPanel1.TabIndex = 1;
-            this.dockPanel1.Theme = this.vS2015LightTheme1;
+            // 
+            // mainMenuStrip
+            // 
+            this.mainMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.windowsToolStripMenuItem});
+            this.mainMenuStrip.Location = new System.Drawing.Point(0, 0);
+            this.mainMenuStrip.Name = "mainMenuStrip";
+            this.mainMenuStrip.Size = new System.Drawing.Size(1465, 24);
+            this.mainMenuStrip.TabIndex = 2;
+            this.mainMenuStrip.Text = "menuStrip1";
+            // 
+            // windowsToolStripMenuItem
+            // 
+            this.windowsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cardInfoToolStripMenuItem,
+            this.dBToolStripMenuItem,
+            this.navigatorToolStripMenuItem,
+            this.tasksToolStripMenuItem});
+            this.windowsToolStripMenuItem.Name = "windowsToolStripMenuItem";
+            this.windowsToolStripMenuItem.Size = new System.Drawing.Size(68, 20);
+            this.windowsToolStripMenuItem.Text = "Windows";
+            // 
+            // cardInfoToolStripMenuItem
+            // 
+            this.cardInfoToolStripMenuItem.Name = "cardInfoToolStripMenuItem";
+            this.cardInfoToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.cardInfoToolStripMenuItem.Text = "Card Info";
+            this.cardInfoToolStripMenuItem.Click += new System.EventHandler(this.cardInfoToolStripMenuItem_Click);
+            // 
+            // dBToolStripMenuItem
+            // 
+            this.dBToolStripMenuItem.Name = "dBToolStripMenuItem";
+            this.dBToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.dBToolStripMenuItem.Text = "DB";
+            this.dBToolStripMenuItem.Click += new System.EventHandler(this.dBToolStripMenuItem_Click);
+            // 
+            // navigatorToolStripMenuItem
+            // 
+            this.navigatorToolStripMenuItem.Name = "navigatorToolStripMenuItem";
+            this.navigatorToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.navigatorToolStripMenuItem.Text = "Navigator";
+            this.navigatorToolStripMenuItem.Click += new System.EventHandler(this.navigatorToolStripMenuItem_Click);
+            // 
+            // tasksToolStripMenuItem
+            // 
+            this.tasksToolStripMenuItem.Name = "tasksToolStripMenuItem";
+            this.tasksToolStripMenuItem.Size = new System.Drawing.Size(126, 22);
+            this.tasksToolStripMenuItem.Text = "Tasks";
+            this.tasksToolStripMenuItem.Click += new System.EventHandler(this.tasksToolStripMenuItem_Click);
             // 
             // panel1
             // 
@@ -156,15 +213,19 @@ namespace MTG_Librarian
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1465, 635);
             this.Controls.Add(this.splitContainer1);
+            this.MainMenuStrip = this.mainMenuStrip;
             this.Name = "MainForm";
             this.Text = "MTG Librarian";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Form1_FormClosed);
             this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.mainMenuStrip.ResumeLayout(false);
+            this.mainMenuStrip.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel2.ResumeLayout(false);
             this.ResumeLayout(false);
@@ -172,17 +233,23 @@ namespace MTG_Librarian
         }
 
         #endregion
-        private WeifenLuo.WinFormsUI.Docking.VS2015LightTheme vS2015LightTheme1;
+        private KW.WinFormsUI.Docking.VS2015LightTheme vS2015LightTheme1;
         private System.ComponentModel.BackgroundWorker CheckForNewSetsWorker;
         private System.ComponentModel.BackgroundWorker InitUIWorker;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private WeifenLuo.WinFormsUI.Docking.DockPanel dockPanel1;
+        private KW.WinFormsUI.Docking.DockPanel dockPanel1;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
         private static System.Windows.Forms.ImageList smallIconList;
         public System.Windows.Forms.ImageList largeIconList;
         public System.Windows.Forms.Label TasksLabel;
         public CustomControls.BlockProgressBar TasksProgressBar;
+        private System.Windows.Forms.MenuStrip mainMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem windowsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cardInfoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem dBToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem navigatorToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tasksToolStripMenuItem;
     }
 }
 

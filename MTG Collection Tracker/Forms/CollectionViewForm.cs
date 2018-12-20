@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using WeifenLuo.WinFormsUI.Docking;
+using KW.WinFormsUI.Docking;
 //TODO3: improve appearance of checkboxes
 
 namespace MTG_Librarian
@@ -40,6 +40,7 @@ namespace MTG_Librarian
             var billboard = (cardListView.DropSink as SimpleDropSink).Billboard;
             billboard.BackColor = Color.DodgerBlue;
             billboard.TextColor = Color.White;
+            DockAreas = DockAreas.Document | DockAreas.DockBottom;
             Globals.Forms.OpenCollectionForms.Add(this);
         }
 

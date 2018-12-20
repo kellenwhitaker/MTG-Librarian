@@ -10,13 +10,17 @@ namespace MTG_Librarian
     {
         public static void SetDoubleBuffered(this System.Windows.Forms.Control c)
         {
-            System.Reflection.PropertyInfo aProp =
-                  typeof(System.Windows.Forms.Control).GetProperty(
-                        "DoubleBuffered",
-                        System.Reflection.BindingFlags.NonPublic |
-                        System.Reflection.BindingFlags.Instance);
+            try
+            {
+                System.Reflection.PropertyInfo aProp =
+                      typeof(System.Windows.Forms.Control).GetProperty(
+                            "DoubleBuffered",
+                            System.Reflection.BindingFlags.NonPublic |
+                            System.Reflection.BindingFlags.Instance);
 
-            aProp.SetValue(c, true, null);
+                aProp.SetValue(c, true, null);
+            }
+            catch (Exception ex) { }
         }
     }
 }

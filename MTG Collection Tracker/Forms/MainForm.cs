@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
-using WeifenLuo.WinFormsUI.Docking;
+using KW.WinFormsUI.Docking;
 using HtmlAgilityPack;
 using Fizzler.Systems.HtmlAgilityPack;
 using System.Net;
@@ -15,6 +15,12 @@ using System.ComponentModel;
 //TODO restsharp
 //TODO2 add card preview
 //TODO improve bulk card add speed
+//TODO4 allow cards to be moved from one collection to another
+//TODO4 save window z order on exit
+//TODO4 add scrapedname field to sets, using that to check against instead of the set name when checking for new sets
+//TODO4 allow updating of sets
+//TODO4 add debugging output for debug/release builds
+//TODO3 keep status bar constant height
 //TODO unknown error: collection unmodified
 namespace MTG_Librarian
 {
@@ -23,11 +29,13 @@ namespace MTG_Librarian
         private static SplashForm splash = new SplashForm();
         private const int SmallIconWidth = 27;
         private const int SmallIconHeight = 21;
+        private static ApplicationSettings ApplicationSettings;
 
         public MainForm()
         {
             InitializeComponent();
             Globals.Forms.DockPanel = dockPanel1;
+            Globals.Forms.DockPanel.SetDoubleBuffered();
             Globals.Forms.MainForm = this;
             splash.Show();
             SetupUI();
@@ -164,7 +172,6 @@ namespace MTG_Librarian
             var activeDocument = Globals.States.ActiveCollectionForm;
             if (activeDocument != null)
             {
-                Console.WriteLine("active document");
                 var collectionName = activeDocument.DocumentName;
                 var setItems = new Dictionary<string, OLVSetItem>();
                 using (MyDbContext context = new MyDbContext())
@@ -303,8 +310,9 @@ namespace MTG_Librarian
             }
         }
 
-        public void LoadCollection(int id)
+        public CollectionViewForm LoadCollection(int id, DockState dockState = DockState.Document)
         {
+            CollectionViewForm collectionViewForm = null;
             CardCollection collection;
             using (var context = new MyDbContext())
             {
@@ -313,10 +321,12 @@ namespace MTG_Librarian
                               select c).FirstOrDefault();
             }
             if (collection != null)
-                LoadCollection(collection);
+                collectionViewForm = LoadCollection(collection, dockState);
+
+            return collectionViewForm;
         }
 
-        public void LoadCollection(CardCollection collection)
+        public CollectionViewForm LoadCollection(CardCollection collection, DockState dockState = DockState.Document)
         {
             var document = new CollectionViewForm { Collection = collection, Text = collection.CollectionName };
             document.LoadCollection();
@@ -324,9 +334,9 @@ namespace MTG_Librarian
             document.CardsUpdated += cvFormCardsUpdated;
             document.CardSelected += CardSelected;
             document.cardListView.SmallImageList = Globals.ImageLists.SmallIconList;
-            document.Show(dockPanel1, DockState.Document);
-            dockPanel1.ActiveDocumentPane.SetDoubleBuffered();
-            dockPanel1.SetDoubleBuffered();
+            document.Show(Globals.Forms.DockPanel, dockState);
+            Globals.Forms.DockPanel.ActiveDocumentPane.SetDoubleBuffered();
+            return document;
         }
 
         private void navFormCollectionActivated(object sender, CollectionActivatedEventArgs e)
@@ -393,19 +403,71 @@ namespace MTG_Librarian
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            Properties.Settings.Default.OpenCollections = new System.Collections.Specialized.StringCollection();
-            int index = 0;
-            foreach (var doc in dockPanel1.Documents)
+            ApplicationSettings = new ApplicationSettings();
+            ApplicationSettings.MainFormWindowState = WindowState;
+            ApplicationSettings.MainFormLocation = Location;
+            ApplicationSettings.MainFormSize = Size;
+            SaveDockState(DockState.DockLeft);
+            SaveDockState(DockState.Document);
+            SaveDockState(DockState.DockBottom);
+            SaveDockState(DockState.DockRight);
+            ApplicationSettings.Save();
+        }
+
+        private void SaveDockState(DockState dockState)
+        {
+            ApplicationSettings.GetDockPaneSettings(dockState).ContentPanes = new List<ApplicationSettings.DockContentSettings>();
+            var dockWindow = Globals.Forms.DockPanel.DockWindows[dockState];
+            if (dockWindow != null && dockWindow.NestedPanes.Count > 0)
             {
-                if (doc is CollectionViewForm collectionDoc)
+                var contentArray = dockWindow.NestedPanes[0].DockContentArray;
+                var activeContent = dockWindow.NestedPanes[0].ActiveContent;
+                foreach (var dockContent in contentArray)
                 {
-                    Properties.Settings.Default.OpenCollections.Add(collectionDoc.Collection.Id.ToString());
-                    if (collectionDoc.IsActivated)
-                        Properties.Settings.Default.ActiveCollectionIndex = index;
+                    if (dockContent is CardInfoForm cardInfoForm)
+                        ApplicationSettings.GetDockPaneSettings(dockState).ContentPanes.Add(new ApplicationSettings.DockContentSettings { ContentType = ApplicationSettings.DockContentEnum.CardInfoForm, IsActivated = cardInfoForm == activeContent });
+                    else if (dockContent is DBViewForm dBViewForm)
+                        ApplicationSettings.GetDockPaneSettings(dockState).ContentPanes.Add(new ApplicationSettings.DockContentSettings { ContentType = ApplicationSettings.DockContentEnum.DBViewForm, IsActivated = dBViewForm == activeContent });
+                    else if (dockContent is CardNavigatorForm cardNavigatorForm)
+                        ApplicationSettings.GetDockPaneSettings(dockState).ContentPanes.Add(new ApplicationSettings.DockContentSettings { ContentType = ApplicationSettings.DockContentEnum.NavigatorForm, IsActivated = cardNavigatorForm == activeContent });
+                    else if (dockContent is TasksForm tasksForm)
+                        ApplicationSettings.GetDockPaneSettings(dockState).ContentPanes.Add(new ApplicationSettings.DockContentSettings { ContentType = ApplicationSettings.DockContentEnum.TasksForm, IsActivated = tasksForm == activeContent });
+                    else if (dockContent is CollectionViewForm collectionViewForm)
+                        ApplicationSettings.GetDockPaneSettings(dockState).ContentPanes.Add(new ApplicationSettings.DockContentSettings { ContentType = ApplicationSettings.DockContentEnum.CollectionViewForm, IsActivated = collectionViewForm == activeContent, DocumentId = collectionViewForm.Collection.Id });
                 }
-                index++;
             }
-            Properties.Settings.Default.Save();
+        }
+ 
+        private void cardInfoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Globals.Forms.CardInfoForm.IsHidden)
+                Globals.Forms.CardInfoForm.Show(Globals.Forms.DockPanel, DockState.DockLeft);
+            else
+                Globals.Forms.CardInfoForm.Activate();
+        }
+
+        private void dBToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Globals.Forms.DBViewForm.IsHidden)
+                Globals.Forms.DBViewForm.Show(Globals.Forms.DockPanel, DockState.DockBottom);
+            else
+                Globals.Forms.DBViewForm.Activate();
+        }
+
+        private void navigatorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Globals.Forms.NavigationForm.IsHidden)
+                Globals.Forms.NavigationForm.Show(Globals.Forms.DockPanel, DockState.DockRight);
+            else
+                Globals.Forms.NavigationForm.Activate();
+        }
+
+        private void tasksToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Globals.Forms.TasksForm.IsHidden)
+                Globals.Forms.TasksForm.Show(Globals.Forms.DockPanel, DockState.DockRight);
+            else
+                Globals.Forms.TasksForm.Activate();
         }
     }
 }

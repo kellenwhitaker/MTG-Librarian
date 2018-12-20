@@ -8,11 +8,10 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using WeifenLuo.WinFormsUI.Docking;
+using KW.WinFormsUI.Docking;
 
 namespace MTG_Librarian
 {
-    [DesignerCategory("Code")]
     public partial class MainForm : Form
     {
         private void InitUIWorker_DoWork(object sender, DoWorkEventArgs e)
@@ -32,40 +31,63 @@ namespace MTG_Librarian
             splash.ProgressChanged(e.UserState as SplashProgressObject);
         }
 
-        private void InitUIWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private void SetupDockPanel(DockState dockState)
         {
-            Globals.Forms.CardInfoForm.Show(dockPanel1, DockState.DockLeft);
-            Globals.Forms.NavigationForm.LoadTree();
-            Globals.Forms.NavigationForm.CollectionActivated += navFormCollectionActivated;
-            Globals.Forms.NavigationForm.Show(dockPanel1, DockState.DockRight);
-            Globals.Forms.TasksForm.Show(dockPanel1, DockState.DockRight);
-            Globals.Forms.NavigationForm.Activate();
-            Globals.Forms.DBViewForm.LoadTree();
-            Globals.Forms.DBViewForm.Show(dockPanel1, DockState.DockBottom);
-            LoadCollections();
-            dockPanel1.UpdateDockWindowZOrder(DockStyle.Left, true);
-            dockPanel1.UpdateDockWindowZOrder(DockStyle.Right, true);
-            CheckForNewSetsWorker.RunWorkerAsync();
-            Show();
+            var contentPanes = ApplicationSettings.GetDockPaneSettings(dockState).ContentPanes;
+            DockContent activatedContent = null;
+            if (contentPanes != null && contentPanes.Count > 0)
+                foreach (var contentPane in contentPanes)
+                {
+                    var dockContent = ShowForm(contentPane, dockState);
+                    if (contentPane.IsActivated)
+                        activatedContent = dockContent;
+                }
+
+            if (activatedContent != null)
+                activatedContent.Activate();
         }
 
-        private void LoadCollections()
+        private DockContent ShowForm(ApplicationSettings.DockContentSettings contentSettings, DockState dockState)
         {
-            var docs = Properties.Settings.Default.OpenCollections;
-            if (docs != null)
-                foreach (var doc in docs)
-                    if (Int32.TryParse(doc, out int collectionId))
-                        LoadCollection(collectionId);
-            int activeCollectionIndex = Properties.Settings.Default.ActiveCollectionIndex;
-            if (activeCollectionIndex >= 0 && activeCollectionIndex < Globals.Forms.DockPanel.DocumentsCount)
-                if (Globals.Forms.DockPanel.DocumentsToArray()[activeCollectionIndex] is CollectionViewForm collectionViewForm)
-                    collectionViewForm.Activate();
+            DockContent dockContent;
+            if (contentSettings.ContentType == ApplicationSettings.DockContentEnum.CardInfoForm)
+                dockContent = Globals.Forms.CardInfoForm;
+            else if (contentSettings.ContentType == ApplicationSettings.DockContentEnum.DBViewForm)
+                dockContent = Globals.Forms.DBViewForm;
+            else if (contentSettings.ContentType == ApplicationSettings.DockContentEnum.NavigatorForm)
+                dockContent = Globals.Forms.NavigationForm;
+            else if (contentSettings.ContentType == ApplicationSettings.DockContentEnum.TasksForm)
+                dockContent = Globals.Forms.TasksForm;
+            else
+                dockContent = LoadCollection(contentSettings.DocumentId, dockState);
+
+            dockContent.Show(Globals.Forms.DockPanel, dockState);
+            return dockContent;
+        }
+
+        private void InitUIWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            ApplicationSettings = new ApplicationSettings();
+            SetupDockPanel(DockState.DockBottom);
+            SetupDockPanel(DockState.DockLeft);
+            SetupDockPanel(DockState.DockRight);
+            SetupDockPanel(DockState.Document);
+            Globals.Forms.NavigationForm.LoadTree();
+            Globals.Forms.DBViewForm.LoadTree();
+            Globals.Forms.NavigationForm.CollectionActivated += navFormCollectionActivated;
+            Globals.Forms.DockPanel.UpdateDockWindowZOrder(DockStyle.Left, true);
+            Globals.Forms.DockPanel.UpdateDockWindowZOrder(DockStyle.Right, true);
+            CheckForNewSetsWorker.RunWorkerAsync();
+            Show();
+            WindowState = ApplicationSettings.MainFormWindowState;
+            Location = ApplicationSettings.MainFormLocation;
+            Size = ApplicationSettings.MainFormSize;
         }
 
         private List<CardSet> GetMTGJSONSets()
         {
             Regex matchCode_Date = new Regex("</strong><br>(.+)<br><a");
-            string URL = "https://mtgjson.com/v4/sets.html";
+            string URL = "https://mtgjson.com/sets.html";
             var doc = new HtmlWeb().Load(URL);
             var sets = new List<CardSet>();
             var tableCells = doc.DocumentNode.SelectNodes("//td[i[@class='set']]");

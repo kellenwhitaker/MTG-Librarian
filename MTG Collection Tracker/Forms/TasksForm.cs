@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using WeifenLuo.WinFormsUI.Docking;
+using KW.WinFormsUI.Docking;
 using CustomControls;
 
 namespace MTG_Librarian
