@@ -77,6 +77,9 @@ namespace MTG_Librarian
             SetupDockPanel(DockState.DockLeft);
             SetupDockPanel(DockState.DockRight);
             SetupDockPanel(DockState.Document);
+            SetupDockPanel(DockState.DockBottomAutoHide);
+            SetupDockPanel(DockState.DockLeftAutoHide);
+            SetupDockPanel(DockState.DockRightAutoHide);
             Globals.Forms.NavigationForm.LoadTree();
             Globals.Forms.DBViewForm.LoadTree();
             Globals.Forms.NavigationForm.CollectionActivated += navFormCollectionActivated;

@@ -20,7 +20,6 @@ using System.ComponentModel;
 //TODO4 add scrapedname field to sets, using that to check against instead of the set name when checking for new sets
 //TODO4 allow updating of sets
 //TODO4 add debugging output for debug/release builds
-//TODO4 add portion and autohide to dockpanel layout persistence
 //TODO unknown error: collection unmodified
 namespace MTG_Librarian
 {
@@ -407,6 +406,7 @@ namespace MTG_Librarian
             ApplicationSettings.MainFormWindowState = WindowState;
             ApplicationSettings.MainFormLocation = Location;
             ApplicationSettings.MainFormSize = Size;
+            ApplicationSettings.ClearDockPaneSettings();
             ApplicationSettings.DockLeftPortion = Globals.Forms.DockPanel.DockLeftPortion;
             ApplicationSettings.DockRightPortion = Globals.Forms.DockPanel.DockRightPortion;
             ApplicationSettings.DockBottomPortion = Globals.Forms.DockPanel.DockBottomPortion;
@@ -419,13 +419,13 @@ namespace MTG_Librarian
 
         private void SaveDockState(DockState dockState)
         {
-            var settings = ApplicationSettings.GetDockPaneSettings(dockState);
-            settings.ContentPanes = new List<ApplicationSettings.DockContentSettings>();
             var dockWindow = Globals.Forms.DockPanel.DockWindows[dockState];
             if (dockWindow != null && dockWindow.NestedPanes.Count > 0)
             {
-                var contentArray = dockWindow.NestedPanes[0].DockContentArray;
-                var activeContent = dockWindow.NestedPanes[0].ActiveContent;
+                var pane = dockWindow.NestedPanes[0];
+                var settings = ApplicationSettings.GetDockPaneSettings(dockState, pane.IsAutoHide);
+                var contentArray = pane.DockContentArray;
+                var activeContent = pane.ActiveContent;
                 foreach (var dockContent in contentArray)
                 {
                     if (dockContent is CardInfoForm cardInfoForm)

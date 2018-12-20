@@ -27,6 +27,20 @@ namespace MTG_Librarian
             public int ActivePaneIndex { get; set; }
         }
 
+        public void ClearDockPaneSettings()
+        {
+            DockPaneLeft = new DockPaneSettings();
+            DockPaneRight = new DockPaneSettings();
+            DockPaneBottom = new DockPaneSettings();
+            DockPaneDocuments = new DockPaneSettings();
+            DockPaneLeftAutoHide = new DockPaneSettings();
+            DockPaneRightAutoHide = new DockPaneSettings();
+            DockPaneBottomAutoHide = new DockPaneSettings();
+            DockRightPortion = 0.25;
+            DockLeftPortion = 0.25;
+            DockBottomPortion = 0.45;
+        }
+
         [UserScopedSetting()]
         [DefaultSettingValue("0.25")]
         public double DockLeftPortion
@@ -108,6 +122,53 @@ namespace MTG_Librarian
             set => this["DockPaneRight"] = value;
         }
 
+        [UserScopedSetting()]
+        [DefaultSettingValue("")]
+        public DockPaneSettings DockPaneRightAutoHide
+        {
+            get => (DockPaneSettings)this["DockPaneRightAutoHide"];
+            set => this["DockPaneRightAutoHide"] = value;
+        }
+
+        [UserScopedSetting()]
+        [DefaultSettingValue("")]
+        public DockPaneSettings DockPaneLeftAutoHide
+        {
+            get => (DockPaneSettings)this["DockPaneLeftAutoHide"];
+            set => this["DockPaneLeftAutoHide"] = value;
+        }
+
+        [UserScopedSetting()]
+        [DefaultSettingValue("")]
+        public DockPaneSettings DockPaneBottomAutoHide
+        {
+            get => (DockPaneSettings)this["DockPaneBottomAutoHide"];
+            set => this["DockPaneBottomAutoHide"] = value;
+        }
+
+        public DockPaneSettings GetDockPaneSettings(DockState dockState, bool AutoHide)
+        {
+            if (!AutoHide)
+            {
+                switch (dockState)
+                {
+                    case DockState.DockBottom: return DockPaneBottom;
+                    case DockState.DockLeft: return DockPaneLeft;
+                    case DockState.DockRight: return DockPaneRight;
+                    default: return DockPaneDocuments;
+                }
+            }
+            else
+            {
+                switch (dockState)
+                {
+                    case DockState.DockBottom: return DockPaneBottomAutoHide;
+                    case DockState.DockLeft: return DockPaneLeftAutoHide;
+                    default: return DockPaneRightAutoHide;
+                }
+            }
+        }
+
         public DockPaneSettings GetDockPaneSettings(DockState dockState)
         {
             switch (dockState)
@@ -115,8 +176,12 @@ namespace MTG_Librarian
                 case DockState.DockBottom: return DockPaneBottom;
                 case DockState.DockLeft: return DockPaneLeft;
                 case DockState.DockRight: return DockPaneRight;
+                case DockState.DockBottomAutoHide: return DockPaneBottomAutoHide;
+                case DockState.DockLeftAutoHide: return DockPaneLeftAutoHide;
+                case DockState.DockRightAutoHide: return DockPaneRightAutoHide;
                 default: return DockPaneDocuments;
             }
         }
     }
 }
+
