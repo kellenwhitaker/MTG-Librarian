@@ -21,7 +21,6 @@ using System.ComponentModel;
 //TODO4 allow updating of sets
 //TODO4 add debugging output for debug/release builds
 //TODO4 add portion and autohide to dockpanel layout persistence
-//TODO3 keep status bar constant height
 //TODO unknown error: collection unmodified
 namespace MTG_Librarian
 {
