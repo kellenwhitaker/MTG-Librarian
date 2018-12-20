@@ -43,7 +43,7 @@ namespace MTG_Librarian
             this.navigatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tasksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusPanel = new System.Windows.Forms.Panel();
-            this.panel2 = new System.Windows.Forms.Panel();
+            this.mainPanel = new System.Windows.Forms.Panel();
             this.TasksProgressBar = new CustomControls.BlockProgressBar();
             this.TasksLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -52,7 +52,7 @@ namespace MTG_Librarian
             this.splitContainer1.SuspendLayout();
             this.mainMenuStrip.SuspendLayout();
             this.statusPanel.SuspendLayout();
-            this.panel2.SuspendLayout();
+            this.mainPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // CheckForNewSetsWorker
@@ -158,25 +158,25 @@ namespace MTG_Librarian
             this.tasksToolStripMenuItem.Text = "Tasks";
             this.tasksToolStripMenuItem.Click += new System.EventHandler(this.tasksToolStripMenuItem_Click);
             // 
-            // panel1
+            // statusPanel
             // 
             this.statusPanel.BackColor = System.Drawing.Color.DodgerBlue;
-            this.statusPanel.Controls.Add(this.panel2);
+            this.statusPanel.Controls.Add(this.mainPanel);
             this.statusPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.statusPanel.Location = new System.Drawing.Point(0, 0);
             this.statusPanel.Name = "statusPanel";
             this.statusPanel.Size = new System.Drawing.Size(1465, 134);
             this.statusPanel.TabIndex = 3;
             // 
-            // panel2
+            // mainPanel
             // 
-            this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.panel2.Controls.Add(this.TasksProgressBar);
-            this.panel2.Controls.Add(this.TasksLabel);
-            this.panel2.Location = new System.Drawing.Point(831, 109);
-            this.panel2.Name = "panel2";
-            this.panel2.Size = new System.Drawing.Size(631, 25);
-            this.panel2.TabIndex = 0;
+            this.mainPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.mainPanel.Controls.Add(this.TasksProgressBar);
+            this.mainPanel.Controls.Add(this.TasksLabel);
+            this.mainPanel.Location = new System.Drawing.Point(831, 109);
+            this.mainPanel.Name = "mainPanel";
+            this.mainPanel.Size = new System.Drawing.Size(631, 25);
+            this.mainPanel.TabIndex = 0;
             // 
             // TasksProgressBar
             // 
@@ -221,7 +221,7 @@ namespace MTG_Librarian
             this.mainMenuStrip.ResumeLayout(false);
             this.mainMenuStrip.PerformLayout();
             this.statusPanel.ResumeLayout(false);
-            this.panel2.ResumeLayout(false);
+            this.mainPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -233,7 +233,7 @@ namespace MTG_Librarian
         private System.Windows.Forms.SplitContainer splitContainer1;
         private KW.WinFormsUI.Docking.DockPanel dockPanel1;
         private System.Windows.Forms.Panel statusPanel;
-        private System.Windows.Forms.Panel panel2;
+        private System.Windows.Forms.Panel mainPanel;
         public System.Windows.Forms.ImageList largeIconLists;
         public System.Windows.Forms.Label TasksLabel;
         public CustomControls.BlockProgressBar TasksProgressBar;
