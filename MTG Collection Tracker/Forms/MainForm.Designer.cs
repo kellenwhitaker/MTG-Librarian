@@ -46,7 +46,6 @@ namespace MTG_Librarian
             this.panel2 = new System.Windows.Forms.Panel();
             this.TasksProgressBar = new CustomControls.BlockProgressBar();
             this.TasksLabel = new System.Windows.Forms.Label();
-            this.largeIconList = new System.Windows.Forms.ImageList(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -201,12 +200,6 @@ namespace MTG_Librarian
             this.TasksLabel.Text = "No active tasks";
             this.TasksLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // largeIconList
-            // 
-            this.largeIconList.ColorDepth = System.Windows.Forms.ColorDepth.Depth32Bit;
-            this.largeIconList.ImageSize = new System.Drawing.Size(32, 32);
-            this.largeIconList.TransparentColor = System.Drawing.Color.Transparent;
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -241,7 +234,7 @@ namespace MTG_Librarian
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.Panel panel2;
         private static System.Windows.Forms.ImageList smallIconList;
-        public System.Windows.Forms.ImageList largeIconList;
+        public System.Windows.Forms.ImageList largeIconLists;
         public System.Windows.Forms.Label TasksLabel;
         public CustomControls.BlockProgressBar TasksProgressBar;
         private System.Windows.Forms.MenuStrip mainMenuStrip;
