@@ -3,12 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace MTG_Librarian
 {
     public static class ControlExtensions
     {
-        public static void SetDoubleBuffered(this System.Windows.Forms.Control c)
+        public static int GetChildIndex(this Control c)
+        {
+            return c.Parent.Controls.GetChildIndex(c);
+        }
+
+        public static void SetDoubleBuffered(this Control c)
         {
             try
             {

@@ -25,6 +25,7 @@ namespace MTG_Librarian
         {
             public List<DockContentSettings> ContentPanes { get; set; } = new List<DockContentSettings>();
             public int ActivePaneIndex { get; set; }
+            public int ZOrderIndex { get; set; }
         }
 
         public void ClearDockPaneSettings()

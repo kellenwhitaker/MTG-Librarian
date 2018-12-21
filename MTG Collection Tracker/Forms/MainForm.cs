@@ -424,6 +424,7 @@ namespace MTG_Librarian
             {
                 var pane = dockWindow.NestedPanes[0];
                 var settings = ApplicationSettings.GetDockPaneSettings(dockState, pane.IsAutoHide);
+                settings.ZOrderIndex = dockWindow.GetChildIndex();
                 var contentArray = pane.DockContentArray;
                 var activeContent = pane.ActiveContent;
                 foreach (var dockContent in contentArray)

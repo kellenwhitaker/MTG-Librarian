@@ -288,6 +288,7 @@
     <Compile Include="Entities\MagicCard.cs" />
     <Compile Include="Entities\MTGJSONCard.cs" />
     <Compile Include="Events\EventArgs.cs" />
+    <Compile Include="Extensions\DockPanelSuiteExtensions.cs" />
     <Compile Include="Extensions\HtmlAgilityPackExtensions.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\OLVExtensions.cs" />
