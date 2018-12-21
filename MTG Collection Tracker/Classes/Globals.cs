@@ -17,6 +17,7 @@ namespace MTG_Librarian
         public static class States
         {  
             public static string CardFocusedUuid { get; set; }
+            // deprecated?
             public static CollectionViewForm ActiveCollectionForm { get; set; }
         }
     
