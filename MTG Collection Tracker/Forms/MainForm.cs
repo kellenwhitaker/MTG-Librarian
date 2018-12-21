@@ -13,9 +13,8 @@ using System.Collections;
 using System.ComponentModel;
 using System.Diagnostics;
 //Note: editable columns - count, cost, tags, foil
-//TODO restsharp
+//TODO3 use restsharp for getting TCGPlayer prices
 //TODO2 add card preview
-//TODO improve bulk card add speed
 //TODO4 add scrapedname field to sets, using that to check against instead of the set name when checking for new sets
 //TODO4 allow updating of sets
 //TODO4 disable changing of dock window to floating state on double click
