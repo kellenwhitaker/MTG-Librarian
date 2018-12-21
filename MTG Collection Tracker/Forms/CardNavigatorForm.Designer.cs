@@ -51,6 +51,7 @@
             this.navigatorListView.FullRowSelect = true;
             this.navigatorListView.HeaderMaximumHeight = 0;
             this.navigatorListView.IsSimpleDragSource = true;
+            this.navigatorListView.IsSimpleDropSink = true;
             this.navigatorListView.Location = new System.Drawing.Point(0, 0);
             this.navigatorListView.MultiSelect = false;
             this.navigatorListView.Name = "navigatorListView";
@@ -62,6 +63,8 @@
             this.navigatorListView.VirtualMode = true;
             this.navigatorListView.CellEditFinishing += new BrightIdeasSoftware.CellEditEventHandler(this.navigatorListView_CellEditFinishing);
             this.navigatorListView.CellEditStarting += new BrightIdeasSoftware.CellEditEventHandler(this.navigatorListView_CellEditStarting);
+            this.navigatorListView.ModelCanDrop += new System.EventHandler<BrightIdeasSoftware.ModelDropEventArgs>(this.navigatorListView_ModelCanDrop);
+            this.navigatorListView.ModelDropped += new System.EventHandler<BrightIdeasSoftware.ModelDropEventArgs>(this.navigatorListView_ModelDropped);
             this.navigatorListView.ItemActivate += new System.EventHandler(this.navigatorListView_ItemActivate);
             this.navigatorListView.SelectedIndexChanged += new System.EventHandler(this.navigatorListView_SelectedIndexChanged);
             this.navigatorListView.DragDrop += new System.Windows.Forms.DragEventHandler(this.navigatorListView_DragDrop);

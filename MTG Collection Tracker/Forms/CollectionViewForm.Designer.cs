@@ -88,6 +88,7 @@
             this.cardListView.FullRowSelect = true;
             this.cardListView.GridLines = true;
             this.cardListView.HideSelection = false;
+            this.cardListView.IsSimpleDragSource = true;
             this.cardListView.IsSimpleDropSink = true;
             this.cardListView.Location = new System.Drawing.Point(0, 0);
             this.cardListView.Name = "cardListView";

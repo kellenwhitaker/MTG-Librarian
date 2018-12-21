@@ -71,6 +71,11 @@ namespace MTG_Librarian
             cardListView.AddObjects(cards);
         }
 
+        public void RemoveFullInventoryCards(List<FullInventoryCard> cards)
+        {
+            cardListView.RemoveObjects(cards);
+        }
+
         private void fastObjectListView1_ModelCanDrop(object sender, ModelDropEventArgs e)
         {
             e.Effect = DragDropEffects.Move;
@@ -80,11 +85,15 @@ namespace MTG_Librarian
                 e.InfoMessage = $"Add set [{setItem.Name}] to {DocumentName}";
             else if (e.SourceModels[0] is OLVRarityItem rarityItem)
                 e.InfoMessage = $"Add {rarityItem.Rarity}s from [{(rarityItem.Parent as OLVSetItem).Name}] to {DocumentName}";
+            else if (e.SourceModels[0] is FullInventoryCard fullInventoryCard && e.SourceListView != this.cardListView)
+                e.InfoMessage = $"Add {e.SourceModels.Count} card{(e.SourceModels.Count == 1 ? "" : "s")} to {DocumentName}";
+            else
+                e.Effect = DragDropEffects.None;
         }
 
         private void fastObjectListView1_ModelDropped(object sender, ModelDropEventArgs e)
         {
-            OnCardsDropped(new CardsDroppedEventArgs { Items = e.SourceModels as ArrayList });
+            OnCardsDropped(new CardsDroppedEventArgs { Items = e.SourceModels as ArrayList, TargetCollectionViewForm = this, SourceForm = e.SourceListView.Parent as DockContent });
         }
 
         public event EventHandler<CardsDroppedEventArgs> CardsDropped;

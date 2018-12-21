@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -240,6 +241,7 @@ namespace MTG_Librarian
 
         private void navigatorListView_DragDrop(object sender, DragEventArgs e)
         {
+            /*
             if (e.Data is BrightIdeasSoftware.OLVDataObject data && data.ModelObjects.Count == 1 && data.ModelObjects[0] is NavigatorCollection collection && !collection.Permanent)
             {
                 Point client = navigatorListView.PointToClient(new Point(e.X, e.Y));
@@ -260,6 +262,74 @@ namespace MTG_Librarian
                     catch (Exception ex) { DebugOutput.WriteLine(ex.ToString()); }
                 }
             }
+            */
+        }
+
+        private void navigatorListView_ModelCanDrop(object sender, BrightIdeasSoftware.ModelDropEventArgs e)
+        {
+            e.Effect = DragDropEffects.None;
+            object rowObjectUnderMouse = navigatorListView.OlvHitTest(e.MouseLocation.X, e.MouseLocation.Y).RowObject;
+            if (e.SourceModels[0] is NavigatorCollection collection)
+            {
+                if (!collection.Permanent)
+                {
+                    if (rowObjectUnderMouse is NavigatorGroup group)
+                    {
+                        navigatorListView.SelectedObject = group;
+                        e.Effect = DragDropEffects.Copy;
+                    }
+                    else
+                    {
+                        navigatorListView.SelectedObject = null;
+                        e.Effect = DragDropEffects.None;
+                    }
+                }
+            }
+            else if (rowObjectUnderMouse is NavigatorCollection navigatorCollection)
+            {
+                string DocumentName = navigatorCollection.CardCollection.CollectionName;
+                e.Effect = DragDropEffects.Move;
+                if (e.SourceModels[0] is OLVCardItem)
+                    e.InfoMessage = $"Add {e.SourceModels.Count} card{(e.SourceModels.Count == 1 ? "" : "s")} to {DocumentName}";
+                else if (e.SourceModels[0] is OLVSetItem setItem)
+                    e.InfoMessage = $"Add set [{setItem.Name}] to {DocumentName}";
+                else if (e.SourceModels[0] is OLVRarityItem rarityItem)
+                    e.InfoMessage = $"Add {rarityItem.Rarity}s from [{(rarityItem.Parent as OLVSetItem).Name}] to {DocumentName}";
+                else if (e.SourceModels[0] is FullInventoryCard fullInventoryCard && (e.SourceListView.Parent as CollectionViewForm).Collection.Id != navigatorCollection.Id)
+                    e.InfoMessage = $"Add {e.SourceModels.Count} card{(e.SourceModels.Count == 1 ? "" : "s")} to {DocumentName}";
+            }
+        }
+
+        private void navigatorListView_ModelDropped(object sender, BrightIdeasSoftware.ModelDropEventArgs e)
+        {
+            object rowObjectUnderMouse = navigatorListView.OlvHitTest(e.MouseLocation.X, e.MouseLocation.Y).RowObject;
+            if (e.SourceModels[0] is NavigatorCollection collection)
+            {
+                if (!collection.Permanent && rowObjectUnderMouse is NavigatorGroup group)
+                {
+                    try
+                    {
+                        using (var context = new MyDbContext())
+                        {
+                            collection.CardCollection.GroupId = group.Id;
+                            context.Update(collection.CardCollection);
+                            context.SaveChanges();
+                            collection.RemoveFromParent();
+                            group.AddCollection(collection);
+                            navigatorListView.RebuildAll(true);
+                        }
+                    }
+                    catch (Exception ex) { DebugOutput.WriteLine(ex.ToString()); }
+                }
+            }
+            else if (rowObjectUnderMouse is NavigatorCollection navigatorCollection)
+                OnCardsDropped(new CardsDroppedEventArgs { Items = e.SourceModels as ArrayList, SourceForm = e.SourceListView.Parent as DockContent, TargetCollectionId = navigatorCollection.Id });
+        }
+
+        public event EventHandler<CardsDroppedEventArgs> CardsDropped;
+        private void OnCardsDropped(CardsDroppedEventArgs args)
+        {
+            CardsDropped?.Invoke(this, args);
         }
     }
 

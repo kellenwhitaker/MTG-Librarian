@@ -1,4 +1,5 @@
-﻿using System;
+﻿using KW.WinFormsUI.Docking;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -16,6 +17,9 @@ namespace MTG_Librarian
     public class CardsDroppedEventArgs : EventArgs
     {
         public ArrayList Items { get; set; }
+        public CollectionViewForm TargetCollectionViewForm { get; set; }
+        public int TargetCollectionId { get; set; } = -1;
+        public DockContent SourceForm { get; set; }
     }
 
     public class CardsUpdatedEventArgs : EventArgs
