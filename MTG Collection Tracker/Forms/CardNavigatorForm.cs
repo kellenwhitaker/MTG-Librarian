@@ -118,7 +118,6 @@ namespace MTG_Librarian
                 {
                     try
                     {
-                        throw new Exception();
                         if (collection.CardCollection == null) // not yet added
                         {
                             collection.CardCollection = new CardCollection { GroupId = collection.GroupId, CollectionName = e.Control.Text, Permanent = false, Type = "collection" };
