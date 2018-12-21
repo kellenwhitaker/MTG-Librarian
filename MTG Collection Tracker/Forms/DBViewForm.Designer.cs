@@ -1,6 +1,4 @@
-﻿using EnhancedTextBox;
-
-namespace MTG_Librarian
+﻿namespace MTG_Librarian
 {
     partial class DBViewForm
     {

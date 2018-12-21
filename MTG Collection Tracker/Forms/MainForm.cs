@@ -4,14 +4,9 @@ using System.Data;
 using System.Linq;
 using System.Windows.Forms;
 using KW.WinFormsUI.Docking;
-using HtmlAgilityPack;
-using Fizzler.Systems.HtmlAgilityPack;
-using System.Net;
 using System.Drawing;
-using BrightIdeasSoftware;
 using System.Collections;
 using System.ComponentModel;
-using System.Diagnostics;
 //Note: editable columns - count, cost, tags, foil
 //TODO3 use restsharp for getting TCGPlayer prices
 //TODO2 add card preview

@@ -1,11 +1,7 @@
 ﻿using KW.WinFormsUI.Docking;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 //TODO2 make card properties uniform
 namespace MTG_Librarian
 {

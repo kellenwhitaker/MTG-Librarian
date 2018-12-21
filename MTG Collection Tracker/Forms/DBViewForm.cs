@@ -4,7 +4,6 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using System.Timers;
 using KW.WinFormsUI.Docking;
 using BrightIdeasSoftware;
 using System.Collections;

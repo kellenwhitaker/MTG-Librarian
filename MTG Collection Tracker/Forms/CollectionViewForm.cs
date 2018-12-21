@@ -6,8 +6,6 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using KW.WinFormsUI.Docking;
 //TODO3: improve appearance of checkboxes

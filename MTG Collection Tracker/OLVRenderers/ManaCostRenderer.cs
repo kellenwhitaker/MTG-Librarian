@@ -1,11 +1,6 @@
 ﻿using BrightIdeasSoftware;
-using System;
-using System.Collections.Generic;
 using System.Drawing;
-using System.Drawing.Imaging;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 namespace MTG_Librarian
 {
