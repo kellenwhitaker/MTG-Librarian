@@ -264,10 +264,5 @@ namespace MTG_Librarian
         {
             Globals.Forms.OpenCollectionForms.Remove(this);
         }
-
-        private void CollectionViewForm_Activated(object sender, EventArgs e)
-        {
-            Globals.States.ActiveCollectionForm = this;
-        }
     }
 }
