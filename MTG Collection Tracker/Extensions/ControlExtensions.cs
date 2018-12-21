@@ -26,7 +26,7 @@ namespace MTG_Librarian
 
                 aProp.SetValue(c, true, null);
             }
-            catch (Exception ex) { }
+            catch (Exception ex) { DebugOutput.WriteLine(ex.ToString()); }
         }
     }
 }

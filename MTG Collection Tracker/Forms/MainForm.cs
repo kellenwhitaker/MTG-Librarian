@@ -11,15 +11,14 @@ using System.Drawing;
 using BrightIdeasSoftware;
 using System.Collections;
 using System.ComponentModel;
+using System.Diagnostics;
 //Note: editable columns - count, cost, tags, foil
 //TODO restsharp
 //TODO2 add card preview
 //TODO improve bulk card add speed
 //TODO4 allow cards to be moved from one collection to another
-//TODO4 save window z order on exit
 //TODO4 add scrapedname field to sets, using that to check against instead of the set name when checking for new sets
 //TODO4 allow updating of sets
-//TODO4 add debugging output for debug/release builds
 //TODO unknown error: collection unmodified
 namespace MTG_Librarian
 {
@@ -260,6 +259,7 @@ namespace MTG_Librarian
                     }
                     catch (Exception ex)
                     {
+                        DebugOutput.WriteLine(ex.ToString());
                         foreach (FullInventoryCard card in e.Items)
                             context.Entry(card).Reload();
 
@@ -391,7 +391,7 @@ namespace MTG_Librarian
                 Image img = ImageExtensions.FromByteArray(args.Data);
                 OnCardImageRetrieved(new CardImageRetrievedEventArgs { uuid = args.uuid, MultiverseId = args.MultiverseId, CardImage = img });
             }
-            catch (Exception ex) { }
+            catch (Exception ex) { DebugOutput.WriteLine(ex.ToString()); }
         }
 
         static public event EventHandler<CardImageRetrievedEventArgs> CardImageRetrieved;

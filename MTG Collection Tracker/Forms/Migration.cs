@@ -103,8 +103,11 @@ private void SetupCache()
                         addCard.Parameters["TimeAdded"].Value = DBNull.Value;
                     addCard.ExecuteNonQuery();
                 }
-                catch { failed.Add(new InventoryCard { CatalogID = Convert.ToInt32(addCard.Parameters["id"].Value) }); };
-            }
+                catch (Exception ex)
+                {
+                    DebugOutput.WriteLine(ex.ToString());
+                    failed.Add(new InventoryCard { CatalogID = Convert.ToInt32(addCard.Parameters["id"].Value) }); };
+                }
             transaction.Commit();
             conn.Close();
         }

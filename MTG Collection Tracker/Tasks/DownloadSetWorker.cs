@@ -65,7 +65,7 @@ namespace MTG_Librarian
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.ToString());
+                DebugOutput.WriteLine(ex.ToString());
                 RunState = RunState.Failed;
             }
             finally
@@ -84,7 +84,7 @@ namespace MTG_Librarian
             {
                 json = client.GetStringAsync(uri).Result;
             }
-            catch (Exception e) { };
+            catch (Exception ex) { DebugOutput.WriteLine(ex.ToString()); }
             return json;
         }
 
@@ -112,7 +112,7 @@ namespace MTG_Librarian
                     {
                         img = Image.FromStream(outputStream);
                     }
-                    catch (Exception ex) { }
+                    catch (Exception ex) { DebugOutput.WriteLine(ex.ToString()); }
                 }
             }
             return img;

@@ -278,6 +278,7 @@
     <Compile Include="Classes\AlphaNumericString.cs" />
     <Compile Include="Classes\ApplicationSettings.cs" />
     <Compile Include="Classes\ConcurrentDeque.cs" />
+    <Compile Include="Classes\DebugOutput.cs" />
     <Compile Include="Classes\Globals.cs" />
     <Compile Include="Entities\CardCollection.cs" />
     <Compile Include="Entities\FullInventoryCard.cs" />

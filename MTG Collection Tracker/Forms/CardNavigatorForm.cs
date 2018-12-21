@@ -105,6 +105,7 @@ namespace MTG_Librarian
                     }
                     catch (Exception ex)
                     {
+                        DebugOutput.WriteLine(ex.ToString());
                         if (group.CollectionGroup != null)
                             context.Entry(group.CollectionGroup).Reload();
                         MessageBox.Show("Could not add/edit group");
@@ -117,6 +118,7 @@ namespace MTG_Librarian
                 {
                     try
                     {
+                        throw new Exception();
                         if (collection.CardCollection == null) // not yet added
                         {
                             collection.CardCollection = new CardCollection { GroupId = collection.GroupId, CollectionName = e.Control.Text, Permanent = false, Type = "collection" };
@@ -138,6 +140,7 @@ namespace MTG_Librarian
                     }
                     catch (Exception ex)
                     {
+                        DebugOutput.WriteLine(ex.ToString());
                         if (collection.CardCollection != null)
                             context.Entry(collection.CardCollection).Reload();
                         MessageBox.Show("Could not add/edit collection");
@@ -193,7 +196,7 @@ namespace MTG_Librarian
                             }
                         }
                     }
-                    catch (Exception ex) { Console.WriteLine(ex.ToString()); }
+                    catch (Exception ex) { DebugOutput.WriteLine(ex.ToString()); }
                 }
             }
         }
@@ -255,7 +258,7 @@ namespace MTG_Librarian
                             navigatorListView.RebuildAll(true);
                         }
                     }
-                    catch (Exception ex) { }
+                    catch (Exception ex) { DebugOutput.WriteLine(ex.ToString()); }
                 }
             }
         }
