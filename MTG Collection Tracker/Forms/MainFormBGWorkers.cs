@@ -114,29 +114,37 @@ namespace MTG_Librarian
         {
             Regex matchCode_Date = new Regex("</strong><br>(.+)<br><a");
             string URL = "https://mtgjson.com/sets.html";
-            var doc = new HtmlWeb().Load(URL);
             var sets = new List<CardSet>();
-            var tableCells = doc.DocumentNode.SelectNodes("//td[i[@class='set']]");
-            CardSet set;
-            foreach (var Cell in tableCells)
+            try
             {
-                set = new CardSet { Name = Cell.Descendants().ElementAt(2).InnerText.Replace("&amp;", "&") };
-                string InnerHTML = Cell.InnerHtml;
-                MatchCollection matches = matchCode_Date.Matches(InnerHTML);
-                string matchString;
-                if (matches.Count > 0)
+                var doc = new HtmlWeb().Load(URL);
+                var tableCells = doc.DocumentNode.SelectNodes("//td[i[@class='set']]");
+                CardSet set;
+                foreach (var Cell in tableCells)
                 {
-                    matchString = matches[0].Groups[1].Value;
-                    var code_Date = matchString.Split(new[] { '—' });
-                    if (code_Date.Length > 0)
-                        set.Code = code_Date[0].Trim();
-                    if (code_Date.Length > 1)
-                        set.ReleaseDate = code_Date[1].Trim();
+                    set = new CardSet { Name = Cell.Descendants().ElementAt(2).InnerText.Replace("&amp;", "&") };
+                    string InnerHTML = Cell.InnerHtml;
+                    MatchCollection matches = matchCode_Date.Matches(InnerHTML);
+                    string matchString;
+                    if (matches.Count > 0)
+                    {
+                        matchString = matches[0].Groups[1].Value;
+                        var code_Date = matchString.Split(new[] { '—' });
+                        if (code_Date.Length > 0)
+                            set.Code = code_Date[0].Trim();
+                        if (code_Date.Length > 1)
+                            set.ReleaseDate = code_Date[1].Trim();
+                    }
+                    string href = Cell.Descendants().Where(a => a.Attributes.Contains("href")).FirstOrDefault()?.Attributes.Where(a => a.Name == "href").FirstOrDefault()?.Value;
+                    if (href != null)
+                        set.MTGJSONURL = "http://mtgjson.com/" + href;
+                    sets.Add(set);
                 }
-                string href = Cell.Descendants().Where(a => a.Attributes.Contains("href")).FirstOrDefault()?.Attributes.Where(a => a.Name == "href").FirstOrDefault()?.Value;
-                if (href != null)
-                    set.MTGJSONURL = "http://mtgjson.com/v4/" + href;
-                sets.Add(set);
+            }
+            catch (Exception ex)
+            {
+                DebugOutput.WriteLine(ex.ToString());
+                MessageBox.Show("Failed to gather list of available sets.");
             }
             return sets;
         }
