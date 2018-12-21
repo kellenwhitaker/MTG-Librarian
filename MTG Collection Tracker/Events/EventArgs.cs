@@ -25,6 +25,7 @@ namespace MTG_Librarian
     public class CardsUpdatedEventArgs : EventArgs
     {
         public ArrayList Items { get; set; }
+        public CollectionViewForm CollectionViewForm { get; set; }
     }
 
     public class CardFocusedEventArgs : EventArgs

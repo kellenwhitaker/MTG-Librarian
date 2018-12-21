@@ -329,12 +329,8 @@ namespace MTG_Librarian
 
         private void cvFormCardsUpdated(object sender, CardsUpdatedEventArgs e)
         {
-            Console.WriteLine("cards updated");
-            var activeDocument = Globals.States.ActiveCollectionForm;
-            if (activeDocument != null)
+            if (e.CollectionViewForm != null)
             {
-                Console.WriteLine("active document != null");
-                var collectionName = activeDocument.DocumentName;
                 var setItems = new Dictionary<string, OLVSetItem>();
                 using (MyDbContext context = new MyDbContext())
                 {
@@ -362,11 +358,11 @@ namespace MTG_Librarian
                             if (allCopiesSum.HasValue && Globals.Collections.AllMagicCards.TryGetValue(card.uuid, out MagicCard magicCard))
                                 magicCard.CopiesOwned = allCopiesSum.Value;
                             if (card.Count < 1)
-                                activeDocument.cardListView.RemoveObject(card);
+                                e.CollectionViewForm.cardListView.RemoveObject(card);
                             else
                                 cardsStillSelected.Add(card);
                         }
-                        activeDocument.cardListView.SelectedObjects = cardsStillSelected; // workaround: list view will not actually update selected items when removing from SelectedObjects
+                        e.CollectionViewForm.cardListView.SelectedObjects = cardsStillSelected; // workaround: list view will not actually update selected items when removing from SelectedObjects
                         Globals.Forms.DBViewForm.setListView.RefreshObjects(setItems.Values.ToArray());
                     }
                     catch (Exception ex)
@@ -377,7 +373,7 @@ namespace MTG_Librarian
 
                         MessageBox.Show(ex.ToString());
                     }
-                    finally { activeDocument.cardListView.Refresh(); }
+                    finally { e.CollectionViewForm.cardListView.Refresh(); }
                 }
             }
         }

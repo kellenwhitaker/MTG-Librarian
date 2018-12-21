@@ -111,7 +111,7 @@ namespace MTG_Librarian
         {
             if (e.RowObject is FullInventoryCard editedCard)
             {
-                var args = new CardsUpdatedEventArgs { Items = new ArrayList { editedCard } };
+                var args = new CardsUpdatedEventArgs { Items = new ArrayList { editedCard }, CollectionViewForm = this };
                 var rowItem = cardListView.ModelToItem(editedCard);
                 if (e.Column.AspectName == "Count" && editedCard.Count < 1)
                 {
@@ -167,7 +167,7 @@ namespace MTG_Librarian
                     e.Handled = true;
                     foreach (FullInventoryCard item in cardListView.SelectedObjects)
                         item.Count++;
-                    OnCardsUpdated(new CardsUpdatedEventArgs { Items = cardListView.SelectedObjects as ArrayList });
+                    OnCardsUpdated(new CardsUpdatedEventArgs { Items = cardListView.SelectedObjects as ArrayList, CollectionViewForm = this });
                 }
                 else if (e.KeyChar == '-' || e.KeyChar == '_')
                 {
@@ -188,7 +188,7 @@ namespace MTG_Librarian
                             return;
                         }
                     }
-                    OnCardsUpdated(new CardsUpdatedEventArgs { Items = cardListView.SelectedObjects as ArrayList });
+                    OnCardsUpdated(new CardsUpdatedEventArgs { Items = cardListView.SelectedObjects as ArrayList, CollectionViewForm = this });
                 }
             }
         }
@@ -236,7 +236,7 @@ namespace MTG_Librarian
                     {
                         foreach (FullInventoryCard cardItem in cardListView.SelectedObjects)
                             cardItem.Count = 0;
-                        OnCardsUpdated(new CardsUpdatedEventArgs { Items = cardListView.SelectedObjects as ArrayList });
+                        OnCardsUpdated(new CardsUpdatedEventArgs { Items = cardListView.SelectedObjects as ArrayList, CollectionViewForm = this });
                     }
             }
         }
@@ -249,7 +249,7 @@ namespace MTG_Librarian
                 {
                     foreach (FullInventoryCard cardItem in cardListView.SelectedObjects)
                         cardItem.Count = 0;
-                    OnCardsUpdated(new CardsUpdatedEventArgs { Items = cardListView.SelectedObjects as ArrayList });
+                    OnCardsUpdated(new CardsUpdatedEventArgs { Items = cardListView.SelectedObjects as ArrayList, CollectionViewForm = this });
                 }
             }
         }
