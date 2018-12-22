@@ -1,4 +1,6 @@
-﻿namespace MTG_Librarian
+﻿using KW.WinFormsUI.Docking;
+
+namespace MTG_Librarian
 {
     partial class MainForm
     {
@@ -106,6 +108,7 @@
             this.dockPanel1.ShowAutoHideContentOnHover = false;
             this.dockPanel1.Size = new System.Drawing.Size(1465, 476);
             this.dockPanel1.TabIndex = 1;
+            this.dockPanel1.DoubleClickCaptionAction = DockPanel.DoubleClickCaptionActionEnum.SendToBack;
             // 
             // mainMenuStrip
             // 
