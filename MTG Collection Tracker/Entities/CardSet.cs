@@ -10,6 +10,7 @@ namespace MTG_Librarian
     {
         [Key]
         public string   Name { get; set; }
+        public string   ScrapedName { get; set; }
         public string   Code { get; set; }
         public string   Code2 { get; set; }
         public string   ReleaseDate { get; set; }

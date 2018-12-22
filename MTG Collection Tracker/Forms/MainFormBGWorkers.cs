@@ -120,7 +120,7 @@ namespace MTG_Librarian
                 CardSet set;
                 foreach (var Cell in tableCells)
                 {
-                    set = new CardSet { Name = Cell.Descendants().ElementAt(2).InnerText.Replace("&amp;", "&") };
+                    set = new CardSet { ScrapedName = Cell.Descendants().ElementAt(2).InnerText.Replace("&amp;", "&") };
                     string InnerHTML = Cell.InnerHtml;
                     MatchCollection matches = matchCode_Date.Matches(InnerHTML);
                     string matchString;
@@ -129,7 +129,7 @@ namespace MTG_Librarian
                         matchString = matches[0].Groups[1].Value;
                         var code_Date = matchString.Split(new[] { '—' });
                         if (code_Date.Length > 0)
-                            set.Code = code_Date[0].Trim();
+                            set.Code = code_Date[0].Trim().ToLower();
                         if (code_Date.Length > 1)
                             set.ReleaseDate = code_Date[1].Trim();
                     }
@@ -150,7 +150,7 @@ namespace MTG_Librarian
         private void checkForNewSetsWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             var sets = GetMTGJSONSets();
-            sets.RemoveAll(x => x.Name == "Salvat 2011");
+            sets.RemoveAll(x => x.Code == "ps11"); // redundant set
             using (var context = new MyDbContext())
             {
                 var DBSets = from s in context.Sets
@@ -158,7 +158,7 @@ namespace MTG_Librarian
 
                 foreach (var set in DBSets)
                 {
-                    sets.RemoveAll(x => x.Name == set.Name);
+                    sets.RemoveAll(x => x.Code == set.Code);
                 }
             }
             e.Result = sets;
@@ -171,7 +171,7 @@ namespace MTG_Librarian
             {
                 string newSets = "";
                 foreach (var set in sets)
-                    newSets += "[" + set.Name + "] ";
+                    newSets += "[" + set.ScrapedName + "] ";
 
                 if (MessageBox.Show("The following new sets are available for download: \n\n" + newSets + "\n\nWould you like to download them now?", "New Sets Are Available", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {

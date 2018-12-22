@@ -16,17 +16,13 @@ namespace MTG_Librarian
         public DownloadSetTask(CardSet set)
         {
             CardSet = set;
-            Caption = "Set: " + set.Name;
+            Caption = "Set: " + set.ScrapedName;
         }
 
         public override void Run()
         {
             RunState = RunState.Running;
             RunWorkerAsync();
-        }
-
-        protected override void OnRunWorkerCompleted(RunWorkerCompletedEventArgs e)
-        {
         }
 
         protected override void OnDoWork(DoWorkEventArgs e)
@@ -38,8 +34,11 @@ namespace MTG_Librarian
                 DownloadIcons();
                 CompletedWorkUnits = 4;
                 UpdateIcon();
+                string scrapedName = CardSet.ScrapedName;
                 string json = DownloadJSON(CardSet.MTGJSONURL);
                 CardSet = JsonConvert.DeserializeObject<CardSet>(json);
+                if (CardSet == null) throw new InvalidDataException("Invalid JSON encountered");
+                CardSet.ScrapedName = scrapedName;
                 foreach (var card in CardSet.Cards)
                 {
                     card.SetCode = CardSet.Code;

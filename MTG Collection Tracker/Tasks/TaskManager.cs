@@ -71,8 +71,8 @@ namespace MTG_Librarian
         private delegate void UpdateStatusBarDelegate();
         private void UpdateStatusBar()
         {
-            if (tasksLabel.InvokeRequired)
-                tasksLabel.BeginInvoke(new UpdateStatusBarDelegate(UpdateStatusBar));
+            if (progressBar.InvokeRequired)
+                progressBar.BeginInvoke(new UpdateStatusBarDelegate(UpdateStatusBar));
             else
             {
                 if (_activeTasks.Count > 0)
@@ -137,7 +137,7 @@ namespace MTG_Librarian
                         _completedTasks.Add(task);
                         if (_activeTasks.Count == 0 && _IncomingTasks.Count == 0)
                             ResetState();
-                        if (task is DownloadSetTask downloadTask)
+                        if (task is DownloadSetTask downloadTask && task.RunState != RunState.Failed)
                             OnSetDownloaded(new SetDownloadedEventArgs { SetCode = downloadTask.CardSet.Code });
                     }
                     if (completedOrFailed.Count() > 0 && listView.Objects != null)
