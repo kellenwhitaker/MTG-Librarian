@@ -61,9 +61,9 @@ namespace MTG_Librarian
                 if (ProgressBar != null)
                 {
                     if (TotalWorkUnits != 0)
-                        ProgressBar.CurrentBlocks = _CompletedWorkUnits / _TotalWorkUnits;
+                        SetProgressBarCurrentBlocks(_CompletedWorkUnits / _TotalWorkUnits);
                     else
-                        ProgressBar.CurrentBlocks = 0;
+                        SetProgressBarCurrentBlocks(0);
                 }
             }
         }
@@ -74,9 +74,19 @@ namespace MTG_Librarian
             set
             {
                 _CompletedWorkUnits = value;
-                ProgressBar.CurrentBlocks = (int)((float)_CompletedWorkUnits / _TotalWorkUnits * ProgressBar.MaxBlocks);
+                SetProgressBarCurrentBlocks((int)((float)_CompletedWorkUnits / _TotalWorkUnits * ProgressBar.MaxBlocks));
             }
         }
+
+        private delegate void SetProgressBarCurrentBlocksDelegate(int blocks);
+        private void SetProgressBarCurrentBlocks(int blocks)
+        {
+            if (ProgressBar.InvokeRequired)
+                ProgressBar.BeginInvoke(new SetProgressBarCurrentBlocksDelegate(SetProgressBarCurrentBlocks), blocks);
+            else
+                ProgressBar.CurrentBlocks = blocks;
+        }
+
         public abstract void Run();
 
         public BackgroundTask()
