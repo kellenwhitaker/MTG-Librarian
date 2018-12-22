@@ -11,7 +11,6 @@ using System.ComponentModel;
 //TODO3 use restsharp for getting TCGPlayer prices
 //TODO2 add card preview
 //TODO4 allow updating of sets
-//TODO4 fix bug that adds failed sets to DBView
 //TODO4 add 404 reporting to downloadjson()
 //TODO3 get rid of item highlighting during CollectionViewForm listview drag-and-drop operations
 //TODO3 for a large number of new sets, don't display every set in download confirmation box, just the number instead

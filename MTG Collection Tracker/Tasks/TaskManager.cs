@@ -50,6 +50,21 @@ namespace MTG_Librarian
             }
         }
 
+        public void AddTasks(List<BackgroundTask> tasks)
+        {
+            if (tasks != null)
+            {
+                foreach (BackgroundTask task in tasks)
+                {
+                    if (task.ForDisplay)
+                        _IncomingTasks.AddFirst(task);
+                    else
+                        _IncomingTasks.Enqueue(task);
+                }
+                listView?.AddObjects(tasks);
+            }
+        }
+
         private delegate void RefreshListViewDelegate();
         private void RefreshListView()
         {

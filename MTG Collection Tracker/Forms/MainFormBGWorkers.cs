@@ -175,11 +175,11 @@ namespace MTG_Librarian
 
                 if (MessageBox.Show("The following new sets are available for download: \n\n" + newSets + "\n\nWould you like to download them now?", "New Sets Are Available", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
+                    List<BackgroundTask> tasksToAdd = new List<BackgroundTask>();
                     foreach (var set in sets)
-                    {
-                        DownloadSetTask task = new DownloadSetTask(set);
-                        Globals.Forms.TasksForm.TaskManager.AddTask(task);
-                    }
+                        tasksToAdd.Add(new DownloadSetTask(set));
+
+                    Globals.Forms.TasksForm.TaskManager.AddTasks(tasksToAdd);
                 }
             }
         }
