@@ -10,7 +10,7 @@ using System.ComponentModel;
 //Note: editable columns - count, cost, tags, foil
 //TODO3 use restsharp for getting TCGPlayer prices
 //TODO2 add card preview
-//TODO4 allow updating of sets
+//TODO4 allow updating of sets, updating of card images
 //TODO3 get rid of item highlighting during CollectionViewForm listview drag-and-drop operations
 //TODO3 for a large number of new sets, don't display every set in download confirmation box, just the number instead
 //TODO unknown error: collection unmodified

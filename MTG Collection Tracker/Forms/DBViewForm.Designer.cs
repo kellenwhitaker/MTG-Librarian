@@ -51,6 +51,8 @@
             this.olvColumn3 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn4 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn5 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.updateThisSetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
@@ -61,6 +63,7 @@
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.setListView)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cardListView)).BeginInit();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer2
@@ -355,6 +358,19 @@
             this.olvColumn5.Text = "#";
             this.olvColumn5.Width = 100;
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.updateThisSetToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 48);
+            // 
+            // updateThisSetToolStripMenuItem
+            // 
+            this.updateThisSetToolStripMenuItem.Name = "updateThisSetToolStripMenuItem";
+            this.updateThisSetToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.updateThisSetToolStripMenuItem.Text = "Update this set";
+            // 
             // DBViewForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -374,6 +390,7 @@
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.setListView)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cardListView)).EndInit();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -402,5 +419,7 @@
         private EnhancedTextBox.EnhancedTextBox cardNameFilterBox;
         private BrightIdeasSoftware.OLVColumn completeColumn;
         private BrightIdeasSoftware.OLVColumn complete4Column;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem updateThisSetToolStripMenuItem;
     }
 }

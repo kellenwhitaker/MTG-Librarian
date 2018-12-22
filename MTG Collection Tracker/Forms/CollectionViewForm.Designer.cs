@@ -129,8 +129,8 @@
             // 
             // olvColumn10
             // 
-            this.olvColumn10.AspectName = "MVid";
-            this.olvColumn10.DisplayIndex = 1;
+            this.olvColumn10.AspectName = "multiverseId";
+            this.olvColumn10.DisplayIndex = 2;
             this.olvColumn10.IsVisible = false;
             this.olvColumn10.Text = "MVid";
             // 

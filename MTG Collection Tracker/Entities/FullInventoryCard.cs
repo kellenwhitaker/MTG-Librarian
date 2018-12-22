@@ -10,7 +10,6 @@ namespace MTG_Librarian
         public int          InventoryId { get; set; }
         public int?         CatalogID { get; set; }
         public int          CollectionId { get; set; }
-        public new int      multiverseId { get; set; }
         public int?         Count { get; set; }
         public double?      Cost { get; set; }
         public string       Tags { get; set; }
