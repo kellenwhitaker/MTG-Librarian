@@ -9,6 +9,7 @@ namespace MTG_Librarian
         {
             InitializeComponent();
             MainForm.CardImageRetrieved += cardImageRetrieved;
+            DockAreas = DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockBottom;
         }
 
         private void cardImageRetrieved(object sender, CardImageRetrievedEventArgs e)

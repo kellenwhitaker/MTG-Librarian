@@ -39,6 +39,7 @@ namespace MTG_Librarian
                 TextChangedWaitTimer.Stop();
                 UpdateModelFilter();
             };
+            DockAreas = DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockBottom;
         }
 
         public event EventHandler<CardsActivatedEventArgs> CardsActivated;

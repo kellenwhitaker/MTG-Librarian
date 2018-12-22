@@ -12,7 +12,6 @@ using System.ComponentModel;
 //TODO2 add card preview
 //TODO4 add scrapedname field to sets, using that to check against instead of the set name when checking for new sets
 //TODO4 allow updating of sets
-//TODO4 disable changing of dock window to floating state on double click
 //TODO3 get rid of item highlighting during CollectionViewForm listview drag-and-drop operations
 //TODO3 make top panel in DBViewForm fixed height
 //TODO unknown error: collection unmodified

@@ -9,6 +9,7 @@ namespace MTG_Librarian
         public TasksForm()
         {
             InitializeComponent();
+            DockAreas = DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockBottom;
         }
 
         public void InitializeTaskManager()

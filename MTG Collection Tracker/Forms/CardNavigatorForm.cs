@@ -21,6 +21,7 @@ namespace MTG_Librarian
             var renderer = navigatorListView.TreeColumnRenderer;
             renderer.IsShowLines = false;
             renderer.UseTriangles = true;
+            DockAreas = DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockBottom;
         }
 
         public void LoadGroups()
