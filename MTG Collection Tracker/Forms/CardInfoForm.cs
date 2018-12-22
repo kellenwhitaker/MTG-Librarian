@@ -3,7 +3,7 @@ using KW.WinFormsUI.Docking;
 
 namespace MTG_Librarian
 {
-    public partial class CardInfoForm : DockContent
+    public partial class CardInfoForm : DockForm
     {
         public CardInfoForm()
         {

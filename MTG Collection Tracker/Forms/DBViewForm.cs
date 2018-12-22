@@ -10,7 +10,7 @@ using System.Collections;
 
 namespace MTG_Librarian
 {
-    public partial class DBViewForm : DockContent
+    public partial class DBViewForm : DockForm
     {
         private Dictionary<string, OLVSetItem> sets;
         private ModelFilter setNameFilter;

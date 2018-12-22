@@ -2,7 +2,7 @@
 
 namespace MTG_Librarian
 {
-    public partial class TasksForm : DockContent
+    public partial class TasksForm : DockForm
     {
         public TaskManager TaskManager { get; private set; }
 

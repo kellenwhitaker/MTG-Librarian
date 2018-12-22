@@ -291,6 +291,9 @@
     <Compile Include="Forms\CollectorViewForm.Designer.cs">
       <DependentUpon>CollectorViewForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\DockForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="OLVRenderers\CardInstanceNameRenderer.cs">
       <SubType>Component</SubType>
     </Compile>

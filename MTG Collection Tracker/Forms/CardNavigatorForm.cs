@@ -9,7 +9,7 @@ using KW.WinFormsUI.Docking;
 
 namespace MTG_Librarian
 {
-    public partial class CardNavigatorForm : DockContent
+    public partial class CardNavigatorForm : DockForm
     {
         private List<NavigatorGroup> groupList;
 
