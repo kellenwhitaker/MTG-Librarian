@@ -35,7 +35,7 @@ namespace MTG_Librarian
                 CompletedWorkUnits = 4;
                 UpdateIcon();
                 string scrapedName = CardSet.ScrapedName;
-                string json = DownloadJSON(CardSet.MTGJSONURL);
+                string json = DownloadJSON(CardSet.MTGJSONURL);                    
                 CardSet = JsonConvert.DeserializeObject<CardSet>(json);
                 if (CardSet == null) throw new InvalidDataException("Invalid JSON encountered");
                 CardSet.ScrapedName = scrapedName;
@@ -71,11 +71,11 @@ namespace MTG_Librarian
         {
             string json = "";
             HttpClient client = new HttpClient();
-            try
-            {
-                json = client.GetStringAsync(uri).Result;
-            }
-            catch (Exception ex) { DebugOutput.WriteLine(ex.ToString()); }
+            var httpResponseMessage = client.GetAsync(uri).Result;
+            if (httpResponseMessage.IsSuccessStatusCode)
+                json = httpResponseMessage.Content.ReadAsStringAsync().Result;
+            else
+                throw new HttpRequestException($"{(int)httpResponseMessage.StatusCode}: {httpResponseMessage.StatusCode.ToString()}");
             return json;
         }
 
