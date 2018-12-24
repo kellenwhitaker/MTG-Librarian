@@ -46,6 +46,7 @@ namespace MTG_Librarian
         {
             modelBuilder.Ignore<MagicCardBase>();
             modelBuilder.Entity<InventoryCard>().Property(b => b.TimeAdded).HasDefaultValueSql("datetime('now','localtime')");
+            modelBuilder.Entity<MagicCard>().HasKey(x => x.uuid);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

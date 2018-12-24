@@ -35,10 +35,12 @@ namespace MTG_Librarian
                 CompletedWorkUnits = 4;
                 UpdateIcon();
                 string scrapedName = CardSet.ScrapedName;
+                string mtgjsonUrl = CardSet.MTGJSONURL;
                 string json = DownloadJSON(CardSet.MTGJSONURL);                    
                 CardSet = JsonConvert.DeserializeObject<CardSet>(json);
                 if (CardSet == null) throw new InvalidDataException("Invalid JSON encountered");
                 CardSet.ScrapedName = scrapedName;
+                CardSet.MTGJSONURL = mtgjsonUrl;
                 foreach (var card in CardSet.Cards)
                 {
                     card.SetCode = CardSet.Code;
@@ -47,9 +49,10 @@ namespace MTG_Librarian
                 (CardSet.MythicRareIcon, CardSet.RareIcon, CardSet.UncommonIcon, CardSet.CommonIcon) = (mythicIcon, rareIcon, uncommonIcon, commonIcon);
                 using (var context = new MyDbContext())
                 {
-                    context.Add(CardSet);
+                    context.Upsert(CardSet);
                     foreach (var card in CardSet.Cards)
-                        context.Add(card);
+                        context.Upsert(card);
+
                     context.SaveChanges();
                 }
                 RunState = RunState.Completed;

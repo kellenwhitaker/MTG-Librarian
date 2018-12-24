@@ -107,11 +107,18 @@ namespace MTG_Librarian
 
         public void LoadSet(string SetCode)
         {
+            var existingSet = setListView.Objects.Cast<OLVSetItem>().Where(x => x.CardSet.Code == SetCode).FirstOrDefault();
+            OLVSetItem selectedSet = setListView.SelectedObject as OLVSetItem;
+            if (existingSet != null)
+            {
+                setListView.RemoveObject(existingSet);
+                cardListView.RemoveObjects(cardListView.Objects.Cast<OLVCardItem>().Where(x => x.MagicCard.SetCode == SetCode).ToArray());
+            }
             using (var context = new MyDbContext())
             {
                 var dbSet = (from s in context.Sets
-                            where s.Code == SetCode
-                            select s).FirstOrDefault();
+                             where s.Code == SetCode
+                             select s).FirstOrDefault();
                 if (dbSet != null)
                 {
                     var set = new OLVSetItem(dbSet);
@@ -131,6 +138,7 @@ namespace MTG_Librarian
                     SetItems.Add(set);
                 }
             }
+            setListView.SelectedObject = setListView.Objects.Cast<OLVSetItem>().Where(x => x.CardSet.Code == selectedSet.CardSet.Code).FirstOrDefault();
         }
 
         public void LoadSets()
@@ -289,6 +297,21 @@ namespace MTG_Librarian
             if (cardListView.SelectedItems != null)
                 if (e.KeyChar == '\r')
                     e.Handled = true;
+        }
+
+        private void updateThisSetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (setListView.SelectedObject is OLVSetItem setItem)
+            {
+                var newTask = new DownloadSetTask(setItem.CardSet);
+                Globals.Forms.TasksForm.TaskManager.AddTask(newTask);
+            }
+        }
+
+        private void contextMenuStrip1_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (!(setListView.SelectedObject is OLVSetItem))
+                e.Cancel = true;
         }
     }
 }

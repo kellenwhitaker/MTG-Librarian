@@ -45,14 +45,14 @@
             this.ReleaseDate = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.completeColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.complete4Column = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.updateThisSetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cardListView = new BrightIdeasSoftware.FastObjectListView();
             this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn2 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn3 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn4 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn5 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.updateThisSetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
@@ -62,8 +62,8 @@
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.setListView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cardListView)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.cardListView)).BeginInit();
             this.SuspendLayout();
             // 
             // splitContainer2
@@ -243,6 +243,7 @@
             this.SetName,
             this.completeColumn,
             this.complete4Column});
+            this.setListView.ContextMenuStrip = this.contextMenuStrip1;
             this.setListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.setListView.HeaderMaximumHeight = 0;
             this.setListView.HideSelection = false;
@@ -287,6 +288,21 @@
             // 
             this.complete4Column.AspectName = "Complete4";
             this.complete4Column.Text = "Complete (4)";
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.updateThisSetToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 48);
+            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
+            // 
+            // updateThisSetToolStripMenuItem
+            // 
+            this.updateThisSetToolStripMenuItem.Name = "updateThisSetToolStripMenuItem";
+            this.updateThisSetToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.updateThisSetToolStripMenuItem.Text = "Update this set";
+            this.updateThisSetToolStripMenuItem.Click += new System.EventHandler(this.updateThisSetToolStripMenuItem_Click);
             // 
             // cardListView
             // 
@@ -358,19 +374,6 @@
             this.olvColumn5.Text = "#";
             this.olvColumn5.Width = 100;
             // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.updateThisSetToolStripMenuItem});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 48);
-            // 
-            // updateThisSetToolStripMenuItem
-            // 
-            this.updateThisSetToolStripMenuItem.Name = "updateThisSetToolStripMenuItem";
-            this.updateThisSetToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.updateThisSetToolStripMenuItem.Text = "Update this set";
-            // 
             // DBViewForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -389,8 +392,8 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.setListView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.cardListView)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.cardListView)).EndInit();
             this.ResumeLayout(false);
 
         }

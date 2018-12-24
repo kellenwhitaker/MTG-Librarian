@@ -10,7 +10,9 @@ using System.ComponentModel;
 //Note: editable columns - count, cost, tags, foil
 //TODO3 use restsharp for getting TCGPlayer prices
 //TODO2 add card preview
-//TODO4 allow updating of sets, updating of card images
+//TODO4 allow updating of card images
+//TODO5 improve sorting performance in DBView cardListView (too slow, not consistent)
+//TODO4 make sure CatalogId is deprecated, and remove it if so
 //TODO3 get rid of item highlighting during CollectionViewForm listview drag-and-drop operations
 //TODO3 for a large number of new sets, don't display every set in download confirmation box, just the number instead
 //TODO unknown error: collection unmodified
@@ -376,6 +378,7 @@ namespace MTG_Librarian
             cvFormCardsDropped(sender, new CardsDroppedEventArgs { Items = args.CardItems });
         }
 
+        //TODO4: must redo this method for updated sets
         private void AddSetIcon(string SetCode)
         {
             using (var context = new MyDbContext())

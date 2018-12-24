@@ -18,7 +18,6 @@ namespace MTG_Librarian
         public string   Block { get; set; }
         [NotMapped]
         public List<MagicCard> Cards { get; set; } = new List<MagicCard>();
-        [NotMapped]
         public string   MTGJSONURL { get; set; }
         [NotMapped]
         public Image    CommonIcon { get; set; }
