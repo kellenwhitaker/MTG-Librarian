@@ -377,7 +377,6 @@ namespace MTG_Librarian
             cvFormCardsDropped(sender, new CardsDroppedEventArgs { Items = args.CardItems });
         }
 
-        //TODO4: must redo this method for updated sets
         private void AddSetIcon(string SetCode)
         {
             using (var context = new MyDbContext())
@@ -387,12 +386,21 @@ namespace MTG_Librarian
                            select s).FirstOrDefault();
                 if (set != null)
                 {
-                    if (set.CommonIcon != null)     Globals.ImageLists.SmallIconList.Images.Add($"{set.Name}: Common",     set.CommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
-                    if (set.UncommonIcon != null)   Globals.ImageLists.SmallIconList.Images.Add($"{set.Name}: Uncommon",   set.UncommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
-                    if (set.RareIcon != null)       Globals.ImageLists.SmallIconList.Images.Add($"{set.Name}: Rare",       set.RareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
-                    if (set.MythicRareIcon != null) Globals.ImageLists.SmallIconList.Images.Add($"{set.Name}: Mythic",     set.MythicRareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.CommonIcon != null)     AddOrUpdateImageListImage(Globals.ImageLists.SmallIconList, $"{set.Name}: Common", set.CommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.UncommonIcon != null)   AddOrUpdateImageListImage(Globals.ImageLists.SmallIconList, $"{set.Name}: Uncommon", set.UncommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.RareIcon != null)       AddOrUpdateImageListImage(Globals.ImageLists.SmallIconList, $"{set.Name}: Rare", set.RareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.MythicRareIcon != null) AddOrUpdateImageListImage(Globals.ImageLists.SmallIconList, $"{set.Name}: Mythic", set.MythicRareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
                 }
             }
+        }
+
+        private void AddOrUpdateImageListImage(ImageList imageList, string key, Image image)
+        {
+            int index = imageList.Images.IndexOfKey(key);
+            if (index > -1)
+                imageList.Images[index] = image;
+            else
+                imageList.Images.Add(key, image);
         }
 
         private void AddSetIcons()
