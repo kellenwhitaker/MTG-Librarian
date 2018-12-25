@@ -138,7 +138,8 @@ namespace MTG_Librarian
                     SetItems.Add(set);
                 }
             }
-            setListView.SelectedObject = setListView.Objects.Cast<OLVSetItem>().Where(x => x.CardSet.Code == selectedSet.CardSet.Code).FirstOrDefault();
+            if (selectedSet != null)
+                setListView.SelectedObject = setListView.Objects.Cast<OLVSetItem>().Where(x => x.CardSet.Code == selectedSet.CardSet.Code).FirstOrDefault();
         }
 
         public void LoadSets()
