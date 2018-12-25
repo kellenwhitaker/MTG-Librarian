@@ -8,7 +8,6 @@ namespace MTG_Librarian
     {
         [Key]
         public int          InventoryId { get; set; }
-        public int?         CatalogID { get; set; }
         public int          CollectionId { get; set; }
         public int?         Count { get; set; }
         public double?      Cost { get; set; }
@@ -41,7 +40,6 @@ namespace MTG_Librarian
             {
                 return new InventoryCard
                 {
-                    CatalogID = CatalogID,
                     CollectionId = CollectionId,
                     Cost = Cost,
                     Count = Count,
