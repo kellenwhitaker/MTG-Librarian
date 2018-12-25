@@ -188,7 +188,8 @@ namespace MTG_Librarian
                     if (PartA != null)
                     {
                         PartA.MagicCard.PartB = magicCard;
-                        PartA.Name = PartA.MagicCard.name = $"{PartA.MagicCard.name} // {magicCard.name}";
+                        if (PartA.MagicCard.layout == "split")
+                            PartA.Name = PartA.MagicCard.name = $"{PartA.MagicCard.name} // {magicCard.name}";
                         cardsToRemove.Add(olvCard);
                     }
                 }
