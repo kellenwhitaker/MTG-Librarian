@@ -15,5 +15,10 @@ namespace MTG_Librarian
             char[] forbidden = new char[] { '*', '.', '"', '/', '\\', '[', ']', ':', ';', '|', '='};
             return new string(input.Where(c => !forbidden.Contains(c)).ToArray());
         }
+
+        public static string OnlyDigits(this string input)
+        {
+            return new string(input.Where(c => char.IsDigit(c)).ToArray());
+        }
     }
 }

@@ -15,7 +15,6 @@ using System.ComponentModel;
 //TODO4 make sure CatalogId is deprecated, and remove it if so
 //TODO3 get rid of item highlighting during CollectionViewForm listview drag-and-drop operations
 //TODO3 for a large number of new sets, don't display every set in download confirmation box, just the number instead
-//TODO5 for meld cards, part c should be added as part b of the other parts
 //TODO unknown error: collection unmodified
 namespace MTG_Librarian
 {

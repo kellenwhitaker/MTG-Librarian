@@ -182,7 +182,7 @@ namespace MTG_Librarian
             foreach (var olvCard in olvCards)
             {
                 MagicCard magicCard = olvCard.MagicCard;
-                if (magicCard.side == "b")
+                if (magicCard.side == "b" && magicCard.layout != "meld") // add to part A
                 {
                     OLVCardItem PartA = olvCards.Where(x => x.MagicCard.side == "a" && x.MagicCard.number == magicCard.number).FirstOrDefault();
                     if (PartA != null)
@@ -190,6 +190,21 @@ namespace MTG_Librarian
                         PartA.MagicCard.PartB = magicCard;
                         if (PartA.MagicCard.layout == "split")
                             PartA.Name = PartA.MagicCard.name = $"{PartA.MagicCard.name} // {magicCard.name}";
+                        cardsToRemove.Add(olvCard);
+                    }
+                }
+                else if (magicCard.side == "c" && magicCard.layout == "meld") // add to parts A and B
+                {
+                    OLVCardItem PartA = olvCards.Where(x => x.MagicCard.text?.Contains($"into {magicCard.name}") ?? false).FirstOrDefault();
+                    if (PartA != null)
+                    {
+                        PartA.MagicCard.PartB = magicCard;
+                        cardsToRemove.Add(olvCard);
+                    }
+                    OLVCardItem PartB = olvCards.Where(x => x.MagicCard.text?.Contains($"Melds with {PartA.MagicCard.name}") ?? false).FirstOrDefault();
+                    if (PartB != null)
+                    {
+                        PartB.MagicCard.PartB = magicCard;
                         cardsToRemove.Add(olvCard);
                     }
                 }
