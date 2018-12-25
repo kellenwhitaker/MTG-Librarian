@@ -25,12 +25,10 @@ namespace MTG_Librarian
             var existing = context.Catalog.AsNoTracking().Where(x => x.uuid == card.uuid).FirstOrDefault();
             if (existing == null)
             {
-                Console.WriteLine("null");
                 context.Add(card);
             }
             else
             {
-                Console.WriteLine(card.name + ", " + card.uuid);
                 context.Update(card);
             }
         }
