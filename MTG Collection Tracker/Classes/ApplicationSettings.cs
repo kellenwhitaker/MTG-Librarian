@@ -39,7 +39,15 @@ namespace MTG_Librarian
         }
 
         [UserScopedSetting()]
-        [DefaultSettingValue("0.25")]
+        [DefaultSettingValue("true")]
+        public bool InInitialState
+        {
+            get => (bool)this["InInitialState"];
+            set => this["InInitialState"] = value;
+        }
+
+        [UserScopedSetting()]
+        [DefaultSettingValue("0.15")]
         public double DockLeftPortion
         {
             get => (double)this["DockLeftPortion"];
@@ -47,7 +55,7 @@ namespace MTG_Librarian
         }
 
         [UserScopedSetting()]
-        [DefaultSettingValue("0.25")]
+        [DefaultSettingValue("0.15")]
         public double DockRightPortion
         {
             get => (double)this["DockRightPortion"];
@@ -80,7 +88,7 @@ namespace MTG_Librarian
 
 
         [UserScopedSetting()]
-        [DefaultSettingValue("2")]
+        [DefaultSettingValue("2")] // maximized
         public FormWindowState MainFormWindowState
         {
             get => (FormWindowState)this["MainFormWindowState"];

@@ -11,7 +11,6 @@ using System.ComponentModel;
 //TODO3 use restsharp for getting TCGPlayer prices
 //TODO2 add card preview
 //TODO4 allow updating of card images
-//TODO4 use a better default layout configuration (e.g. when config is in its initial state)
 //TODO3 deselect after card is filtered out of cardListView (CollectionViewForm/DBView)/maintain selection when appropriate
 //TODO3 get rid of item highlighting during CollectionViewForm listview drag-and-drop operations
 //TODO3 for a large number of new sets, don't display every set in download confirmation box, just the number instead
@@ -515,6 +514,7 @@ namespace MTG_Librarian
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             ApplicationSettings = new ApplicationSettings();
+            ApplicationSettings.InInitialState = false;
             ApplicationSettings.MainFormWindowState = WindowState;
             ApplicationSettings.MainFormLocation = Location;
             ApplicationSettings.MainFormSize = Size;

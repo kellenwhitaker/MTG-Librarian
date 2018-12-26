@@ -73,6 +73,24 @@ namespace MTG_Librarian
                 Globals.Forms.DockPanel.UpdateDockWindowZOrder(pair.Value.ToDockStyle(), true);
         }
 
+        private void SetupDefaultDockConfiguration()
+        {
+            Globals.Forms.DBViewForm.Show(Globals.Forms.DockPanel, DockState.DockBottom);
+            Globals.Forms.CardInfoForm.Show(Globals.Forms.DockPanel, DockState.DockLeft);
+            Globals.Forms.TasksForm.Show(Globals.Forms.DockPanel, DockState.DockRight);
+            Globals.Forms.NavigationForm.Show(Globals.Forms.DockPanel, DockState.DockRight);
+            Globals.Forms.DockPanel.UpdateDockWindowZOrder(DockStyle.Left, true);
+            Globals.Forms.DockPanel.UpdateDockWindowZOrder(DockStyle.Right, true);
+            CardCollection mainCollection;
+            using (var context = new MyDbContext())
+                mainCollection = (from c in context.Collections
+                                  where c.CollectionName == "Main"
+                                  select c).FirstOrDefault();
+
+            if (mainCollection != null)
+                LoadCollection(mainCollection);
+        }
+
         private void InitUIWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             ApplicationSettings = new ApplicationSettings();
@@ -81,15 +99,20 @@ namespace MTG_Librarian
             Globals.Forms.CardInfoForm.SuspendLayout();
             Globals.Forms.NavigationForm.SuspendLayout();
             Globals.Forms.TasksForm.SuspendLayout();
-            var ZOrderDictionary = new SortedDictionary<int, DockState>();
-            SetupDockPanel(DockState.DockBottom, ZOrderDictionary);
-            SetupDockPanel(DockState.DockLeft, ZOrderDictionary);
-            SetupDockPanel(DockState.DockRight, ZOrderDictionary);
-            SetupDockPanel(DockState.Document, ZOrderDictionary);
-            SetupDockPanel(DockState.DockBottomAutoHide, ZOrderDictionary);
-            SetupDockPanel(DockState.DockLeftAutoHide, ZOrderDictionary);
-            SetupDockPanel(DockState.DockRightAutoHide, ZOrderDictionary);
-            RestoreZOrder(ZOrderDictionary);
+            if (!ApplicationSettings.InInitialState)
+            {
+                var ZOrderDictionary = new SortedDictionary<int, DockState>();
+                SetupDockPanel(DockState.DockBottom, ZOrderDictionary);
+                SetupDockPanel(DockState.DockLeft, ZOrderDictionary);
+                SetupDockPanel(DockState.DockRight, ZOrderDictionary);
+                SetupDockPanel(DockState.Document, ZOrderDictionary);
+                SetupDockPanel(DockState.DockBottomAutoHide, ZOrderDictionary);
+                SetupDockPanel(DockState.DockLeftAutoHide, ZOrderDictionary);
+                SetupDockPanel(DockState.DockRightAutoHide, ZOrderDictionary);
+                RestoreZOrder(ZOrderDictionary);
+            }
+            else
+                SetupDefaultDockConfiguration();
             Globals.Forms.NavigationForm.LoadTree();
             Globals.Forms.DBViewForm.LoadTree();
             Globals.Forms.NavigationForm.CollectionActivated += navFormCollectionActivated;
