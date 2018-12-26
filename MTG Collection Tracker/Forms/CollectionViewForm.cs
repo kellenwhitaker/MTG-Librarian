@@ -34,6 +34,7 @@ namespace MTG_Librarian
             cardListView.SetDoubleBuffered();
             cardListView.GetColumn("Card").Renderer = new CardInstanceNameRenderer();
             cardListView.GetColumn("Mana Cost").Renderer = new ManaCostRenderer();
+            cardListView.VirtualListDataSource = new MyCustomSortingDataSource(cardListView);
             cardListView.AddDecoration(new EditingCellBorderDecoration { UseLightbox = false, BorderPen = new Pen(Brushes.DodgerBlue, 3), BoundsPadding = new Size(1, 0) });
             var billboard = (cardListView.DropSink as SimpleDropSink).Billboard;
             billboard.BackColor = Color.DodgerBlue;
@@ -261,6 +262,79 @@ namespace MTG_Librarian
         private void CollectionViewForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             Globals.Forms.OpenCollectionForms.Remove(this);
+        }
+
+        public class MyCustomSortingDataSource : FastObjectListDataSource
+        {
+            public MyCustomSortingDataSource(FastObjectListView listView) : base(listView) { }
+
+            override public void Sort(OLVColumn column, SortOrder order)
+            {
+                if (column == listView.AllColumns.Where(x => x.AspectName == "number").FirstOrDefault())
+                    this.FilteredObjectList.Sort(new CollectorNumberComparer { SortOrder = order });
+                else if (column == listView.AllColumns.Where(x => x.AspectName == "PaddedName").FirstOrDefault())
+                    this.FilteredObjectList.Sort(new NameComparer { SortOrder = order });
+                else if (column == listView.AllColumns.Where(x => x.AspectName == "type").FirstOrDefault())
+                    this.FilteredObjectList.Sort(new TypeComparer { SortOrder = order });
+                else if (column == listView.AllColumns.Where(x => x.AspectName == "Edition").FirstOrDefault())
+                    this.FilteredObjectList.Sort(new SetComparer { SortOrder = order });
+                else if (column == listView.AllColumns.Where(x => x.AspectName == "ManaCost").FirstOrDefault())
+                    this.FilteredObjectList.Sort(new ManaCostComparer { SortOrder = order });
+                this.RebuildIndexMap();
+            }
+
+            private class CollectorNumberComparer : IComparer
+            {
+                public SortOrder SortOrder;
+                public int Compare(object x, object y)
+                {
+                    int result = (x as FullInventoryCard).SortableNumber.CompareTo((y as FullInventoryCard).SortableNumber);
+                    return SortOrder == SortOrder.Ascending ? result : -1 * result;
+                }
+            }
+
+            private class NameComparer : IComparer
+            {
+                public SortOrder SortOrder;
+                public int Compare(object x, object y)
+                {
+                    int result = (x as FullInventoryCard).name.CompareTo((y as FullInventoryCard).name);
+                    return SortOrder == SortOrder.Ascending ? result : result * -1;
+                }
+            }
+
+            private class TypeComparer : IComparer
+            {
+                public SortOrder SortOrder;
+                public int Compare(object x, object y)
+                {
+                    int result = (x as FullInventoryCard).type.CompareTo((y as FullInventoryCard).type);
+                    return SortOrder == SortOrder.Ascending ? result : result * -1;
+                }
+            }
+
+            private class SetComparer : IComparer
+            {
+                public SortOrder SortOrder;
+                public int Compare(object x, object y)
+                {
+                    int result = (x as FullInventoryCard).Edition.CompareTo((y as FullInventoryCard).Edition);
+                    return SortOrder == SortOrder.Ascending ? result : result * -1;
+                }
+            }
+
+            private class ManaCostComparer : IComparer
+            {
+                public SortOrder SortOrder;
+                public int Compare(object x, object y)
+                {
+                    int result;
+                    string valueX = (x as FullInventoryCard).manaCost ?? "";
+                    string valueY = (y as FullInventoryCard).manaCost ?? "";
+                    result = valueX.CompareTo(valueY);
+                    return SortOrder == SortOrder.Ascending ? result : result * -1;
+                }
+            }
         }
     }
 }

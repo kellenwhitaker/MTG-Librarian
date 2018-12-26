@@ -143,7 +143,7 @@
             // 
             // olvColumn2
             // 
-            this.olvColumn2.AspectName = "Type";
+            this.olvColumn2.AspectName = "type";
             this.olvColumn2.IsEditable = false;
             this.olvColumn2.MinimumWidth = 100;
             this.olvColumn2.Text = "Type";
@@ -167,7 +167,7 @@
             // 
             // olvColumn5
             // 
-            this.olvColumn5.AspectName = "ColNumber";
+            this.olvColumn5.AspectName = "number";
             this.olvColumn5.IsEditable = false;
             this.olvColumn5.MinimumWidth = 50;
             this.olvColumn5.Text = "#";

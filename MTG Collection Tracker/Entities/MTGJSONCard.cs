@@ -33,6 +33,8 @@ namespace MTG_Librarian
         public string   name { get; set; }
         [NotMapped]
         public string[] names { get; set; }
+        [NotMapped]
+        public AlphaNumericString SortableNumber => new AlphaNumericString(number);
         public string   number { get; set; }
         public string   originalText { get; set; }
         public string   originalType { get; set; }
