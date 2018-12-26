@@ -54,7 +54,7 @@ namespace MTG_Librarian
             if (InvokeRequired)
                 BeginInvoke(new UpdateModelFilterDelegate(UpdateModelFilter));
             else
-                cardListView.ModelFilter = new ModelFilter(GetCardFilter());
+                cardListView.ModelFilter = new ModelFilter(GetCardFilter());                
         }
 
         private Predicate<object> GetCardFilter()
@@ -108,7 +108,6 @@ namespace MTG_Librarian
         public void LoadSet(string SetCode)
         {
             var existingSet = setListView.Objects.Cast<OLVSetItem>().Where(x => x.CardSet.Code == SetCode).FirstOrDefault();
-            OLVSetItem selectedSet = setListView.SelectedObject as OLVSetItem;
             if (existingSet != null)
             {
                 setListView.RemoveObject(existingSet);
@@ -138,7 +137,7 @@ namespace MTG_Librarian
                     SetItems.Add(set);
                 }
             }
-            if (selectedSet != null)
+            if (setListView.SelectedObject is OLVSetItem selectedSet)
                 setListView.SelectedObject = setListView.Objects.Cast<OLVSetItem>().Where(x => x.CardSet.Code == selectedSet.CardSet.Code).FirstOrDefault();
         }
 
@@ -261,12 +260,6 @@ namespace MTG_Librarian
                 setListView.UseFiltering = false;
         }
 
-        private void treeListView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            cardListView.SelectedObject = null;
-            UpdateModelFilter();
-        }
-
         private void whiteManaButton_Click(object sender, EventArgs e)
         {
             UpdateModelFilter();
@@ -329,6 +322,12 @@ namespace MTG_Librarian
         {
             if (!(setListView.SelectedObject is OLVSetItem))
                 e.Cancel = true;
+        }
+
+        private void setListView_SelectionChanged(object sender, EventArgs e)
+        {
+            cardListView.SelectedObject = null;
+            UpdateModelFilter();
         }
     }
 }

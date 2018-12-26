@@ -263,8 +263,8 @@
             this.setListView.View = System.Windows.Forms.View.Details;
             this.setListView.VirtualMode = true;
             this.setListView.FormatCell += new System.EventHandler<BrightIdeasSoftware.FormatCellEventArgs>(this.treeListView1_FormatCell);
+            this.setListView.SelectionChanged += new System.EventHandler(this.setListView_SelectionChanged);
             this.setListView.ItemActivate += new System.EventHandler(this.treeListView1_ItemActivate);
-            this.setListView.SelectedIndexChanged += new System.EventHandler(this.treeListView1_SelectedIndexChanged);
             // 
             // SetName
             // 
@@ -294,13 +294,13 @@
             this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.updateThisSetToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(181, 48);
+            this.contextMenuStrip1.Size = new System.Drawing.Size(153, 26);
             this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // updateThisSetToolStripMenuItem
             // 
             this.updateThisSetToolStripMenuItem.Name = "updateThisSetToolStripMenuItem";
-            this.updateThisSetToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.updateThisSetToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.updateThisSetToolStripMenuItem.Text = "Update this set";
             this.updateThisSetToolStripMenuItem.Click += new System.EventHandler(this.updateThisSetToolStripMenuItem_Click);
             // 
@@ -317,6 +317,7 @@
             this.olvColumn3,
             this.olvColumn4,
             this.olvColumn5});
+            this.cardListView.Cursor = System.Windows.Forms.Cursors.Default;
             this.cardListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cardListView.EmptyListMsg = "No cards";
             this.cardListView.FullRowSelect = true;

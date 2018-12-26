@@ -11,7 +11,8 @@ using System.ComponentModel;
 //TODO3 use restsharp for getting TCGPlayer prices
 //TODO2 add card preview
 //TODO4 allow updating of card images
-//TODO5 improve sorting performance in DBView cardListView (too slow, not consistent)
+//TODO5 make sorting consistent in DBView cardListView
+//TODO4 use a better default layout configuration (e.g. when config is in its initial state)
 //TODO3 get rid of item highlighting during CollectionViewForm listview drag-and-drop operations
 //TODO3 for a large number of new sets, don't display every set in download confirmation box, just the number instead
 //TODO unknown error: collection unmodified
