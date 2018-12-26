@@ -17,6 +17,8 @@ namespace MTG_Librarian
         public string DocumentName => Collection?.CollectionName;
         public CardCollection Collection { get; set; }
         private bool MultiEditing = false;
+        private System.Timers.Timer TextChangedWaitTimer = new System.Timers.Timer();
+
         public override string Text
         {
             get => Collection?.CollectionName;
@@ -36,13 +38,63 @@ namespace MTG_Librarian
             cardListView.GetColumn("Mana Cost").Renderer = new ManaCostRenderer();
             cardListView.VirtualListDataSource = new MyCustomSortingDataSource(cardListView);
             cardListView.AddDecoration(new EditingCellBorderDecoration { UseLightbox = false, BorderPen = new Pen(Brushes.DodgerBlue, 3), BoundsPadding = new Size(1, 0) });
+            cardListView.UseFiltering = true;
             var billboard = (cardListView.DropSink as SimpleDropSink).Billboard;
             billboard.BackColor = Color.DodgerBlue;
             billboard.TextColor = Color.White;
             DockAreas = DockAreas.Document | DockAreas.DockBottom;
+            whiteManaButton.ImageList = blueManaButton.ImageList = blackManaButton.ImageList = redManaButton.ImageList = greenManaButton.ImageList
+                                      = colorlessManaButton.ImageList = genericManaButton.ImageList = Globals.ImageLists.ManaIcons;
+            (whiteManaButton.ImageKey, blueManaButton.ImageKey) = ("{W}", "{U}");
+            (blackManaButton.ImageKey, redManaButton.ImageKey, greenManaButton.ImageKey) = ("{B}", "{R}", "{G}");
+            (colorlessManaButton.ImageKey, genericManaButton.ImageKey) = ("{C}", "{X}");
             Globals.Forms.OpenCollectionForms.Add(this);
+            TextChangedWaitTimer.Interval = 400;
+            TextChangedWaitTimer.Elapsed += (sender, e) =>
+            {
+                TextChangedWaitTimer.Stop();
+                UpdateModelFilter();
+            };
+        }
+        #region Filters
+        private delegate void UpdateModelFilterDelegate();
+        private void UpdateModelFilter()
+        {
+            if (InvokeRequired)
+                BeginInvoke(new UpdateModelFilterDelegate(UpdateModelFilter));
+            else
+                cardListView.ModelFilter = new ModelFilter(GetCardFilter());
         }
 
+        private Predicate<object> GetCardFilter()
+        {
+            return GetManaCostFilter().And(GetSetFilter()).And(GetCardNameFilter());
+        }
+
+        private Predicate<object> GetCardNameFilter()
+        {
+            return x => cardNameFilterTextBox.UserText == "" ? true : (x as FullInventoryCard).name.ToUpper().Contains(cardNameFilterTextBox.UserText.ToUpper());
+        }
+
+        private Predicate<object> GetManaCostFilter()
+        {
+            Predicate<object> combinedFilter = x => true;
+
+            if (whiteManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as FullInventoryCard).manaCost?.Contains("W") ?? false);
+            if (blueManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as FullInventoryCard).manaCost?.Contains("U") ?? false);
+            if (blackManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as FullInventoryCard).manaCost?.Contains("B") ?? false);
+            if (redManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as FullInventoryCard).manaCost?.Contains("R") ?? false);
+            if (greenManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as FullInventoryCard).manaCost?.Contains("G") ?? false);
+            if (colorlessManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as FullInventoryCard).manaCost?.Contains("C") ?? false);
+            if (genericManaButton.Checked) combinedFilter = combinedFilter.And(x => ((x as FullInventoryCard).manaCost?.Contains("X") ?? false) || ((x as FullInventoryCard).manaCost?.Any(c => char.IsDigit(c)) ?? false));
+            return combinedFilter;
+        }
+
+        private Predicate<object> GetSetFilter()
+        {
+            return x => setFilterTextBox.UserText == "" ? true : (x as FullInventoryCard).Edition.ToUpper().Contains(setFilterTextBox.UserText.ToUpper());
+        }
+        #endregion
         public void LoadCollection()
         {
             if (Collection != null)
@@ -347,7 +399,23 @@ namespace MTG_Librarian
                     return SortOrder == SortOrder.Ascending ? result : result * -1;
                 }
             }
+        }
 
+        private void cardNameFilterTextBox_TextChanged(object sender, EventArgs e)
+        {
+            TextChangedWaitTimer.Stop();
+            TextChangedWaitTimer.Start();
+        }
+
+        private void setFilterTextBox_TextChanged(object sender, EventArgs e)
+        {
+            TextChangedWaitTimer.Stop();
+            TextChangedWaitTimer.Start();
+        }
+
+        private void whiteManaButton_Click(object sender, EventArgs e)
+        {
+            UpdateModelFilter();
         }
     }
 }

@@ -47,8 +47,22 @@
             this.olvColumn3 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.cardListViewMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteCardsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cardNameFilterTextBox = new EnhancedTextBox.EnhancedTextBox();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.genericManaButton = new CustomControls.FlatButton();
+            this.colorlessManaButton = new CustomControls.FlatButton();
+            this.greenManaButton = new CustomControls.FlatButton();
+            this.redManaButton = new CustomControls.FlatButton();
+            this.blackManaButton = new CustomControls.FlatButton();
+            this.blueManaButton = new CustomControls.FlatButton();
+            this.whiteManaButton = new CustomControls.FlatButton();
+            this.setFilterTextBox = new EnhancedTextBox.EnhancedTextBox();
             ((System.ComponentModel.ISupportInitialize)(this.cardListView)).BeginInit();
             this.cardListViewMenuStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel1.SuspendLayout();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.SuspendLayout();
             // 
             // cardListView
@@ -71,6 +85,7 @@
             this.cardListView.AllowDrop = true;
             this.cardListView.BackColor = System.Drawing.Color.White;
             this.cardListView.CellEditActivation = BrightIdeasSoftware.ObjectListView.CellEditActivateMode.DoubleClick;
+            this.cardListView.CellEditUseWholeCell = false;
             this.cardListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.CardName,
             this.FoilColumn,
@@ -95,7 +110,7 @@
             this.cardListView.SelectedBackColor = System.Drawing.Color.SteelBlue;
             this.cardListView.SelectedForeColor = System.Drawing.Color.White;
             this.cardListView.ShowGroups = false;
-            this.cardListView.Size = new System.Drawing.Size(975, 435);
+            this.cardListView.Size = new System.Drawing.Size(975, 401);
             this.cardListView.TabIndex = 0;
             this.cardListView.UnfocusedSelectedBackColor = System.Drawing.Color.LightGray;
             this.cardListView.UseCellFormatEvents = true;
@@ -237,18 +252,172 @@
             this.deleteCardsToolStripMenuItem.Text = "Delete card(s)";
             this.deleteCardsToolStripMenuItem.Click += new System.EventHandler(this.deleteCardsToolStripMenuItem_Click);
             // 
+            // cardNameFilterTextBox
+            // 
+            this.cardNameFilterTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic);
+            this.cardNameFilterTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.cardNameFilterTextBox.Location = new System.Drawing.Point(3, 8);
+            this.cardNameFilterTextBox.Name = "cardNameFilterTextBox";
+            this.cardNameFilterTextBox.Placeholder = "Card Name Filter";
+            this.cardNameFilterTextBox.Size = new System.Drawing.Size(189, 20);
+            this.cardNameFilterTextBox.TabIndex = 1;
+            this.cardNameFilterTextBox.Text = "Card Name Filter";
+            this.cardNameFilterTextBox.TextChanged += new System.EventHandler(this.cardNameFilterTextBox_TextChanged);
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer1.IsSplitterFixed = true;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.Controls.Add(this.genericManaButton);
+            this.splitContainer1.Panel1.Controls.Add(this.colorlessManaButton);
+            this.splitContainer1.Panel1.Controls.Add(this.greenManaButton);
+            this.splitContainer1.Panel1.Controls.Add(this.redManaButton);
+            this.splitContainer1.Panel1.Controls.Add(this.blackManaButton);
+            this.splitContainer1.Panel1.Controls.Add(this.blueManaButton);
+            this.splitContainer1.Panel1.Controls.Add(this.whiteManaButton);
+            this.splitContainer1.Panel1.Controls.Add(this.setFilterTextBox);
+            this.splitContainer1.Panel1.Controls.Add(this.cardNameFilterTextBox);
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.cardListView);
+            this.splitContainer1.Size = new System.Drawing.Size(975, 435);
+            this.splitContainer1.SplitterDistance = 30;
+            this.splitContainer1.TabIndex = 2;
+            // 
+            // genericManaButton
+            // 
+            this.genericManaButton.Checked = false;
+            this.genericManaButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.genericManaButton.FlatAppearance.BorderSize = 0;
+            this.genericManaButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.genericManaButton.Location = new System.Drawing.Point(384, 5);
+            this.genericManaButton.Name = "genericManaButton";
+            this.genericManaButton.Size = new System.Drawing.Size(25, 25);
+            this.genericManaButton.TabIndex = 14;
+            this.genericManaButton.Text = "flatButton1";
+            this.genericManaButton.UseVisualStyleBackColor = false;
+            this.genericManaButton.Click += new System.EventHandler(this.whiteManaButton_Click);
+            // 
+            // colorlessManaButton
+            // 
+            this.colorlessManaButton.Checked = false;
+            this.colorlessManaButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.colorlessManaButton.FlatAppearance.BorderSize = 0;
+            this.colorlessManaButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.colorlessManaButton.Location = new System.Drawing.Point(353, 5);
+            this.colorlessManaButton.Name = "colorlessManaButton";
+            this.colorlessManaButton.Size = new System.Drawing.Size(25, 25);
+            this.colorlessManaButton.TabIndex = 13;
+            this.colorlessManaButton.Text = "flatButton1";
+            this.colorlessManaButton.UseVisualStyleBackColor = false;
+            this.colorlessManaButton.Click += new System.EventHandler(this.whiteManaButton_Click);
+            // 
+            // greenManaButton
+            // 
+            this.greenManaButton.Checked = false;
+            this.greenManaButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.greenManaButton.FlatAppearance.BorderSize = 2;
+            this.greenManaButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.greenManaButton.Location = new System.Drawing.Point(322, 5);
+            this.greenManaButton.Name = "greenManaButton";
+            this.greenManaButton.Size = new System.Drawing.Size(25, 25);
+            this.greenManaButton.TabIndex = 12;
+            this.greenManaButton.Text = "G";
+            this.greenManaButton.UseVisualStyleBackColor = false;
+            this.greenManaButton.Click += new System.EventHandler(this.whiteManaButton_Click);
+            // 
+            // redManaButton
+            // 
+            this.redManaButton.Checked = false;
+            this.redManaButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.redManaButton.FlatAppearance.BorderSize = 2;
+            this.redManaButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.redManaButton.Location = new System.Drawing.Point(291, 5);
+            this.redManaButton.Name = "redManaButton";
+            this.redManaButton.Size = new System.Drawing.Size(25, 25);
+            this.redManaButton.TabIndex = 11;
+            this.redManaButton.Text = "R";
+            this.redManaButton.UseVisualStyleBackColor = false;
+            this.redManaButton.Click += new System.EventHandler(this.whiteManaButton_Click);
+            // 
+            // blackManaButton
+            // 
+            this.blackManaButton.Checked = false;
+            this.blackManaButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.blackManaButton.FlatAppearance.BorderSize = 2;
+            this.blackManaButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.blackManaButton.Location = new System.Drawing.Point(260, 5);
+            this.blackManaButton.Name = "blackManaButton";
+            this.blackManaButton.Size = new System.Drawing.Size(25, 25);
+            this.blackManaButton.TabIndex = 10;
+            this.blackManaButton.Text = "B";
+            this.blackManaButton.UseVisualStyleBackColor = false;
+            this.blackManaButton.Click += new System.EventHandler(this.whiteManaButton_Click);
+            // 
+            // blueManaButton
+            // 
+            this.blueManaButton.Checked = false;
+            this.blueManaButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.blueManaButton.FlatAppearance.BorderSize = 2;
+            this.blueManaButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.blueManaButton.Location = new System.Drawing.Point(229, 5);
+            this.blueManaButton.Name = "blueManaButton";
+            this.blueManaButton.Size = new System.Drawing.Size(25, 25);
+            this.blueManaButton.TabIndex = 9;
+            this.blueManaButton.UseVisualStyleBackColor = false;
+            this.blueManaButton.Click += new System.EventHandler(this.whiteManaButton_Click);
+            // 
+            // whiteManaButton
+            // 
+            this.whiteManaButton.Checked = false;
+            this.whiteManaButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.whiteManaButton.FlatAppearance.BorderSize = 0;
+            this.whiteManaButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.whiteManaButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.whiteManaButton.Location = new System.Drawing.Point(198, 5);
+            this.whiteManaButton.Name = "whiteManaButton";
+            this.whiteManaButton.Size = new System.Drawing.Size(25, 25);
+            this.whiteManaButton.TabIndex = 8;
+            this.whiteManaButton.UseVisualStyleBackColor = false;
+            this.whiteManaButton.Click += new System.EventHandler(this.whiteManaButton_Click);
+            // 
+            // setFilterTextBox
+            // 
+            this.setFilterTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic);
+            this.setFilterTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.setFilterTextBox.Location = new System.Drawing.Point(415, 8);
+            this.setFilterTextBox.Name = "setFilterTextBox";
+            this.setFilterTextBox.Placeholder = "Set Filter";
+            this.setFilterTextBox.Size = new System.Drawing.Size(155, 20);
+            this.setFilterTextBox.TabIndex = 2;
+            this.setFilterTextBox.Text = "Set Filter";
+            this.setFilterTextBox.TextChanged += new System.EventHandler(this.setFilterTextBox_TextChanged);
+            // 
             // CollectionViewForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(975, 435);
-            this.Controls.Add(this.cardListView);
+            this.Controls.Add(this.splitContainer1);
             this.DoubleBuffered = true;
             this.Name = "CollectionViewForm";
             this.Text = "Collection View";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.CollectionViewForm_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.cardListView)).EndInit();
             this.cardListViewMenuStrip.ResumeLayout(false);
+            this.splitContainer1.Panel1.ResumeLayout(false);
+            this.splitContainer1.Panel1.PerformLayout();
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -272,5 +441,15 @@
         private BrightIdeasSoftware.OLVColumn olvColumn3;
         private System.Windows.Forms.ContextMenuStrip cardListViewMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem deleteCardsToolStripMenuItem;
+        private EnhancedTextBox.EnhancedTextBox cardNameFilterTextBox;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private EnhancedTextBox.EnhancedTextBox setFilterTextBox;
+        private CustomControls.FlatButton genericManaButton;
+        private CustomControls.FlatButton colorlessManaButton;
+        private CustomControls.FlatButton greenManaButton;
+        private CustomControls.FlatButton redManaButton;
+        private CustomControls.FlatButton blackManaButton;
+        private CustomControls.FlatButton blueManaButton;
+        private CustomControls.FlatButton whiteManaButton;
     }
 }

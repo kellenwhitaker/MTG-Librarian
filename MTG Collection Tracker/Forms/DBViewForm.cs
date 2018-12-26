@@ -302,7 +302,7 @@ namespace MTG_Librarian
             TextChangedWaitTimer.Stop();
             TextChangedWaitTimer.Start();
         }
-        #endregion
+ 
 
         private void cardListView_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -310,7 +310,7 @@ namespace MTG_Librarian
                 if (e.KeyChar == '\r')
                     e.Handled = true;
         }
-
+        #endregion
         private void updateThisSetToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (setListView.SelectedObject is OLVSetItem setItem)
