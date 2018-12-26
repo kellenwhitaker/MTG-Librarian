@@ -33,7 +33,6 @@
             this.CardName = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.FoilColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn10 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumn11 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn2 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.ManaCost = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn4 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -44,7 +43,6 @@
             this.SortableTimeAdded = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.TimeAddedColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumn3 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.cardListViewMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteCardsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cardNameFilterTextBox = new EnhancedTextBox.EnhancedTextBox();
@@ -70,7 +68,6 @@
             this.cardListView.AllColumns.Add(this.CardName);
             this.cardListView.AllColumns.Add(this.FoilColumn);
             this.cardListView.AllColumns.Add(this.olvColumn10);
-            this.cardListView.AllColumns.Add(this.olvColumn11);
             this.cardListView.AllColumns.Add(this.olvColumn2);
             this.cardListView.AllColumns.Add(this.ManaCost);
             this.cardListView.AllColumns.Add(this.olvColumn4);
@@ -81,7 +78,6 @@
             this.cardListView.AllColumns.Add(this.SortableTimeAdded);
             this.cardListView.AllColumns.Add(this.olvColumn1);
             this.cardListView.AllColumns.Add(this.TimeAddedColumn);
-            this.cardListView.AllColumns.Add(this.olvColumn3);
             this.cardListView.AllowDrop = true;
             this.cardListView.BackColor = System.Drawing.Color.White;
             this.cardListView.CellEditActivation = BrightIdeasSoftware.ObjectListView.CellEditActivateMode.DoubleClick;
@@ -148,13 +144,6 @@
             this.olvColumn10.DisplayIndex = 2;
             this.olvColumn10.IsVisible = false;
             this.olvColumn10.Text = "MVid";
-            // 
-            // olvColumn11
-            // 
-            this.olvColumn11.AspectName = "CardInstanceId";
-            this.olvColumn11.DisplayIndex = 1;
-            this.olvColumn11.IsVisible = false;
-            this.olvColumn11.Text = "CardInstanceId";
             // 
             // olvColumn2
             // 
@@ -229,13 +218,6 @@
             this.TimeAddedColumn.AspectName = "TimeAdded";
             this.TimeAddedColumn.Text = "Added";
             this.TimeAddedColumn.Width = 200;
-            // 
-            // olvColumn3
-            // 
-            this.olvColumn3.AspectName = "multiverseId";
-            this.olvColumn3.DisplayIndex = 10;
-            this.olvColumn3.IsVisible = false;
-            this.olvColumn3.Text = "multiverseId";
             // 
             // cardListViewMenuStrip
             // 
@@ -434,11 +416,9 @@
         private BrightIdeasSoftware.OLVColumn TagsColumn;
         private BrightIdeasSoftware.OLVColumn SortableTimeAdded;
         private BrightIdeasSoftware.OLVColumn olvColumn10;
-        private BrightIdeasSoftware.OLVColumn olvColumn11;
         private BrightIdeasSoftware.OLVColumn olvColumn1;
         private BrightIdeasSoftware.OLVColumn TimeAddedColumn;
         private BrightIdeasSoftware.OLVColumn FoilColumn;
-        private BrightIdeasSoftware.OLVColumn olvColumn3;
         private System.Windows.Forms.ContextMenuStrip cardListViewMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem deleteCardsToolStripMenuItem;
         private EnhancedTextBox.EnhancedTextBox cardNameFilterTextBox;
