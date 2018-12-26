@@ -1,27 +1,32 @@
 ﻿using System;
+using System.Text.RegularExpressions;
 
 namespace MTG_Librarian
 {
     public class AlphaNumericString : IComparable<AlphaNumericString>
     {
-        private Int32? _intvalue;
-        public bool HasValue => _intvalue.HasValue;
-        public int Value => _intvalue.Value;
         public string String { get; private set; }
+        private string PaddedString;
 
         public AlphaNumericString(string str)
         {
             String = str;
-            if (Int32.TryParse(str, out int value))
-                _intvalue = value;
+            PaddedString = PadNumbers(String);
         }
 
         public int CompareTo(AlphaNumericString other)
         {
-            if (HasValue && other.HasValue)
-                return Value.CompareTo(other.Value);
-            else
-                return String.CompareTo(other.String);
+            return PaddedString.CompareTo(other.PaddedString);
+        }
+
+        private string PadNumbers(string inputString)
+        {
+            return Regex.Replace(inputString, "[0-9]+", match => match.Value.PadLeft(3, '0'));
+        }
+
+        public override string ToString()
+        {
+            return String;
         }
     }
 }

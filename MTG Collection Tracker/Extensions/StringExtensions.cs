@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace MTG_Librarian
 {
@@ -19,6 +20,11 @@ namespace MTG_Librarian
         public static string OnlyDigits(this string input)
         {
             return new string(input.Where(c => char.IsDigit(c)).ToArray());
+        }
+
+        public static string PadNumbers(this string inputString, int padLength)
+        {
+            return Regex.Replace(inputString, "[0-9]+", match => match.Value.PadLeft(padLength, '0'));
         }
     }
 }

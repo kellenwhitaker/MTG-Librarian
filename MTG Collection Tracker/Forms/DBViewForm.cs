@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using KW.WinFormsUI.Docking;
 using BrightIdeasSoftware;
 using System.Collections;
+using System.Reflection;
 
 namespace MTG_Librarian
 {
@@ -25,6 +26,7 @@ namespace MTG_Librarian
             setListView.SmallImageList = Globals.ImageLists.SmallIconList;
             setListView.TreeColumnRenderer = new SetRenderer();
             cardListView.SmallImageList = Globals.ImageLists.SmallIconList;
+            cardListView.VirtualListDataSource = new MyCustomSortingDataSource(cardListView);
             whiteManaButton.ImageList = blueManaButton.ImageList = blackManaButton.ImageList = redManaButton.ImageList = greenManaButton.ImageList
                                       = colorlessManaButton.ImageList = genericManaButton.ImageList = Globals.ImageLists.ManaIcons;
             (whiteManaButton.ImageKey, blueManaButton.ImageKey) = ("{W}", "{U}");
@@ -328,6 +330,79 @@ namespace MTG_Librarian
         {
             cardListView.SelectedObject = null;
             UpdateModelFilter();
+        }
+
+        public class MyCustomSortingDataSource : FastObjectListDataSource
+        {
+            public MyCustomSortingDataSource(FastObjectListView listView) : base(listView) { }
+
+            override public void Sort(OLVColumn column, SortOrder order)
+            {
+                if (column == listView.AllColumns.Where(x => x.AspectName == "CollectorNumber").FirstOrDefault())
+                    this.FilteredObjectList.Sort(new CollectorNumberComparer { SortOrder = order });
+                else if (column == listView.AllColumns.Where(x => x.AspectName == "Name").FirstOrDefault())
+                    this.FilteredObjectList.Sort(new NameComparer { SortOrder = order });
+                else if (column == listView.AllColumns.Where(x => x.AspectName == "Type").FirstOrDefault())
+                    this.FilteredObjectList.Sort(new TypeComparer { SortOrder = order });
+                else if (column == listView.AllColumns.Where(x => x.AspectName == "Set").FirstOrDefault())
+                    this.FilteredObjectList.Sort(new SetComparer { SortOrder = order });
+                else if (column == listView.AllColumns.Where(x => x.AspectName == "Cost").FirstOrDefault())
+                    this.FilteredObjectList.Sort(new ManaCostComparer { SortOrder = order });
+                this.RebuildIndexMap();
+            }
+
+            private class CollectorNumberComparer : IComparer
+            {
+                public SortOrder SortOrder;
+                public int Compare(object x, object y)
+                {
+                    int result = (x as OLVCardItem).CollectorNumber.CompareTo((y as OLVCardItem).CollectorNumber);
+                    return SortOrder == SortOrder.Ascending ? result : -1 * result;
+                }
+            }
+
+            private class NameComparer : IComparer
+            {
+                public SortOrder SortOrder;
+                public int Compare(object x, object y)
+                {
+                    int result = (x as OLVCardItem).Name.CompareTo((y as OLVCardItem).Name);
+                    return SortOrder == SortOrder.Ascending ? result : result * -1;
+                }
+            }
+
+            private class TypeComparer : IComparer
+            {
+                public SortOrder SortOrder;
+                public int Compare(object x, object y)
+                {
+                    int result = (x as OLVCardItem).Type.CompareTo((y as OLVCardItem).Type);
+                    return SortOrder == SortOrder.Ascending ? result : result * -1;
+                }
+            }
+
+            private class SetComparer : IComparer
+            {
+                public SortOrder SortOrder;
+                public int Compare(object x, object y)
+                {
+                    int result = (x as OLVCardItem).Set.CompareTo((y as OLVCardItem).Set);
+                    return SortOrder == SortOrder.Ascending ? result : result * -1;
+                }
+            }
+
+            private class ManaCostComparer : IComparer
+            {
+                public SortOrder SortOrder;
+                public int Compare(object x, object y)
+                {
+                    int result;
+                    string valueX = (x as OLVCardItem).Cost ?? "";
+                    string valueY = (y as OLVCardItem).Cost ?? "";
+                    result = valueX.CompareTo(valueY);
+                    return SortOrder == SortOrder.Ascending ? result : result * -1;
+                }
+            }
         }
     }
 }

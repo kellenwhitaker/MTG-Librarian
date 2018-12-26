@@ -52,7 +52,7 @@
             this.olvColumn2 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn3 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn4 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumn5 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.CollectorNumber = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
@@ -310,13 +310,13 @@
             this.cardListView.AllColumns.Add(this.olvColumn2);
             this.cardListView.AllColumns.Add(this.olvColumn3);
             this.cardListView.AllColumns.Add(this.olvColumn4);
-            this.cardListView.AllColumns.Add(this.olvColumn5);
+            this.cardListView.AllColumns.Add(this.CollectorNumber);
             this.cardListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.olvColumn1,
             this.olvColumn2,
             this.olvColumn3,
             this.olvColumn4,
-            this.olvColumn5});
+            this.CollectorNumber});
             this.cardListView.Cursor = System.Windows.Forms.Cursors.Default;
             this.cardListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cardListView.EmptyListMsg = "No cards";
@@ -368,12 +368,12 @@
             this.olvColumn4.Text = "Set";
             this.olvColumn4.Width = 100;
             // 
-            // olvColumn5
+            // CollectorNumber
             // 
-            this.olvColumn5.AspectName = "CollectorNumber";
-            this.olvColumn5.MinimumWidth = 100;
-            this.olvColumn5.Text = "#";
-            this.olvColumn5.Width = 100;
+            this.CollectorNumber.AspectName = "CollectorNumber";
+            this.CollectorNumber.MinimumWidth = 100;
+            this.CollectorNumber.Text = "#";
+            this.CollectorNumber.Width = 100;
             // 
             // DBViewForm
             // 
@@ -411,7 +411,7 @@
         private BrightIdeasSoftware.OLVColumn olvColumn2;
         private BrightIdeasSoftware.OLVColumn olvColumn3;
         private BrightIdeasSoftware.OLVColumn olvColumn4;
-        private BrightIdeasSoftware.OLVColumn olvColumn5;
+        private BrightIdeasSoftware.OLVColumn CollectorNumber;
         private CustomControls.FlatButton whiteManaButton;
         private CustomControls.FlatButton blueManaButton;
         private CustomControls.FlatButton blackManaButton;
