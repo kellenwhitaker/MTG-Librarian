@@ -280,6 +280,8 @@ namespace MTG_Librarian
                     this.FilteredObjectList.Sort(new SetComparer { SortOrder = order });
                 else if (column == listView.AllColumns.Where(x => x.AspectName == "ManaCost").FirstOrDefault())
                     this.FilteredObjectList.Sort(new ManaCostComparer { SortOrder = order });
+                else if (column == listView.AllColumns.Where(x => x.AspectName == "TimeAdded").FirstOrDefault())
+                    this.FilteredObjectList.Sort(new TimeAddedComparer { SortOrder = order });
                 this.RebuildIndexMap();
             }
 
@@ -335,6 +337,17 @@ namespace MTG_Librarian
                     return SortOrder == SortOrder.Ascending ? result : result * -1;
                 }
             }
+
+            private class TimeAddedComparer : IComparer
+            {
+                public SortOrder SortOrder;
+                public int Compare(object x, object y)
+                {
+                    int result = (x as FullInventoryCard).SortableTimeAdded.CompareTo((y as FullInventoryCard).SortableTimeAdded);
+                    return SortOrder == SortOrder.Ascending ? result : result * -1;
+                }
+            }
+
         }
     }
 }
