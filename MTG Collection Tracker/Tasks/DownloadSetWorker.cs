@@ -51,7 +51,11 @@ namespace MTG_Librarian
                 {
                     context.Upsert(CardSet);
                     foreach (var card in CardSet.Cards)
+                    {
+                        if (card.type.Contains("Basic Land")) // workaround needed because mtgjson thinks basic land is not a separate rarity from common
+                            card.rarity = "basic land";
                         context.Upsert(card);
+                    }
 
                     context.SaveChanges();
                 }

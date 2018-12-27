@@ -100,16 +100,11 @@ namespace MTG_Librarian
 
         public void BuildRarityItems()
         {
-            string rarity = "basic land";
             foreach (var cardItem in Cards)
             {
-                if (!cardItem.MagicCard.type.Contains("Basic Land")) // workaround needed because mtgjson thinks basic land is not a separate rarity
-                    rarity = cardItem.MagicCard.rarity;
-                else
-                    cardItem.MagicCard.rarity = rarity = "basic land";
-                if (!(Rarities.Where(x => x.Rarity == rarity).FirstOrDefault() is OLVRarityItem rarityItem))
+                if (!(Rarities.Where(x => x.Rarity == cardItem.MagicCard.rarity).FirstOrDefault() is OLVRarityItem rarityItem))
                 {
-                    rarityItem = new OLVRarityItem(this, cardItem.MagicCard.Edition, rarity);
+                    rarityItem = new OLVRarityItem(this, cardItem.MagicCard.Edition, cardItem.MagicCard.rarity);
                     Rarities.Add(rarityItem);
                     Rarities.Sort();
                 }
