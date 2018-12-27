@@ -68,7 +68,13 @@ namespace MTG_Librarian
 
         private Predicate<object> GetCardFilter()
         {
-            return GetManaCostFilter().And(GetSetFilter()).And(GetCardNameFilter());
+            return GetManaCostFilter().And(GetSetFilter()).And(GetCardNameFilter()).And(GetRarityFilter());
+        }
+
+        private Predicate<object> GetRarityFilter()
+        {
+            string rarityFilterText = rarityFilterComboBox.Text.ToUpper();
+            return x => rarityFilterText == "ALL RARITIES" ? true : (x as FullInventoryCard).rarity.ToUpper() == rarityFilterText;
         }
 
         private Predicate<object> GetCardNameFilter()
@@ -407,13 +413,12 @@ namespace MTG_Librarian
             TextChangedWaitTimer.Start();
         }
 
-        private void setFilterTextBox_TextChanged(object sender, EventArgs e)
+        private void whiteManaButton_Click(object sender, EventArgs e)
         {
-            TextChangedWaitTimer.Stop();
-            TextChangedWaitTimer.Start();
+            UpdateModelFilter();
         }
 
-        private void whiteManaButton_Click(object sender, EventArgs e)
+        private void rarityFilterComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateModelFilter();
         }

@@ -55,6 +55,7 @@
             this.blueManaButton = new CustomControls.FlatButton();
             this.whiteManaButton = new CustomControls.FlatButton();
             this.setFilterTextBox = new EnhancedTextBox.EnhancedTextBox();
+            this.rarityFilterComboBox = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.cardListView)).BeginInit();
             this.cardListViewMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -257,6 +258,7 @@
             // 
             // splitContainer1.Panel1
             // 
+            this.splitContainer1.Panel1.Controls.Add(this.rarityFilterComboBox);
             this.splitContainer1.Panel1.Controls.Add(this.genericManaButton);
             this.splitContainer1.Panel1.Controls.Add(this.colorlessManaButton);
             this.splitContainer1.Panel1.Controls.Add(this.greenManaButton);
@@ -381,7 +383,24 @@
             this.setFilterTextBox.Size = new System.Drawing.Size(155, 20);
             this.setFilterTextBox.TabIndex = 2;
             this.setFilterTextBox.Text = "Set Filter";
-            this.setFilterTextBox.TextChanged += new System.EventHandler(this.setFilterTextBox_TextChanged);
+            this.setFilterTextBox.TextChanged += new System.EventHandler(this.cardNameFilterTextBox_TextChanged);
+            // 
+            // rarityFilterComboBox
+            // 
+            this.rarityFilterComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.rarityFilterComboBox.FormattingEnabled = true;
+            this.rarityFilterComboBox.Items.AddRange(new object[] {
+            "All Rarities",
+            "Basic Land",
+            "Common",
+            "Uncommon",
+            "Rare",
+            "Mythic"});
+            this.rarityFilterComboBox.Location = new System.Drawing.Point(576, 8);
+            this.rarityFilterComboBox.Name = "rarityFilterComboBox";
+            this.rarityFilterComboBox.Size = new System.Drawing.Size(121, 21);
+            this.rarityFilterComboBox.TabIndex = 16;
+            this.rarityFilterComboBox.SelectedIndexChanged += new System.EventHandler(this.rarityFilterComboBox_SelectedIndexChanged);
             // 
             // CollectionViewForm
             // 
@@ -431,5 +450,6 @@
         private CustomControls.FlatButton blackManaButton;
         private CustomControls.FlatButton blueManaButton;
         private CustomControls.FlatButton whiteManaButton;
+        private System.Windows.Forms.ComboBox rarityFilterComboBox;
     }
 }
