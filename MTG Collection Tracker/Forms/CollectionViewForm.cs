@@ -74,7 +74,7 @@ namespace MTG_Librarian
         private Predicate<object> GetRarityFilter()
         {
             string rarityFilterText = rarityFilterComboBox.Text.ToUpper();
-            return x => rarityFilterText == "ALL RARITIES" ? true : (x as FullInventoryCard).rarity.ToUpper() == rarityFilterText;
+            return x => rarityFilterText == "ALL RARITIES" || rarityFilterText == "" ? true : (x as FullInventoryCard).rarity.ToUpper() == rarityFilterText;
         }
 
         private Predicate<object> GetCardNameFilter()
@@ -421,6 +421,35 @@ namespace MTG_Librarian
         private void rarityFilterComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             UpdateModelFilter();
+        }
+
+        private void cardListView_CellEditStarting(object sender, CellEditEventArgs e)
+        {
+            if (e.RowObject is FullInventoryCard card)
+            {
+                int costIndex = cardListView.AllColumns.Where(x => x.AspectName == "Cost").FirstOrDefault().DisplayIndex;
+                if (e.SubItemIndex == costIndex)
+                {
+                    NumericUpDown editor = new NumericUpDown { Bounds = e.CellBounds, DecimalPlaces = 2 };
+                    editor.Value = decimal.TryParse(e.Value?.ToString(), out decimal cellValue) ? cellValue : 0.0M;
+                    e.Control = editor;
+                }
+            }
+        }
+
+        private void cardListView_CellEditFinishing(object sender, CellEditEventArgs e)
+        {
+            if (e.RowObject is FullInventoryCard card)
+            {
+                int costIndex = cardListView.AllColumns.Where(x => x.AspectName == "Cost").FirstOrDefault().DisplayIndex;
+                if (e.SubItemIndex == costIndex)
+                {
+                    if (double.TryParse(e.NewValue?.ToString(), out double cellValue))
+                        card.Cost =  cellValue;
+                    cardListView.RefreshObject(card);
+                    e.Cancel = true;
+                }
+            }
         }
     }
 }

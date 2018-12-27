@@ -47,6 +47,7 @@
             this.deleteCardsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cardNameFilterTextBox = new EnhancedTextBox.EnhancedTextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.rarityFilterComboBox = new System.Windows.Forms.ComboBox();
             this.genericManaButton = new CustomControls.FlatButton();
             this.colorlessManaButton = new CustomControls.FlatButton();
             this.greenManaButton = new CustomControls.FlatButton();
@@ -55,7 +56,6 @@
             this.blueManaButton = new CustomControls.FlatButton();
             this.whiteManaButton = new CustomControls.FlatButton();
             this.setFilterTextBox = new EnhancedTextBox.EnhancedTextBox();
-            this.rarityFilterComboBox = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.cardListView)).BeginInit();
             this.cardListViewMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -115,6 +115,8 @@
             this.cardListView.View = System.Windows.Forms.View.Details;
             this.cardListView.VirtualMode = true;
             this.cardListView.CellEditFinished += new BrightIdeasSoftware.CellEditEventHandler(this.fastObjectListView1_CellEditFinished);
+            this.cardListView.CellEditFinishing += new BrightIdeasSoftware.CellEditEventHandler(this.cardListView_CellEditFinishing);
+            this.cardListView.CellEditStarting += new BrightIdeasSoftware.CellEditEventHandler(this.cardListView_CellEditStarting);
             this.cardListView.CellClick += new System.EventHandler<BrightIdeasSoftware.CellClickEventArgs>(this.fastObjectListView1_CellClick);
             this.cardListView.SubItemChecking += new System.EventHandler<BrightIdeasSoftware.SubItemCheckingEventArgs>(this.cardListView_SubItemChecking);
             this.cardListView.ModelCanDrop += new System.EventHandler<BrightIdeasSoftware.ModelDropEventArgs>(this.fastObjectListView1_ModelCanDrop);
@@ -276,6 +278,23 @@
             this.splitContainer1.SplitterDistance = 30;
             this.splitContainer1.TabIndex = 2;
             // 
+            // rarityFilterComboBox
+            // 
+            this.rarityFilterComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.rarityFilterComboBox.FormattingEnabled = true;
+            this.rarityFilterComboBox.Items.AddRange(new object[] {
+            "All Rarities",
+            "Basic Land",
+            "Common",
+            "Uncommon",
+            "Rare",
+            "Mythic"});
+            this.rarityFilterComboBox.Location = new System.Drawing.Point(576, 8);
+            this.rarityFilterComboBox.Name = "rarityFilterComboBox";
+            this.rarityFilterComboBox.Size = new System.Drawing.Size(121, 21);
+            this.rarityFilterComboBox.TabIndex = 16;
+            this.rarityFilterComboBox.SelectedIndexChanged += new System.EventHandler(this.rarityFilterComboBox_SelectedIndexChanged);
+            // 
             // genericManaButton
             // 
             this.genericManaButton.Checked = false;
@@ -384,23 +403,6 @@
             this.setFilterTextBox.TabIndex = 2;
             this.setFilterTextBox.Text = "Set Filter";
             this.setFilterTextBox.TextChanged += new System.EventHandler(this.cardNameFilterTextBox_TextChanged);
-            // 
-            // rarityFilterComboBox
-            // 
-            this.rarityFilterComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.rarityFilterComboBox.FormattingEnabled = true;
-            this.rarityFilterComboBox.Items.AddRange(new object[] {
-            "All Rarities",
-            "Basic Land",
-            "Common",
-            "Uncommon",
-            "Rare",
-            "Mythic"});
-            this.rarityFilterComboBox.Location = new System.Drawing.Point(576, 8);
-            this.rarityFilterComboBox.Name = "rarityFilterComboBox";
-            this.rarityFilterComboBox.Size = new System.Drawing.Size(121, 21);
-            this.rarityFilterComboBox.TabIndex = 16;
-            this.rarityFilterComboBox.SelectedIndexChanged += new System.EventHandler(this.rarityFilterComboBox_SelectedIndexChanged);
             // 
             // CollectionViewForm
             // 

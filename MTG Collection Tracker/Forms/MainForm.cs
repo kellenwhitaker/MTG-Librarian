@@ -10,10 +10,9 @@ using System.ComponentModel;
 //Note: editable columns - count, cost, tags, foil
 //TODO3 use restsharp for getting TCGPlayer prices
 //TODO2 add card preview
-//TODO4 allow updating of card images
+//TODO3 allow updating of card images
 //TODO3 allow multi-editing using CTRL+Click
 //TDOO3 single-row editing doesn't start when shift is held down
-//TODO5 wrong editor is shown for Cost/Cost is uneditable in CollectionViewForm.cardListView when no rows have a Cost already filled in
 //TODO3 deselect after card is filtered out of cardListView (CollectionViewForm/DBView)/maintain selection when appropriate
 //TODO3 get rid of item highlighting during CollectionViewForm listview drag-and-drop operations
 //TODO3 for a large number of new sets, don't display every set in download confirmation box, just the number instead
