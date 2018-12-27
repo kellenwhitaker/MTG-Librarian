@@ -52,7 +52,7 @@ namespace MTG_Librarian
                     $"</tr>";
             }
             html += $"<tr>" +
-                $"<td><br><br>{card.text.Replace("\n", "<br>")}</td>" +
+                $"<td><br><br>{card.text?.Replace("\n", "<br>")}</td>" +
                 $"</tr>";
             if (card.flavorText != null)
                 html += $"<tr>" +
