@@ -44,6 +44,7 @@
             // 
             this.navigatorListView.AllColumns.Add(this.olvColumn1);
             this.navigatorListView.AllowDrop = true;
+            this.navigatorListView.CellEditUseWholeCell = false;
             this.navigatorListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.olvColumn1});
             this.navigatorListView.ContextMenuStrip = this.contextMenuStrip1;
@@ -73,6 +74,8 @@
             // olvColumn1
             // 
             this.olvColumn1.AspectName = "Text";
+            this.olvColumn1.AutoCompleteEditor = false;
+            this.olvColumn1.AutoCompleteEditorMode = System.Windows.Forms.AutoCompleteMode.None;
             this.olvColumn1.Width = 200;
             // 
             // contextMenuStrip1

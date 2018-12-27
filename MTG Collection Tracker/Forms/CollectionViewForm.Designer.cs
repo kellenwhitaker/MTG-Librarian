@@ -182,18 +182,23 @@
             // CountColumn
             // 
             this.CountColumn.AspectName = "Count";
+            this.CountColumn.AutoCompleteEditor = false;
+            this.CountColumn.AutoCompleteEditorMode = System.Windows.Forms.AutoCompleteMode.None;
             this.CountColumn.MinimumWidth = 50;
             this.CountColumn.Text = "Count";
             // 
             // CostColumn
             // 
             this.CostColumn.AspectName = "Cost";
+            this.CostColumn.AutoCompleteEditor = false;
+            this.CostColumn.AutoCompleteEditorMode = System.Windows.Forms.AutoCompleteMode.None;
             this.CostColumn.MinimumWidth = 50;
             this.CostColumn.Text = "Cost";
             // 
             // TagsColumn
             // 
             this.TagsColumn.AspectName = "Tags";
+            this.TagsColumn.AutoCompleteEditorMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.TagsColumn.MinimumWidth = 200;
             this.TagsColumn.Text = "Tags";
             this.TagsColumn.Width = 200;
@@ -219,6 +224,7 @@
             // TimeAddedColumn
             // 
             this.TimeAddedColumn.AspectName = "TimeAdded";
+            this.TimeAddedColumn.IsEditable = false;
             this.TimeAddedColumn.Text = "Added";
             this.TimeAddedColumn.Width = 200;
             // 
