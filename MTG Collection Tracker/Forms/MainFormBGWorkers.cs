@@ -41,7 +41,7 @@ namespace MTG_Librarian
                 foreach (var contentPane in contentPanes)
                 {
                     var dockContent = ShowForm(contentPane, dockState);
-                    if (contentPane.IsActivated)
+                    if (dockContent != null && contentPane.IsActivated)
                         activatedContent = dockContent;
                 }
 
@@ -63,7 +63,7 @@ namespace MTG_Librarian
             else
                 dockContent = LoadCollection(contentSettings.DocumentId, dockState);
 
-            dockContent.Show(Globals.Forms.DockPanel, dockState);
+            dockContent?.Show(Globals.Forms.DockPanel, dockState);
             return dockContent;
         }
 
