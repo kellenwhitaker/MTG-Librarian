@@ -38,15 +38,15 @@ namespace MTG_Librarian
             var contentPanes = settings.ContentPanes;
             DockContent activatedContent = null;
             if (contentPanes != null && contentPanes.Count > 0)
+            {
                 foreach (var contentPane in contentPanes)
                 {
                     var dockContent = ShowForm(contentPane, dockState);
-                    if (dockContent != null && contentPane.IsActivated)
+                    if (contentPane.IsActivated)
                         activatedContent = dockContent;
                 }
-
-            if (activatedContent != null)
-                activatedContent.Activate();
+                activatedContent?.Activate();
+            }
         }
 
         private DockContent ShowForm(ApplicationSettings.DockContentSettings contentSettings, DockState dockState)
