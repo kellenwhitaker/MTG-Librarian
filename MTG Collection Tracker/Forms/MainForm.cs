@@ -10,7 +10,6 @@ using System.ComponentModel;
 //Note: editable columns - count, cost, tags, foil
 //TODO3 use restsharp for getting TCGPlayer prices
 //TODO2 add card preview
-//TODO4 better handling of group deletion (must remove any open collections that were deleted)
 //TODO3 allow updating of card images
 //TODO3 allow multi-editing using CTRL+Click
 //TDOO3 single-row editing doesn't start when shift is held down

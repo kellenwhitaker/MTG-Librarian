@@ -201,15 +201,17 @@ namespace MTG_Librarian
                         return;
                     }
                 }
+                CollectionViewForm[] collectionsToRemove;
                 if (!isGroup)
+                    collectionsToRemove = Globals.Forms.OpenCollectionForms.Where(x => x.Collection.Id == (navigatorItem as NavigatorCollection).Id).ToArray();
+                else
+                    collectionsToRemove = Globals.Forms.OpenCollectionForms.Where(x => x.Collection.GroupId == (navigatorItem as NavigatorGroup).Id).ToArray();
+
+                foreach (var collection in collectionsToRemove)
                 {
-                    var match = Globals.Forms.OpenCollectionForms.Where(x => x.Collection.Id == (navigatorItem as NavigatorCollection).CardCollection.Id).FirstOrDefault();
-                    if (match != null)
-                    {
-                        Globals.Forms.OpenCollectionForms.Remove(match);
-                        match.Close();
-                    }
-                }           
+                    Globals.Forms.OpenCollectionForms.Remove(collection);
+                    collection.Close();
+                }                    
             }
         }
 
