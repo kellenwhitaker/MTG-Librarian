@@ -117,6 +117,7 @@ namespace MTG_Librarian
         public void LoadSet(string SetCode)
         {
             var existingSet = setListView.Objects.Cast<OLVSetItem>().Where(x => x.CardSet.Code == SetCode).FirstOrDefault();
+            var selectedSet = setListView.SelectedObject as OLVSetItem;
             if (existingSet != null)
             {
                 setListView.RemoveObject(existingSet);
@@ -146,7 +147,7 @@ namespace MTG_Librarian
                     SetItems.Add(set);
                 }
             }
-            if (setListView.SelectedObject is OLVSetItem selectedSet)
+            if (selectedSet != null)
                 setListView.SelectedObject = setListView.Objects.Cast<OLVSetItem>().Where(x => x.CardSet.Code == selectedSet.CardSet.Code).FirstOrDefault();
         }
 
