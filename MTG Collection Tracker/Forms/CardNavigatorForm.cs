@@ -311,8 +311,12 @@ namespace MTG_Librarian
                     e.InfoMessage = $"Add set [{setItem.Name}] to {DocumentName}";
                 else if (e.SourceModels[0] is OLVRarityItem rarityItem)
                     e.InfoMessage = $"Add {rarityItem.Rarity}s from [{(rarityItem.Parent as OLVSetItem).Name}] to {DocumentName}";
-                else if (e.SourceModels[0] is FullInventoryCard fullInventoryCard && (e.SourceListView.Parent as CollectionViewForm).Collection.Id != navigatorCollection.Id)
-                    e.InfoMessage = $"Add {e.SourceModels.Count} card{(e.SourceModels.Count == 1 ? "" : "s")} to {DocumentName}";
+                else if (e.SourceModels[0] is FullInventoryCard fullInventoryCard)
+                {
+                    var parentForm = Globals.Forms.OpenCollectionForms.Where(x => x.cardListView == e.SourceListView).FirstOrDefault();
+                    if (parentForm != null && parentForm.Collection.Id != navigatorCollection.Id)
+                        e.InfoMessage = $"Add {e.SourceModels.Count} card{(e.SourceModels.Count == 1 ? "" : "s")} to {DocumentName}";
+                }
             }
         }
 
