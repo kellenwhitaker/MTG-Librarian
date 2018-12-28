@@ -22,7 +22,10 @@ namespace MTG_Librarian
             var renderer = navigatorListView.TreeColumnRenderer;
             renderer.IsShowLines = false;
             renderer.UseTriangles = true;
-            (navigatorListView.DropSink as SimpleDropSink).CanDropOnItem = false;
+            var dropSink = navigatorListView.DropSink as SimpleDropSink;
+            dropSink.CanDropOnItem = false;
+            dropSink.Billboard.BackColor = Color.DodgerBlue;
+            dropSink.Billboard.TextColor = Color.White;
             DockAreas = DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockBottom;
         }
 
