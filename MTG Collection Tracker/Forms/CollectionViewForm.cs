@@ -16,7 +16,6 @@ namespace MTG_Librarian
     {
         public string DocumentName => Collection?.CollectionName;
         public CardCollection Collection { get; set; }
-        private bool MultiEditing = false;
         private System.Timers.Timer TextChangedWaitTimer = new System.Timers.Timer();
 
         public override string Text
@@ -182,8 +181,7 @@ namespace MTG_Librarian
                     }
                 }
 
-                if (MultiEditing)
-                {
+                if (cardListView.SelectedObjects != null)
                     foreach (FullInventoryCard card in cardListView.SelectedObjects)
                     {
                         if (card != editedCard)
@@ -197,8 +195,6 @@ namespace MTG_Librarian
                             args.Items.Add(card);
                         }
                     }
-                    MultiEditing = false;
-                }
                 OnCardsUpdated(args);
             }
         }
@@ -252,9 +248,8 @@ namespace MTG_Librarian
 
         private void fastObjectListView1_CellClick(object sender, CellClickEventArgs e)
         {
-            if (e.ClickCount == 2 && e.ModifierKeys == Keys.Shift && cardListView.SelectedObjects.Count > 1)
+            if (e.ClickCount == 2)
             {
-                MultiEditing = true;
                 e.ListView.StartCellEdit(e.Item, e.Item.SubItems.IndexOf(e.SubItem));
                 e.Handled = true;
             }
@@ -451,5 +446,6 @@ namespace MTG_Librarian
                 }
             }
         }
+
     }
 }
