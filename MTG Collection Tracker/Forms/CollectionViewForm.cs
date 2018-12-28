@@ -8,7 +8,6 @@ using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
 using KW.WinFormsUI.Docking;
-//TODO3: improve appearance of checkboxes
 
 namespace MTG_Librarian
 {
@@ -63,7 +62,14 @@ namespace MTG_Librarian
             if (InvokeRequired)
                 BeginInvoke(new UpdateModelFilterDelegate(UpdateModelFilter));
             else
+            {
+                List<object> selectedObjects = new List<object>();
+                foreach (object o in cardListView.SelectedObjects)
+                    selectedObjects.Add(o);
                 cardListView.ModelFilter = new ModelFilter(GetCardFilter());
+                cardListView.SelectedObjects = selectedObjects;
+                cardListView.RefreshSelectedObjects();
+            }
         }
 
         private Predicate<object> GetCardFilter()
