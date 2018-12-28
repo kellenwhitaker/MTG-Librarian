@@ -106,12 +106,13 @@ namespace MTG_Librarian
         #endregion
         public void SortCardListView()
         {
-            if (cardListView.PrimarySortColumn == null) // sort by set if not already sorted
+            if (cardListView.PrimarySortColumn == null) // sort by set, number if not already sorted
             {
-                cardListView.PrimarySortColumn = cardListView.AllColumns[3];
-                cardListView.SecondarySortColumn = cardListView.AllColumns[4];
-                cardListView.Sort();
+                var sorted = cardListView.Objects.Cast<OLVCardItem>().OrderBy(x => x.MagicCard.Edition).ThenBy(x => x.MagicCard.SortableNumber);
+                cardListView.Objects = sorted;
             }
+            else
+                cardListView.Sort();
         }
 
         public void LoadSet(string SetCode)
