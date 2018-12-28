@@ -194,8 +194,22 @@ namespace MTG_Librarian
                             }
                         }
                     }
-                    catch (Exception ex) { DebugOutput.WriteLine(ex.ToString()); }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Unable to delete {(isGroup ? "group." : "collection.")}");
+                        DebugOutput.WriteLine(ex.ToString());
+                        return;
+                    }
                 }
+                if (!isGroup)
+                {
+                    var match = Globals.Forms.OpenCollectionForms.Where(x => x.Collection.Id == (navigatorItem as NavigatorCollection).CardCollection.Id).FirstOrDefault();
+                    if (match != null)
+                    {
+                        Globals.Forms.OpenCollectionForms.Remove(match);
+                        match.Close();
+                    }
+                }           
             }
         }
 
