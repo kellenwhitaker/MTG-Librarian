@@ -142,8 +142,6 @@ namespace MTG_Librarian
             {
                 AddSetIcon(e.SetCode);
                 Globals.Forms.DBViewForm.LoadSet(e.SetCode);
-                if (Globals.Forms.TasksForm.TaskManager.TaskCount == 0)
-                    Globals.Forms.DBViewForm.SortCardListView();
             }
         }
 
