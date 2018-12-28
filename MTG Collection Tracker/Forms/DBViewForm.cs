@@ -120,8 +120,11 @@ namespace MTG_Librarian
             var selectedSet = setListView.SelectedObject as OLVSetItem;
             if (existingSet != null)
             {
+                var existingCards = cardListView.Objects.Cast<OLVCardItem>().Where(x => x.MagicCard.SetCode == SetCode).ToArray();
+                foreach (var card in existingCards)
+                    Globals.Collections.AllMagicCards.Remove(card.MagicCard.uuid);
                 setListView.RemoveObject(existingSet);
-                cardListView.RemoveObjects(cardListView.Objects.Cast<OLVCardItem>().Where(x => x.MagicCard.SetCode == SetCode).ToArray());
+                cardListView.RemoveObjects(existingCards);
             }
             using (var context = new MyDbContext())
             {
@@ -135,13 +138,16 @@ namespace MTG_Librarian
                                 where c.SetCode == SetCode
                                 orderby new AlphaNumericString(c.number), c.name
                                 select c;
+
                     foreach (var card in cards)
                         set.AddCard(card);
-
+                    
                     CollapseParts(set);
                     set.BuildRarityItems();
                     setListView.AddObject(set);
                     cardListView.AddObjects(set.Cards);
+                    foreach (var card in set.Cards)
+                        Globals.Collections.AllMagicCards.Add(card.MagicCard.uuid, card.MagicCard);
                     if (setListView.Objects.Count() == 1) // first set added, must sort the tree
                         setListView.Sort(setListView.AllColumns[1], SortOrder.Descending);
                     SetItems.Add(set);
