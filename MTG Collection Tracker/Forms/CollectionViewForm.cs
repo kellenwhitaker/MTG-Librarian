@@ -38,9 +38,10 @@ namespace MTG_Librarian
             cardListView.VirtualListDataSource = new MyCustomSortingDataSource(cardListView);
             cardListView.AddDecoration(new EditingCellBorderDecoration { UseLightbox = false, BorderPen = new Pen(Brushes.DodgerBlue, 3), BoundsPadding = new Size(1, 0) });
             cardListView.UseFiltering = true;
-            var billboard = (cardListView.DropSink as SimpleDropSink).Billboard;
-            billboard.BackColor = Color.DodgerBlue;
-            billboard.TextColor = Color.White;
+            var dropSink = cardListView.DropSink as SimpleDropSink;
+            dropSink.CanDropOnItem = false;
+            dropSink.Billboard.BackColor = Color.DodgerBlue;
+            dropSink.Billboard.TextColor = Color.White;
             DockAreas = DockAreas.Document | DockAreas.DockBottom;
             whiteManaButton.ImageList = blueManaButton.ImageList = blackManaButton.ImageList = redManaButton.ImageList = greenManaButton.ImageList
                                       = colorlessManaButton.ImageList = genericManaButton.ImageList = Globals.ImageLists.ManaIcons;

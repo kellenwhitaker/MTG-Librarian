@@ -5,6 +5,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
+using BrightIdeasSoftware;
 using KW.WinFormsUI.Docking;
 
 namespace MTG_Librarian
@@ -21,6 +22,7 @@ namespace MTG_Librarian
             var renderer = navigatorListView.TreeColumnRenderer;
             renderer.IsShowLines = false;
             renderer.UseTriangles = true;
+            (navigatorListView.DropSink as SimpleDropSink).CanDropOnItem = false;
             DockAreas = DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockBottom;
         }
 

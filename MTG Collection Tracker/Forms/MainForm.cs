@@ -12,7 +12,6 @@ using System.ComponentModel;
 //TODO2 add card preview
 //TODO3 allow updating of card images
 //TODO3 deselect after card is filtered out of cardListView (CollectionViewForm/DBView)/maintain selection when appropriate
-//TODO3 get rid of item highlighting during CollectionViewForm listview drag-and-drop operations
 //TODO3 for a large number of new sets, don't display every set in download confirmation box, just the number instead
 //TODO unknown error: collection unmodified
 namespace MTG_Librarian
