@@ -6,7 +6,7 @@ namespace MTG_Librarian
     public class AlphaNumericString : IComparable<AlphaNumericString>
     {
         public string String { get; private set; }
-        private string PaddedString;
+        private readonly string PaddedString;
 
         public AlphaNumericString(string str)
         {
@@ -19,7 +19,7 @@ namespace MTG_Librarian
             return PaddedString.CompareTo(other.PaddedString);
         }
 
-        private string PadNumbers(string inputString)
+        private static string PadNumbers(string inputString)
         {
             return Regex.Replace(inputString, "[0-9]+", match => match.Value.PadLeft(3, '0'));
         }

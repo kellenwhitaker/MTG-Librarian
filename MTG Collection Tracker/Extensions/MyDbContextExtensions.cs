@@ -11,7 +11,7 @@ namespace MTG_Librarian
     {
         public static void Upsert(this MyDbContext context, CardSet set)
         {
-            var existing = context.Sets.AsNoTracking().Where(x => x.Name == set.Name).FirstOrDefault();
+            var existing = context.Sets.AsNoTracking().FirstOrDefault(x => x.Name == set.Name);
             if (existing == null)
                 context.Add(set);
             else
@@ -22,7 +22,7 @@ namespace MTG_Librarian
 
         public static void Upsert(this MyDbContext context, MagicCard card)
         {
-            var existing = context.Catalog.AsNoTracking().Where(x => x.uuid == card.uuid).FirstOrDefault();
+            var existing = context.Catalog.AsNoTracking().FirstOrDefault(x => x.uuid == card.uuid);
             if (existing == null)
             {
                 context.Add(card);

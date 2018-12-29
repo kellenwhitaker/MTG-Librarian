@@ -8,12 +8,15 @@ namespace MTG_Librarian
     {
         public override void Render(Graphics g, Rectangle r)
         {
-            Color backColor = ListView.BackColor;
-            Rectangle backgroundRect = new Rectangle(r.Left - 1, r.Top - 1, r.Width, r.Height + 1);
+            var backColor = ListView.BackColor;
+            var backgroundRect = new Rectangle(r.Left - 1, r.Top - 1, r.Width, r.Height + 1);
             if (IsItemSelected)
                 backColor = ListView.Focused ? ListView.SelectedBackColor : ListView.UnfocusedSelectedBackColor;
 
-            g.FillRectangle(new SolidBrush(backColor), backgroundRect);
+            using (var solidBrush = new SolidBrush(backColor))
+            {
+                g.FillRectangle(solidBrush, backgroundRect);
+            }
             string manaCost = "";
             if (ListItem.RowObject is FullInventoryCard)
                 manaCost = (ListItem.RowObject as FullInventoryCard).manaCost;
@@ -21,7 +24,7 @@ namespace MTG_Librarian
                 manaCost = (ListItem.RowObject as OLVCardItem).MagicCard.manaCost;
             if (manaCost != "" && manaCost != null)
             {
-                Regex reg = new Regex("{[A-Z0-9/]+}");
+                var reg = new Regex("{[A-Z0-9/]+}");
                 var costParts = reg.Matches(manaCost);
                 var imageList = Globals.ImageLists.SymbolIcons16;
                 int left = 5;

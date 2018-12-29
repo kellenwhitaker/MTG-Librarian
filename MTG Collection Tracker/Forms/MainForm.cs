@@ -12,13 +12,13 @@ using System.ComponentModel;
 //TODO3: improve appearance of checkboxes
 //TODO2 add card preview
 //TODO3 allow updating of card images
-//TODO3 for a large number of new sets, don't display every set in download confirmation box, just the number instead
-//TODO unknown error: collection unmodified
+//TODO3 move new sets notification to status bar
+
 namespace MTG_Librarian
 {
     public partial class MainForm : Form
     {
-        private static SplashForm splash = new SplashForm();
+        private static readonly SplashForm splash = new SplashForm();
         private const int SmallIconWidth = 27;
         private const int SmallIconHeight = 21;
         private static ApplicationSettings ApplicationSettings;
@@ -42,7 +42,6 @@ namespace MTG_Librarian
             Globals.Forms.DBViewForm = new DBViewForm();
             Globals.Forms.DBViewForm.CardsActivated += dbFormCardActivated;
             Globals.Forms.DBViewForm.CardSelected += CardSelected;
-            Globals.Forms.DBViewForm.CardFocused += CardFocused;
             Globals.Forms.TasksForm = new TasksForm();
             Globals.Forms.TasksForm.InitializeTaskManager();
             Globals.Forms.TasksForm.tasksListView.GetColumn(0).Renderer = new IconRenderer();
@@ -119,12 +118,9 @@ namespace MTG_Librarian
                 var inventoryCards = from c in context.Library
                             select c;
 
-                MagicCard magicCard;
                 foreach (var inventoryCard in inventoryCards)
-                {
-                    if (inventoryCard.Count.HasValue && Globals.Collections.AllMagicCards.TryGetValue(inventoryCard.uuid, out magicCard))
+                    if (inventoryCard.Count.HasValue && Globals.Collections.AllMagicCards.TryGetValue(inventoryCard.uuid, out MagicCard magicCard))
                         magicCard.CopiesOwned += inventoryCard.Count.Value;
-                }
             }
         }
 
@@ -149,7 +145,7 @@ namespace MTG_Librarian
 
         private InventoryCard AddMagicCardToCollection(MyDbContext context, MagicCard magicCard, int CollectionId, int insertionIndex = 0)
         {
-            InventoryCard inventoryCard = new InventoryCard { DisplayName = magicCard.name, uuid = magicCard.uuid, multiverseId_Inv = magicCard.multiverseId, CollectionId = CollectionId, InsertionIndex = insertionIndex };
+            var inventoryCard = new InventoryCard { DisplayName = magicCard.name, uuid = magicCard.uuid, multiverseId_Inv = magicCard.multiverseId, CollectionId = CollectionId, InsertionIndex = insertionIndex };
             if (magicCard.isFoilOnly)
                 inventoryCard.Foil = true;
             else
@@ -168,16 +164,16 @@ namespace MTG_Librarian
                 var setItems = new Dictionary<string, OLVSetItem>();
                 using (MyDbContext context = new MyDbContext())
                 {
-                    List<InventoryCard> cardsAdded = new List<InventoryCard>();
+                    var cardsAdded = new List<InventoryCard>();
                     int insertionIndex = 0;
                     foreach (OLVCardItem cardItem in cards)
                     {
-                        MagicCard card = cardItem.MagicCard;
+                        var card = cardItem.MagicCard;
                         var inventoryCard = AddMagicCardToCollection(context, card, collectionViewForm.Collection.Id, insertionIndex);
                         cardsAdded.Add(inventoryCard);
                         insertionIndex++;
                         if (!setItems.TryGetValue(card.Edition, out OLVSetItem setItem))
-                            if ((setItem = Globals.Forms.DBViewForm.SetItems.Where(x => x.Name == card.Edition).FirstOrDefault()) != null)
+                            if ((setItem = Globals.Forms.DBViewForm.SetItems.FirstOrDefault(x => x.Name == card.Edition)) != null)
                                 setItems.Add(card.Edition, setItem);
                     }
                     context.SaveChanges();
@@ -201,20 +197,20 @@ namespace MTG_Librarian
             var setItems = new Dictionary<string, OLVSetItem>();
             using (MyDbContext context = new MyDbContext())
             {
-                List<InventoryCard> cardsAdded = new List<InventoryCard>();
+                var cardsAdded = new List<InventoryCard>();
                 int insertionIndex = 0;
                 foreach (OLVCardItem cardItem in cards)
                 {
-                    MagicCard card = cardItem.MagicCard;
+                    var card = cardItem.MagicCard;
                     var inventoryCard = AddMagicCardToCollection(context, card, collectionId, insertionIndex);
                     cardsAdded.Add(inventoryCard);
                     insertionIndex++;
                     if (!setItems.TryGetValue(card.Edition, out OLVSetItem setItem))
-                        if ((setItem = Globals.Forms.DBViewForm.SetItems.Where(x => x.Name == card.Edition).FirstOrDefault()) != null)
+                        if ((setItem = Globals.Forms.DBViewForm.SetItems.FirstOrDefault(x => x.Name == card.Edition)) != null)
                             setItems.Add(card.Edition, setItem);
                 }
                 context.SaveChanges();
-                var cvForm = Globals.Forms.OpenCollectionForms.Where(x => x.Collection.Id == collectionId).FirstOrDefault();
+                var cvForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.Collection.Id == collectionId);
                 var fullCardsAdded = new List<FullInventoryCard>();
                 foreach (InventoryCard card in cardsAdded)
                 {
@@ -270,7 +266,7 @@ namespace MTG_Librarian
         private void MoveFullInventoryCardsToDocument(ArrayList fullInventoryCards, CollectionViewForm sourceCVForm, CollectionViewForm targetCVForm)
         {
             int newCollectionId = targetCVForm.Collection.Id;
-            List<FullInventoryCard> cardsList = new List<FullInventoryCard>();
+            var cardsList = new List<FullInventoryCard>();
             try
             {
                 using (var context = new MyDbContext())
@@ -295,7 +291,7 @@ namespace MTG_Librarian
 
         private void MoveFullInventoryCardsToCollection(ArrayList fullInventoryCards, CollectionViewForm sourceCVForm, int collectionId)
         {
-            List<FullInventoryCard> cardsList = new List<FullInventoryCard>();
+            var cardsList = new List<FullInventoryCard>();
             try
             {
                 using (var context = new MyDbContext())
@@ -309,7 +305,7 @@ namespace MTG_Librarian
                     context.SaveChanges();
                 }
                 sourceCVForm.RemoveFullInventoryCards(cardsList);
-                Globals.Forms.OpenCollectionForms.Where(x => x.Collection.Id == collectionId).FirstOrDefault()?.AddFullInventoryCards(cardsList);
+                Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.Collection.Id == collectionId)?.AddFullInventoryCards(cardsList);
             }
             catch (Exception ex)
             {
@@ -333,7 +329,7 @@ namespace MTG_Librarian
                             {
                                 context.Library.Update(card.InventoryCard);
                                 if (!setItems.TryGetValue(card.Edition, out OLVSetItem setItem))
-                                    if ((setItem = Globals.Forms.DBViewForm.SetItems.Where(x => x.Name == card.Edition).FirstOrDefault()) != null)
+                                    if ((setItem = Globals.Forms.DBViewForm.SetItems.FirstOrDefault(x => x.Name == card.Edition)) != null)
                                         setItems.Add(card.Edition, setItem);
                             }
                             else
@@ -466,10 +462,10 @@ namespace MTG_Librarian
 
         public static void CardSelected(object sender, CardSelectedEventArgs e)
         {
-            MagicCardBase card = e.MagicCard;
+            var card = e.MagicCard;
             Globals.Forms.CardInfoForm.CardSelected(card);
             CardFocused(sender, new CardFocusedEventArgs { uuid = card.uuid });
-            
+
             using (CardImagesDbContext context = new CardImagesDbContext(card.Edition))
             {
                 var imageBytes = (from i in context.CardImages
@@ -478,7 +474,7 @@ namespace MTG_Librarian
 
                 if (imageBytes != null)
                 {
-                    Image img = ImageExtensions.FromByteArray(imageBytes);
+                    var img = ImageExtensions.FromByteArray(imageBytes);
                     OnCardImageRetrieved(new CardImageRetrievedEventArgs { uuid = card.uuid, CardImage = img });
                 }
                 else
@@ -498,7 +494,7 @@ namespace MTG_Librarian
                     context.Add(new DbCardImage { uuid = args.uuid, CardImageBytes = args.Data });
                     context.SaveChanges();
                 }
-                Image img = ImageExtensions.FromByteArray(args.Data);
+                var img = ImageExtensions.FromByteArray(args.Data);
                 OnCardImageRetrieved(new CardImageRetrievedEventArgs { uuid = args.uuid, MultiverseId = args.MultiverseId, CardImage = img });
             }
             catch (Exception ex) { DebugOutput.WriteLine(ex.ToString()); }
@@ -512,11 +508,13 @@ namespace MTG_Librarian
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            ApplicationSettings = new ApplicationSettings();
-            ApplicationSettings.InInitialState = false;
-            ApplicationSettings.MainFormWindowState = WindowState;
-            ApplicationSettings.MainFormLocation = Location;
-            ApplicationSettings.MainFormSize = Size;
+            ApplicationSettings = new ApplicationSettings
+            {
+                InInitialState = false,
+                MainFormWindowState = WindowState,
+                MainFormLocation = Location,
+                MainFormSize = Size
+            };
             ApplicationSettings.ClearDockPaneSettings();
             ApplicationSettings.DockLeftPortion = Globals.Forms.DockPanel.DockLeftPortion;
             ApplicationSettings.DockRightPortion = Globals.Forms.DockPanel.DockRightPortion;
@@ -553,7 +551,7 @@ namespace MTG_Librarian
                 }
             }
         }
- 
+
         private void cardInfoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (Globals.Forms.CardInfoForm.IsHidden)

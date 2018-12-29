@@ -36,7 +36,7 @@ namespace MTG_Librarian
                 UpdateIcon();
                 string scrapedName = CardSet.ScrapedName;
                 string mtgjsonUrl = CardSet.MTGJSONURL;
-                string json = DownloadJSON(CardSet.MTGJSONURL);                    
+                string json = DownloadJSON(CardSet.MTGJSONURL);
                 CardSet = JsonConvert.DeserializeObject<CardSet>(json);
                 if (CardSet == null) throw new InvalidDataException("Invalid JSON encountered");
                 CardSet.ScrapedName = scrapedName;
@@ -77,20 +77,22 @@ namespace MTG_Librarian
         private static string DownloadJSON(string uri)
         {
             string json = "";
-            HttpClient client = new HttpClient();
-            var httpResponseMessage = client.GetAsync(uri).Result;
-            if (httpResponseMessage.IsSuccessStatusCode)
-                json = httpResponseMessage.Content.ReadAsStringAsync().Result;
-            else
-                throw new HttpRequestException($"{(int)httpResponseMessage.StatusCode}: {httpResponseMessage.StatusCode.ToString()}");
-            return json;
+            using (var client = new HttpClient())
+            {
+                var httpResponseMessage = client.GetAsync(uri).Result;
+                if (httpResponseMessage.IsSuccessStatusCode)
+                    json = httpResponseMessage.Content.ReadAsStringAsync().Result;
+                else
+                    throw new HttpRequestException($"{(int)httpResponseMessage.StatusCode}: {httpResponseMessage.StatusCode.ToString()}");
+                return json;
+            }
         }
 
         private static Image DownloadRemoteImageFile(string uri)
         {
             Image img = null;
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(uri);
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            var request = (HttpWebRequest)WebRequest.Create(uri);
+            var response = (HttpWebResponse)request.GetResponse();
             if ((response.StatusCode == HttpStatusCode.OK ||
                 response.StatusCode == HttpStatusCode.Moved ||
                 response.StatusCode == HttpStatusCode.Redirect) &&
@@ -99,7 +101,7 @@ namespace MTG_Librarian
                 using (Stream inputStream = response.GetResponseStream())
                 using (Stream outputStream = new MemoryStream())
                 {
-                    byte[] buffer = new byte[4096];
+                    var buffer = new byte[4096];
                     int bytesRead;
                     do
                     {
@@ -118,7 +120,7 @@ namespace MTG_Librarian
 
         private void DownloadIcons()
         {
-            string URL = "http://gatherer.wizards.com/Handlers/Image.ashx?type=symbol&set={0}&size=small&rarity={1}";
+            const string URL = "http://gatherer.wizards.com/Handlers/Image.ashx?type=symbol&set={0}&size=small&rarity={1}";
             string imgURL = String.Format(URL, CardSet.Code, "C");
             Icon = commonIcon = DownloadRemoteImageFile(imgURL);
             imgURL = String.Format(URL, CardSet.Code, "U");
@@ -130,7 +132,7 @@ namespace MTG_Librarian
         }
 
         private void UpdateIcon()
-        { 
+        {
             int percentComplete = (int)((double)CompletedWorkUnits / TotalWorkUnits * 100);
             if (percentComplete == 100)
                 Icon = mythicIcon ?? rareIcon;

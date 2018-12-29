@@ -9,16 +9,19 @@ namespace MTG_Librarian
         public override void Render(Graphics g, Rectangle r)
         {
             var TreeView = ListView as TreeListView;
-            int margin = 3;
-            Rectangle backgroundRect = new Rectangle(r.Left - 1, r.Top - 1, r.Width + 1, r.Height + 1);
-            g.FillRectangle(new SolidBrush(Color.White), backgroundRect);
-            Rectangle contentRect = new Rectangle { X = backgroundRect.Left, Y = backgroundRect.Y, Width = backgroundRect.Width, Height = backgroundRect.Height };
+            const int margin = 3;
+            var backgroundRect = new Rectangle(r.Left - 1, r.Top - 1, r.Width + 1, r.Height + 1);
+            using (var solidBrush = new SolidBrush(Color.White))
+            {
+                g.FillRectangle(solidBrush, backgroundRect);
+            }
+            var contentRect = new Rectangle { X = backgroundRect.Left, Y = backgroundRect.Y, Width = backgroundRect.Width, Height = backgroundRect.Height };
             int? imgIndex = ListView.SmallImageList?.Images?.IndexOfKey((ListItem.RowObject as OLVItem)?.ImageKey);
             if (ListItem.RowObject is OLVSetItem cardSet)
             {
                 if (ListItem.SubItems.Count > 0)
                 {
-                    Rectangle arrowRect = new Rectangle(backgroundRect.Left, backgroundRect.Top, 11, backgroundRect.Height);
+                    var arrowRect = new Rectangle(backgroundRect.Left, backgroundRect.Top, 11, backgroundRect.Height);
                     contentRect.X = arrowRect.Right + margin;
                     if (!TreeView.IsExpanded(cardSet))
                         using (Pen p = new Pen(Brushes.Gray, 2))
@@ -33,15 +36,21 @@ namespace MTG_Librarian
                 contentRect.X += 25;
             }
             int iconWidth = imgIndex.HasValue && imgIndex.Value != -1 ? ListView.SmallImageList?.ImageSize.Width ?? 0 : 0;
-            Rectangle textRect = new Rectangle(contentRect.Left + iconWidth + margin, contentRect.Top + 3, contentRect.Width - iconWidth, contentRect.Height);
+            var textRect = new Rectangle(contentRect.Left + iconWidth + margin, contentRect.Top + 3, contentRect.Width - iconWidth, contentRect.Height);
             if (IsItemSelected)
             {
                 if (ListView.Focused)
-                    g.FillRectangle(new SolidBrush(ListView.SelectedBackColor), textRect);
+                    using (var solidBrush = new SolidBrush(ListView.SelectedBackColor))
+                    {
+                        g.FillRectangle(solidBrush, textRect);
+                    }
                 else
-                    g.FillRectangle(new SolidBrush(ListView.UnfocusedSelectedBackColor), textRect);
+                    using (var solidBrush = new SolidBrush(ListView.UnfocusedSelectedBackColor))
+                    {
+                        g.FillRectangle(solidBrush, textRect);
+                    }
             }
-            Brush fontColor = IsItemSelected && ListView.Focused ? Brushes.White : Brushes.Black;
+            var fontColor = IsItemSelected && ListView.Focused ? Brushes.White : Brushes.Black;
             if (imgIndex.HasValue && imgIndex.Value != -1)
                 ListView.SmallImageList.Draw(g, contentRect.Left + margin, 1, imgIndex.Value);
             g.DrawString(GetText(), Font, fontColor, textRect.Left, textRect.Top + 3);

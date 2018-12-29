@@ -82,7 +82,7 @@ namespace MTG_Librarian
         public CardSet CardSet { get; set; }
         public override OLVItem Parent { get; set; }
         public override Predicate<object> Filter => x => (x as OLVCardItem).Set == Name;
-        public override string ImageKey => $"{Rarities.Where(x => x.ImageKey != null).Last().ImageKey}";
+        public override string ImageKey => $"{Rarities.Last(x => x.ImageKey != null).ImageKey}";
         public int CardCount => Cards.Count;
         public string Complete => $"{100 * Cards.Count(x => x.CopiesOwned > 0) / Cards.Count}%";
         public string Complete4 => $"{100 * Cards.Count(x => x.CopiesOwned > 3) / Cards.Count}%";
@@ -102,7 +102,7 @@ namespace MTG_Librarian
         {
             foreach (var cardItem in Cards)
             {
-                if (!(Rarities.Where(x => x.Rarity == cardItem.MagicCard.rarity).FirstOrDefault() is OLVRarityItem rarityItem))
+                if (!(Rarities.FirstOrDefault(x => x.Rarity == cardItem.MagicCard.rarity)is OLVRarityItem rarityItem))
                 {
                     rarityItem = new OLVRarityItem(this, cardItem.MagicCard.Edition, cardItem.MagicCard.rarity);
                     Rarities.Add(rarityItem);

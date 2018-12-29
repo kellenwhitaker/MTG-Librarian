@@ -15,13 +15,13 @@ namespace MTG_Librarian
         [NotMapped]
         public MagicCard PartB { get; set; }
     }
-    
+
     public class CardCollectionItem
     {
         [Key]
         public int      clID { get; set; }
         public string   CollectionName { get; set; }
-        public int?     CardInstanceId { get; set; }        
+        public int?     CardInstanceId { get; set; }
         public int      MVid { get; set; }
         public int      Count { get; set; }
         public double?  Cost { get; set; }
@@ -61,15 +61,15 @@ namespace MTG_Librarian
         #region DbSet
         public DbSet<DbCardImage> CardImages { get; set; }
         #endregion
-        private string Edition;
+        private readonly string Edition;
 
         public CardImagesDbContext(string Edition)
         {
             this.Edition = Edition.SanitizeFilename();
-            DirectoryInfo di = new DirectoryInfo($"Card Images/");           
+            var di = new DirectoryInfo($"Card Images/");
             if (!di.Exists) di.Create();
-            String FileName = $"Card Images/{this.Edition}.db";
-            FileInfo fi = new FileInfo(FileName);
+            string FileName = $"Card Images/{this.Edition}.db";
+            var fi = new FileInfo(FileName);
             if (!fi.Exists)
             {
                 using (SqliteConnection conn = new SqliteConnection($"Data Source={FileName}"))

@@ -14,14 +14,14 @@ namespace MTG_Librarian
     public partial class DBViewForm : DockForm
     {
         private Dictionary<string, OLVSetItem> sets;
-        private ModelFilter setNameFilter;
-        private System.Timers.Timer TextChangedWaitTimer = new System.Timers.Timer();
+        private readonly ModelFilter setNameFilter;
+        private readonly System.Timers.Timer TextChangedWaitTimer = new System.Timers.Timer();
         public List<OLVSetItem> SetItems = new List<OLVSetItem>();
 
         public DBViewForm()
         {
             InitializeComponent();
-            setNameFilter = new ModelFilter(x => (x is OLVRarityItem && ((x as OLVRarityItem).Parent as OLVSetItem).Name.ToUpper().Contains(setFilterBox.Text.ToUpper())) 
+            setNameFilter = new ModelFilter(x => (x is OLVRarityItem && ((x as OLVRarityItem).Parent as OLVSetItem).Name.ToUpper().Contains(setFilterBox.Text.ToUpper()))
                 || (x is OLVSetItem && (x as OLVSetItem).Name.ToUpper().Contains(setFilterBox.Text.ToUpper())));
             setListView.SmallImageList = Globals.ImageLists.SmallIconList;
             setListView.TreeColumnRenderer = new SetRenderer();
@@ -57,7 +57,7 @@ namespace MTG_Librarian
                 BeginInvoke(new UpdateModelFilterDelegate(UpdateModelFilter));
             else
             {
-                List<object> selectedObjects = new List<object>();
+                var selectedObjects = new List<object>();
                 foreach (object o in cardListView.SelectedObjects)
                     selectedObjects.Add(o);
                 cardListView.ModelFilter = new ModelFilter(GetCardFilter());
@@ -117,7 +117,7 @@ namespace MTG_Librarian
 
         public void LoadSet(string SetCode)
         {
-            var existingSet = setListView.Objects.Cast<OLVSetItem>().Where(x => x.CardSet.Code == SetCode).FirstOrDefault();
+            var existingSet = setListView.Objects.Cast<OLVSetItem>().FirstOrDefault(x => x.CardSet.Code == SetCode);
             var selectedSet = setListView.SelectedObject as OLVSetItem;
             if (existingSet != null)
             {
@@ -142,7 +142,7 @@ namespace MTG_Librarian
 
                     foreach (var card in cards)
                         set.AddCard(card);
-                    
+
                     CollapseParts(set);
                     set.BuildRarityItems();
                     setListView.AddObject(set);
@@ -155,7 +155,7 @@ namespace MTG_Librarian
                 }
             }
             if (selectedSet != null)
-                setListView.SelectedObject = setListView.Objects.Cast<OLVSetItem>().Where(x => x.CardSet.Code == selectedSet.CardSet.Code).FirstOrDefault();
+                setListView.SelectedObject = setListView.Objects.Cast<OLVSetItem>().FirstOrDefault(x => x.CardSet.Code == selectedSet.CardSet.Code);
         }
 
         public void LoadSets()
@@ -174,12 +174,12 @@ namespace MTG_Librarian
                 var cards = from c in context.Catalog
                             orderby c.Edition, new AlphaNumericString(c.number), c.name
                             select c;
-                
+
                 foreach (var card in cards)
                 {
                     if (!sets.TryGetValue(card.Edition, out OLVSetItem set))
                     {
-                        set = new OLVSetItem(dbSets.Where(x => x.Name == card.Edition).FirstOrDefault());
+                        set = new OLVSetItem(dbSets.FirstOrDefault(x => x.Name == card.Edition));
                         sets.Add(card.Edition, set);
                     }
                     set.AddCard(card);
@@ -198,10 +198,10 @@ namespace MTG_Librarian
             var olvCards = set.Cards;
             foreach (var olvCard in olvCards)
             {
-                MagicCard magicCard = olvCard.MagicCard;
+                var magicCard = olvCard.MagicCard;
                 if (magicCard.side == "b" && magicCard.layout != "meld") // add to part A
                 {
-                    OLVCardItem PartA = olvCards.Where(x => x.MagicCard.side == "a" && x.MagicCard.number == magicCard.number).FirstOrDefault();
+                    var PartA = olvCards.FirstOrDefault(x => x.MagicCard.side == "a" && x.MagicCard.number == magicCard.number);
                     if (PartA != null)
                     {
                         PartA.MagicCard.PartB = magicCard;
@@ -212,13 +212,13 @@ namespace MTG_Librarian
                 }
                 else if (magicCard.side == "c" && magicCard.layout == "meld") // add to parts A and B
                 {
-                    OLVCardItem PartA = olvCards.Where(x => x.MagicCard.text?.Contains($"into {magicCard.name}") ?? false).FirstOrDefault();
+                    var PartA = olvCards.FirstOrDefault(x => x.MagicCard.text?.Contains($"into {magicCard.name}") ?? false);
                     if (PartA != null)
                     {
                         PartA.MagicCard.PartB = magicCard;
                         cardsToRemove.Add(olvCard);
                     }
-                    OLVCardItem PartB = olvCards.Where(x => x.MagicCard.text?.Contains($"Melds with {PartA.MagicCard.name}") ?? false).FirstOrDefault();
+                    var PartB = olvCards.FirstOrDefault(x => x.MagicCard.text?.Contains($"Melds with {PartA.MagicCard.name}") ?? false);
                     if (PartB != null)
                     {
                         PartB.MagicCard.PartB = magicCard;
@@ -250,7 +250,7 @@ namespace MTG_Librarian
         {
             if (e.Model is OLVCardItem)
             {
-                Rectangle padding = new Rectangle { X = -10 };
+                var padding = new Rectangle { X = -10 };
                 e.Item.CellPadding = padding;
             }
         }
@@ -299,15 +299,9 @@ namespace MTG_Librarian
             CardSelected?.Invoke(this, args);
         }
 
-        public event EventHandler<CardFocusedEventArgs> CardFocused;
-        private void OnCardFocused(CardFocusedEventArgs e)
-        {
-            CardFocused?.Invoke(this, e);
-        }
-
         private void fastObjectListView1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            MagicCard card = (cardListView.SelectedObject as OLVCardItem)?.MagicCard;
+            var card = (cardListView.SelectedObject as OLVCardItem)?.MagicCard;
             if (card != null)
                 OnCardSelected(new CardSelectedEventArgs { MagicCard = card });
         }
@@ -317,7 +311,7 @@ namespace MTG_Librarian
             TextChangedWaitTimer.Stop();
             TextChangedWaitTimer.Start();
         }
- 
+
 
         private void cardListView_KeyPress(object sender, KeyPressEventArgs e)
         {
@@ -353,15 +347,15 @@ namespace MTG_Librarian
 
             override public void Sort(OLVColumn column, SortOrder order)
             {
-                if (column == listView.AllColumns.Where(x => x.AspectName == "CollectorNumber").FirstOrDefault())
+                if (column == listView.AllColumns.FirstOrDefault(x => x.AspectName == "CollectorNumber"))
                     this.FilteredObjectList.Sort(new CollectorNumberComparer { SortOrder = order });
-                else if (column == listView.AllColumns.Where(x => x.AspectName == "Name").FirstOrDefault())
+                else if (column == listView.AllColumns.FirstOrDefault(x => x.AspectName == "Name"))
                     this.FilteredObjectList.Sort(new NameComparer { SortOrder = order });
-                else if (column == listView.AllColumns.Where(x => x.AspectName == "Type").FirstOrDefault())
+                else if (column == listView.AllColumns.FirstOrDefault(x => x.AspectName == "Type"))
                     this.FilteredObjectList.Sort(new TypeComparer { SortOrder = order });
-                else if (column == listView.AllColumns.Where(x => x.AspectName == "Set").FirstOrDefault())
+                else if (column == listView.AllColumns.FirstOrDefault(x => x.AspectName == "Set"))
                     this.FilteredObjectList.Sort(new SetComparer { SortOrder = order });
-                else if (column == listView.AllColumns.Where(x => x.AspectName == "Cost").FirstOrDefault())
+                else if (column == listView.AllColumns.FirstOrDefault(x => x.AspectName == "Cost"))
                     this.FilteredObjectList.Sort(new ManaCostComparer { SortOrder = order });
                 this.RebuildIndexMap();
             }

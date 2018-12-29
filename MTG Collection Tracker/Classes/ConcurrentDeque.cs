@@ -9,7 +9,7 @@ namespace MTG_Librarian
     public class ConcurrentDeque<T> : IProducerConsumerCollection<T>
     {
         private readonly object lockObject = new object();
-        private LinkedList<T> BackingList = null;
+        private readonly LinkedList<T> BackingList = null;
 
         public ConcurrentDeque()
         {

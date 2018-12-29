@@ -8,7 +8,6 @@ namespace CustomControls
     {
         private bool _checked = false;
         private bool _mouseOver = false;
-        private bool _checkStateChanged = false;
 
         public FlatButton()
         {
@@ -31,7 +30,6 @@ namespace CustomControls
 
         protected override void OnClick(EventArgs e)
         {
-            _checkStateChanged = true;
             Checked = !Checked;
             base.OnClick(e);
         }
@@ -47,7 +45,6 @@ namespace CustomControls
         {
             base.OnMouseLeave(e);
             _mouseOver = false;
-            _checkStateChanged = false;
             Refresh();
         }
 
@@ -71,7 +68,6 @@ namespace CustomControls
             if (ImageList != null && ((imgIndex = ImageList.Images.IndexOfKey(ImageKey)) > -1))
                 ImageList.Draw(g, new Point(4, 4), imgIndex);
 
-            // Inner methods
             void DrawCheckState()
             {
                 if (Checked)
@@ -86,13 +82,9 @@ namespace CustomControls
             void DrawBorder(int width = 1)
             {
                 Color brushColor = Color.DodgerBlue;
-                //if (width == 1)
-                    //brushColor = Color.DodgerBlue;
-                //else
-                    //brushColor = Color.ForestGreen;
+
                 using (Pen p = new Pen(brushColor, width))
                 {
-                    // incorrect
                     Rectangle rect = new Rectangle(borderRect.X + width - 1, borderRect.Y + width - 1, borderRect.Width - width + 1, borderRect.Height - width + 1);
                     g.DrawRectangle(p, rect);
                 }

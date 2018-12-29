@@ -7,7 +7,7 @@ namespace CustomControls
 {
     public partial class BlockProgressBar : UserControl
     {
-        private List<ProgressBlock> blocks;
+        private readonly List<ProgressBlock> blocks;
         private int _progress = 0;
         private int _maxblocks = 0;
         private int _curblocks = 0;

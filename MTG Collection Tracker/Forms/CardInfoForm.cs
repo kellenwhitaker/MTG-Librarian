@@ -23,7 +23,7 @@ namespace MTG_Librarian
             string imgs = "";
             if (manaCost != null && manaCost != "")
             {
-                Regex reg = new Regex("{([A-Z0-9/]+)}");
+                var reg = new Regex("{([A-Z0-9/]+)}");
                 var costParts = reg.Matches(manaCost);
                 foreach (Match part in costParts)
                 {

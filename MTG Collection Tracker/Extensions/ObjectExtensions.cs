@@ -11,7 +11,7 @@ namespace MTG_Librarian
             {
                 string name = descriptor.Name;
                 object value = descriptor.GetValue(o);
-                Console.WriteLine("{0}={1}", name, value);
+                Console.WriteLine($"{name}={value}");
             }
         }
     }

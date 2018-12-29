@@ -12,13 +12,13 @@ namespace MTG_Librarian
     [DesignerCategory("Code")]
     public class TaskManager : BackgroundWorker
     {
-        private ConcurrentDeque<BackgroundTask> _IncomingTasks;
-        private ConcurrentDeque<BackgroundTask> _AllTasks;
-        private List<BackgroundTask> _activeTasks;
-        private List<BackgroundTask> _completedTasks;
-        private BrightIdeasSoftware.ObjectListView listView;
-        private Label tasksLabel;
-        private BlockProgressBar progressBar;
+        private readonly ConcurrentDeque<BackgroundTask> _IncomingTasks;
+        private readonly ConcurrentDeque<BackgroundTask> _AllTasks;
+        private readonly List<BackgroundTask> _activeTasks;
+        private readonly List<BackgroundTask> _completedTasks;
+        private readonly BrightIdeasSoftware.ObjectListView listView;
+        private readonly Label tasksLabel;
+        private readonly BlockProgressBar progressBar;
         public int TaskCount => _AllTasks.Count;
 
         public TaskManager(Label label, BlockProgressBar progressBar)
@@ -122,7 +122,7 @@ namespace MTG_Librarian
 
         protected override void OnDoWork(DoWorkEventArgs e)
         {
-            Stopwatch watch = new Stopwatch();
+            var watch = new Stopwatch();
             watch.Start();
             while (true)
             {

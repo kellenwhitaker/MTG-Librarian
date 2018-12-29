@@ -10,18 +10,27 @@ namespace MTG_Librarian
             var cardInstance = ListItem.RowObject as FullInventoryCard;
             int? imgIndex = ListView.SmallImageList?.Images?.IndexOfKey(cardInstance.ImageKey);
             int imgWidth = ListView.SmallImageList?.ImageSize.Width ?? 0;
-            Rectangle backgroundRect = new Rectangle(r.Left - 1, r.Top - 1, r.Width + 1, r.Height + 1);
+            var backgroundRect = new Rectangle(r.Left - 1, r.Top - 1, r.Width + 1, r.Height + 1);
             if (IsItemSelected)
             {
                 if (ListView.Focused)
-                    g.FillRectangle(new SolidBrush(ListView.SelectedBackColor), backgroundRect);
+                    using (var solidBrush = new SolidBrush(ListView.SelectedBackColor))
+                    {
+                        g.FillRectangle(solidBrush, backgroundRect);
+                    }
                 else
-                    g.FillRectangle(new SolidBrush(ListView.UnfocusedSelectedBackColor), backgroundRect);
+                    using (var solidBrush = new SolidBrush(ListView.UnfocusedSelectedBackColor))
+                    {
+                        g.FillRectangle(solidBrush, backgroundRect);
+                    }
             }
             else
-                g.FillRectangle(new SolidBrush(ListView.BackColor), backgroundRect);
+                using (var solidBrush = new SolidBrush(ListView.BackColor))
+                {
+                    g.FillRectangle(solidBrush, backgroundRect);
+                }
 
-            Brush fontColor = IsItemSelected && ListView.Focused ? Brushes.White : Brushes.Black;
+            var fontColor = IsItemSelected && ListView.Focused ? Brushes.White : Brushes.Black;
             if (imgIndex.HasValue && imgIndex.Value != -1)
             {
                 ListView.SmallImageList.Draw(g, 2, 0, imgIndex.Value);

@@ -15,7 +15,7 @@ namespace MTG_Librarian
     {
         public string DocumentName => Collection?.CollectionName;
         public CardCollection Collection { get; set; }
-        private System.Timers.Timer TextChangedWaitTimer = new System.Timers.Timer();
+        private readonly System.Timers.Timer TextChangedWaitTimer = new System.Timers.Timer();
 
         public override string Text
         {
@@ -63,7 +63,7 @@ namespace MTG_Librarian
                 BeginInvoke(new UpdateModelFilterDelegate(UpdateModelFilter));
             else
             {
-                List<object> selectedObjects = new List<object>();
+                var selectedObjects = new List<object>();
                 foreach (object o in cardListView.SelectedObjects)
                     selectedObjects.Add(o);
                 cardListView.ModelFilter = new ModelFilter(GetCardFilter());
@@ -330,17 +330,17 @@ namespace MTG_Librarian
 
             override public void Sort(OLVColumn column, SortOrder order)
             {
-                if (column == listView.AllColumns.Where(x => x.AspectName == "number").FirstOrDefault())
+                if (column == listView.AllColumns.FirstOrDefault(x => x.AspectName == "number"))
                     this.FilteredObjectList.Sort(new CollectorNumberComparer { SortOrder = order });
-                else if (column == listView.AllColumns.Where(x => x.AspectName == "PaddedName").FirstOrDefault())
+                else if (column == listView.AllColumns.FirstOrDefault(x => x.AspectName == "PaddedName"))
                     this.FilteredObjectList.Sort(new NameComparer { SortOrder = order });
-                else if (column == listView.AllColumns.Where(x => x.AspectName == "type").FirstOrDefault())
+                else if (column == listView.AllColumns.FirstOrDefault(x => x.AspectName == "type"))
                     this.FilteredObjectList.Sort(new TypeComparer { SortOrder = order });
-                else if (column == listView.AllColumns.Where(x => x.AspectName == "Edition").FirstOrDefault())
+                else if (column == listView.AllColumns.FirstOrDefault(x => x.AspectName == "Edition"))
                     this.FilteredObjectList.Sort(new SetComparer { SortOrder = order });
-                else if (column == listView.AllColumns.Where(x => x.AspectName == "ManaCost").FirstOrDefault())
+                else if (column == listView.AllColumns.FirstOrDefault(x => x.AspectName == "ManaCost"))
                     this.FilteredObjectList.Sort(new ManaCostComparer { SortOrder = order });
-                else if (column == listView.AllColumns.Where(x => x.AspectName == "TimeAdded").FirstOrDefault())
+                else if (column == listView.AllColumns.FirstOrDefault(x => x.AspectName == "TimeAdded"))
                     this.FilteredObjectList.Sort(new TimeAddedComparer { SortOrder = order });
                 this.RebuildIndexMap();
             }
@@ -429,11 +429,15 @@ namespace MTG_Librarian
         {
             if (e.RowObject is FullInventoryCard card)
             {
-                int costIndex = cardListView.AllColumns.Where(x => x.AspectName == "Cost").FirstOrDefault().DisplayIndex;
+                int costIndex = cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "Cost").DisplayIndex;
                 if (e.SubItemIndex == costIndex)
                 {
-                    NumericUpDown editor = new NumericUpDown { Bounds = e.CellBounds, DecimalPlaces = 2 };
-                    editor.Value = decimal.TryParse(e.Value?.ToString(), out decimal cellValue) ? cellValue : 0.0M;
+                    var editor = new NumericUpDown
+                    {
+                        Bounds = e.CellBounds,
+                        DecimalPlaces = 2,
+                        Value = decimal.TryParse(e.Value?.ToString(), out decimal cellValue) ? cellValue : 0.0M
+                    };
                     e.Control = editor;
                 }
             }
@@ -443,7 +447,7 @@ namespace MTG_Librarian
         {
             if (e.RowObject is FullInventoryCard card)
             {
-                int costIndex = cardListView.AllColumns.Where(x => x.AspectName == "Cost").FirstOrDefault().DisplayIndex;
+                int costIndex = cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "Cost").DisplayIndex;
                 if (e.SubItemIndex == costIndex)
                 {
                     if (double.TryParse(e.NewValue?.ToString(), out double cellValue))

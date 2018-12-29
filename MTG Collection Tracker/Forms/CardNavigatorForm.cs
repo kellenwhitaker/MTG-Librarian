@@ -131,7 +131,7 @@ namespace MTG_Librarian
                         {
                             collection.CardCollection.CollectionName = e.Control.Text;
                             context.Collections.Update(collection.CardCollection);
-                            var doc = Globals.Forms.OpenCollectionForms.Where(x => (x is CollectionViewForm form) && form.Collection.Id == collection.CardCollection.Id).FirstOrDefault();
+                            var doc = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => (x is CollectionViewForm form) && form.Collection.Id == collection.CardCollection.Id);
                             if (doc is CollectionViewForm collectionForm)
                             {
                                 collectionForm.Text = collection.Name;
@@ -206,17 +206,14 @@ namespace MTG_Librarian
                         return;
                     }
                 }
-                CollectionViewForm[] collectionsToRemove;
-                if (!isGroup)
-                    collectionsToRemove = Globals.Forms.OpenCollectionForms.Where(x => x.Collection.Id == (navigatorItem as NavigatorCollection).Id).ToArray();
-                else
-                    collectionsToRemove = Globals.Forms.OpenCollectionForms.Where(x => x.Collection.GroupId == (navigatorItem as NavigatorGroup).Id).ToArray();
-
+                var collectionsToRemove = !isGroup
+                    ? Globals.Forms.OpenCollectionForms.Where(x => x.Collection.Id == (navigatorItem as NavigatorCollection).Id).ToArray()
+                    : Globals.Forms.OpenCollectionForms.Where(x => x.Collection.GroupId == (navigatorItem as NavigatorGroup).Id).ToArray();
                 foreach (var collection in collectionsToRemove)
                 {
                     Globals.Forms.OpenCollectionForms.Remove(collection);
                     collection.Close();
-                }                    
+                }
             }
         }
 
@@ -242,7 +239,7 @@ namespace MTG_Librarian
         {
             if (e.Data is BrightIdeasSoftware.OLVDataObject data && data.ModelObjects.Count == 1 && data.ModelObjects[0] is NavigatorCollection collection && !collection.Permanent)
             {
-                Point client = navigatorListView.PointToClient(new Point(e.X, e.Y));
+                var client = navigatorListView.PointToClient(new Point(e.X, e.Y));
                 if (navigatorListView.OlvHitTest(client.X, client.Y).RowObject is NavigatorGroup group)
                 {
                     navigatorListView.SelectedObject = group;
@@ -316,7 +313,7 @@ namespace MTG_Librarian
                     e.InfoMessage = $"Add {rarityItem.Rarity}s from [{(rarityItem.Parent as OLVSetItem).Name}] to {DocumentName}";
                 else if (e.SourceModels[0] is FullInventoryCard fullInventoryCard)
                 {
-                    var parentForm = Globals.Forms.OpenCollectionForms.Where(x => x.cardListView == e.SourceListView).FirstOrDefault();
+                    var parentForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.cardListView == e.SourceListView);
                     if (parentForm != null && parentForm.Collection.Id != navigatorCollection.Id)
                         e.InfoMessage = $"Add {e.SourceModels.Count} card{(e.SourceModels.Count == 1 ? "" : "s")} to {DocumentName}";
                 }
@@ -386,7 +383,7 @@ namespace MTG_Librarian
     {
         public override object Entity => CollectionGroup;
         public override bool Permanent => CollectionGroup?.Permanent ?? false;
-        public override int Id => CollectionGroup?.Id ?? -1; 
+        public override int Id => CollectionGroup?.Id ?? -1;
         public CollectionGroup CollectionGroup { get; set; }
         public override bool CanExpand => Collections != null ? Collections.Count > 0 : false;
         public List<NavigatorCollection> Collections { get; }

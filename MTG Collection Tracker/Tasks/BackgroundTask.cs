@@ -43,8 +43,8 @@ namespace MTG_Librarian
             {
                 if (value != null)
                 {
-                    Rectangle cloneRect = new Rectangle(0, 0, value.Width, value.Height);
-                    System.Drawing.Imaging.PixelFormat format = value.PixelFormat;
+                    var cloneRect = new Rectangle(0, 0, value.Width, value.Height);
+                    var format = value.PixelFormat;
                     _icon = ((Bitmap)value).GetCopyOf();
                 }
                 else

@@ -133,8 +133,8 @@ namespace MTG_Librarian
 
         private List<CardSet> GetMTGJSONSets()
         {
-            Regex matchCode_Date = new Regex("</strong><br>(.+)<br><a");
-            string URL = "https://mtgjson.com/sets.html";
+            var matchCode_Date = new Regex("</strong><br>(.+)<br><a");
+            const string URL = "https://mtgjson.com/sets.html";
             var sets = new List<CardSet>();
             try
             {
@@ -145,7 +145,7 @@ namespace MTG_Librarian
                 {
                     set = new CardSet { ScrapedName = Cell.Descendants().ElementAt(2).InnerText.Replace("&amp;", "&") };
                     string InnerHTML = Cell.InnerHtml;
-                    MatchCollection matches = matchCode_Date.Matches(InnerHTML);
+                    var matches = matchCode_Date.Matches(InnerHTML);
                     string matchString;
                     if (matches.Count > 0)
                     {
@@ -156,7 +156,7 @@ namespace MTG_Librarian
                         if (code_Date.Length > 1)
                             set.ReleaseDate = code_Date[1].Trim();
                     }
-                    string href = Cell.Descendants().Where(a => a.Attributes.Contains("href")).FirstOrDefault()?.Attributes.Where(a => a.Name == "href").FirstOrDefault()?.Value;
+                    string href = Cell.Descendants().FirstOrDefault(a => a.Attributes.Contains("href"))?.Attributes.FirstOrDefault(a => a.Name == "href")?.Value;
                     if (href != null)
                         set.MTGJSONURL = "http://mtgjson.com/" + href;
                     sets.Add(set);
@@ -187,18 +187,21 @@ namespace MTG_Librarian
             e.Result = sets;
         }
 
-        private void CheckForNewSetsWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private static void CheckForNewSetsWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             var sets = e.Result as List<CardSet>;
             if (sets.Count > 0)
             {
                 string newSets = "";
+                var builder = new System.Text.StringBuilder();
+                builder.Append(newSets);
                 foreach (var set in sets)
-                    newSets += "[" + set.ScrapedName + "] ";
+                    builder.Append("[" + set.ScrapedName + "] ");
+                newSets = builder.ToString();
 
                 if (MessageBox.Show("The following new sets are available for download: \n\n" + newSets + "\n\nWould you like to download them now?", "New Sets Are Available", MessageBoxButtons.YesNo) == DialogResult.Yes)
                 {
-                    List<BackgroundTask> tasksToAdd = new List<BackgroundTask>();
+                    var tasksToAdd = new List<BackgroundTask>();
                     foreach (var set in sets)
                         tasksToAdd.Add(new DownloadSetTask(set));
 

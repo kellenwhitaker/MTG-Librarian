@@ -8,18 +8,18 @@ namespace MTG_Librarian
     {
         public static byte[] ToByteArray(this Image img)
         {
-            MemoryStream ms = new MemoryStream();
+            var ms = new MemoryStream();
             img.Save(ms, ImageFormat.Png);
-            byte[] Bytes = ms.ToArray();
+            var Bytes = ms.ToArray();
             return Bytes;
         }
 
         public static Bitmap GetCopyOf(this Image originalImage)
         {
-            Bitmap copy = new Bitmap(originalImage.Width, originalImage.Height);
+            var copy = new Bitmap(originalImage.Width, originalImage.Height);
             using (Graphics graphics = Graphics.FromImage(copy))
             {
-                Rectangle imageRectangle = new Rectangle(0, 0, copy.Width, copy.Height);
+                var imageRectangle = new Rectangle(0, 0, copy.Width, copy.Height);
                 graphics.DrawImage(originalImage, imageRectangle, imageRectangle, GraphicsUnit.Pixel);
             }
             return copy;
@@ -28,7 +28,7 @@ namespace MTG_Librarian
         public static Image FromByteArray(byte[] bytes)
         {
             if (bytes == null) return null;
-            MemoryStream ms = new MemoryStream(bytes);
+            var ms = new MemoryStream(bytes);
             return Image.FromStream(ms);
         }
 
@@ -49,31 +49,26 @@ namespace MTG_Librarian
                 returnImage = image;
             }
             else
-            {        
+            {
                 double widthRatio = 1;
                 double heightRatio = 1;
                 if (image.Width > 0)
-                {
                     widthRatio = width / (double)image.Width;
-                }
+
                 if (image.Height > 0)
-                {
                     heightRatio = height / (double)image.Height;
-                }
 
                 if (widthRatio < heightRatio)
                 {
-                    if (highquality)
-                        returnImage = HighQualityImageResize(image, (int)(image.Width * widthRatio), (int)(image.Height * widthRatio));
-                    else
-                        returnImage = LowQualityImageResize(image, (int)(image.Width * widthRatio), (int)(image.Height * widthRatio));
+                    returnImage = highquality
+                        ? HighQualityImageResize(image, (int)(image.Width * widthRatio), (int)(image.Height * widthRatio))
+                        : LowQualityImageResize(image, (int)(image.Width * widthRatio), (int)(image.Height * widthRatio));
                 }
                 else
                 {
-                    if (highquality)
-                        returnImage = HighQualityImageResize(image, (int)(image.Width * heightRatio), (int)(image.Height * heightRatio));
-                    else
-                        returnImage = LowQualityImageResize(image, (int)(image.Width * heightRatio), (int)(image.Height * heightRatio));
+                    returnImage = highquality
+                        ? HighQualityImageResize(image, (int)(image.Width * heightRatio), (int)(image.Height * heightRatio))
+                        : LowQualityImageResize(image, (int)(image.Width * heightRatio), (int)(image.Height * heightRatio));
                 }
             }
 
@@ -82,7 +77,7 @@ namespace MTG_Librarian
 
         private static Image HighQualityImageResize(Image image, int width, int height)
         {
-            Bitmap bmp = new Bitmap(width, height);
+            var bmp = new Bitmap(width, height);
             using (Graphics graphics = Graphics.FromImage(bmp))
             {
                 graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
@@ -95,7 +90,7 @@ namespace MTG_Librarian
 
         private static Image LowQualityImageResize(Image image, int width, int height)
         {
-            Bitmap bmp = new Bitmap(width, height);
+            var bmp = new Bitmap(width, height);
             using (Graphics graphics = Graphics.FromImage(bmp))
             {
                 graphics.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighSpeed;
@@ -108,10 +103,9 @@ namespace MTG_Librarian
 
         public static Image SetCanvasSize(this Image image, int canvasWidth, int canvasHeight)
         {
-            if (canvasWidth >= image.Width && canvasHeight >= image.Height)
-                return image.EnlargeCanvas(canvasWidth, canvasHeight);
-            else
-                return image.ScaleImage(canvasWidth, canvasHeight, true).EnlargeCanvas(canvasWidth, canvasHeight);
+            return canvasWidth >= image.Width && canvasHeight >= image.Height
+                ? image.EnlargeCanvas(canvasWidth, canvasHeight)
+                : image.ScaleImage(canvasWidth, canvasHeight, true).EnlargeCanvas(canvasWidth, canvasHeight);
         }
 
         /// <summary>
@@ -123,10 +117,10 @@ namespace MTG_Librarian
         /// <returns></returns>
         public static Image EnlargeCanvas(this Image image, int canvasWidth, int canvasHeight)
         {
-            Bitmap bmp = new Bitmap(canvasWidth, canvasHeight);
+            var bmp = new Bitmap(canvasWidth, canvasHeight);
             using (Graphics g = Graphics.FromImage(bmp))
             {
-                Point topLeft = new Point((canvasWidth - image.Width) / 2, (canvasHeight - image.Height) / 2);
+                var topLeft = new Point((canvasWidth - image.Width) / 2, (canvasHeight - image.Height) / 2);
                 g.DrawImage(image, new Rectangle(topLeft, new Size(image.Width, image.Height)));
             }
             return bmp;
@@ -134,7 +128,7 @@ namespace MTG_Librarian
 
         public static Image ToOpaque(this Image img, Color backColor)
         {
-            Bitmap b = new Bitmap(img.Width, img.Height);
+            var b = new Bitmap(img.Width, img.Height);
             using (Graphics g = Graphics.FromImage(b))
             {
                 g.Clear(backColor);
@@ -149,10 +143,10 @@ namespace MTG_Librarian
         public static ImageAttributes GetImageAttributes(Color oldColor, Color newColor)
         {
             var colorMap = new ColorMap[] { new ColorMap { OldColor = oldColor, NewColor = newColor } };
-            ImageAttributes attr = new ImageAttributes();
+            var attr = new ImageAttributes();
             attr.SetRemapTable(colorMap);
             return attr;
         }
     }
-}    
+}
 

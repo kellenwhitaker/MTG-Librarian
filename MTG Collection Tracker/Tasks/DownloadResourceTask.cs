@@ -12,13 +12,13 @@ namespace MTG_Librarian
         public override void Run()
         {
             RunState = RunState.Running;
-            RunWorkerAsync();            
+            RunWorkerAsync();
         }
 
         protected override void OnDoWork(DoWorkEventArgs e)
         {
-            HttpWebRequest request = (HttpWebRequest)WebRequest.Create(URL);
-            HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+            var request = (HttpWebRequest)WebRequest.Create(URL);
+            var response = (HttpWebResponse)request.GetResponse();
             if ((response.StatusCode == HttpStatusCode.OK ||
                 response.StatusCode == HttpStatusCode.Moved ||
                 response.StatusCode == HttpStatusCode.Redirect) &&
@@ -27,7 +27,7 @@ namespace MTG_Librarian
                 using (var inputStream = response.GetResponseStream())
                 using (var outputStream = new MemoryStream())
                 {
-                    byte[] buffer = new byte[4096];
+                    var buffer = new byte[4096];
                     int bytesRead;
                     do
                     {
@@ -38,7 +38,7 @@ namespace MTG_Librarian
                     e.Result = new CardResourceArgs { Data = downloadData, BasicCardArgs = TaskObject as BasicCardArgs};
                     RunState = RunState.Completed;
                 }
-            }            
+            }
         }
     }
 }

@@ -13,7 +13,7 @@ namespace MTG_Librarian
 
         public static string SanitizeFilename(this string input)
         {
-            char[] forbidden = new char[] { '*', '.', '"', '/', '\\', '[', ']', ':', ';', '|', '='};
+            var forbidden = new char[] { '*', '.', '"', '/', '\\', '[', ']', ':', ';', '|', '='};
             return new string(input.Where(c => !forbidden.Contains(c)).ToArray());
         }
 

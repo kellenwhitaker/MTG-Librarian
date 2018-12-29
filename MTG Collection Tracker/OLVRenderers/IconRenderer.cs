@@ -7,14 +7,17 @@ namespace MTG_Librarian
     {
         public override void Render(Graphics g, Rectangle r)
         {
-            Rectangle backgroundRect = new Rectangle(r.Left - 1, r.Top - 1, r.Width + 1, r.Height + 1);
+            var backgroundRect = new Rectangle(r.Left - 1, r.Top - 1, r.Width + 1, r.Height + 1);
             if (IsItemSelected)
-                g.FillRectangle(new SolidBrush(Color.AliceBlue), backgroundRect);
+                using (var solidBrush = new SolidBrush(Color.AliceBlue))
+                {
+                    g.FillRectangle(solidBrush, backgroundRect);
+                }
             else
                 g.FillRectangle(Brushes.White, backgroundRect);
 
             var task = ListItem.RowObject as BackgroundTask;
-            Image icon = task.Icon;
+            var icon = task.Icon;
             if (icon != null)
             {
                 int xinc = (r.Width - icon.Width) / 2;

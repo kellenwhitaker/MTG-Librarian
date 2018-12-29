@@ -58,7 +58,7 @@ namespace MTG_Librarian
             // CheckForNewSetsWorker
             // 
             this.CheckForNewSetsWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.checkForNewSetsWorker_DoWork);
-            this.CheckForNewSetsWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.CheckForNewSetsWorker_RunWorkerCompleted);
+            this.CheckForNewSetsWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(MainForm.CheckForNewSetsWorker_RunWorkerCompleted);
             // 
             // InitUIWorker
             // 
