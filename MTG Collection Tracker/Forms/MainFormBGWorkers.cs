@@ -128,6 +128,7 @@ namespace MTG_Librarian
             Globals.Forms.CardInfoForm.ResumeLayout();
             Globals.Forms.NavigationForm.ResumeLayout();
             Globals.Forms.TasksForm.ResumeLayout();
+            CheckForNewSetsWorker.RunWorkerCompleted += CheckForNewSetsWorker_RunWorkerCompleted;
             CheckForNewSetsWorker.RunWorkerAsync();
         }
 
@@ -187,26 +188,51 @@ namespace MTG_Librarian
             e.Result = sets;
         }
 
-        private static void CheckForNewSetsWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        private void CheckForNewSetsWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             var sets = e.Result as List<CardSet>;
             if (sets.Count > 0)
             {
-                string newSets = "";
                 var builder = new System.Text.StringBuilder();
-                builder.Append(newSets);
+                int count = 0;
                 foreach (var set in sets)
-                    builder.Append("[" + set.ScrapedName + "] ");
-                newSets = builder.ToString();
-
-                if (MessageBox.Show("The following new sets are available for download: \n\n" + newSets + "\n\nWould you like to download them now?", "New Sets Are Available", MessageBoxButtons.YesNo) == DialogResult.Yes)
+                {
+                    count++;
+                    if (count < 11)
+                    {
+                        if (builder.Length == 0)
+                            builder.Append($"{set.ScrapedName}");
+                        else
+                            builder.Append($"\n{set.ScrapedName}");
+                    }
+                    else
+                    {
+                        builder.Append("\n...");
+                        break;
+                    }
+                }
+                string newSets = builder.ToString();
+                mainStatusLabel.Text = $"{sets.Count} new set{(sets.Count > 1 ? "s" : "")} available for download.";
+                statusBarActionButton.Left = mainStatusLabel.Right;
+                mainStatusLabel.Top = statusBarActionButton.Top + 5;
+                mainStatusLabel.Visible = statusBarActionButton.Visible = true;
+                var yourToolTip = new ToolTip
+                {
+                    IsBalloon = true,
+                    ShowAlways = true,
+                    AutoPopDelay = 30000
+                };
+                yourToolTip.SetToolTip(mainStatusLabel, builder.ToString());
+                statusBarActionButtonClickDelegate = () => 
                 {
                     var tasksToAdd = new List<BackgroundTask>();
                     foreach (var set in sets)
                         tasksToAdd.Add(new DownloadSetTask(set));
 
                     Globals.Forms.TasksForm.TaskManager.AddTasks(tasksToAdd);
-                }
+                    mainStatusLabel.Text = $"{sets.Count} set{(sets.Count > 1 ? "s" : "")} added to download queue.";
+                    statusBarActionButton.Visible = false;
+                };
             }
         }
     }

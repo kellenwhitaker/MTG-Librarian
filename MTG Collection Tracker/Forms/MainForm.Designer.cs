@@ -43,6 +43,9 @@ namespace MTG_Librarian
             this.navigatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tasksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusPanel = new System.Windows.Forms.Panel();
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.mainStatusLabel = new System.Windows.Forms.Label();
+            this.statusBarActionButton = new System.Windows.Forms.Button();
             this.mainPanel = new System.Windows.Forms.Panel();
             this.TasksProgressBar = new CustomControls.BlockProgressBar();
             this.TasksLabel = new System.Windows.Forms.Label();
@@ -52,13 +55,13 @@ namespace MTG_Librarian
             this.splitContainer1.SuspendLayout();
             this.mainMenuStrip.SuspendLayout();
             this.statusPanel.SuspendLayout();
+            this.panel1.SuspendLayout();
             this.mainPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // CheckForNewSetsWorker
             // 
             this.CheckForNewSetsWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.checkForNewSetsWorker_DoWork);
-            this.CheckForNewSetsWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(MainForm.CheckForNewSetsWorker_RunWorkerCompleted);
             // 
             // InitUIWorker
             // 
@@ -70,10 +73,10 @@ namespace MTG_Librarian
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
             this.splitContainer1.Location = new System.Drawing.Point(0, 0);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel2;
             // 
             // splitContainer1.Panel1
             // 
@@ -84,9 +87,8 @@ namespace MTG_Librarian
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.statusPanel);
-            this.splitContainer1.Panel2MinSize = 25;
             this.splitContainer1.Size = new System.Drawing.Size(1465, 635);
-            this.splitContainer1.SplitterDistance = 500;
+            this.splitContainer1.SplitterDistance = 551;
             this.splitContainer1.SplitterWidth = 1;
             this.splitContainer1.TabIndex = 2;
             // 
@@ -101,14 +103,14 @@ namespace MTG_Librarian
             this.dockPanel1.DockTopPortion = 0.5D;
             this.dockPanel1.Theme = this.vS2015LightTheme1;
             this.dockPanel1.DocumentStyle = KW.WinFormsUI.Docking.DocumentStyle.DockingWindow;
+            this.dockPanel1.DoubleClickCaptionAction = KW.WinFormsUI.Docking.DockPanel.DoubleClickCaptionActionEnum.SendToBack;
             this.dockPanel1.Location = new System.Drawing.Point(0, 24);
             this.dockPanel1.Margin = new System.Windows.Forms.Padding(1);
             this.dockPanel1.Name = "dockPanel1";
             this.dockPanel1.Padding = new System.Windows.Forms.Padding(6);
             this.dockPanel1.ShowAutoHideContentOnHover = false;
-            this.dockPanel1.Size = new System.Drawing.Size(1465, 476);
+            this.dockPanel1.Size = new System.Drawing.Size(1465, 527);
             this.dockPanel1.TabIndex = 1;
-            this.dockPanel1.DoubleClickCaptionAction = DockPanel.DoubleClickCaptionActionEnum.SendToBack;
             // 
             // mainMenuStrip
             // 
@@ -162,19 +164,58 @@ namespace MTG_Librarian
             // statusPanel
             // 
             this.statusPanel.BackColor = System.Drawing.Color.DodgerBlue;
+            this.statusPanel.Controls.Add(this.panel1);
             this.statusPanel.Controls.Add(this.mainPanel);
             this.statusPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.statusPanel.Location = new System.Drawing.Point(0, 0);
             this.statusPanel.Name = "statusPanel";
-            this.statusPanel.Size = new System.Drawing.Size(1465, 134);
+            this.statusPanel.Size = new System.Drawing.Size(1465, 83);
             this.statusPanel.TabIndex = 3;
+            // 
+            // panel1
+            // 
+            this.panel1.Controls.Add(this.mainStatusLabel);
+            this.panel1.Controls.Add(this.statusBarActionButton);
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel1.Location = new System.Drawing.Point(0, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(508, 83);
+            this.panel1.TabIndex = 2;
+            // 
+            // mainStatusLabel
+            // 
+            this.mainStatusLabel.AutoSize = true;
+            this.mainStatusLabel.ForeColor = System.Drawing.Color.White;
+            this.mainStatusLabel.Location = new System.Drawing.Point(12, 9);
+            this.mainStatusLabel.Name = "mainStatusLabel";
+            this.mainStatusLabel.Size = new System.Drawing.Size(35, 13);
+            this.mainStatusLabel.TabIndex = 0;
+            this.mainStatusLabel.Text = "label1";
+            this.mainStatusLabel.Visible = false;
+            // 
+            // statusBarActionButton
+            // 
+            this.statusBarActionButton.AutoSize = true;
+            this.statusBarActionButton.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.statusBarActionButton.FlatAppearance.BorderSize = 0;
+            this.statusBarActionButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.statusBarActionButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.statusBarActionButton.ForeColor = System.Drawing.Color.White;
+            this.statusBarActionButton.Location = new System.Drawing.Point(53, 3);
+            this.statusBarActionButton.Name = "statusBarActionButton";
+            this.statusBarActionButton.Size = new System.Drawing.Size(154, 23);
+            this.statusBarActionButton.TabIndex = 1;
+            this.statusBarActionButton.Text = "[ Click here to update library ]";
+            this.statusBarActionButton.UseVisualStyleBackColor = true;
+            this.statusBarActionButton.Visible = false;
+            this.statusBarActionButton.Click += new System.EventHandler(this.statusBarActionButton_Click);
             // 
             // mainPanel
             // 
             this.mainPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.mainPanel.Controls.Add(this.TasksProgressBar);
             this.mainPanel.Controls.Add(this.TasksLabel);
-            this.mainPanel.Location = new System.Drawing.Point(831, 109);
+            this.mainPanel.Location = new System.Drawing.Point(831, 58);
             this.mainPanel.Name = "mainPanel";
             this.mainPanel.Size = new System.Drawing.Size(631, 25);
             this.mainPanel.TabIndex = 0;
@@ -222,6 +263,8 @@ namespace MTG_Librarian
             this.mainMenuStrip.ResumeLayout(false);
             this.mainMenuStrip.PerformLayout();
             this.statusPanel.ResumeLayout(false);
+            this.panel1.ResumeLayout(false);
+            this.panel1.PerformLayout();
             this.mainPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -244,6 +287,9 @@ namespace MTG_Librarian
         private System.Windows.Forms.ToolStripMenuItem dBToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem navigatorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tasksToolStripMenuItem;
+        private System.Windows.Forms.Button statusBarActionButton;
+        private System.Windows.Forms.Label mainStatusLabel;
+        private System.Windows.Forms.Panel panel1;
     }
 }
 

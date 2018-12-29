@@ -12,7 +12,6 @@ using System.ComponentModel;
 //TODO3: improve appearance of checkboxes
 //TODO2 add card preview
 //TODO3 allow updating of card images
-//TODO3 move new sets notification to status bar
 
 namespace MTG_Librarian
 {
@@ -22,6 +21,7 @@ namespace MTG_Librarian
         private const int SmallIconWidth = 27;
         private const int SmallIconHeight = 21;
         private static ApplicationSettings ApplicationSettings;
+        private StatusBarActionButtonClickDelegate statusBarActionButtonClickDelegate;
 
         public MainForm()
         {
@@ -53,9 +53,9 @@ namespace MTG_Librarian
 
         private void SetupImageLists()
         {
-            Globals.ImageLists.SmallIconList = new ImageList(components) { ColorDepth = ColorDepth.Depth32Bit, ImageSize = new Size(SmallIconWidth, SmallIconHeight) };
-            Globals.ImageLists.ManaIcons = new ImageList(components) { ColorDepth = ColorDepth.Depth32Bit, ImageSize = new Size(18, 18) };
-            Globals.ImageLists.SymbolIcons16 = new ImageList(components) { ColorDepth = ColorDepth.Depth24Bit, ImageSize = new Size(16, 16) };
+            Globals.ImageLists.SmallIconList = new ImageList() { ColorDepth = ColorDepth.Depth32Bit, ImageSize = new Size(SmallIconWidth, SmallIconHeight) };
+            Globals.ImageLists.ManaIcons = new ImageList() { ColorDepth = ColorDepth.Depth32Bit, ImageSize = new Size(18, 18) };
+            Globals.ImageLists.SymbolIcons16 = new ImageList() { ColorDepth = ColorDepth.Depth24Bit, ImageSize = new Size(16, 16) };
 
             #region Add mana icons
             Globals.ImageLists.ManaIcons.Images.Add("{W}", Properties.Resources.W_20);
@@ -582,6 +582,12 @@ namespace MTG_Librarian
                 Globals.Forms.TasksForm.Show(Globals.Forms.DockPanel, DockState.DockRight);
             else
                 Globals.Forms.TasksForm.Activate();
+        }
+
+        private delegate void StatusBarActionButtonClickDelegate();
+        private void statusBarActionButton_Click(object sender, EventArgs e)
+        {
+            statusBarActionButtonClickDelegate?.Invoke();
         }
     }
 }
