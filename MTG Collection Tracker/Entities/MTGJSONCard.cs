@@ -47,6 +47,7 @@ namespace MTG_Librarian
         public string[] subtypes { get; set; }
         [NotMapped]
         public string[] supertypes { get; set; }
+        public int      tcgplayerProductId { get; set; }
         public string   text { get; set; }
         public bool     timeshifted { get; set; }
         public string   toughness { get; set; }
