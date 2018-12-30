@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.27004.2010
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28407.52
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MTG Librarian", "MTG Collection Tracker\MTG Librarian.csproj", "{8ABE8061-8692-4D31-B515-5A450E317631}"
 EndProject
@@ -10,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnhancedTextBox", "EnhancedTextBox\EnhancedTextBox.csproj", "{AB4E6C08-149B-4D93-A5E1-8D1D74F4C6F1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlatButton", "FlatButton\FlatButton.csproj", "{0D1FFA41-BE90-4C8A-AEBD-7A9F33432219}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Third Party API", "Third Party API\Third Party API.csproj", "{F8B2DAA2-1901-467F-AF6B-2F03380CC302}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,9 @@ Global
 		{0D1FFA41-BE90-4C8A-AEBD-7A9F33432219}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D1FFA41-BE90-4C8A-AEBD-7A9F33432219}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D1FFA41-BE90-4C8A-AEBD-7A9F33432219}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F8B2DAA2-1901-467F-AF6B-2F03380CC302}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F8B2DAA2-1901-467F-AF6B-2F03380CC302}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F8B2DAA2-1901-467F-AF6B-2F03380CC302}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

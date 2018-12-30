@@ -267,6 +267,9 @@
       <HintPath>..\packages\System.Xml.ReaderWriter.4.3.0\lib\net46\System.Xml.ReaderWriter.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="ThirdPartyAPI">
+      <HintPath>..\Third Party API\bin\Debug\ThirdPartyAPI.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Classes\AlphaNumericString.cs" />
