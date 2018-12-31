@@ -66,7 +66,10 @@ namespace MTG_Librarian
                 var selectedObjects = new List<object>();
                 foreach (object o in cardListView.SelectedObjects)
                     selectedObjects.Add(o);
+                cardListView.UseFiltering = true;
                 cardListView.ModelFilter = new ModelFilter(GetCardFilter());
+                
+                cardListView.AdditionalFilter = new ModelFilter(GetCardFilter());
                 cardListView.SelectedObjects = selectedObjects;
                 cardListView.RefreshSelectedObjects();
             }
@@ -250,12 +253,17 @@ namespace MTG_Librarian
                     }
                     OnCardsUpdated(new CardsUpdatedEventArgs { Items = cardListView.SelectedObjects as ArrayList, CollectionViewForm = this });
                 }
+                else if (e.KeyChar == '\r')
+                {
+                    e.Handled = true;
+                    Globals.Forms.TasksForm.TaskManager.AddTask(new GetTCGPlayerPricesTask(cardListView.SelectedObjects as ArrayList, this));
+                }
             }
         }
 
         private void fastObjectListView1_CellClick(object sender, CellClickEventArgs e)
         {
-            if (e.ClickCount == 2)
+            if (e.ClickCount == 2 && e.Column.IsEditable)
             {
                 e.ListView.StartCellEdit(e.Item, e.Item.SubItems.IndexOf(e.SubItem));
                 e.Handled = true;
@@ -291,12 +299,14 @@ namespace MTG_Librarian
             if (cardListView.SelectedObjects?.Count > 0)
             {
                 if (e.KeyCode == Keys.Delete)
+                {
                     if (ConfirmCardDeletion() == DialogResult.Yes)
                     {
                         foreach (FullInventoryCard cardItem in cardListView.SelectedObjects)
                             cardItem.Count = 0;
                         OnCardsUpdated(new CardsUpdatedEventArgs { Items = cardListView.SelectedObjects as ArrayList, CollectionViewForm = this });
                     }
+                }
             }
         }
 

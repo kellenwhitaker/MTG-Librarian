@@ -7,6 +7,6 @@ namespace MTG_Librarian
     public class MagicCard : MagicCardBase
     {
         [NotMapped]
-        public int CopiesOwned { get; set; }
+        public int     CopiesOwned { get; set; }
     }
 }

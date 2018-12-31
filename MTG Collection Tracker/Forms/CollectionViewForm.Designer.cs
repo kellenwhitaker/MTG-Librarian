@@ -39,6 +39,7 @@
             this.olvColumn5 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.CountColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.CostColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.tcgplayerMarketPriceColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.TagsColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.SortableTimeAdded = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -75,6 +76,7 @@
             this.cardListView.AllColumns.Add(this.olvColumn5);
             this.cardListView.AllColumns.Add(this.CountColumn);
             this.cardListView.AllColumns.Add(this.CostColumn);
+            this.cardListView.AllColumns.Add(this.tcgplayerMarketPriceColumn);
             this.cardListView.AllColumns.Add(this.TagsColumn);
             this.cardListView.AllColumns.Add(this.SortableTimeAdded);
             this.cardListView.AllColumns.Add(this.olvColumn1);
@@ -91,6 +93,7 @@
             this.olvColumn5,
             this.CountColumn,
             this.CostColumn,
+            this.tcgplayerMarketPriceColumn,
             this.TagsColumn,
             this.TimeAddedColumn});
             this.cardListView.ContextMenuStrip = this.cardListViewMenuStrip;
@@ -98,6 +101,7 @@
             this.cardListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cardListView.FullRowSelect = true;
             this.cardListView.GridLines = true;
+            this.cardListView.HeaderWordWrap = true;
             this.cardListView.HideSelection = false;
             this.cardListView.IsSimpleDragSource = true;
             this.cardListView.IsSimpleDropSink = true;
@@ -177,6 +181,7 @@
             this.olvColumn5.IsEditable = false;
             this.olvColumn5.MinimumWidth = 50;
             this.olvColumn5.Text = "#";
+            this.olvColumn5.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // CountColumn
             // 
@@ -185,14 +190,25 @@
             this.CountColumn.AutoCompleteEditorMode = System.Windows.Forms.AutoCompleteMode.None;
             this.CountColumn.MinimumWidth = 50;
             this.CountColumn.Text = "Count";
+            this.CountColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // CostColumn
             // 
             this.CostColumn.AspectName = "Cost";
+            this.CostColumn.AspectToStringFormat = "{0:0.00}";
             this.CostColumn.AutoCompleteEditor = false;
             this.CostColumn.AutoCompleteEditorMode = System.Windows.Forms.AutoCompleteMode.None;
             this.CostColumn.MinimumWidth = 50;
             this.CostColumn.Text = "Cost";
+            this.CostColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // tcgplayerMarketPriceColumn
+            // 
+            this.tcgplayerMarketPriceColumn.AspectName = "tcgplayerMarketPrice";
+            this.tcgplayerMarketPriceColumn.AspectToStringFormat = "{0:0.00}";
+            this.tcgplayerMarketPriceColumn.IsEditable = false;
+            this.tcgplayerMarketPriceColumn.Text = "TCGP Market Price";
+            this.tcgplayerMarketPriceColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // TagsColumn
             // 
@@ -458,5 +474,6 @@
         private CustomControls.FlatButton blueManaButton;
         private CustomControls.FlatButton whiteManaButton;
         private System.Windows.Forms.ComboBox rarityFilterComboBox;
+        private BrightIdeasSoftware.OLVColumn tcgplayerMarketPriceColumn;
     }
 }

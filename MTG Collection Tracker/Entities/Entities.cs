@@ -11,7 +11,10 @@ namespace MTG_Librarian
     {
         public string   SetCode { get; set; }
         public string   Edition { get; set; }
-        public double?  OnlinePrice { get; set; }
+        public double?  tcgplayerMarketPrice { get; set; }
+        public double?  tcgplayerLowPrice { get; set; }
+        public double?  tcgplayerMidPrice { get; set; }
+        public double?  tcgplayerHighPrice { get; set; }
         [NotMapped]
         public MagicCard PartB { get; set; }
     }

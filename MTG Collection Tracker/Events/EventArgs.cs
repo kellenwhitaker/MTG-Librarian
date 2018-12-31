@@ -1,6 +1,7 @@
 ﻿using KW.WinFormsUI.Docking;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Drawing;
 //TODO2 make card properties uniform
 namespace MTG_Librarian
@@ -45,6 +46,11 @@ namespace MTG_Librarian
         public string uuid { get; set; }
         public int MultiverseId { get; set; }
         public Image CardImage { get; set; }
+    }
+
+    public class PricesUpdatedEventArgs : EventArgs
+    {
+        public Dictionary<int, double?> Prices { get; set; }
     }
 
     public class CardResourceArgs : BasicCardArgs

@@ -239,6 +239,7 @@
             this.setListView.AllColumns.Add(this.ReleaseDate);
             this.setListView.AllColumns.Add(this.completeColumn);
             this.setListView.AllColumns.Add(this.complete4Column);
+            this.setListView.CellEditUseWholeCell = false;
             this.setListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.SetName,
             this.completeColumn,
@@ -311,6 +312,7 @@
             this.cardListView.AllColumns.Add(this.olvColumn3);
             this.cardListView.AllColumns.Add(this.olvColumn4);
             this.cardListView.AllColumns.Add(this.CollectorNumber);
+            this.cardListView.CellEditUseWholeCell = false;
             this.cardListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.olvColumn1,
             this.olvColumn2,
@@ -321,6 +323,7 @@
             this.cardListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cardListView.EmptyListMsg = "No cards";
             this.cardListView.FullRowSelect = true;
+            this.cardListView.HeaderWordWrap = true;
             this.cardListView.HideSelection = false;
             this.cardListView.IsSimpleDragSource = true;
             this.cardListView.Location = new System.Drawing.Point(0, 0);
@@ -373,6 +376,7 @@
             this.CollectorNumber.AspectName = "CollectorNumber";
             this.CollectorNumber.MinimumWidth = 100;
             this.CollectorNumber.Text = "#";
+            this.CollectorNumber.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.CollectorNumber.Width = 100;
             // 
             // DBViewForm

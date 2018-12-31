@@ -1,5 +1,6 @@
 ﻿
 using RestSharp;
+using Newtonsoft.Json;
 using System;
 
 namespace ThirdPartyAPI
@@ -31,12 +32,24 @@ namespace ThirdPartyAPI
                     request.AddParameter("grant_type", "client_credentials");
                     request.AddParameter("client_id", publicKey);
                     request.AddParameter("client_secret", privateKey);
-                    BearerToken = client.Execute(request).Content;
+                    string responseContent = client.Execute(request).Content;
+                    var responseObject = JsonConvert.DeserializeObject<BearerTokenResponseObject>(responseContent);
+                    BearerToken = responseObject.access_token;
                 }
                 else
                     throw new NotImplementedException();
             }
             return BearerToken;
         }
+
+        private class BearerTokenResponseObject
+        {
+            public string access_token;
+            public string token_type;
+            public int expires_in;
+            public string userName;
+            public string issued;
+            public string expires;
+        }    
     }
 }

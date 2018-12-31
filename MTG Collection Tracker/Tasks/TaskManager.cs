@@ -6,6 +6,7 @@ using System.Threading;
 using System.Diagnostics;
 using System.Windows.Forms;
 using CustomControls;
+using System.Collections;
 //TODO5: figure out why task manager quits partway through a queue of tasks
 namespace MTG_Librarian
 {
@@ -120,6 +121,12 @@ namespace MTG_Librarian
             SetDownloaded?.Invoke(this, args);
         }
 
+        public event EventHandler<PricesUpdatedEventArgs> PricesUpdated;
+        private void OnPricesUpdated(PricesUpdatedEventArgs args)
+        {
+            PricesUpdated?.Invoke(this, args);
+        }
+
         protected override void OnDoWork(DoWorkEventArgs e)
         {
             var watch = new Stopwatch();
@@ -154,6 +161,9 @@ namespace MTG_Librarian
                             ResetState();
                         if (task is DownloadSetTask downloadTask && task.RunState != RunState.Failed)
                             OnSetDownloaded(new SetDownloadedEventArgs { SetCode = downloadTask.CardSet.Code });
+                        else if (task is GetTCGPlayerPricesTask getPricesTask && task.RunState != RunState.Failed)
+                            OnPricesUpdated(new PricesUpdatedEventArgs { Prices = getPricesTask.productIdDictionary });
+                            
                     }
                     if (completedOrFailed.Count() > 0 && listView.Objects != null)
                         MoveLVObjects(completedOrFailed);

@@ -8,8 +8,10 @@ using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
 //Note: editable columns - count, cost, tags, foil
-//TODO3 use restsharp for getting TCGPlayer prices
-//TODO3: improve appearance of checkboxes
+//TODO4 CollectionViewForms must also be updated after set updates
+//TODO4 mtgjson issues: no tcgplayerProductId for split cards, lands
+//TODO3 should use DisplayName for card image downloads in tasks
+//TODO3 improve appearance of checkboxes
 //TODO2 add card preview
 //TODO3 allow updating of card images
 
@@ -47,6 +49,7 @@ namespace MTG_Librarian
             Globals.Forms.TasksForm.tasksListView.GetColumn(0).Renderer = new IconRenderer();
             Globals.Forms.TasksForm.tasksListView.GetColumn(1).Renderer = new ProgressBarRenderer();
             Globals.Forms.TasksForm.TaskManager.SetDownloaded += SetDownloaded;
+            Globals.Forms.TasksForm.TaskManager.PricesUpdated += PricesUpdated;
             splitContainer1.SplitterDistance = Height;
             InitUIWorker.RunWorkerAsync();
         }
@@ -140,6 +143,50 @@ namespace MTG_Librarian
                 Globals.Forms.DBViewForm.LoadSet(e.SetCode);
                 if (Globals.Forms.TasksForm.TaskManager.TaskCount == 0)
                     Globals.Forms.DBViewForm.SortCardListView();
+            }
+        }
+
+        private delegate void PricesUpdatedDelegate(object sender, PricesUpdatedEventArgs e);
+        private void PricesUpdated(object sender, PricesUpdatedEventArgs e)
+        {
+            if (InvokeRequired)
+                BeginInvoke(new PricesUpdatedDelegate(PricesUpdated), sender, e);
+            else
+            {
+                using (var context = new MyDbContext())
+                {
+                    MagicCard dbMatch;
+                    foreach (var price in e.Prices)
+                    {
+                        if (price.Value.HasValue && (dbMatch = Globals.Collections.AllMagicCards.FirstOrDefault(x => x.Value.tcgplayerProductId == price.Key).Value) != null)
+                        {
+                            dbMatch.tcgplayerMarketPrice = price.Value.Value;
+                            context.Update(dbMatch);
+                        }                        
+                    }
+                    context.SaveChanges();
+                }
+
+                foreach (var form in Globals.Forms.OpenCollectionForms)
+                {
+                    var cardsToRefresh = new List<FullInventoryCard>();
+                    foreach (var price in e.Prices)
+                    {
+                        if (price.Value.HasValue)
+                        {
+                            var matches = form.cardListView.Objects.Cast<FullInventoryCard>().Where(x => x.tcgplayerProductId == price.Key);
+                            if (matches.Count() != 0)
+                            {
+                                foreach (var match in matches)
+                                {
+                                    match.tcgplayerMarketPrice = price.Value.Value;
+                                    cardsToRefresh.Add(match);
+                                }
+                            }
+                        }
+                    }
+                    form.cardListView.RefreshObjects(cardsToRefresh);
+                }                
             }
         }
 
