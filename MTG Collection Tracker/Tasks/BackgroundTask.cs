@@ -32,7 +32,7 @@ namespace MTG_Librarian
         public int Runtime { get => (int)(watch.ElapsedMilliseconds / 1000); }
         public bool Running { get => RunState == RunState.Running; }
         public BlockProgressBar ProgressBar { get; private set; }
-        public bool ForDisplay { get; set; } = false;
+        public bool AddFirst { get; set; } = false;
         private RunState _runState;
         public RunState RunState { get => _runState; protected set { _runState = value; if (_runState == RunState.Failed) Caption = $"[Failed] {Caption}"; } }
         private Image _icon;

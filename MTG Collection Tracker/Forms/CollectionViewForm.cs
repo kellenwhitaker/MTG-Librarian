@@ -256,7 +256,7 @@ namespace MTG_Librarian
                 else if (e.KeyChar == '\r')
                 {
                     e.Handled = true;
-                    Globals.Forms.TasksForm.TaskManager.AddTask(new GetTCGPlayerPricesTask(cardListView.SelectedObjects as ArrayList, this));
+                    Globals.Forms.TasksForm.TaskManager.AddTask(new GetTCGPlayerPricesTask(cardListView.SelectedObjects as ArrayList) { AddFirst = true });
                 }
             }
         }

@@ -10,8 +10,6 @@ using System.ComponentModel;
 //Note: editable columns - count, cost, tags, foil
 //TODO4 CollectionViewForms must also be updated after set updates
 //TODO4 mtgjson issues: no tcgplayerProductId for split cards, lands
-//TODO3 move price fetching tasks to front of queue
-//TODO3 should use DisplayName for card image downloads in tasks
 //TODO3 improve appearance of checkboxes
 //TODO2 add card preview
 //TODO3 allow updating of card images
@@ -532,7 +530,7 @@ namespace MTG_Librarian
                         displayName = fullInventoryCard.DisplayName;
                     else
                         displayName = card.DisplayName;
-                    Globals.Forms.TasksForm.TaskManager.AddTask(new DownloadResourceTask { ForDisplay = true, Caption = $"Card Image: {displayName}", URL = $"http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={card.multiverseId}&type=card", TaskObject = new BasicCardArgs { uuid = card.uuid, MultiverseId = card.multiverseId, Edition = card.Edition }, OnTaskCompleted = ImageDownloadCompleted });
+                    Globals.Forms.TasksForm.TaskManager.AddTask(new DownloadResourceTask { AddFirst = true, Caption = $"Card Image: {displayName}", URL = $"http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={card.multiverseId}&type=card", TaskObject = new BasicCardArgs { uuid = card.uuid, MultiverseId = card.multiverseId, Edition = card.Edition }, OnTaskCompleted = ImageDownloadCompleted });
                 }
             }
         }

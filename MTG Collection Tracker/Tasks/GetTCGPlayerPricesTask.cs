@@ -14,11 +14,9 @@ namespace MTG_Librarian
     {
         private List<FullInventoryCard> cardsToPrice = new List<FullInventoryCard>();
         public Dictionary<int, double?> productIdDictionary = new Dictionary<int, double?>();
-        public CollectionViewForm CallingForm;
 
-        public GetTCGPlayerPricesTask(ArrayList cards, CollectionViewForm callingForm)
+        public GetTCGPlayerPricesTask(ArrayList cards)
         {
-            CallingForm = callingForm;
             bool isPlural = cards.Count > 1;
             Caption = $"Getting price{(isPlural ? "s" : "")} for {cards.Count} card{(isPlural ? "s" : "")}";
             foreach (var card in cards)

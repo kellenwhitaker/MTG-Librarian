@@ -38,7 +38,7 @@ namespace MTG_Librarian
         {
             if (task != null)
             {
-                if (task.ForDisplay)
+                if (task.AddFirst)
                 {
                     _IncomingTasks.AddFirst(task);
                     listView?.InsertObject(0, task);
@@ -57,7 +57,7 @@ namespace MTG_Librarian
             {
                 foreach (BackgroundTask task in tasks)
                 {
-                    if (task.ForDisplay)
+                    if (task.AddFirst)
                         _IncomingTasks.AddFirst(task);
                     else
                         _IncomingTasks.Enqueue(task);
@@ -135,7 +135,7 @@ namespace MTG_Librarian
             {
                 while (_IncomingTasks.TryDequeue(out BackgroundTask nextTask))
                 {
-                    if (nextTask.ForDisplay)
+                    if (nextTask.AddFirst)
                         _AllTasks.AddFirst(nextTask);
                     else
                         _AllTasks.Enqueue(nextTask);
