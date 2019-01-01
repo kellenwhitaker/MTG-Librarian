@@ -48,6 +48,7 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.updateThisSetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cardListView = new BrightIdeasSoftware.FastObjectListView();
+            this.copiesOwnedColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn2 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn3 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -307,6 +308,7 @@
             // 
             // cardListView
             // 
+            this.cardListView.AllColumns.Add(this.copiesOwnedColumn);
             this.cardListView.AllColumns.Add(this.olvColumn1);
             this.cardListView.AllColumns.Add(this.olvColumn2);
             this.cardListView.AllColumns.Add(this.olvColumn3);
@@ -314,6 +316,7 @@
             this.cardListView.AllColumns.Add(this.CollectorNumber);
             this.cardListView.CellEditUseWholeCell = false;
             this.cardListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.copiesOwnedColumn,
             this.olvColumn1,
             this.olvColumn2,
             this.olvColumn3,
@@ -342,6 +345,13 @@
             this.cardListView.GiveFeedback += new System.Windows.Forms.GiveFeedbackEventHandler(this.fastObjectListView1_GiveFeedback);
             this.cardListView.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.cardListView_KeyPress);
             // 
+            // copiesOwnedColumn
+            // 
+            this.copiesOwnedColumn.AspectName = "CopiesOwned";
+            this.copiesOwnedColumn.Text = "Owned";
+            this.copiesOwnedColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.copiesOwnedColumn.Width = 50;
+            // 
             // olvColumn1
             // 
             this.olvColumn1.AspectName = "DisplayName";
@@ -359,7 +369,7 @@
             // 
             // olvColumn3
             // 
-            this.olvColumn3.AspectName = "Cost";
+            this.olvColumn3.AspectName = "ManaCost";
             this.olvColumn3.MinimumWidth = 100;
             this.olvColumn3.Text = "Mana Cost";
             this.olvColumn3.Width = 100;
@@ -374,10 +384,10 @@
             // CollectorNumber
             // 
             this.CollectorNumber.AspectName = "CollectorNumber";
-            this.CollectorNumber.MinimumWidth = 100;
+            this.CollectorNumber.MinimumWidth = 40;
             this.CollectorNumber.Text = "#";
             this.CollectorNumber.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
-            this.CollectorNumber.Width = 100;
+            this.CollectorNumber.Width = 40;
             // 
             // DBViewForm
             // 
@@ -429,5 +439,6 @@
         private BrightIdeasSoftware.OLVColumn complete4Column;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem updateThisSetToolStripMenuItem;
+        private BrightIdeasSoftware.OLVColumn copiesOwnedColumn;
     }
 }

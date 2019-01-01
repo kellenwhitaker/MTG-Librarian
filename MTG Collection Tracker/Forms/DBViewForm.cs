@@ -34,7 +34,7 @@ namespace MTG_Librarian
             (colorlessManaButton.ImageKey, genericManaButton.ImageKey) = ("{C}", "{X}");
             cardListView.UseFiltering = true;
             cardListView.SetDoubleBuffered();
-            cardListView.GetColumn(2).Renderer = new ManaCostRenderer();
+            cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "ManaCost").Renderer = new ManaCostRenderer();
             TextChangedWaitTimer.Interval = 400;
             TextChangedWaitTimer.Elapsed += (sender, e) =>
             {
@@ -80,13 +80,13 @@ namespace MTG_Librarian
         {
             Predicate<object> combinedFilter = x => true;
 
-            if (whiteManaButton.Checked)    combinedFilter = combinedFilter.And(x => (x as OLVCardItem).Cost?.Contains("W") ?? false);
-            if (blueManaButton.Checked)     combinedFilter = combinedFilter.And(x => (x as OLVCardItem).Cost?.Contains("U") ?? false);
-            if (blackManaButton.Checked)    combinedFilter = combinedFilter.And(x => (x as OLVCardItem).Cost?.Contains("B") ?? false);
-            if (redManaButton.Checked)      combinedFilter = combinedFilter.And(x => (x as OLVCardItem).Cost?.Contains("R") ?? false);
-            if (greenManaButton.Checked)    combinedFilter = combinedFilter.And(x => (x as OLVCardItem).Cost?.Contains("G") ?? false);
-            if (colorlessManaButton.Checked)combinedFilter = combinedFilter.And(x => (x as OLVCardItem).Cost?.Contains("C") ?? false);
-            if (genericManaButton.Checked)  combinedFilter = combinedFilter.And(x => ((x as OLVCardItem).Cost?.Contains("X") ?? false) || ((x as OLVCardItem).Cost?.Any(c => char.IsDigit(c)) ?? false));
+            if (whiteManaButton.Checked)    combinedFilter = combinedFilter.And(x => (x as OLVCardItem).ManaCost?.Contains("W") ?? false);
+            if (blueManaButton.Checked)     combinedFilter = combinedFilter.And(x => (x as OLVCardItem).ManaCost?.Contains("U") ?? false);
+            if (blackManaButton.Checked)    combinedFilter = combinedFilter.And(x => (x as OLVCardItem).ManaCost?.Contains("B") ?? false);
+            if (redManaButton.Checked)      combinedFilter = combinedFilter.And(x => (x as OLVCardItem).ManaCost?.Contains("R") ?? false);
+            if (greenManaButton.Checked)    combinedFilter = combinedFilter.And(x => (x as OLVCardItem).ManaCost?.Contains("G") ?? false);
+            if (colorlessManaButton.Checked)combinedFilter = combinedFilter.And(x => (x as OLVCardItem).ManaCost?.Contains("C") ?? false);
+            if (genericManaButton.Checked)  combinedFilter = combinedFilter.And(x => ((x as OLVCardItem).ManaCost?.Contains("X") ?? false) || ((x as OLVCardItem).ManaCost?.Any(c => char.IsDigit(c)) ?? false));
             return combinedFilter;
         }
 
@@ -410,8 +410,8 @@ namespace MTG_Librarian
                 public int Compare(object x, object y)
                 {
                     int result;
-                    string valueX = (x as OLVCardItem).Cost ?? "";
-                    string valueY = (y as OLVCardItem).Cost ?? "";
+                    string valueX = (x as OLVCardItem).ManaCost ?? "";
+                    string valueY = (y as OLVCardItem).ManaCost ?? "";
                     result = valueX.CompareTo(valueY);
                     return SortOrder == SortOrder.Ascending ? result : result * -1;
                 }

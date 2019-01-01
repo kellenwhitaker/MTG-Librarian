@@ -14,7 +14,7 @@ namespace MTG_Librarian
         public string    Name => MagicCard.name;
         public MagicCard MagicCard { get; set; }
         public string    Type => MagicCard.type;
-        public string    Cost => MagicCard.manaCost;
+        public string    ManaCost => MagicCard.manaCost;
         public string    Set => MagicCard.Edition;
         public string    CollectorNumber => MagicCard.number;
         public string    Rarity => MagicCard.rarity;
