@@ -10,5 +10,6 @@ namespace MTG_Librarian
         public int      Id { get; set; }
         public string   GroupName { get; set; }
         public bool     Permanent { get; set; }
+        public bool     Virtual { get; set; }
     }
 }

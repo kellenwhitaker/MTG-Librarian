@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.copiesOwnedFilterBox = new System.Windows.Forms.ComboBox();
             this.cardNameFilterBox = new EnhancedTextBox.EnhancedTextBox();
             this.genericManaButton = new CustomControls.FlatButton();
             this.colorlessManaButton = new CustomControls.FlatButton();
@@ -78,6 +79,7 @@
             // 
             // splitContainer2.Panel1
             // 
+            this.splitContainer2.Panel1.Controls.Add(this.copiesOwnedFilterBox);
             this.splitContainer2.Panel1.Controls.Add(this.cardNameFilterBox);
             this.splitContainer2.Panel1.Controls.Add(this.genericManaButton);
             this.splitContainer2.Panel1.Controls.Add(this.colorlessManaButton);
@@ -96,11 +98,25 @@
             this.splitContainer2.SplitterWidth = 1;
             this.splitContainer2.TabIndex = 2;
             // 
+            // copiesOwnedFilterBox
+            // 
+            this.copiesOwnedFilterBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.copiesOwnedFilterBox.FormattingEnabled = true;
+            this.copiesOwnedFilterBox.Items.AddRange(new object[] {
+            "All",
+            "Owned",
+            "Not Owned"});
+            this.copiesOwnedFilterBox.Location = new System.Drawing.Point(437, 5);
+            this.copiesOwnedFilterBox.Name = "copiesOwnedFilterBox";
+            this.copiesOwnedFilterBox.Size = new System.Drawing.Size(121, 21);
+            this.copiesOwnedFilterBox.TabIndex = 9;
+            this.copiesOwnedFilterBox.SelectedIndexChanged += new System.EventHandler(this.copiesOwnedFilterBox_SelectedIndexChanged);
+            // 
             // cardNameFilterBox
             // 
             this.cardNameFilterBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic);
             this.cardNameFilterBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.cardNameFilterBox.Location = new System.Drawing.Point(479, 6);
+            this.cardNameFilterBox.Location = new System.Drawing.Point(563, 6);
             this.cardNameFilterBox.Name = "cardNameFilterBox";
             this.cardNameFilterBox.Placeholder = "Card Name Filter";
             this.cardNameFilterBox.Size = new System.Drawing.Size(201, 20);
@@ -440,5 +456,6 @@
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem updateThisSetToolStripMenuItem;
         private BrightIdeasSoftware.OLVColumn copiesOwnedColumn;
+        private System.Windows.Forms.ComboBox copiesOwnedFilterBox;
     }
 }

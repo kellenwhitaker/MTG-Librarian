@@ -20,5 +20,6 @@ namespace MTG_Librarian
         public bool         Foil { get; set; }
         public string       PartB_uuid { get; set; }
         public string       DisplayName { get; set; }
+        public bool         Virtual { get; set; }
     }
 }

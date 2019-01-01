@@ -89,52 +89,59 @@ namespace MTG_Librarian
 
         private void navigatorListView_CellEditFinishing(object sender, BrightIdeasSoftware.CellEditEventArgs e)
         {
-            if (e.RowObject is NavigatorGroup group)
+            if (e.RowObject is NavigatorGroup navGroup)
             {
                 using (var context = new MyDbContext())
                 {
                     try
                     {
-                        if (group.CollectionGroup == null) // not yet added
+                        if (navGroup.CollectionGroup == null) // not yet added
                         {
-                            group.CollectionGroup = new CollectionGroup { GroupName = e.Control.Text, Permanent = false };
-                            context.CollectionGroups.Add(group.CollectionGroup);
+                            navGroup.CollectionGroup = new CollectionGroup { GroupName = e.Control.Text, Permanent = false };
+                            context.CollectionGroups.Add(navGroup.CollectionGroup);
                         }
                         else
                         {
-                            group.CollectionGroup.GroupName = e.Control.Text;
-                            context.CollectionGroups.Update(group.CollectionGroup);
+                            navGroup.CollectionGroup.GroupName = e.Control.Text;
+                            context.CollectionGroups.Update(navGroup.CollectionGroup);
                         }
                         context.SaveChanges();
                     }
                     catch (Exception ex)
                     {
                         DebugOutput.WriteLine(ex.ToString());
-                        if (group.CollectionGroup != null)
-                            context.Entry(group.CollectionGroup).Reload();
+                        if (navGroup.CollectionGroup != null)
+                            context.Entry(navGroup.CollectionGroup).Reload();
                         MessageBox.Show("Could not add/edit group");
                     }
                 }
             }
-            else if (e.RowObject is NavigatorCollection collection)
+            else if (e.RowObject is NavigatorCollection navCollection)
             {
                 using (var context = new MyDbContext())
                 {
                     try
                     {
-                        if (collection.CardCollection == null) // not yet added
+                        if (navCollection.CardCollection == null) // not yet added
                         {
-                            collection.CardCollection = new CardCollection { GroupId = collection.GroupId, CollectionName = e.Control.Text, Permanent = false, Type = "collection" };
-                            context.Collections.Add(collection.CardCollection);
+                            navCollection.CardCollection = new CardCollection
+                            {
+                                GroupId = navCollection.GroupId,
+                                CollectionName = e.Control.Text,
+                                Permanent = false,
+                                Type = "collection",
+                                Virtual = navCollection.Parent.Virtual
+                            };
+                            context.Collections.Add(navCollection.CardCollection);
                         }
                         else
                         {
-                            collection.CardCollection.CollectionName = e.Control.Text;
-                            context.Collections.Update(collection.CardCollection);
-                            var doc = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => (x is CollectionViewForm form) && form.Collection.Id == collection.CardCollection.Id);
+                            navCollection.CardCollection.CollectionName = e.Control.Text;
+                            context.Collections.Update(navCollection.CardCollection);
+                            var doc = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => (x is CollectionViewForm form) && form.Collection.Id == navCollection.CardCollection.Id);
                             if (doc is CollectionViewForm collectionForm)
                             {
-                                collectionForm.Text = collection.Name;
+                                collectionForm.Text = navCollection.Name;
                                 collectionForm.Hide();
                                 collectionForm.Show();
                             }
@@ -144,8 +151,8 @@ namespace MTG_Librarian
                     catch (Exception ex)
                     {
                         DebugOutput.WriteLine(ex.ToString());
-                        if (collection.CardCollection != null)
-                            context.Entry(collection.CardCollection).Reload();
+                        if (navCollection.CardCollection != null)
+                            context.Entry(navCollection.CardCollection).Reload();
                         MessageBox.Show("Could not add/edit collection");
                     }
                 }
@@ -226,7 +233,7 @@ namespace MTG_Librarian
                 group = (navigatorListView.SelectedObject as NavigatorCollection).Parent;
             if (group != null)
             {
-                var newCollection = new NavigatorCollection { Name = "New Collection", GroupId = group.Id };
+                var newCollection = new NavigatorCollection { Name = "New Collection", Parent = group };
                 group.AddCollection(newCollection);
                 navigatorListView.RebuildAll(true);
                 navigatorListView.Expand(group);
@@ -318,7 +325,7 @@ namespace MTG_Librarian
                 }
             }
             else if (rowObjectUnderMouse is NavigatorCollection navigatorCollection)
-                OnCardsDropped(new CardsDroppedEventArgs { Items = e.SourceModels as ArrayList, SourceForm = e.SourceListView.Parent as DockContent, TargetCollectionId = navigatorCollection.Id });
+                OnCardsDropped(new CardsDroppedEventArgs { Items = e.SourceModels as ArrayList, SourceForm = e.SourceListView.Parent as DockContent, TargetCollection = navigatorCollection.CardCollection });
         }
 
         public event EventHandler<CardsDroppedEventArgs> CardsDropped;
@@ -338,7 +345,8 @@ namespace MTG_Librarian
         public override object Entity => CardCollection;
         public override bool Permanent => CardCollection?.Permanent ?? false;
         public override int Id => CardCollection?.Id ?? -1;
-        public int GroupId { get; set; }
+        public int GroupId => Parent?.Id ?? -1;
+        public override bool Virtual => CardCollection?.Virtual ?? false;
         public CardCollection CardCollection { get; set; }
         private string _name;
         public override string Name
@@ -359,6 +367,7 @@ namespace MTG_Librarian
         public override object Entity => CollectionGroup;
         public override bool Permanent => CollectionGroup?.Permanent ?? false;
         public override int Id => CollectionGroup?.Id ?? -1;
+        public override bool Virtual => CollectionGroup?.Virtual ?? false;
         public CollectionGroup CollectionGroup { get; set; }
         public override bool CanExpand => Collections != null ? Collections.Count > 0 : false;
         public List<NavigatorCollection> Collections { get; }
@@ -402,5 +411,6 @@ namespace MTG_Librarian
         public virtual bool Permanent { get; }
         public virtual bool CanExpand => false;
         public virtual string Name { get; set; }
+        public virtual bool Virtual { get; }
     }
 }

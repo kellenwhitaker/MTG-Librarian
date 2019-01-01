@@ -15,7 +15,7 @@ namespace MTG_Librarian
     {
         public ArrayList Items { get; set; }
         public CollectionViewForm TargetCollectionViewForm { get; set; }
-        public int TargetCollectionId { get; set; } = -1;
+        public CardCollection TargetCollection { get; set; }
         public DockContent SourceForm { get; set; }
     }
 

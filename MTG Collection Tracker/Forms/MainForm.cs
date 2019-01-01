@@ -120,7 +120,7 @@ namespace MTG_Librarian
                             select c;
 
                 foreach (var inventoryCard in inventoryCards)
-                    if (inventoryCard.Count.HasValue && Globals.Collections.AllMagicCards.TryGetValue(inventoryCard.uuid, out MagicCard magicCard))
+                    if (!inventoryCard.Virtual && inventoryCard.Count.HasValue && Globals.Collections.AllMagicCards.TryGetValue(inventoryCard.uuid, out MagicCard magicCard))
                         magicCard.CopiesOwned += inventoryCard.Count.Value;
             }
         }
@@ -188,9 +188,17 @@ namespace MTG_Librarian
             }
         }
 
-        private InventoryCard AddMagicCardToCollection(MyDbContext context, MagicCard magicCard, int CollectionId, int insertionIndex = 0)
+        private InventoryCard AddMagicCardToCollection(MyDbContext context, MagicCard magicCard, CardCollection collection, int insertionIndex = 0)
         {
-            var inventoryCard = new InventoryCard { DisplayName = magicCard.DisplayName, uuid = magicCard.uuid, multiverseId_Inv = magicCard.multiverseId, CollectionId = CollectionId, InsertionIndex = insertionIndex };
+            var inventoryCard = new InventoryCard
+            {
+                DisplayName = magicCard.DisplayName,
+                uuid = magicCard.uuid,
+                multiverseId_Inv = magicCard.multiverseId,
+                CollectionId = collection.Id,
+                InsertionIndex = insertionIndex,
+                Virtual = collection.Virtual
+            };
             if (magicCard.isFoilOnly)
                 inventoryCard.Foil = true;
             else
@@ -214,7 +222,7 @@ namespace MTG_Librarian
                     foreach (OLVCardItem cardItem in cards)
                     {
                         var card = cardItem.MagicCard;
-                        var inventoryCard = AddMagicCardToCollection(context, card, collectionViewForm.Collection.Id, insertionIndex);
+                        var inventoryCard = AddMagicCardToCollection(context, card, collectionViewForm.Collection, insertionIndex);
                         cardsAdded.Add(inventoryCard);
                         insertionIndex++;
                         if (!setItems.TryGetValue(card.Edition, out OLVSetItem setItem))
@@ -228,7 +236,7 @@ namespace MTG_Librarian
                         var fullCard = card.ToFullCard(context);
                         if (fullCard != null)
                             fullCardsAdded.Add(fullCard);
-                        if (Globals.Collections.AllMagicCards.TryGetValue(card.uuid, out MagicCard magicCard))
+                        if (!card.Virtual && Globals.Collections.AllMagicCards.TryGetValue(card.uuid, out MagicCard magicCard))
                             magicCard.CopiesOwned++;
                     }
                     collectionViewForm.AddFullInventoryCards(fullCardsAdded);
@@ -237,7 +245,7 @@ namespace MTG_Librarian
             }
         }
 
-        private void AddMagicCardsToCollection(List<OLVCardItem> cards, int collectionId)
+        private void AddMagicCardsToCollection(List<OLVCardItem> cards, CardCollection collection)
         {
             var setItems = new Dictionary<string, OLVSetItem>();
             using (MyDbContext context = new MyDbContext())
@@ -247,7 +255,7 @@ namespace MTG_Librarian
                 foreach (OLVCardItem cardItem in cards)
                 {
                     var card = cardItem.MagicCard;
-                    var inventoryCard = AddMagicCardToCollection(context, card, collectionId, insertionIndex);
+                    var inventoryCard = AddMagicCardToCollection(context, card, collection, insertionIndex);
                     cardsAdded.Add(inventoryCard);
                     insertionIndex++;
                     if (!setItems.TryGetValue(card.Edition, out OLVSetItem setItem))
@@ -255,7 +263,7 @@ namespace MTG_Librarian
                             setItems.Add(card.Edition, setItem);
                 }
                 context.SaveChanges();
-                var cvForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.Collection.Id == collectionId);
+                var cvForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.Collection.Id == collection.Id);
                 var fullCardsAdded = new List<FullInventoryCard>();
                 foreach (InventoryCard card in cardsAdded)
                 {
@@ -265,7 +273,7 @@ namespace MTG_Librarian
                         if (fullCard != null)
                             fullCardsAdded.Add(fullCard);
                     }
-                    if (Globals.Collections.AllMagicCards.TryGetValue(card.uuid, out MagicCard magicCard))
+                    if (!card.Virtual && Globals.Collections.AllMagicCards.TryGetValue(card.uuid, out MagicCard magicCard))
                         magicCard.CopiesOwned++;
                 }
                 if (cvForm != null)
@@ -281,14 +289,14 @@ namespace MTG_Librarian
                 var cardItems = new List<OLVCardItem>();
                 foreach (OLVCardItem cardItem in e.Items)
                     cardItems.Add(cardItem);
-                AddMagicCardsToCollection(cardItems, e.TargetCollectionId);
+                AddMagicCardsToCollection(cardItems, e.TargetCollectionViewForm.Collection);
             }
             else if (e.Items[0] is OLVSetItem setItem)
-                AddMagicCardsToCollection(setItem.Cards, e.TargetCollectionId);
+                AddMagicCardsToCollection(setItem.Cards, e.TargetCollectionViewForm.Collection);
             else if (e.Items[0] is OLVRarityItem rarityItem)
-                AddMagicCardsToCollection(rarityItem.Cards, e.TargetCollectionId);
+                AddMagicCardsToCollection(rarityItem.Cards, e.TargetCollectionViewForm.Collection);
             else if (e.Items[0] is FullInventoryCard)
-                MoveFullInventoryCardsToCollection(e.Items, e.SourceForm as CollectionViewForm, e.TargetCollectionId);
+                MoveFullInventoryCardsToCollection(e.Items, e.SourceForm as CollectionViewForm, e.TargetCollectionViewForm.Collection.Id);
         }
 
         private void cvFormCardsDropped(object sender, CardsDroppedEventArgs e)

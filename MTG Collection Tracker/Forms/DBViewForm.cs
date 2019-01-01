@@ -68,7 +68,7 @@ namespace MTG_Librarian
 
         private Predicate<object> GetCardFilter()
         {
-            return GetManaCostFilter().And(GetTreeViewFilter()).And(GetCardNameFilter());
+            return GetManaCostFilter().And(GetTreeViewFilter()).And(GetCardNameFilter()).And(GetOwnedStatusFilter());
         }
 
         private Predicate<object> GetCardNameFilter()
@@ -102,6 +102,16 @@ namespace MTG_Librarian
                 } while ((lvItem = lvItem.Parent) != null);
             }
             return combinedFilter;
+        }
+
+        private Predicate<object> GetOwnedStatusFilter()
+        {
+            string ownedText = copiesOwnedFilterBox.Text;
+            return x => ownedText == "" || ownedText == "All"
+                ? true
+                : (ownedText == "Owned"
+                    ? (x as OLVCardItem).CopiesOwned > 0
+                    : (x as OLVCardItem).CopiesOwned == 0);
         }
         #endregion
         public void SortCardListView()
@@ -316,14 +326,13 @@ namespace MTG_Librarian
             TextChangedWaitTimer.Start();
         }
 
-
         private void cardListView_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (cardListView.SelectedItems != null)
                 if (e.KeyChar == '\r')
                     e.Handled = true;
         }
-        #endregion
+
         private void updateThisSetToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (setListView.SelectedObject is OLVSetItem setItem)
@@ -345,6 +354,11 @@ namespace MTG_Librarian
             UpdateModelFilter();
         }
 
+        private void copiesOwnedFilterBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateModelFilter();
+        }
+        #endregion
         public class MyCustomSortingDataSource : FastObjectListDataSource
         {
             public MyCustomSortingDataSource(FastObjectListView listView) : base(listView) { }
