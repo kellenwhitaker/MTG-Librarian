@@ -352,16 +352,28 @@ namespace MTG_Librarian
             override public void Sort(OLVColumn column, SortOrder order)
             {
                 if (column == listView.AllColumns.FirstOrDefault(x => x.AspectName == "CollectorNumber"))
-                    this.FilteredObjectList.Sort(new CollectorNumberComparer { SortOrder = order });
+                    FilteredObjectList.Sort(new CollectorNumberComparer { SortOrder = order });
                 else if (column == listView.AllColumns.FirstOrDefault(x => x.AspectName == "Name"))
-                    this.FilteredObjectList.Sort(new NameComparer { SortOrder = order });
+                    FilteredObjectList.Sort(new NameComparer { SortOrder = order });
                 else if (column == listView.AllColumns.FirstOrDefault(x => x.AspectName == "Type"))
-                    this.FilteredObjectList.Sort(new TypeComparer { SortOrder = order });
+                    FilteredObjectList.Sort(new TypeComparer { SortOrder = order });
                 else if (column == listView.AllColumns.FirstOrDefault(x => x.AspectName == "Set"))
-                    this.FilteredObjectList.Sort(new SetComparer { SortOrder = order });
-                else if (column == listView.AllColumns.FirstOrDefault(x => x.AspectName == "Cost"))
-                    this.FilteredObjectList.Sort(new ManaCostComparer { SortOrder = order });
-                this.RebuildIndexMap();
+                    FilteredObjectList.Sort(new SetComparer { SortOrder = order });
+                else if (column == listView.AllColumns.FirstOrDefault(x => x.AspectName == "ManaCost"))
+                    FilteredObjectList.Sort(new ManaCostComparer { SortOrder = order });
+                else if (column == listView.AllColumns.FirstOrDefault(x => x.AspectName == "CopiesOwned"))
+                    FilteredObjectList.Sort(new CopiesOwnedComparer { SortOrder = order });
+                RebuildIndexMap();
+            }
+
+            private class CopiesOwnedComparer : IComparer
+            {
+                public SortOrder SortOrder;
+                public int Compare(object x, object y)
+                {
+                    int result = (x as OLVCardItem).CopiesOwned.CompareTo((y as OLVCardItem).CopiesOwned);
+                    return SortOrder == SortOrder.Ascending ? result : -1 * result;
+                }
             }
 
             private class CollectorNumberComparer : IComparer
