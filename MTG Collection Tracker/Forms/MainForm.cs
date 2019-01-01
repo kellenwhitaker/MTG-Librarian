@@ -10,6 +10,7 @@ using System.ComponentModel;
 //Note: editable columns - count, cost, tags, foil
 //TODO4 CollectionViewForms must also be updated after set updates
 //TODO4 mtgjson issues: no tcgplayerProductId for split cards, lands
+//TODO3 move price fetching tasks to front of queue
 //TODO3 should use DisplayName for card image downloads in tasks
 //TODO3 improve appearance of checkboxes
 //TODO2 add card preview
@@ -192,7 +193,7 @@ namespace MTG_Librarian
 
         private InventoryCard AddMagicCardToCollection(MyDbContext context, MagicCard magicCard, int CollectionId, int insertionIndex = 0)
         {
-            var inventoryCard = new InventoryCard { DisplayName = magicCard.name, uuid = magicCard.uuid, multiverseId_Inv = magicCard.multiverseId, CollectionId = CollectionId, InsertionIndex = insertionIndex };
+            var inventoryCard = new InventoryCard { DisplayName = magicCard.DisplayName, uuid = magicCard.uuid, multiverseId_Inv = magicCard.multiverseId, CollectionId = CollectionId, InsertionIndex = insertionIndex };
             if (magicCard.isFoilOnly)
                 inventoryCard.Foil = true;
             else
@@ -526,7 +527,12 @@ namespace MTG_Librarian
                 }
                 else
                 {
-                    Globals.Forms.TasksForm.TaskManager.AddTask(new DownloadResourceTask { ForDisplay = true, Caption = $"Card Image: {card.name}", URL = $"http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={card.multiverseId}&type=card", TaskObject = new BasicCardArgs { uuid = card.uuid, MultiverseId = card.multiverseId, Edition = card.Edition }, OnTaskCompleted = ImageDownloadCompleted });
+                    string displayName;
+                    if (card is FullInventoryCard fullInventoryCard)
+                        displayName = fullInventoryCard.DisplayName;
+                    else
+                        displayName = card.DisplayName;
+                    Globals.Forms.TasksForm.TaskManager.AddTask(new DownloadResourceTask { ForDisplay = true, Caption = $"Card Image: {displayName}", URL = $"http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={card.multiverseId}&type=card", TaskObject = new BasicCardArgs { uuid = card.uuid, MultiverseId = card.multiverseId, Edition = card.Edition }, OnTaskCompleted = ImageDownloadCompleted });
                 }
             }
         }

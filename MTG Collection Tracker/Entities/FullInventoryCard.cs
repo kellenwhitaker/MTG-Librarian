@@ -13,7 +13,7 @@ namespace MTG_Librarian
         public double?      Cost { get; set; }
         public string       Tags { get; set; }
         public bool         Foil { get; set; }
-        public string       DisplayName { get; set; }
+        new public string   DisplayName { get; set; }
         private DateTime?   _timeAdded;
         public DateTime?    TimeAdded { get => _timeAdded; set { _timeAdded = value; UpdateSortableTimeAdded(); } }
         private int?        _insertionIndex;
@@ -28,7 +28,7 @@ namespace MTG_Librarian
                 return _sortableTimeAdded;               
             }
         }
-        private string      _sortableTimeAdded = null;
+        private string      _sortableTimeAdded;
         [NotMapped]
         public string       ImageKey => $"{Edition}: {rarity}";
         [NotMapped]

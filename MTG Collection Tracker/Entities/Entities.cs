@@ -9,6 +9,8 @@ namespace MTG_Librarian
 {
     public class MagicCardBase : MTGJSONCard
     {
+        [NotMapped]
+        public string   DisplayName { get; set; }
         public string   SetCode { get; set; }
         public string   Edition { get; set; }
         public double?  tcgplayerMarketPrice { get; set; }

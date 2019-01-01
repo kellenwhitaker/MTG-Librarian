@@ -141,7 +141,10 @@ namespace MTG_Librarian
                                 select c;
 
                     foreach (var card in cards)
+                    {
+                        card.DisplayName = card.name;
                         set.AddCard(card);
+                    }
 
                     CollapseParts(set);
                     set.BuildRarityItems();
@@ -177,6 +180,7 @@ namespace MTG_Librarian
 
                 foreach (var card in cards)
                 {
+                    card.DisplayName = card.name;
                     if (!sets.TryGetValue(card.Edition, out OLVSetItem set))
                     {
                         set = new OLVSetItem(dbSets.FirstOrDefault(x => x.Name == card.Edition));
@@ -206,7 +210,7 @@ namespace MTG_Librarian
                     {
                         PartA.MagicCard.PartB = magicCard;
                         if (PartA.MagicCard.layout == "split")
-                            PartA.Name = PartA.MagicCard.name = $"{PartA.MagicCard.name} // {magicCard.name}";
+                            PartA.DisplayName = $"{PartA.MagicCard.name} // {magicCard.name}";
                         cardsToRemove.Add(olvCard);
                     }
                 }

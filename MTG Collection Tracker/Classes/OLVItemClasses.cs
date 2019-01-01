@@ -6,7 +6,12 @@ namespace MTG_Librarian
 {
     public class OLVCardItem : OLVItem
     {
-        public string    Name;
+        public string DisplayName
+        {
+            get => MagicCard.DisplayName;            
+            set =>  MagicCard.DisplayName = value;
+        }
+        public string    Name => MagicCard.name;
         public MagicCard MagicCard { get; set; }
         public string    Type => MagicCard.type;
         public string    Cost => MagicCard.manaCost;
@@ -18,15 +23,9 @@ namespace MTG_Librarian
         public override OLVItem Parent { get; set; }
         public override Predicate<object> Filter => throw new NotImplementedException();
 
-        public OLVCardItem(string name)
-        {
-            Name = name;
-        }
-
         public OLVCardItem(MagicCard mCard)
         {
             MagicCard = mCard;
-            Name = mCard.name;
         }
     }
 

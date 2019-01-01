@@ -344,7 +344,7 @@
             // 
             // olvColumn1
             // 
-            this.olvColumn1.AspectName = "Name";
+            this.olvColumn1.AspectName = "DisplayName";
             this.olvColumn1.ImageAspectName = "ImageKey";
             this.olvColumn1.MinimumWidth = 200;
             this.olvColumn1.Text = "Card Name";
