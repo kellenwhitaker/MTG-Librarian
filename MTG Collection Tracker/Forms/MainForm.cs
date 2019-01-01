@@ -10,7 +10,6 @@ using System.ComponentModel;
 //Note: editable columns - count, cost, tags, foil
 //TODO4 CollectionViewForms must also be updated after set updates
 //TODO4 mtgjson issues: no tcgplayerProductId for split cards, lands
-//TODO3 improve appearance of checkboxes
 //TODO2 add card preview
 //TODO3 allow updating of card images
 
@@ -38,7 +37,7 @@ namespace MTG_Librarian
         {
             SetupImageLists();
             Globals.Forms.CardInfoForm = new CardInfoForm();
-            Globals.Forms.NavigationForm = new CardNavigatorForm();
+            Globals.Forms.NavigationForm = new CollectionNavigatorForm();
             Globals.Forms.NavigationForm.CardsDropped += navigationFormCardsDropped;
             Globals.Forms.DBViewForm = new DBViewForm();
             Globals.Forms.DBViewForm.CardsActivated += dbFormCardActivated;
@@ -593,7 +592,7 @@ namespace MTG_Librarian
                         settings.ContentPanes.Add(new ApplicationSettings.DockContentSettings { ContentType = ApplicationSettings.DockContentEnum.CardInfoForm, IsActivated = cardInfoForm == activeContent });
                     else if (dockContent is DBViewForm dBViewForm)
                         settings.ContentPanes.Add(new ApplicationSettings.DockContentSettings { ContentType = ApplicationSettings.DockContentEnum.DBViewForm, IsActivated = dBViewForm == activeContent });
-                    else if (dockContent is CardNavigatorForm cardNavigatorForm)
+                    else if (dockContent is CollectionNavigatorForm cardNavigatorForm)
                         settings.ContentPanes.Add(new ApplicationSettings.DockContentSettings { ContentType = ApplicationSettings.DockContentEnum.NavigatorForm, IsActivated = cardNavigatorForm == activeContent });
                     else if (dockContent is TasksForm tasksForm)
                         settings.ContentPanes.Add(new ApplicationSettings.DockContentSettings { ContentType = ApplicationSettings.DockContentEnum.TasksForm, IsActivated = tasksForm == activeContent });

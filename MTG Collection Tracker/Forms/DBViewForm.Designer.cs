@@ -386,7 +386,7 @@
             this.ClientSize = new System.Drawing.Size(799, 463);
             this.Controls.Add(this.splitContainer2);
             this.Name = "DBViewForm";
-            this.Text = "DB View";
+            this.Text = "Catalog";
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel1.PerformLayout();
             this.splitContainer2.Panel2.ResumeLayout(false);

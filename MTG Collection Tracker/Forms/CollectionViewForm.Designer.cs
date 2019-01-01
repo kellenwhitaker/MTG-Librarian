@@ -142,6 +142,7 @@
             this.FoilColumn.AspectName = "Foil";
             this.FoilColumn.CheckBoxes = true;
             this.FoilColumn.Text = "Foil";
+            this.FoilColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.FoilColumn.Width = 30;
             // 
             // olvColumn10
@@ -215,7 +216,7 @@
             this.TagsColumn.AspectName = "Tags";
             this.TagsColumn.AutoCompleteEditorMode = System.Windows.Forms.AutoCompleteMode.Suggest;
             this.TagsColumn.MinimumWidth = 200;
-            this.TagsColumn.Text = "Tags";
+            this.TagsColumn.Text = "Comments";
             this.TagsColumn.Width = 200;
             // 
             // SortableTimeAdded
