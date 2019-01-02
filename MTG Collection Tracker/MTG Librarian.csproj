@@ -264,6 +264,7 @@
     </Reference>
     <Reference Include="ThirdPartyAPI">
       <HintPath>..\Third Party API\bin\Debug\ThirdPartyAPI.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
