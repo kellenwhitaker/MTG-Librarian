@@ -143,7 +143,7 @@ namespace MTG_Librarian
                     cardListView.AddObjects(items.ToList());
                 }
                 if (cardListView.PrimarySortColumn == null) // not yet sorted
-                    cardListView.Sort(cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "SortableTimeAdded"), SortOrder.Ascending);
+                    cardListView.Sort(cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "TimeAdded"), SortOrder.Ascending);
 
                 UpdateTotals();
             }
@@ -482,6 +482,7 @@ namespace MTG_Librarian
                         return -1;
                     else if (y is InventoryTotalsItem)
                         return 1;
+                    else
                     {
                         int result = (x as FullInventoryCard).SortableTimeAdded.CompareTo((y as FullInventoryCard).SortableTimeAdded);
                         return SortOrder == SortOrder.Ascending ? result : result * -1;

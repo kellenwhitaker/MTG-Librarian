@@ -25,7 +25,7 @@ namespace MTG_Librarian
             get
             {
                 if (_sortableTimeAdded == null)
-                    _sortableTimeAdded = TimeAdded.HasValue ? $"{ TimeAdded.Value.ToString("s") } { InsertionIndex.ToString().PadLeft(5) }" : "";
+                    _sortableTimeAdded = TimeAdded.HasValue ? $"{TimeAdded.Value.ToString("s")}{InsertionIndex.ToString().PadLeft(5)}" : "";
                 return _sortableTimeAdded;               
             }
         }
