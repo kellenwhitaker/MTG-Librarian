@@ -85,7 +85,7 @@ namespace MTG_Librarian
         public int CardCount => Cards.Count;
         public string Complete => $"{100 * Cards.Count(x => x.CopiesOwned > 0) / Cards.Count}%";
         public string Complete4 => $"{100 * Cards.Count(x => x.CopiesOwned > 3) / Cards.Count}%";
-        public string Text => $"{Name} [{CardCount}]";
+        public string Text => $"{Name} [{CardCount}]".PadRight(500);
         public OLVSetItem(CardSet set)
         {
             Name = set.Name;
