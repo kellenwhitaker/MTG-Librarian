@@ -500,9 +500,9 @@ namespace MTG_Librarian
 
         private void navFormCollectionActivated(object sender, CollectionActivatedEventArgs e)
         {
-            if (e.NavigatorCollection?.Name is string docName)
+            if (e.NavigatorCollection?.Id is int id)
             {
-                if (dockPanel1.Documents.FirstOrDefault(x => (x as CollectionViewForm).DocumentName == docName) is CollectionViewForm document)
+                if (dockPanel1.Documents.FirstOrDefault(x => (x as CollectionViewForm).Collection.Id == id) is CollectionViewForm document)
                     document.Activate();
                 else
                     LoadCollection(e.NavigatorCollection.CardCollection);
