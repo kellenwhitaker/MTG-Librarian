@@ -68,7 +68,6 @@
             this.navigatorListView.ModelDropped += new System.EventHandler<BrightIdeasSoftware.ModelDropEventArgs>(this.navigatorListView_ModelDropped);
             this.navigatorListView.ItemActivate += new System.EventHandler(this.navigatorListView_ItemActivate);
             this.navigatorListView.SelectedIndexChanged += new System.EventHandler(this.navigatorListView_SelectedIndexChanged);
-            this.navigatorListView.DragOver += new System.Windows.Forms.DragEventHandler(this.navigatorListView_DragOver);
             // 
             // olvColumn1
             // 
@@ -118,13 +117,13 @@
             this.deleteToolStripMenuItem.Visible = false;
             this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
             // 
-            // CardNavigatorForm
+            // CollectionNavigatorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(409, 480);
             this.Controls.Add(this.navigatorListView);
-            this.Name = "CardNavigatorForm";
+            this.Name = "CollectionNavigatorForm";
             this.Text = "Collections";
             ((System.ComponentModel.ISupportInitialize)(this.navigatorListView)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);

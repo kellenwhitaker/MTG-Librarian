@@ -242,27 +242,6 @@ namespace MTG_Librarian
             }
         }
 
-        private void navigatorListView_DragOver(object sender, DragEventArgs e)
-        {
-            if (e.Data is BrightIdeasSoftware.OLVDataObject data && data.ModelObjects.Count == 1 && data.ModelObjects[0] is NavigatorCollection collection && !collection.Permanent)
-            {
-                var client = navigatorListView.PointToClient(new Point(e.X, e.Y));
-                if (navigatorListView.OlvHitTest(client.X, client.Y).RowObject is NavigatorGroup group)
-                {
-                    navigatorListView.SelectedObject = group;
-                    e.Effect = DragDropEffects.Copy;
-                }
-                else
-                {
-                    navigatorListView.SelectedObject = null;
-                    e.Effect = DragDropEffects.Move;
-                }
-            }
-            else
-                e.Effect = DragDropEffects.None;
-        }
-
-
         private void navigatorListView_ModelCanDrop(object sender, BrightIdeasSoftware.ModelDropEventArgs e)
         {
             e.Effect = DragDropEffects.None;
@@ -275,6 +254,7 @@ namespace MTG_Librarian
                     {
                         navigatorListView.SelectedObject = group;
                         e.Effect = DragDropEffects.Copy;
+                        e.InfoMessage = $"Move {collection.Name} to {group.Name} group";
                     }
                     else
                     {
@@ -284,7 +264,7 @@ namespace MTG_Librarian
                 }
             }
             else if (rowObjectUnderMouse is NavigatorCollection navigatorCollection)
-            {
+            {                
                 string DocumentName = navigatorCollection.CardCollection.CollectionName;
                 e.Effect = DragDropEffects.Move;
                 if (e.SourceModels[0] is OLVCardItem)
@@ -297,7 +277,7 @@ namespace MTG_Librarian
                 {
                     var parentForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.cardListView == e.SourceListView);
                     if (parentForm != null && parentForm.Collection.Id != navigatorCollection.Id)
-                        e.InfoMessage = $"Add {e.SourceModels.Count} card{(e.SourceModels.Count == 1 ? "" : "s")} to {DocumentName}";
+                        e.InfoMessage = $"Move {e.SourceModels.Count} card{(e.SourceModels.Count == 1 ? "" : "s")} to {DocumentName}";
                 }
             }
         }
@@ -309,23 +289,37 @@ namespace MTG_Librarian
             {
                 if (!collection.Permanent && rowObjectUnderMouse is NavigatorGroup group)
                 {
-                    try
+                    using (var context = new MyDbContext())
                     {
-                        using (var context = new MyDbContext())
+                        try
                         {
                             collection.CardCollection.GroupId = group.Id;
+                            if (collection.CardCollection.GroupName == "Wish Lists" || group.Name == "Wish Lists")
+                                collection.CardCollection.Virtual = group.Virtual;
                             context.Update(collection.CardCollection);
                             context.SaveChanges();
                             collection.RemoveFromParent();
                             group.AddCollection(collection);
                             navigatorListView.RebuildAll(true);
                         }
+                        catch (Exception ex)
+                        {
+                            DebugOutput.WriteLine(ex.ToString());
+                            context.Entry(collection.CardCollection).Reload();
+                        }
                     }
-                    catch (Exception ex) { DebugOutput.WriteLine(ex.ToString()); }
+
                 }
             }
             else if (rowObjectUnderMouse is NavigatorCollection navigatorCollection)
-                OnCardsDropped(new CardsDroppedEventArgs { Items = e.SourceModels as ArrayList, SourceForm = e.SourceListView.Parent as DockContent, TargetCollection = navigatorCollection.CardCollection });
+            {
+                OnCardsDropped(new CardsDroppedEventArgs
+                {
+                    Items = e.SourceModels as ArrayList,
+                    SourceForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.cardListView == e.SourceListView),
+                    TargetCollection = navigatorCollection.CardCollection
+                });
+            }
         }
 
         public event EventHandler<CardsDroppedEventArgs> CardsDropped;

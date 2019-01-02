@@ -30,7 +30,6 @@ namespace MTG_Librarian
         public CollectionViewForm()
         {
             InitializeComponent();
-            //FoilColumn.CellPadding = new Rectangle(8, 0, 0, 0);
             cardListView.SetDoubleBuffered();
             cardListView.GetColumn("Card").Renderer = new CardInstanceNameRenderer();
             cardListView.GetColumn("Mana Cost").Renderer = new ManaCostRenderer();
@@ -159,7 +158,12 @@ namespace MTG_Librarian
 
         private void fastObjectListView1_ModelDropped(object sender, ModelDropEventArgs e)
         {
-            OnCardsDropped(new CardsDroppedEventArgs { Items = e.SourceModels as ArrayList, TargetCollectionViewForm = this, SourceForm = e.SourceListView.Parent as DockContent });
+            OnCardsDropped(new CardsDroppedEventArgs
+            {
+                Items = e.SourceModels as ArrayList,
+                TargetCollectionViewForm = this,
+                SourceForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.cardListView == e.SourceListView)
+            });
         }
 
         public event EventHandler<CardsDroppedEventArgs> CardsDropped;

@@ -296,7 +296,7 @@ namespace MTG_Librarian
             else if (e.Items[0] is OLVRarityItem rarityItem)
                 AddMagicCardsToCollection(rarityItem.Cards, e.TargetCollectionViewForm.Collection);
             else if (e.Items[0] is FullInventoryCard)
-                MoveFullInventoryCardsToCollection(e.Items, e.SourceForm as CollectionViewForm, e.TargetCollectionViewForm.Collection.Id);
+                MoveFullInventoryCardsToCollection(e.Items, e.SourceForm as CollectionViewForm, e.TargetCollection);
         }
 
         private void cvFormCardsDropped(object sender, CardsDroppedEventArgs e)
@@ -318,7 +318,6 @@ namespace MTG_Librarian
 
         private void MoveFullInventoryCardsToDocument(ArrayList fullInventoryCards, CollectionViewForm sourceCVForm, CollectionViewForm targetCVForm)
         {
-            int newCollectionId = targetCVForm.Collection.Id;
             var cardsList = new List<FullInventoryCard>();
             try
             {
@@ -326,7 +325,8 @@ namespace MTG_Librarian
                 {
                     foreach (FullInventoryCard fullInventoryCard in fullInventoryCards)
                     {
-                        fullInventoryCard.CollectionId = newCollectionId;
+                        fullInventoryCard.CollectionId = targetCVForm.Collection.Id;
+                        fullInventoryCard.Virtual = targetCVForm.Collection.Virtual;
                         context.Update(fullInventoryCard.InventoryCard);
                         cardsList.Add(fullInventoryCard);
                     }
@@ -342,7 +342,7 @@ namespace MTG_Librarian
             }
         }
 
-        private void MoveFullInventoryCardsToCollection(ArrayList fullInventoryCards, CollectionViewForm sourceCVForm, int collectionId)
+        private void MoveFullInventoryCardsToCollection(ArrayList fullInventoryCards, CollectionViewForm sourceCVForm, CardCollection collection)
         {
             var cardsList = new List<FullInventoryCard>();
             try
@@ -351,14 +351,15 @@ namespace MTG_Librarian
                 {
                     foreach (FullInventoryCard fullInventoryCard in fullInventoryCards)
                     {
-                        fullInventoryCard.CollectionId = collectionId;
+                        fullInventoryCard.CollectionId = collection.Id;
+                        fullInventoryCard.Virtual = collection.Virtual;
                         context.Update(fullInventoryCard.InventoryCard);
                         cardsList.Add(fullInventoryCard);
                     }
                     context.SaveChanges();
                 }
                 sourceCVForm.RemoveFullInventoryCards(cardsList);
-                Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.Collection.Id == collectionId)?.AddFullInventoryCards(cardsList);
+                Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.Collection.Id == collection.Id)?.AddFullInventoryCards(cardsList);
             }
             catch (Exception ex)
             {

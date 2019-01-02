@@ -14,6 +14,7 @@ namespace MTG_Librarian
         public string       Tags { get; set; }
         public bool         Foil { get; set; }
         new public string   DisplayName { get; set; }
+        public bool         Virtual { get; set; }
         private DateTime?   _timeAdded;
         public DateTime?    TimeAdded { get => _timeAdded; set { _timeAdded = value; UpdateSortableTimeAdded(); } }
         private int?        _insertionIndex;
@@ -50,7 +51,8 @@ namespace MTG_Librarian
                     TimeAdded = TimeAdded,
                     uuid = uuid,
                     Foil = Foil,
-                    DisplayName = DisplayName
+                    DisplayName = DisplayName,
+                    Virtual = Virtual
                 };
             }
         }
