@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.ComponentModel.DataAnnotations.Schema;
+using Newtonsoft.Json;
 
 namespace MTG_Librarian
 {
@@ -9,13 +10,28 @@ namespace MTG_Librarian
     public class CardSet
     {
         [Key]
-        public string   Name { get; set; }
-        public string   ScrapedName { get; set; }
-        public string   Code { get; set; }
-        public string   Code2 { get; set; }
-        public string   ReleaseDate { get; set; }
-        public string   Type { get; set; }
-        public string   Block { get; set; }
+        public string Name { get; set; }
+        public string ScrapedName { get; set; }
+        public string Code { get; set; }
+        public string Code2 { get; set; }
+        public string ReleaseDate { get; set; }
+        public string Type { get; set; }
+        public string Block { get; set; }
+        public int? BaseSetSize { get; set; }
+        public string MTGOCode { get; set; }
+        public int? TotalSetSize { get; set; }
+        [NotMapped]
+        public object[] BoosterV3 { get; set; }
+        public string BoosterV3Json
+        {
+            get => JsonConvert.SerializeObject(BoosterV3);
+            set
+            {
+                if (value != null)
+                    BoosterV3 = JsonConvert.DeserializeObject<object[]>(value);
+            } 
+        }
+        public bool?   IsOnlineOnly { get; set; }
         [NotMapped]
         public List<MagicCard> Cards { get; set; } = new List<MagicCard>();
         public string   MTGJSONURL { get; set; }

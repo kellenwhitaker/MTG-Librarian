@@ -285,7 +285,7 @@ namespace MTG_Librarian
                 else if (e.KeyChar == '\r')
                 {
                     e.Handled = true;
-                    List<FullInventoryCard> cardsToPrice = new List<FullInventoryCard>();
+                    var cardsToPrice = new List<FullInventoryCard>();
                     foreach (var row in cardListView.SelectedObjects)
                         if (row is FullInventoryCard)
                             cardsToPrice.Add(row as FullInventoryCard);

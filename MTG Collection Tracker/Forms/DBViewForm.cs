@@ -14,17 +14,15 @@ namespace MTG_Librarian
     public partial class DBViewForm : DockForm
     {
         private Dictionary<string, OLVSetItem> sets;
-        private readonly ModelFilter setNameFilter;
         private readonly System.Timers.Timer TextChangedWaitTimer = new System.Timers.Timer();
         public List<OLVSetItem> SetItems = new List<OLVSetItem>();
 
         public DBViewForm()
         {
-            InitializeComponent();
-            setNameFilter = new ModelFilter(x => (x is OLVRarityItem && ((x as OLVRarityItem).Parent as OLVSetItem).Name.ToUpper().Contains(setFilterBox.Text.ToUpper()))
-                || (x is OLVSetItem && (x as OLVSetItem).Name.ToUpper().Contains(setFilterBox.Text.ToUpper())));
+            InitializeComponent();           
             setListView.SmallImageList = Globals.ImageLists.SmallIconList;
             setListView.TreeColumnRenderer = new SetRenderer();
+            setListView.UseFiltering = true;
             cardListView.SmallImageList = Globals.ImageLists.SmallIconList;
             cardListView.VirtualListDataSource = new MyCustomSortingDataSource(cardListView);
             whiteManaButton.ImageList = blueManaButton.ImageList = blackManaButton.ImageList = redManaButton.ImageList = greenManaButton.ImageList
@@ -39,7 +37,7 @@ namespace MTG_Librarian
             TextChangedWaitTimer.Elapsed += (sender, e) =>
             {
                 TextChangedWaitTimer.Stop();
-                UpdateModelFilter();
+                UpdateCardModelFilter();
             };
             DockAreas = DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockBottom;
         }
@@ -51,10 +49,10 @@ namespace MTG_Librarian
         }
         #region Filters
         private delegate void UpdateModelFilterDelegate();
-        private void UpdateModelFilter()
+        private void UpdateCardModelFilter()
         {
             if (InvokeRequired)
-                BeginInvoke(new UpdateModelFilterDelegate(UpdateModelFilter));
+                BeginInvoke(new UpdateModelFilterDelegate(UpdateCardModelFilter));
             else
             {
                 var selectedObjects = new List<object>();
@@ -66,9 +64,26 @@ namespace MTG_Librarian
             }
         }
 
+        private Predicate<object> GetSetNameTreeFilter()
+        {
+            string boxText = setFilterBox.UserText.ToUpper();
+            return x => boxText == ""
+                ? true
+                : (x is OLVRarityItem && ((x as OLVRarityItem).Parent as OLVSetItem).Name.ToUpper().Contains(boxText))
+                  || (x is OLVSetItem && (x as OLVSetItem).Name.ToUpper().Contains(boxText));
+        }
+
         private Predicate<object> GetCardFilter()
         {
             return GetManaCostFilter().And(GetTreeViewFilter()).And(GetCardNameFilter()).And(GetOwnedStatusFilter());
+        }
+
+        private Predicate<object> GetSetTypeTreeFilter()
+        {
+            string comboBoxText = setTypeFilterComboBox.Text;
+            return x => comboBoxText == "All Set Types" || comboBoxText == "" 
+                ? true 
+                : (x as OLVSetItem).CardSet.BoosterV3 != null && (x as OLVSetItem).CardSet.BoosterV3.Length > 0;
         }
 
         private Predicate<object> GetCardNameFilter()
@@ -282,18 +297,17 @@ namespace MTG_Librarian
 
         private void setFilterBox_TextChanged(object sender, EventArgs e)
         {
-            if (setFilterBox.UserText != "")
-            {
-                setListView.ModelFilter = setNameFilter;
-                setListView.UseFiltering = true;
-            }
-            else
-                setListView.UseFiltering = false;
+            UpdateSetModelFilter();
+        }
+
+        private void UpdateSetModelFilter()
+        {
+            setListView.ModelFilter = new ModelFilter(GetSetNameTreeFilter().And(GetSetTypeTreeFilter()));
         }
 
         private void whiteManaButton_Click(object sender, EventArgs e)
         {
-            UpdateModelFilter();
+            UpdateCardModelFilter();
         }
 
         private void fastObjectListView1_ItemActivate(object sender, EventArgs e)
@@ -351,12 +365,17 @@ namespace MTG_Librarian
         private void setListView_SelectionChanged(object sender, EventArgs e)
         {
             cardListView.SelectedObject = null;
-            UpdateModelFilter();
+            UpdateCardModelFilter();
         }
 
         private void copiesOwnedFilterBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            UpdateModelFilter();
+            UpdateCardModelFilter();
+        }
+
+        private void setTypeFilterComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateSetModelFilter();
         }
         #endregion
         public class MyCustomSortingDataSource : FastObjectListDataSource

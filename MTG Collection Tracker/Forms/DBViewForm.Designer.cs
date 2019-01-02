@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.setTypeFilterComboBox = new System.Windows.Forms.ComboBox();
             this.copiesOwnedFilterBox = new System.Windows.Forms.ComboBox();
             this.cardNameFilterBox = new EnhancedTextBox.EnhancedTextBox();
             this.genericManaButton = new CustomControls.FlatButton();
@@ -79,6 +80,7 @@
             // 
             // splitContainer2.Panel1
             // 
+            this.splitContainer2.Panel1.Controls.Add(this.setTypeFilterComboBox);
             this.splitContainer2.Panel1.Controls.Add(this.copiesOwnedFilterBox);
             this.splitContainer2.Panel1.Controls.Add(this.cardNameFilterBox);
             this.splitContainer2.Panel1.Controls.Add(this.genericManaButton);
@@ -93,10 +95,23 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.splitContainer1);
-            this.splitContainer2.Size = new System.Drawing.Size(799, 463);
+            this.splitContainer2.Size = new System.Drawing.Size(1153, 463);
             this.splitContainer2.SplitterDistance = 30;
             this.splitContainer2.SplitterWidth = 1;
             this.splitContainer2.TabIndex = 2;
+            // 
+            // setTypeFilterComboBox
+            // 
+            this.setTypeFilterComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.setTypeFilterComboBox.FormattingEnabled = true;
+            this.setTypeFilterComboBox.Items.AddRange(new object[] {
+            "All Set Types",
+            "Booster Sets"});
+            this.setTypeFilterComboBox.Location = new System.Drawing.Point(220, 5);
+            this.setTypeFilterComboBox.Name = "setTypeFilterComboBox";
+            this.setTypeFilterComboBox.Size = new System.Drawing.Size(121, 21);
+            this.setTypeFilterComboBox.TabIndex = 10;
+            this.setTypeFilterComboBox.SelectedIndexChanged += new System.EventHandler(this.setTypeFilterComboBox_SelectedIndexChanged);
             // 
             // copiesOwnedFilterBox
             // 
@@ -106,7 +121,7 @@
             "All",
             "Owned",
             "Not Owned"});
-            this.copiesOwnedFilterBox.Location = new System.Drawing.Point(437, 5);
+            this.copiesOwnedFilterBox.Location = new System.Drawing.Point(696, 4);
             this.copiesOwnedFilterBox.Name = "copiesOwnedFilterBox";
             this.copiesOwnedFilterBox.Size = new System.Drawing.Size(121, 21);
             this.copiesOwnedFilterBox.TabIndex = 9;
@@ -116,7 +131,7 @@
             // 
             this.cardNameFilterBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic);
             this.cardNameFilterBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.cardNameFilterBox.Location = new System.Drawing.Point(563, 6);
+            this.cardNameFilterBox.Location = new System.Drawing.Point(822, 5);
             this.cardNameFilterBox.Name = "cardNameFilterBox";
             this.cardNameFilterBox.Placeholder = "Card Name Filter";
             this.cardNameFilterBox.Size = new System.Drawing.Size(201, 20);
@@ -130,7 +145,7 @@
             this.genericManaButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.genericManaButton.FlatAppearance.BorderSize = 0;
             this.genericManaButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.genericManaButton.Location = new System.Drawing.Point(406, 3);
+            this.genericManaButton.Location = new System.Drawing.Point(665, 2);
             this.genericManaButton.Name = "genericManaButton";
             this.genericManaButton.Size = new System.Drawing.Size(25, 25);
             this.genericManaButton.TabIndex = 7;
@@ -144,7 +159,7 @@
             this.colorlessManaButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.colorlessManaButton.FlatAppearance.BorderSize = 0;
             this.colorlessManaButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.colorlessManaButton.Location = new System.Drawing.Point(375, 3);
+            this.colorlessManaButton.Location = new System.Drawing.Point(634, 2);
             this.colorlessManaButton.Name = "colorlessManaButton";
             this.colorlessManaButton.Size = new System.Drawing.Size(25, 25);
             this.colorlessManaButton.TabIndex = 6;
@@ -158,7 +173,7 @@
             this.greenManaButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.greenManaButton.FlatAppearance.BorderSize = 2;
             this.greenManaButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.greenManaButton.Location = new System.Drawing.Point(344, 3);
+            this.greenManaButton.Location = new System.Drawing.Point(603, 2);
             this.greenManaButton.Name = "greenManaButton";
             this.greenManaButton.Size = new System.Drawing.Size(25, 25);
             this.greenManaButton.TabIndex = 5;
@@ -172,7 +187,7 @@
             this.redManaButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.redManaButton.FlatAppearance.BorderSize = 2;
             this.redManaButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.redManaButton.Location = new System.Drawing.Point(313, 3);
+            this.redManaButton.Location = new System.Drawing.Point(572, 2);
             this.redManaButton.Name = "redManaButton";
             this.redManaButton.Size = new System.Drawing.Size(25, 25);
             this.redManaButton.TabIndex = 4;
@@ -186,7 +201,7 @@
             this.blackManaButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.blackManaButton.FlatAppearance.BorderSize = 2;
             this.blackManaButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.blackManaButton.Location = new System.Drawing.Point(282, 3);
+            this.blackManaButton.Location = new System.Drawing.Point(541, 2);
             this.blackManaButton.Name = "blackManaButton";
             this.blackManaButton.Size = new System.Drawing.Size(25, 25);
             this.blackManaButton.TabIndex = 3;
@@ -200,7 +215,7 @@
             this.blueManaButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.blueManaButton.FlatAppearance.BorderSize = 2;
             this.blueManaButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.blueManaButton.Location = new System.Drawing.Point(251, 3);
+            this.blueManaButton.Location = new System.Drawing.Point(510, 2);
             this.blueManaButton.Name = "blueManaButton";
             this.blueManaButton.Size = new System.Drawing.Size(25, 25);
             this.blueManaButton.TabIndex = 2;
@@ -214,7 +229,7 @@
             this.whiteManaButton.FlatAppearance.BorderSize = 0;
             this.whiteManaButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.whiteManaButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.whiteManaButton.Location = new System.Drawing.Point(220, 3);
+            this.whiteManaButton.Location = new System.Drawing.Point(479, 2);
             this.whiteManaButton.Name = "whiteManaButton";
             this.whiteManaButton.Size = new System.Drawing.Size(25, 25);
             this.whiteManaButton.TabIndex = 1;
@@ -246,8 +261,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.cardListView);
-            this.splitContainer1.Size = new System.Drawing.Size(799, 432);
-            this.splitContainer1.SplitterDistance = 312;
+            this.splitContainer1.Size = new System.Drawing.Size(1153, 432);
+            this.splitContainer1.SplitterDistance = 450;
             this.splitContainer1.TabIndex = 2;
             // 
             // setListView
@@ -273,7 +288,7 @@
             this.setListView.SelectedBackColor = System.Drawing.Color.SteelBlue;
             this.setListView.SelectedForeColor = System.Drawing.Color.White;
             this.setListView.ShowGroups = false;
-            this.setListView.Size = new System.Drawing.Size(312, 432);
+            this.setListView.Size = new System.Drawing.Size(450, 432);
             this.setListView.TabIndex = 3;
             this.setListView.UnfocusedSelectedBackColor = System.Drawing.Color.LightGray;
             this.setListView.UseCellFormatEvents = true;
@@ -338,7 +353,6 @@
             this.olvColumn3,
             this.olvColumn4,
             this.CollectorNumber});
-            this.cardListView.Cursor = System.Windows.Forms.Cursors.Default;
             this.cardListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cardListView.EmptyListMsg = "No cards";
             this.cardListView.FullRowSelect = true;
@@ -350,7 +364,7 @@
             this.cardListView.SelectedBackColor = System.Drawing.Color.SteelBlue;
             this.cardListView.SelectedForeColor = System.Drawing.Color.White;
             this.cardListView.ShowGroups = false;
-            this.cardListView.Size = new System.Drawing.Size(483, 432);
+            this.cardListView.Size = new System.Drawing.Size(699, 432);
             this.cardListView.TabIndex = 0;
             this.cardListView.UnfocusedSelectedBackColor = System.Drawing.Color.LightGray;
             this.cardListView.UseCompatibleStateImageBehavior = false;
@@ -409,7 +423,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(799, 463);
+            this.ClientSize = new System.Drawing.Size(1153, 463);
             this.Controls.Add(this.splitContainer2);
             this.Name = "DBViewForm";
             this.Text = "Catalog";
@@ -457,5 +471,6 @@
         private System.Windows.Forms.ToolStripMenuItem updateThisSetToolStripMenuItem;
         private BrightIdeasSoftware.OLVColumn copiesOwnedColumn;
         private System.Windows.Forms.ComboBox copiesOwnedFilterBox;
+        private System.Windows.Forms.ComboBox setTypeFilterComboBox;
     }
 }
