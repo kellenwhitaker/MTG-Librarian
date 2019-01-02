@@ -131,6 +131,7 @@ namespace MTG_Librarian
         public string PaddedName => DisplayName.PadRight(500);
         public double tcgplayerMarketPrice;
         public double Cost;
+        public int Count;
     }
 
     public abstract class OLVItem

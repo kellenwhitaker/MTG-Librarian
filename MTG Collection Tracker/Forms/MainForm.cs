@@ -172,8 +172,11 @@ namespace MTG_Librarian
                     {
                         if (price.Value.HasValue)
                         {
-                            var matches = form.cardListView.Objects.Cast<FullInventoryCard>().Where(x => x.tcgplayerProductId == price.Key);
-                            if (matches.Count() != 0)
+                            var matches = new List<FullInventoryCard>();
+                            foreach (var row in form.cardListView.Objects)
+                                if (row is FullInventoryCard card && card.tcgplayerProductId == price.Key)
+                                    matches.Add(row as FullInventoryCard);
+                            if (matches.Count() > 0)
                             {
                                 foreach (var match in matches)
                                 {
@@ -183,7 +186,11 @@ namespace MTG_Librarian
                             }
                         }
                     }
-                    form.cardListView.RefreshObjects(cardsToRefresh);
+                    if (cardsToRefresh.Count > 0)
+                    {
+                        form.cardListView.RefreshObjects(cardsToRefresh);
+                        form.UpdateTotals();
+                    }
                 }                
             }
         }
@@ -416,7 +423,11 @@ namespace MTG_Librarian
 
                         MessageBox.Show(ex.ToString());
                     }
-                    finally { e.CollectionViewForm.cardListView.Refresh(); }
+                    finally
+                    {
+                        e.CollectionViewForm.UpdateTotals();
+                        e.CollectionViewForm.cardListView.Refresh();
+                    }
                 }
             }
         }

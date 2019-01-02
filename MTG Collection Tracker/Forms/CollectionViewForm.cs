@@ -32,14 +32,17 @@ namespace MTG_Librarian
             var totalsRow = (cardListView.Objects as ArrayList)[0] as InventoryTotalsItem;
             totalsRow.tcgplayerMarketPrice = 0;
             totalsRow.Cost = 0;
+            totalsRow.Count = 0;
             foreach (var row in cardListView.Objects)
             {
                 if (row is FullInventoryCard card)
                 {
+                    int cardCount = card.Count.HasValue ? card.Count.Value : 1;
+                    totalsRow.Count += cardCount;
                     if (card.tcgplayerMarketPrice.HasValue)
-                        totalsRow.tcgplayerMarketPrice += card.tcgplayerMarketPrice.Value;
+                        totalsRow.tcgplayerMarketPrice += card.tcgplayerMarketPrice.Value * cardCount;
                     if (card.Cost.HasValue)
-                        totalsRow.Cost += card.Cost.Value;
+                        totalsRow.Cost += card.Cost.Value * cardCount;                    
                 }
             }
         }
