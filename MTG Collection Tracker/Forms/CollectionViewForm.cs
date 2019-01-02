@@ -31,8 +31,8 @@ namespace MTG_Librarian
         {
             InitializeComponent();
             cardListView.SetDoubleBuffered();
-            cardListView.GetColumn("Card").Renderer = new CardInstanceNameRenderer();
-            cardListView.GetColumn("Mana Cost").Renderer = new ManaCostRenderer();
+            cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "PaddedName").Renderer = new CardInstanceNameRenderer();
+            cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "ManaCost").Renderer = new ManaCostRenderer();
             cardListView.VirtualListDataSource = new MyCustomSortingDataSource(cardListView);
             cardListView.AddDecoration(new EditingCellBorderDecoration { UseLightbox = false, BorderPen = new Pen(Brushes.DodgerBlue, 3), BoundsPadding = new Size(1, 0) });
             cardListView.UseFiltering = true;
