@@ -55,7 +55,7 @@ namespace MTG_Librarian
                 string responseContent = client.Execute(request).Content;
                 var responseObject = JsonConvert.DeserializeObject<ProductPricesResponseObject>(responseContent);
                 foreach (var result in responseObject.results)
-                    if (productIdDictionary.ContainsKey(result.productId))
+                    if (result.subTypeName == "Normal" && productIdDictionary.ContainsKey(result.productId))
                         productIdDictionary[result.productId] = result.marketPrice;
 
                 RunState = responseObject.results.Count() == 0 ? RunState.Failed : RunState.Completed;
