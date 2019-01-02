@@ -93,6 +93,13 @@ namespace MTG_Librarian
             {
                 using (var context = new MyDbContext())
                 {
+                    if (e.Control.Text == "Collections" || e.Control.Text == "Wish Lists" || e.Control.Text == "Decks")
+                    {
+                        if (navGroup.CollectionGroup != null)
+                            context.Entry(navGroup.CollectionGroup).Reload();
+                        MessageBox.Show("Group name conflicts with an existing permanent group");
+                        return;
+                    }
                     try
                     {
                         if (navGroup.CollectionGroup == null) // not yet added
@@ -120,6 +127,13 @@ namespace MTG_Librarian
             {
                 using (var context = new MyDbContext())
                 {
+                    if (e.Control.Text == "Main")
+                    {
+                        if (navCollection.CardCollection != null)
+                            context.Entry(navCollection.CardCollection).Reload();
+                        MessageBox.Show("Collection name conflicts with an existing permanent colleciton");
+                        return;
+                    }
                     try
                     {
                         if (navCollection.CardCollection == null) // not yet added
