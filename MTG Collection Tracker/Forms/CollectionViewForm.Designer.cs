@@ -97,7 +97,6 @@
             this.TagsColumn,
             this.TimeAddedColumn});
             this.cardListView.ContextMenuStrip = this.cardListViewMenuStrip;
-            this.cardListView.Cursor = System.Windows.Forms.Cursors.Default;
             this.cardListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cardListView.FullRowSelect = true;
             this.cardListView.GridLines = true;
@@ -134,6 +133,7 @@
             this.CardName.ImageAspectName = "ImageKey";
             this.CardName.IsEditable = false;
             this.CardName.MinimumWidth = 200;
+            this.CardName.Searchable = false;
             this.CardName.Text = "Card";
             this.CardName.Width = 200;
             // 

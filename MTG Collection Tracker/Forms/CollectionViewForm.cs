@@ -27,6 +27,23 @@ namespace MTG_Librarian
             }
         }
 
+        public void UpdateTotals()
+        {
+            var totalsRow = (cardListView.Objects as ArrayList)[0] as InventoryTotalsItem;
+            totalsRow.tcgplayerMarketPrice = 0;
+            totalsRow.Cost = 0;
+            foreach (var row in cardListView.Objects)
+            {
+                if (row is FullInventoryCard card)
+                {
+                    if (card.tcgplayerMarketPrice.HasValue)
+                        totalsRow.tcgplayerMarketPrice += card.tcgplayerMarketPrice.Value;
+                    if (card.Cost.HasValue)
+                        totalsRow.Cost += card.Cost.Value;
+                }
+            }
+        }
+
         public CollectionViewForm()
         {
             InitializeComponent();
@@ -119,21 +136,26 @@ namespace MTG_Librarian
                                 where c.CollectionId == Collection.Id
                                 select c;
 
+                    cardListView.AddObject(new InventoryTotalsItem { DisplayName = "        Totals:" });
                     cardListView.AddObjects(items.ToList());
                 }
                 if (cardListView.PrimarySortColumn == null) // not yet sorted
-                    cardListView.Sort(cardListView.AllColumns[11], SortOrder.Ascending);
+                    cardListView.Sort(cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "SortableTimeAdded"), SortOrder.Ascending);
+
+                UpdateTotals();
             }
         }
 
         public void AddFullInventoryCard(FullInventoryCard cardInstance)
         {
             cardListView.AddObject(cardInstance);
+            UpdateTotals();
         }
 
         public void AddFullInventoryCards(List<FullInventoryCard> cards)
         {
             cardListView.AddObjects(cards);
+            UpdateTotals();
         }
 
         public void RemoveFullInventoryCards(List<FullInventoryCard> cards)
@@ -260,14 +282,19 @@ namespace MTG_Librarian
                 else if (e.KeyChar == '\r')
                 {
                     e.Handled = true;
-                    Globals.Forms.TasksForm.TaskManager.AddTask(new GetTCGPlayerPricesTask(cardListView.SelectedObjects as ArrayList) { AddFirst = true });
+                    List<FullInventoryCard> cardsToPrice = new List<FullInventoryCard>();
+                    foreach (var row in cardListView.SelectedObjects)
+                        if (row is FullInventoryCard)
+                            cardsToPrice.Add(row as FullInventoryCard);
+                    if (cardsToPrice.Count > 0)
+                        Globals.Forms.TasksForm.TaskManager.AddTask(new GetTCGPlayerPricesTask(cardsToPrice) { AddFirst = true });
                 }
             }
         }
 
         private void fastObjectListView1_CellClick(object sender, CellClickEventArgs e)
         {
-            if (e.ClickCount == 2 && e.Column.IsEditable)
+            if (e.ClickCount == 2 && e.Column.IsEditable && e.Model is FullInventoryCard)
             {
                 e.ListView.StartCellEdit(e.Item, e.Item.SubItems.IndexOf(e.SubItem));
                 e.Handled = true;
@@ -276,11 +303,8 @@ namespace MTG_Librarian
 
         private void fastObjectListView1_SelectionChanged(object sender, EventArgs e)
         {
-            if (cardListView.SelectedObject != null)
-            {
-                var card = cardListView.SelectedObject as MagicCardBase;
+            if (cardListView.SelectedObject is MagicCardBase card)
                 OnCardSelected(new CardSelectedEventArgs { MagicCard = card });
-            }
         }
 
         private void cardListView_SubItemChecking(object sender, SubItemCheckingEventArgs e)
@@ -364,8 +388,15 @@ namespace MTG_Librarian
                 public SortOrder SortOrder;
                 public int Compare(object x, object y)
                 {
-                    int result = (x as FullInventoryCard).SortableNumber.CompareTo((y as FullInventoryCard).SortableNumber);
-                    return SortOrder == SortOrder.Ascending ? result : -1 * result;
+                    if (x is InventoryTotalsItem)
+                        return -1;
+                    else if (y is InventoryTotalsItem)
+                        return 1;
+                    else
+                    {
+                        int result = (x as FullInventoryCard).SortableNumber.CompareTo((y as FullInventoryCard).SortableNumber);
+                        return SortOrder == SortOrder.Ascending ? result : -1 * result;
+                    }
                 }
             }
 
@@ -374,8 +405,15 @@ namespace MTG_Librarian
                 public SortOrder SortOrder;
                 public int Compare(object x, object y)
                 {
-                    int result = (x as FullInventoryCard).name.CompareTo((y as FullInventoryCard).name);
-                    return SortOrder == SortOrder.Ascending ? result : result * -1;
+                    if (x is InventoryTotalsItem)
+                        return -1;
+                    else if (y is InventoryTotalsItem)
+                        return 1;
+                    else
+                    {
+                        int result = (x as FullInventoryCard).name.CompareTo((y as FullInventoryCard).name);
+                        return SortOrder == SortOrder.Ascending ? result : result * -1;
+                    }
                 }
             }
 
@@ -384,8 +422,15 @@ namespace MTG_Librarian
                 public SortOrder SortOrder;
                 public int Compare(object x, object y)
                 {
-                    int result = (x as FullInventoryCard).type.CompareTo((y as FullInventoryCard).type);
-                    return SortOrder == SortOrder.Ascending ? result : result * -1;
+                    if (x is InventoryTotalsItem)
+                        return -1;
+                    else if (y is InventoryTotalsItem)
+                        return 1;
+                    else
+                    {
+                        int result = (x as FullInventoryCard).type.CompareTo((y as FullInventoryCard).type);
+                        return SortOrder == SortOrder.Ascending ? result : result * -1;
+                    }
                 }
             }
 
@@ -394,8 +439,14 @@ namespace MTG_Librarian
                 public SortOrder SortOrder;
                 public int Compare(object x, object y)
                 {
-                    int result = (x as FullInventoryCard).Edition.CompareTo((y as FullInventoryCard).Edition);
-                    return SortOrder == SortOrder.Ascending ? result : result * -1;
+                    if (x is InventoryTotalsItem)
+                        return -1;
+                    else if (y is InventoryTotalsItem)
+                        return 1;
+                    {
+                        int result = (x as FullInventoryCard).Edition.CompareTo((y as FullInventoryCard).Edition);
+                        return SortOrder == SortOrder.Ascending ? result : result * -1;
+                    }
                 }
             }
 
@@ -404,11 +455,18 @@ namespace MTG_Librarian
                 public SortOrder SortOrder;
                 public int Compare(object x, object y)
                 {
-                    int result;
-                    string valueX = (x as FullInventoryCard).manaCost ?? "";
-                    string valueY = (y as FullInventoryCard).manaCost ?? "";
-                    result = valueX.CompareTo(valueY);
-                    return SortOrder == SortOrder.Ascending ? result : result * -1;
+                    if (x is InventoryTotalsItem)
+                        return -1;
+                    else if (y is InventoryTotalsItem)
+                        return 1;
+                    else
+                    {
+                        int result;
+                        string valueX = (x as FullInventoryCard).manaCost ?? "";
+                        string valueY = (y as FullInventoryCard).manaCost ?? "";
+                        result = valueX.CompareTo(valueY);
+                        return SortOrder == SortOrder.Ascending ? result : result * -1;
+                    }
                 }
             }
 
@@ -417,8 +475,14 @@ namespace MTG_Librarian
                 public SortOrder SortOrder;
                 public int Compare(object x, object y)
                 {
-                    int result = (x as FullInventoryCard).SortableTimeAdded.CompareTo((y as FullInventoryCard).SortableTimeAdded);
-                    return SortOrder == SortOrder.Ascending ? result : result * -1;
+                    if (x is InventoryTotalsItem)
+                        return -1;
+                    else if (y is InventoryTotalsItem)
+                        return 1;
+                    {
+                        int result = (x as FullInventoryCard).SortableTimeAdded.CompareTo((y as FullInventoryCard).SortableTimeAdded);
+                        return SortOrder == SortOrder.Ascending ? result : result * -1;
+                    }
                 }
             }
         }

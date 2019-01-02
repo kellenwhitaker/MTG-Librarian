@@ -6,7 +6,7 @@ namespace MTG_Librarian
 {
     public class OLVCardItem : OLVItem
     {
-        public string DisplayName
+        public string    DisplayName
         {
             get => MagicCard.DisplayName;            
             set =>  MagicCard.DisplayName = value;
@@ -120,6 +120,17 @@ namespace MTG_Librarian
         {
             Rarities.Add(rarity);
         }
+    }
+
+    public class InventoryTotalsItem : OLVItem
+    {
+        public override OLVItem Parent { get; set; }
+        public override string ImageKey => null;
+        public override Predicate<object> Filter => throw new NotImplementedException();
+        public string DisplayName { get; set; }
+        public string PaddedName => DisplayName.PadRight(500);
+        public double tcgplayerMarketPrice;
+        public double Cost;
     }
 
     public abstract class OLVItem

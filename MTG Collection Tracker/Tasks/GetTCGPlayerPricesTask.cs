@@ -12,15 +12,14 @@ namespace MTG_Librarian
 {
     public class GetTCGPlayerPricesTask : BackgroundTask
     {
-        private List<FullInventoryCard> cardsToPrice = new List<FullInventoryCard>();
+        private List<FullInventoryCard> cardsToPrice;
         public Dictionary<int, double?> productIdDictionary = new Dictionary<int, double?>();
 
-        public GetTCGPlayerPricesTask(ArrayList cards)
+        public GetTCGPlayerPricesTask(List<FullInventoryCard> cards)
         {
             bool isPlural = cards.Count > 1;
             Caption = $"Getting price{(isPlural ? "s" : "")} for {cards.Count} card{(isPlural ? "s" : "")}";
-            foreach (var card in cards)
-                cardsToPrice.Add(card as FullInventoryCard);
+            cardsToPrice = cards;
         }
 
         public override void Run()

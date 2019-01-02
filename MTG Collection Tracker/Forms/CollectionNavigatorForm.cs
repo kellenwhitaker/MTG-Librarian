@@ -131,7 +131,7 @@ namespace MTG_Librarian
                     {
                         if (navCollection.CardCollection != null)
                             context.Entry(navCollection.CardCollection).Reload();
-                        MessageBox.Show("Collection name conflicts with an existing permanent colleciton");
+                        MessageBox.Show("Collection name conflicts with an existing permanent collection");
                         return;
                     }
                     try
@@ -277,7 +277,7 @@ namespace MTG_Librarian
                     }
                 }
             }
-            else if (rowObjectUnderMouse is NavigatorCollection navigatorCollection)
+            else if (!(e.SourceModels[0] is InventoryTotalsItem) && rowObjectUnderMouse is NavigatorCollection navigatorCollection)
             {                
                 string DocumentName = navigatorCollection.CardCollection.CollectionName;
                 e.Effect = DragDropEffects.Move;
