@@ -371,24 +371,28 @@ namespace MTG_Librarian
 
             override public void Sort(OLVColumn column, SortOrder order)
             {
-                if (column == listView.AllColumns.FirstOrDefault(x => x.AspectName == "number"))
-                    this.FilteredObjectList.Sort(new CollectorNumberComparer { SortOrder = order });
-                else if (column == listView.AllColumns.FirstOrDefault(x => x.AspectName == "PaddedName"))
-                    this.FilteredObjectList.Sort(new NameComparer { SortOrder = order });
-                else if (column == listView.AllColumns.FirstOrDefault(x => x.AspectName == "type"))
-                    this.FilteredObjectList.Sort(new TypeComparer { SortOrder = order });
-                else if (column == listView.AllColumns.FirstOrDefault(x => x.AspectName == "Edition"))
-                    this.FilteredObjectList.Sort(new SetComparer { SortOrder = order });
-                else if (column == listView.AllColumns.FirstOrDefault(x => x.AspectName == "ManaCost"))
-                    this.FilteredObjectList.Sort(new ManaCostComparer { SortOrder = order });
-                else if (column == listView.AllColumns.FirstOrDefault(x => x.AspectName == "TimeAdded"))
-                    this.FilteredObjectList.Sort(new TimeAddedComparer { SortOrder = order });
-                this.RebuildIndexMap();
+                var comparer = new FullInventoryCardComparer { SortOrder = order, AspectName = column.AspectName };
+                FilteredObjectList.Sort(comparer);
+                RebuildIndexMap();
             }
 
-            private class CollectorNumberComparer : IComparer
+            private class FullInventoryCardComparer : IComparer
             {
                 public SortOrder SortOrder;
+                public string AspectName;
+
+                private static int CompareNullableDoubles(double? x, double? y)
+                {
+                    if (!x.HasValue && y.HasValue)
+                        return -1;
+                    else if (x.HasValue && !y.HasValue)
+                        return 1;
+                    else if (!x.HasValue && !y.HasValue)
+                        return 0;
+                    else
+                        return x.Value.CompareTo(y.Value);
+                }
+
                 public int Compare(object x, object y)
                 {
                     if (x is InventoryTotalsItem)
@@ -397,98 +401,60 @@ namespace MTG_Librarian
                         return 1;
                     else
                     {
-                        int result = (x as FullInventoryCard).SortableNumber.CompareTo((y as FullInventoryCard).SortableNumber);
+                        int result = 0;
+                        if (AspectName == "number")
+                            result = (x as FullInventoryCard).SortableNumber.CompareTo((y as FullInventoryCard).SortableNumber);
+                        else if (AspectName == "PaddedName")
+                            result = (x as FullInventoryCard).name.CompareTo((y as FullInventoryCard).name);
+                        else if (AspectName == "type")
+                            result = (x as FullInventoryCard).type.CompareTo((y as FullInventoryCard).type);
+                        else if (AspectName == "Edition")
+                            result = (x as FullInventoryCard).Edition.CompareTo((y as FullInventoryCard).Edition);
+                        else if (AspectName == "ManaCost")
+                        {
+                            string valueX = (x as FullInventoryCard).manaCost ?? "";
+                            string valueY = (y as FullInventoryCard).manaCost ?? "";
+                            result = valueX.CompareTo(valueY);
+                        }
+                        else if (AspectName == "TimeAdded")
+                            result = (x as FullInventoryCard).SortableTimeAdded.CompareTo((y as FullInventoryCard).SortableTimeAdded);
+                        else if (AspectName == "Foil")
+                            result = (x as FullInventoryCard).Foil.CompareTo((y as FullInventoryCard).Foil);
+                        else if (AspectName == "Cost")
+                            result = CompareNullableDoubles((x as FullInventoryCard).Cost, (y as FullInventoryCard).Cost);
+                        else if (AspectName == "tcgplayerMarketPrice")
+                            result = CompareNullableDoubles((x as FullInventoryCard).tcgplayerMarketPrice, (y as FullInventoryCard).tcgplayerMarketPrice);
+                        else if (AspectName == "Count")
+                        {
+                            var cx = (x as FullInventoryCard).Count;
+                            var cy = (y as FullInventoryCard).Count;
+                            if (!cx.HasValue && cy.HasValue)
+                                result = -1;
+                            else if (cx.HasValue && !cy.HasValue)
+                                result = 1;
+                            else if (!cx.HasValue && !cy.HasValue)
+                                result = 0;
+                            else
+                                result = cx.Value.CompareTo(cy.Value);
+                        }
+                        else if (AspectName == "Tags")
+                        {
+                            var tx = (x as FullInventoryCard).Tags;
+                            var ty = (y as FullInventoryCard).Tags;
+                            if (tx == null && ty != null)
+                                result = -1;
+                            else if (tx != null && ty == null)
+                                result = 1;
+                            else if (tx == null && ty == null)
+                                result = 0;
+                            else
+                                result = tx.CompareTo(ty);
+                        }
+
                         return SortOrder == SortOrder.Ascending ? result : -1 * result;
                     }
                 }
-            }
-
-            private class NameComparer : IComparer
-            {
-                public SortOrder SortOrder;
-                public int Compare(object x, object y)
-                {
-                    if (x is InventoryTotalsItem)
-                        return -1;
-                    else if (y is InventoryTotalsItem)
-                        return 1;
-                    else
-                    {
-                        int result = (x as FullInventoryCard).name.CompareTo((y as FullInventoryCard).name);
-                        return SortOrder == SortOrder.Ascending ? result : result * -1;
-                    }
-                }
-            }
-
-            private class TypeComparer : IComparer
-            {
-                public SortOrder SortOrder;
-                public int Compare(object x, object y)
-                {
-                    if (x is InventoryTotalsItem)
-                        return -1;
-                    else if (y is InventoryTotalsItem)
-                        return 1;
-                    else
-                    {
-                        int result = (x as FullInventoryCard).type.CompareTo((y as FullInventoryCard).type);
-                        return SortOrder == SortOrder.Ascending ? result : result * -1;
-                    }
-                }
-            }
-
-            private class SetComparer : IComparer
-            {
-                public SortOrder SortOrder;
-                public int Compare(object x, object y)
-                {
-                    if (x is InventoryTotalsItem)
-                        return -1;
-                    else if (y is InventoryTotalsItem)
-                        return 1;
-                    {
-                        int result = (x as FullInventoryCard).Edition.CompareTo((y as FullInventoryCard).Edition);
-                        return SortOrder == SortOrder.Ascending ? result : result * -1;
-                    }
-                }
-            }
-
-            private class ManaCostComparer : IComparer
-            {
-                public SortOrder SortOrder;
-                public int Compare(object x, object y)
-                {
-                    if (x is InventoryTotalsItem)
-                        return -1;
-                    else if (y is InventoryTotalsItem)
-                        return 1;
-                    else
-                    {
-                        int result;
-                        string valueX = (x as FullInventoryCard).manaCost ?? "";
-                        string valueY = (y as FullInventoryCard).manaCost ?? "";
-                        result = valueX.CompareTo(valueY);
-                        return SortOrder == SortOrder.Ascending ? result : result * -1;
-                    }
-                }
-            }
-
-            private class TimeAddedComparer : IComparer
-            {
-                public SortOrder SortOrder;
-                public int Compare(object x, object y)
-                {
-                    if (x is InventoryTotalsItem)
-                        return -1;
-                    else if (y is InventoryTotalsItem)
-                        return 1;
-                    else
-                    {
-                        int result = (x as FullInventoryCard).SortableTimeAdded.CompareTo((y as FullInventoryCard).SortableTimeAdded);
-                        return SortOrder == SortOrder.Ascending ? result : result * -1;
-                    }
-                }
-            }
+            }            
         }
 
         private void cardNameFilterTextBox_TextChanged(object sender, EventArgs e)
