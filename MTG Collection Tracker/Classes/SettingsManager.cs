@@ -7,12 +7,24 @@ namespace MTG_Librarian
 {
     public class SettingsManager
     {
-        public ApplicationSettings ApplicationSettings { get; set; }
+        #region Fields
+
+        private ApplicationSettings ApplicationSettings;
+
+        #endregion Fields
+
+        #region Constructors
 
         public SettingsManager()
         {
             ApplicationSettings = new ApplicationSettings();
         }
+
+        #endregion Constructors
+
+        #region Methods
+
+        #region Fill Methods
 
         public void FillSettings()
         {
@@ -34,13 +46,13 @@ namespace MTG_Librarian
             ApplicationSettings.DockLeftPortion = Globals.Forms.DockPanel.DockLeftPortion;
             ApplicationSettings.DockRightPortion = Globals.Forms.DockPanel.DockRightPortion;
             ApplicationSettings.DockBottomPortion = Globals.Forms.DockPanel.DockBottomPortion;
-            SaveDockState(DockState.DockLeft);
-            SaveDockState(DockState.Document);
-            SaveDockState(DockState.DockBottom);
-            SaveDockState(DockState.DockRight);
+            FillDockState(DockState.DockLeft);
+            FillDockState(DockState.Document);
+            FillDockState(DockState.DockBottom);
+            FillDockState(DockState.DockRight);
         }
 
-        public void SaveDockState(DockState dockState)
+        public void FillDockState(DockState dockState)
         {
             var dockWindow = Globals.Forms.DockPanel.DockWindows[dockState];
             if (dockWindow != null && dockWindow.NestedPanes.Count > 0)
@@ -66,10 +78,18 @@ namespace MTG_Librarian
             }
         }
 
+        #endregion Fill Methods
+
+        #region Save Methods
+
         public void SaveSettings()
         {
             ApplicationSettings.Save();
         }
+
+        #endregion Save Methods
+
+        #region Restore Methods
 
         public void LayoutMainForm()
         {
@@ -171,5 +191,9 @@ namespace MTG_Librarian
             if (mainCollection != null)
                 Globals.Forms.MainForm.LoadCollection(mainCollection);
         }
+
+        #endregion Restore Methods
+
+        #endregion Methods
     }
 }

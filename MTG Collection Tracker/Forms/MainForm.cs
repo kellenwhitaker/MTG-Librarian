@@ -23,7 +23,6 @@ namespace MTG_Librarian
         private static readonly SplashForm splash = new SplashForm();
         private const int SmallIconWidth = 27;
         private const int SmallIconHeight = 21;
-        private static ApplicationSettings ApplicationSettings;
         private StatusBarActionButtonClickDelegate statusBarActionButtonClickDelegate;
 
         #endregion Fields
