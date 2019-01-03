@@ -7,6 +7,7 @@ using KW.WinFormsUI.Docking;
 using System.Drawing;
 using System.Collections;
 using System.ComponentModel;
+
 //Note: editable columns - count, cost, tags, foil
 //TODO4 CollectionViewForms must also be updated after set updates
 //TODO4 mtgjson issues: no tcgplayerProductId for split cards, lands
@@ -59,6 +60,7 @@ namespace MTG_Librarian
             Globals.ImageLists.SymbolIcons16 = new ImageList() { ColorDepth = ColorDepth.Depth24Bit, ImageSize = new Size(16, 16) };
 
             #region Add mana icons
+
             Globals.ImageLists.ManaIcons.Images.Add("{W}", Properties.Resources.W_20);
             Globals.ImageLists.ManaIcons.Images.Add("{U}", Properties.Resources.U_20);
             Globals.ImageLists.ManaIcons.Images.Add("{B}", Properties.Resources.B_20);
@@ -109,7 +111,8 @@ namespace MTG_Librarian
             Globals.ImageLists.SymbolIcons16.Images.Add("{2/B}", Properties.Resources.C2B_16);
             Globals.ImageLists.SymbolIcons16.Images.Add("{2/R}", Properties.Resources.C2R_16);
             Globals.ImageLists.SymbolIcons16.Images.Add("{2/G}", Properties.Resources.C2G_16);
-            #endregion
+
+            #endregion Add mana icons
         }
 
         private void CountInventory()
@@ -117,7 +120,10 @@ namespace MTG_Librarian
             using (var context = new MyDbContext())
             {
                 var inventoryCards = from c in context.Library
-                            select c;
+                                     select c;
+
+                foreach (var magicCard in Globals.Collections.AllMagicCards.Values)
+                    magicCard.CopiesOwned = 0;
 
                 foreach (var inventoryCard in inventoryCards)
                     if (!inventoryCard.Virtual && inventoryCard.Count.HasValue && Globals.Collections.AllMagicCards.TryGetValue(inventoryCard.uuid, out MagicCard magicCard))
@@ -131,6 +137,7 @@ namespace MTG_Librarian
         }
 
         private delegate void SetDownloadedDelegate(object sender, SetDownloadedEventArgs e);
+
         private void SetDownloaded(object sender, SetDownloadedEventArgs e)
         {
             if (InvokeRequired)
@@ -141,10 +148,13 @@ namespace MTG_Librarian
                 Globals.Forms.DBViewForm.LoadSet(e.SetCode);
                 if (Globals.Forms.TasksForm.TaskManager.TaskCount == 0)
                     Globals.Forms.DBViewForm.SortCardListView();
+
+                CountInventory();
             }
         }
 
         private delegate void PricesUpdatedDelegate(object sender, PricesUpdatedEventArgs e);
+
         private void PricesUpdated(object sender, PricesUpdatedEventArgs e)
         {
             if (InvokeRequired)
@@ -160,7 +170,7 @@ namespace MTG_Librarian
                         {
                             dbMatch.tcgplayerMarketPrice = price.Value.Value;
                             context.Update(dbMatch);
-                        }                        
+                        }
                     }
                     context.SaveChanges();
                 }
@@ -191,7 +201,7 @@ namespace MTG_Librarian
                         form.cardListView.RefreshObjects(cardsToRefresh);
                         form.UpdateTotals();
                     }
-                }                
+                }
             }
         }
 
@@ -402,8 +412,8 @@ namespace MTG_Librarian
                         foreach (FullInventoryCard card in e.Items)
                         {
                             var allCopiesSum = (from c in context.LibraryView
-                                            where c.uuid == card.uuid
-                                            select c.Count).Sum();
+                                                where c.uuid == card.uuid
+                                                select c.Count).Sum();
                             if (allCopiesSum.HasValue && Globals.Collections.AllMagicCards.TryGetValue(card.uuid, out MagicCard magicCard))
                                 magicCard.CopiesOwned = allCopiesSum.Value;
                             if (card.Count < 1)
@@ -446,9 +456,9 @@ namespace MTG_Librarian
                            select s).FirstOrDefault();
                 if (set != null)
                 {
-                    if (set.CommonIcon != null)     AddOrUpdateImageListImage(Globals.ImageLists.SmallIconList, $"{set.Name}: Common", set.CommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
-                    if (set.UncommonIcon != null)   AddOrUpdateImageListImage(Globals.ImageLists.SmallIconList, $"{set.Name}: Uncommon", set.UncommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
-                    if (set.RareIcon != null)       AddOrUpdateImageListImage(Globals.ImageLists.SmallIconList, $"{set.Name}: Rare", set.RareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.CommonIcon != null) AddOrUpdateImageListImage(Globals.ImageLists.SmallIconList, $"{set.Name}: Common", set.CommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.UncommonIcon != null) AddOrUpdateImageListImage(Globals.ImageLists.SmallIconList, $"{set.Name}: Uncommon", set.UncommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.RareIcon != null) AddOrUpdateImageListImage(Globals.ImageLists.SmallIconList, $"{set.Name}: Rare", set.RareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
                     if (set.MythicRareIcon != null) AddOrUpdateImageListImage(Globals.ImageLists.SmallIconList, $"{set.Name}: Mythic", set.MythicRareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
                 }
             }
@@ -472,10 +482,10 @@ namespace MTG_Librarian
 
                 foreach (var set in sets)
                 {
-                    if (set.CommonIcon != null)     Globals.ImageLists.SmallIconList.Images.Add($"{set.Name}: Common",     set.CommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
-                    if (set.UncommonIcon != null)   Globals.ImageLists.SmallIconList.Images.Add($"{set.Name}: Uncommon",   set.UncommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
-                    if (set.RareIcon != null)       Globals.ImageLists.SmallIconList.Images.Add($"{set.Name}: Rare",       set.RareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
-                    if (set.MythicRareIcon != null) Globals.ImageLists.SmallIconList.Images.Add($"{set.Name}: Mythic",     set.MythicRareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.CommonIcon != null) Globals.ImageLists.SmallIconList.Images.Add($"{set.Name}: Common", set.CommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.UncommonIcon != null) Globals.ImageLists.SmallIconList.Images.Add($"{set.Name}: Uncommon", set.UncommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.RareIcon != null) Globals.ImageLists.SmallIconList.Images.Add($"{set.Name}: Rare", set.RareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.MythicRareIcon != null) Globals.ImageLists.SmallIconList.Images.Add($"{set.Name}: Mythic", set.MythicRareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
                 }
             }
         }
@@ -571,6 +581,7 @@ namespace MTG_Librarian
         }
 
         static public event EventHandler<CardImageRetrievedEventArgs> CardImageRetrieved;
+
         private static void OnCardImageRetrieved(CardImageRetrievedEventArgs args)
         {
             CardImageRetrieved?.Invoke(Globals.Forms.MainForm, args);
@@ -655,6 +666,7 @@ namespace MTG_Librarian
         }
 
         private delegate void StatusBarActionButtonClickDelegate();
+
         private void statusBarActionButton_Click(object sender, EventArgs e)
         {
             statusBarActionButtonClickDelegate?.Invoke();
