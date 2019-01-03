@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Windows.Forms;
 using CustomControls;
 using System.Collections;
+
 //TODO5: figure out why task manager quits partway through a queue of tasks
 namespace MTG_Librarian
 {
@@ -67,6 +68,7 @@ namespace MTG_Librarian
         }
 
         private delegate void RefreshListViewDelegate();
+
         private void RefreshListView()
         {
             if (listView.InvokeRequired)
@@ -76,6 +78,7 @@ namespace MTG_Librarian
         }
 
         private delegate void MoveLVObjectsDelegate(System.Collections.ICollection objects);
+
         private void MoveLVObjects(System.Collections.ICollection objects)
         {
             if (listView.InvokeRequired)
@@ -85,6 +88,7 @@ namespace MTG_Librarian
         }
 
         private delegate void UpdateStatusBarDelegate();
+
         private void UpdateStatusBar()
         {
             if (progressBar.InvokeRequired)
@@ -111,20 +115,72 @@ namespace MTG_Librarian
 
         private void ResetState()
         {
-            while (_AllTasks.TryTake(out var _));
+            while (_AllTasks.TryTake(out var _)) ;
             _completedTasks.Clear();
         }
 
         public event EventHandler<SetDownloadedEventArgs> SetDownloaded;
+
         private void OnSetDownloaded(SetDownloadedEventArgs args)
         {
             SetDownloaded?.Invoke(this, args);
         }
 
         public event EventHandler<PricesUpdatedEventArgs> PricesUpdated;
+
         private void OnPricesUpdated(PricesUpdatedEventArgs args)
         {
             PricesUpdated?.Invoke(this, args);
+        }
+
+        private void PullIncomingTasks()
+        {
+            while (_IncomingTasks.TryDequeue(out BackgroundTask nextTask))
+            {
+                if (nextTask.AddFirst)
+                    _AllTasks.AddFirst(nextTask);
+                else
+                    _AllTasks.Enqueue(nextTask);
+            }
+        }
+
+        private void FillActiveTasks()
+        {
+            while (_activeTasks.Count < 10 && _AllTasks.FindInitialized().Count() > 0)
+            {
+                var notStarted = _AllTasks.FindInitialized().FirstOrDefault();
+                if (notStarted != null)
+                {
+                    _activeTasks.Add(notStarted);
+                    notStarted.Run();
+                }
+            }
+        }
+
+        private void CheckEndedTasks()
+        {
+            var completedOrFailed = _activeTasks.FindCompletedOrFailed().ToArray();
+            foreach (var task in completedOrFailed)
+            {
+                _activeTasks.Remove(task);
+                _completedTasks.Add(task);
+                if (task is DownloadSetTask downloadTask && task.RunState != RunState.Failed)
+                    OnSetDownloaded(new SetDownloadedEventArgs { SetCode = downloadTask.CardSet.Code });
+                else if (task is GetTCGPlayerPricesTask getPricesTask && task.RunState != RunState.Failed)
+                    OnPricesUpdated(new PricesUpdatedEventArgs { Prices = getPricesTask.productIdDictionary });
+            }
+            if (_activeTasks.Count == 0 && _IncomingTasks.Count == 0)
+                ResetState();
+            if (completedOrFailed.Count() > 0)
+                MoveLVObjects(completedOrFailed);
+        }
+
+        private void UpdateGUI()
+        {
+            if (tasksLabel != null && progressBar != null)
+                UpdateStatusBar();
+            if (listView != null)
+                RefreshListView();
         }
 
         protected override void OnDoWork(DoWorkEventArgs e)
@@ -133,46 +189,14 @@ namespace MTG_Librarian
             watch.Start();
             while (true)
             {
-                while (_IncomingTasks.TryDequeue(out BackgroundTask nextTask))
-                {
-                    if (nextTask.AddFirst)
-                        _AllTasks.AddFirst(nextTask);
-                    else
-                        _AllTasks.Enqueue(nextTask);
-                }
-                while (_activeTasks.Count < 10 && _AllTasks.FindInitialized().Count() > 0)
-                {
-                    var notStarted = _AllTasks.FindInitialized().FirstOrDefault();
-                    if (notStarted != null)
-                    {
-                        _activeTasks.Add(notStarted);
-                        notStarted.Run();
-                    }
-                }
+                PullIncomingTasks();
+                FillActiveTasks();
                 Thread.Sleep(100);
                 if (watch.ElapsedMilliseconds > 500)
                 {
-                    var completedOrFailed = _activeTasks.FindCompletedOrFailed().ToArray();
-                    foreach (var task in completedOrFailed)
-                    {
-                        _activeTasks.Remove(task);
-                        _completedTasks.Add(task);
-                        if (_activeTasks.Count == 0 && _IncomingTasks.Count == 0)
-                            ResetState();
-                        if (task is DownloadSetTask downloadTask && task.RunState != RunState.Failed)
-                            OnSetDownloaded(new SetDownloadedEventArgs { SetCode = downloadTask.CardSet.Code });
-                        else if (task is GetTCGPlayerPricesTask getPricesTask && task.RunState != RunState.Failed)
-                            OnPricesUpdated(new PricesUpdatedEventArgs { Prices = getPricesTask.productIdDictionary });
-                            
-                    }
-                    if (completedOrFailed.Count() > 0 && listView.Objects != null)
-                        MoveLVObjects(completedOrFailed);
-
+                    CheckEndedTasks();
+                    UpdateGUI();
                     watch.Restart();
-                    if (tasksLabel != null && progressBar != null)
-                        UpdateStatusBar();
-                    if (listView != null)
-                        RefreshListView();
                 }
             }
         }
