@@ -26,7 +26,7 @@ namespace MTG_Librarian
                     Collection.CollectionName = value;
             }
         }
-       
+
         public CollectionViewForm()
         {
             InitializeComponent();
@@ -74,8 +74,11 @@ namespace MTG_Librarian
                 }
             }
         }
+
         #region Filters
+
         private delegate void UpdateModelFilterDelegate();
+
         private void UpdateModelFilter()
         {
             if (InvokeRequired)
@@ -85,10 +88,8 @@ namespace MTG_Librarian
                 var selectedObjects = new List<object>();
                 foreach (object o in cardListView.SelectedObjects)
                     selectedObjects.Add(o);
-                cardListView.UseFiltering = true;
+
                 cardListView.ModelFilter = new ModelFilter(GetCardFilter());
-                
-                cardListView.AdditionalFilter = new ModelFilter(GetCardFilter());
                 cardListView.SelectedObjects = selectedObjects;
                 cardListView.RefreshSelectedObjects();
             }
@@ -132,7 +133,9 @@ namespace MTG_Librarian
         {
             return x => setFilterTextBox.UserText == "" ? true : (x as FullInventoryCard).Edition.ToUpper().Contains(setFilterTextBox.UserText.ToUpper());
         }
-        #endregion
+
+        #endregion Filters
+
         public void LoadCollection()
         {
             if (Collection != null)
@@ -196,6 +199,7 @@ namespace MTG_Librarian
         }
 
         public event EventHandler<CardsDroppedEventArgs> CardsDropped;
+
         private void OnCardsDropped(CardsDroppedEventArgs args)
         {
             CardsDropped?.Invoke(this, args);
@@ -243,12 +247,14 @@ namespace MTG_Librarian
         }
 
         public event EventHandler<CardsUpdatedEventArgs> CardsUpdated;
+
         private void OnCardsUpdated(CardsUpdatedEventArgs args)
         {
             CardsUpdated?.Invoke(this, args);
         }
 
         public event EventHandler<CardSelectedEventArgs> CardSelected;
+
         private void OnCardSelected(CardSelectedEventArgs args)
         {
             CardSelected?.Invoke(this, args);
@@ -371,7 +377,9 @@ namespace MTG_Librarian
 
         public class MyCustomSortingDataSource : FastObjectListDataSource
         {
-            public MyCustomSortingDataSource(FastObjectListView listView) : base(listView) { }
+            public MyCustomSortingDataSource(FastObjectListView listView) : base(listView)
+            {
+            }
 
             override public void Sort(OLVColumn column, SortOrder order)
             {
@@ -458,7 +466,7 @@ namespace MTG_Librarian
                         return SortOrder == SortOrder.Ascending ? result : -1 * result;
                     }
                 }
-            }            
+            }
         }
 
         private void cardNameFilterTextBox_TextChanged(object sender, EventArgs e)
@@ -503,7 +511,7 @@ namespace MTG_Librarian
                 if (e.SubItemIndex == costIndex)
                 {
                     if (double.TryParse(e.NewValue?.ToString(), out double cellValue))
-                        card.Cost =  cellValue;
+                        card.Cost = cellValue;
                     cardListView.RefreshObject(card);
                     e.Cancel = true;
                 }

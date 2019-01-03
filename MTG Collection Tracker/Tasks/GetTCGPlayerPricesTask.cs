@@ -20,12 +20,12 @@ namespace MTG_Librarian
             bool isPlural = cards.Count > 1;
             Caption = $"Getting price{(isPlural ? "s" : "")} for {cards.Count} card{(isPlural ? "s" : "")}";
             cardsToPrice = cards;
+            TotalWorkUnits = 1;
         }
 
         public override void Run()
         {
-            RunState = RunState.Running;
-            RunWorkerAsync();
+            base.Run();
         }
 
         protected override void OnDoWork(DoWorkEventArgs e)
@@ -41,7 +41,7 @@ namespace MTG_Librarian
 
                 int count = 0;
                 foreach (int id in productIdDictionary.Keys)
-                { 
+                {
                     if (count == 0)
                         builder.Append(id);
                     else
@@ -58,12 +58,14 @@ namespace MTG_Librarian
                         productIdDictionary[result.productId] = result.marketPrice;
 
                 RunState = responseObject.results.Count() == 0 ? RunState.Failed : RunState.Completed;
+                CompletedWorkUnits = TotalWorkUnits;
             }
             catch (Exception ex)
             {
                 DebugOutput.WriteLine(ex.ToString());
                 RunState = RunState.Failed;
             }
+            finally { watch.Stop(); }
         }
 
         private class ProductPricesResponseObject

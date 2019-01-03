@@ -36,6 +36,7 @@ namespace MTG_Librarian
         private RunState _runState;
         public RunState RunState { get => _runState; protected set { _runState = value; if (_runState == RunState.Failed) Caption = $"[Failed] {Caption}"; } }
         private Image _icon;
+
         public Image Icon
         {
             get => _icon;
@@ -51,7 +52,9 @@ namespace MTG_Librarian
                     _icon = null;
             }
         }
+
         private int _TotalWorkUnits;
+
         public int TotalWorkUnits
         {
             get => _TotalWorkUnits;
@@ -67,7 +70,9 @@ namespace MTG_Librarian
                 }
             }
         }
+
         private int _CompletedWorkUnits;
+
         public int CompletedWorkUnits
         {
             get => _CompletedWorkUnits;
@@ -79,6 +84,7 @@ namespace MTG_Librarian
         }
 
         private delegate void SetProgressBarCurrentBlocksDelegate(int blocks);
+
         private void SetProgressBarCurrentBlocks(int blocks)
         {
             if (ProgressBar.InvokeRequired)
@@ -87,7 +93,12 @@ namespace MTG_Librarian
                 ProgressBar.CurrentBlocks = blocks;
         }
 
-        public abstract void Run();
+        public virtual void Run()
+        {
+            RunState = RunState.Running;
+            watch.Start();
+            RunWorkerAsync();
+        }
 
         public BackgroundTask()
         {

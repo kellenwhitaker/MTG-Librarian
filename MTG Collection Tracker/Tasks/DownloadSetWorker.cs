@@ -17,18 +17,16 @@ namespace MTG_Librarian
         {
             CardSet = set;
             Caption = "Set: " + set.ScrapedName;
+            TotalWorkUnits = 5;
         }
 
         public override void Run()
         {
-            RunState = RunState.Running;
-            RunWorkerAsync();
+            base.Run();
         }
 
         protected override void OnDoWork(DoWorkEventArgs e)
         {
-            watch.Start();
-            TotalWorkUnits = 5;
             try
             {
                 DownloadIcons();
@@ -60,6 +58,7 @@ namespace MTG_Librarian
                     context.SaveChanges();
                 }
                 RunState = RunState.Completed;
+                CompletedWorkUnits = TotalWorkUnits;
             }
             catch (Exception ex)
             {
@@ -68,7 +67,6 @@ namespace MTG_Librarian
             }
             finally
             {
-                CompletedWorkUnits = 5;
                 UpdateIcon();
                 watch.Stop();
             }
