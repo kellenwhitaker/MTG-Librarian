@@ -359,32 +359,6 @@ namespace MTG_Librarian
             return document;
         }
 
-        private void SaveDockState(DockState dockState)
-        {
-            var dockWindow = Globals.Forms.DockPanel.DockWindows[dockState];
-            if (dockWindow != null && dockWindow.NestedPanes.Count > 0)
-            {
-                var pane = dockWindow.NestedPanes[0];
-                var settings = ApplicationSettings.GetDockPaneSettings(dockState, pane.IsAutoHide);
-                settings.ZOrderIndex = dockWindow.GetChildIndex();
-                var contentArray = pane.DockContentArray;
-                var activeContent = pane.ActiveContent;
-                foreach (var dockContent in contentArray)
-                {
-                    if (dockContent is CardInfoForm cardInfoForm)
-                        settings.ContentPanes.Add(new ApplicationSettings.DockContentSettings { ContentType = ApplicationSettings.DockContentEnum.CardInfoForm, IsActivated = cardInfoForm == activeContent });
-                    else if (dockContent is DBViewForm dBViewForm)
-                        settings.ContentPanes.Add(new ApplicationSettings.DockContentSettings { ContentType = ApplicationSettings.DockContentEnum.DBViewForm, IsActivated = dBViewForm == activeContent });
-                    else if (dockContent is CollectionNavigatorForm cardNavigatorForm)
-                        settings.ContentPanes.Add(new ApplicationSettings.DockContentSettings { ContentType = ApplicationSettings.DockContentEnum.NavigatorForm, IsActivated = cardNavigatorForm == activeContent });
-                    else if (dockContent is TasksForm tasksForm)
-                        settings.ContentPanes.Add(new ApplicationSettings.DockContentSettings { ContentType = ApplicationSettings.DockContentEnum.TasksForm, IsActivated = tasksForm == activeContent });
-                    else if (dockContent is CollectionViewForm collectionViewForm)
-                        settings.ContentPanes.Add(new ApplicationSettings.DockContentSettings { ContentType = ApplicationSettings.DockContentEnum.CollectionViewForm, IsActivated = collectionViewForm == activeContent, DocumentId = collectionViewForm.Collection.Id });
-                }
-            }
-        }
-
         #endregion Methods
 
         #region Events
@@ -398,22 +372,9 @@ namespace MTG_Librarian
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            ApplicationSettings = new ApplicationSettings
-            {
-                InInitialState = false,
-                MainFormWindowState = WindowState,
-                MainFormLocation = Location,
-                MainFormSize = Size
-            };
-            ApplicationSettings.ClearDockPaneSettings();
-            ApplicationSettings.DockLeftPortion = Globals.Forms.DockPanel.DockLeftPortion;
-            ApplicationSettings.DockRightPortion = Globals.Forms.DockPanel.DockRightPortion;
-            ApplicationSettings.DockBottomPortion = Globals.Forms.DockPanel.DockBottomPortion;
-            SaveDockState(DockState.DockLeft);
-            SaveDockState(DockState.Document);
-            SaveDockState(DockState.DockBottom);
-            SaveDockState(DockState.DockRight);
-            ApplicationSettings.Save();
+            var settingsManager = new SettingsManager();
+            settingsManager.FillSettings();
+            settingsManager.SaveSettings();
         }
 
         public static void CardFocused(object sender, CardFocusedEventArgs e)
