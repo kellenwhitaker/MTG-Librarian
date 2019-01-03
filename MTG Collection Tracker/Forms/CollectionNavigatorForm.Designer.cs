@@ -74,6 +74,7 @@
             this.olvColumn1.AspectName = "Text";
             this.olvColumn1.AutoCompleteEditor = false;
             this.olvColumn1.AutoCompleteEditorMode = System.Windows.Forms.AutoCompleteMode.None;
+            this.olvColumn1.CellEditUseWholeCell = true;
             this.olvColumn1.Width = 200;
             // 
             // contextMenuStrip1

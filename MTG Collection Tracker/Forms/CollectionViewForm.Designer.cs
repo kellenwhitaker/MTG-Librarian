@@ -189,6 +189,7 @@
             this.CountColumn.AspectName = "Count";
             this.CountColumn.AutoCompleteEditor = false;
             this.CountColumn.AutoCompleteEditorMode = System.Windows.Forms.AutoCompleteMode.None;
+            this.CountColumn.CellEditUseWholeCell = true;
             this.CountColumn.MinimumWidth = 50;
             this.CountColumn.Text = "Count";
             this.CountColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -199,6 +200,7 @@
             this.CostColumn.AspectToStringFormat = "{0:0.00}";
             this.CostColumn.AutoCompleteEditor = false;
             this.CostColumn.AutoCompleteEditorMode = System.Windows.Forms.AutoCompleteMode.None;
+            this.CostColumn.CellEditUseWholeCell = true;
             this.CostColumn.MinimumWidth = 50;
             this.CostColumn.Text = "Cost";
             this.CostColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -215,6 +217,7 @@
             // 
             this.TagsColumn.AspectName = "Tags";
             this.TagsColumn.AutoCompleteEditorMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.TagsColumn.CellEditUseWholeCell = true;
             this.TagsColumn.MinimumWidth = 200;
             this.TagsColumn.Text = "Comments";
             this.TagsColumn.Width = 200;
