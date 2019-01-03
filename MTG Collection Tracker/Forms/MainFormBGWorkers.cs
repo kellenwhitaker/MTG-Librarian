@@ -69,7 +69,7 @@ namespace MTG_Librarian
 
         private void RestoreZOrder(SortedDictionary<int, DockState> ZOrderDictionary)
         {
-           foreach (KeyValuePair<int, DockState> pair in ZOrderDictionary)
+            foreach (KeyValuePair<int, DockState> pair in ZOrderDictionary)
                 Globals.Forms.DockPanel.UpdateDockWindowZOrder(pair.Value.ToDockStyle(), true);
         }
 
@@ -159,7 +159,7 @@ namespace MTG_Librarian
                     }
                     string href = Cell.Descendants().FirstOrDefault(a => a.Attributes.Contains("href"))?.Attributes.FirstOrDefault(a => a.Name == "href")?.Value;
                     if (href != null)
-                        set.MTGJSONURL = "http://mtgjson.com/" + href;
+                        set.MTGJSONURL = $"http://mtgjson.com/{href}.zip";
                     sets.Add(set);
                 }
             }
@@ -223,7 +223,7 @@ namespace MTG_Librarian
                     AutoPopDelay = 30000
                 };
                 yourToolTip.SetToolTip(mainStatusLabel, builder.ToString());
-                statusBarActionButtonClickDelegate = () => 
+                statusBarActionButtonClickDelegate = () =>
                 {
                     var tasksToAdd = new List<BackgroundTask>();
                     foreach (var set in sets)

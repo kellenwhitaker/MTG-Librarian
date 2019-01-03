@@ -5,6 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Net.Http;
 using Newtonsoft.Json;
+using System.IO.Compression;
 
 namespace MTG_Librarian
 {
@@ -25,6 +26,18 @@ namespace MTG_Librarian
             base.Run();
         }
 
+        private static byte[] Unzip(byte[] zipped)
+        {
+            using (var ms = new MemoryStream(zipped))
+            using (var archive = new ZipArchive(ms, ZipArchiveMode.Read))
+            using (var entryStream = archive.Entries[0].Open())
+            using (var outputStream = new MemoryStream())
+            {
+                entryStream.CopyTo(outputStream);
+                return outputStream.ToArray();
+            }
+        }
+
         protected override void OnDoWork(DoWorkEventArgs e)
         {
             try
@@ -34,7 +47,9 @@ namespace MTG_Librarian
                 UpdateIcon();
                 string scrapedName = CardSet.ScrapedName;
                 string mtgjsonUrl = CardSet.MTGJSONURL;
-                string json = DownloadJSON(CardSet.MTGJSONURL);
+                var zipped = DownloadZIP(CardSet.MTGJSONURL);
+                var unzipped = Unzip(zipped);
+                string json = System.Text.Encoding.Default.GetString(unzipped);
                 CardSet = JsonConvert.DeserializeObject<CardSet>(json);
                 if (CardSet == null) throw new InvalidDataException("Invalid JSON encountered");
                 CardSet.ScrapedName = scrapedName;
@@ -72,17 +87,17 @@ namespace MTG_Librarian
             }
         }
 
-        private static string DownloadJSON(string uri)
+        private static byte[] DownloadZIP(string uri)
         {
-            string json = "";
+            byte[] zip;
             using (var client = new HttpClient())
             {
                 var httpResponseMessage = client.GetAsync(uri).Result;
                 if (httpResponseMessage.IsSuccessStatusCode)
-                    json = httpResponseMessage.Content.ReadAsStringAsync().Result;
+                    zip = httpResponseMessage.Content.ReadAsByteArrayAsync().Result;
                 else
                     throw new HttpRequestException($"{(int)httpResponseMessage.StatusCode}: {httpResponseMessage.StatusCode.ToString()}");
-                return json;
+                return zip;
             }
         }
 
