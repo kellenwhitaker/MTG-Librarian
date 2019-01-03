@@ -295,12 +295,17 @@ namespace MTG_Librarian
                 else if (e.KeyChar == '\r')
                 {
                     e.Handled = true;
-                    var cardsToPrice = new List<FullInventoryCard>();
-                    foreach (var row in cardListView.SelectedObjects)
-                        if (row is FullInventoryCard)
-                            cardsToPrice.Add(row as FullInventoryCard);
-                    if (cardsToPrice.Count > 0)
-                        Globals.Forms.TasksForm.TaskManager.AddTask(new GetTCGPlayerPricesTask(cardsToPrice) { AddFirst = true });
+                    if (cardListView.SelectedObjects.Count > 0)
+                    {
+                        var cardsToPrice = new List<FullInventoryCard>();
+                        foreach (var row in cardListView.SelectedObjects)
+                            if (row is FullInventoryCard card && card.tcgplayerProductId != 0)
+                                cardsToPrice.Add(row as FullInventoryCard);
+                        if (cardsToPrice.Count > 0)
+                            Globals.Forms.TasksForm.TaskManager.AddTask(new GetTCGPlayerPricesTask(cardsToPrice) { AddFirst = true });
+                        else
+                            MessageBox.Show("No valid product IDs were found. Please try updating the set(s)");
+                    }
                 }
             }
         }
