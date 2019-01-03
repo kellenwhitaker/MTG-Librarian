@@ -313,7 +313,7 @@ namespace MTG_Librarian
 
         private void fastObjectListView1_CellClick(object sender, CellClickEventArgs e)
         {
-            if (e.ClickCount == 2 && e.Column.IsEditable && e.Model is FullInventoryCard)
+            if (e.ClickCount == 2 && e.Column.IsEditable && !e.Column.CheckBoxes && e.Model is FullInventoryCard)
             {
                 e.ListView.StartCellEdit(e.Item, e.Item.SubItems.IndexOf(e.SubItem));
                 e.Handled = true;
