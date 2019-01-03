@@ -450,7 +450,6 @@
         public BrightIdeasSoftware.TreeListView setListView;
         private BrightIdeasSoftware.OLVColumn SetName;
         private EnhancedTextBox.EnhancedTextBox setFilterBox;
-        private BrightIdeasSoftware.FastObjectListView cardListView;
         private BrightIdeasSoftware.OLVColumn olvColumn1;
         private BrightIdeasSoftware.OLVColumn olvColumn2;
         private BrightIdeasSoftware.OLVColumn olvColumn3;
@@ -472,5 +471,6 @@
         private BrightIdeasSoftware.OLVColumn copiesOwnedColumn;
         private System.Windows.Forms.ComboBox copiesOwnedFilterBox;
         private System.Windows.Forms.ComboBox setTypeFilterComboBox;
+        public BrightIdeasSoftware.FastObjectListView cardListView;
     }
 }

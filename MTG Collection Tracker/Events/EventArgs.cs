@@ -3,10 +3,11 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
+
 //TODO2 make card properties uniform
 namespace MTG_Librarian
 {
-    public class SetDownloadedEventArgs: EventArgs
+    public class SetDownloadedEventArgs : EventArgs
     {
         public string SetCode { get; set; }
     }
@@ -14,7 +15,6 @@ namespace MTG_Librarian
     public class CardsDroppedEventArgs : EventArgs
     {
         public ArrayList Items { get; set; }
-        public CollectionViewForm TargetCollectionViewForm { get; set; }
         public CardCollection TargetCollection { get; set; }
         public DockContent SourceForm { get; set; }
     }

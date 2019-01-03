@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Windows.Forms;
 using KW.WinFormsUI.Docking;
 using System.Drawing;
-using System.Collections;
-using System.ComponentModel;
 
 //Note: editable columns - count, cost, tags, foil
 //TODO4 CollectionViewForms must also be updated after set updates
@@ -20,7 +17,7 @@ namespace MTG_Librarian
     {
         #region Fields
 
-        private static readonly SplashForm splash = new SplashForm();
+        private readonly SplashForm splash;
         private const int SmallIconWidth = 27;
         private const int SmallIconHeight = 21;
         private StatusBarActionButtonClickDelegate statusBarActionButtonClickDelegate;
@@ -35,6 +32,7 @@ namespace MTG_Librarian
             Globals.Forms.DockPanel = dockPanel1;
             Globals.Forms.DockPanel.SetDoubleBuffered();
             Globals.Forms.MainForm = this;
+            splash = new SplashForm();
             splash.Show();
             SetupUI();
         }
@@ -47,22 +45,23 @@ namespace MTG_Librarian
         {
             SetupImageLists();
             Globals.Forms.CardInfoForm = new CardInfoForm();
+            EventManager.CardImageRetrieved += Globals.Forms.CardInfoForm.cardImageRetrieved;
             Globals.Forms.NavigationForm = new CollectionNavigatorForm();
-            Globals.Forms.NavigationForm.CardsDropped += navigationFormCardsDropped;
+            Globals.Forms.NavigationForm.CardsDropped += EventManager.NavigationFormCardsDropped;
             Globals.Forms.DBViewForm = new DBViewForm();
-            Globals.Forms.DBViewForm.CardsActivated += dbFormCardActivated;
-            Globals.Forms.DBViewForm.CardSelected += CardSelected;
+            Globals.Forms.DBViewForm.CardsActivated += EventManager.DBViewFormCardActivated;
+            Globals.Forms.DBViewForm.CardSelected += EventManager.CardSelected;
             Globals.Forms.TasksForm = new TasksForm();
             Globals.Forms.TasksForm.InitializeTaskManager();
             Globals.Forms.TasksForm.tasksListView.GetColumn(0).Renderer = new IconRenderer();
             Globals.Forms.TasksForm.tasksListView.GetColumn(1).Renderer = new ProgressBarRenderer();
-            Globals.Forms.TasksForm.TaskManager.SetDownloaded += SetDownloaded;
-            Globals.Forms.TasksForm.TaskManager.PricesUpdated += PricesUpdated;
+            Globals.Forms.TasksForm.TaskManager.SetDownloaded += EventManager.SetDownloaded;
+            Globals.Forms.TasksForm.TaskManager.PricesFetched += EventManager.PricesFetched;
             splitContainer1.SplitterDistance = Height;
             InitUIWorker.RunWorkerAsync();
         }
 
-        private void SetupImageLists()
+        private static void SetupImageLists()
         {
             Globals.ImageLists.SmallIconList = new ImageList() { ColorDepth = ColorDepth.Depth32Bit, ImageSize = new Size(SmallIconWidth, SmallIconHeight) };
             Globals.ImageLists.ManaIcons = new ImageList() { ColorDepth = ColorDepth.Depth32Bit, ImageSize = new Size(18, 18) };
@@ -124,169 +123,7 @@ namespace MTG_Librarian
             #endregion Add mana icons
         }
 
-        private void CountInventory()
-        {
-            using (var context = new MyDbContext())
-            {
-                var inventoryCards = from c in context.Library
-                                     select c;
-
-                foreach (var magicCard in Globals.Collections.AllMagicCards.Values)
-                    magicCard.CopiesOwned = 0;
-
-                foreach (var inventoryCard in inventoryCards)
-                    if (!inventoryCard.Virtual && inventoryCard.Count.HasValue && Globals.Collections.AllMagicCards.TryGetValue(inventoryCard.uuid, out MagicCard magicCard))
-                        magicCard.CopiesOwned += inventoryCard.Count.Value;
-            }
-        }
-
-        private InventoryCard AddMagicCardToCollection(MyDbContext context, MagicCard magicCard, CardCollection collection, int insertionIndex = 0)
-        {
-            var inventoryCard = new InventoryCard
-            {
-                DisplayName = magicCard.DisplayName,
-                uuid = magicCard.uuid,
-                multiverseId_Inv = magicCard.multiverseId,
-                CollectionId = collection.Id,
-                InsertionIndex = insertionIndex,
-                Virtual = collection.Virtual
-            };
-            if (magicCard.isFoilOnly)
-                inventoryCard.Foil = true;
-            else
-                inventoryCard.Foil = false;
-            if (magicCard.PartB != null)
-                inventoryCard.PartB_uuid = magicCard.PartB.uuid;
-            context.Library.Add(inventoryCard);
-            return inventoryCard;
-        }
-
-        private void AddMagicCardsToDocument(List<OLVCardItem> cards, CollectionViewForm collectionViewForm)
-        {
-            if (collectionViewForm != null)
-            {
-                var collectionName = collectionViewForm.DocumentName;
-                var setItems = new Dictionary<string, OLVSetItem>();
-                using (MyDbContext context = new MyDbContext())
-                {
-                    var cardsAdded = new List<InventoryCard>();
-                    int insertionIndex = 0;
-                    foreach (OLVCardItem cardItem in cards)
-                    {
-                        var card = cardItem.MagicCard;
-                        var inventoryCard = AddMagicCardToCollection(context, card, collectionViewForm.Collection, insertionIndex);
-                        cardsAdded.Add(inventoryCard);
-                        insertionIndex++;
-                        if (!setItems.TryGetValue(card.Edition, out OLVSetItem setItem))
-                            if ((setItem = Globals.Forms.DBViewForm.SetItems.FirstOrDefault(x => x.Name == card.Edition)) != null)
-                                setItems.Add(card.Edition, setItem);
-                    }
-                    context.SaveChanges();
-                    var fullCardsAdded = new List<FullInventoryCard>();
-                    foreach (InventoryCard card in cardsAdded)
-                    {
-                        var fullCard = card.ToFullCard(context);
-                        if (fullCard != null)
-                            fullCardsAdded.Add(fullCard);
-                        if (!card.Virtual && Globals.Collections.AllMagicCards.TryGetValue(card.uuid, out MagicCard magicCard))
-                            magicCard.CopiesOwned++;
-                    }
-                    collectionViewForm.AddFullInventoryCards(fullCardsAdded);
-                    Globals.Forms.DBViewForm.setListView.RefreshObjects(setItems.Values.ToArray());
-                }
-            }
-        }
-
-        private void AddMagicCardsToCollection(List<OLVCardItem> cards, CardCollection collection)
-        {
-            var setItems = new Dictionary<string, OLVSetItem>();
-            using (MyDbContext context = new MyDbContext())
-            {
-                var cardsAdded = new List<InventoryCard>();
-                int insertionIndex = 0;
-                foreach (OLVCardItem cardItem in cards)
-                {
-                    var card = cardItem.MagicCard;
-                    var inventoryCard = AddMagicCardToCollection(context, card, collection, insertionIndex);
-                    cardsAdded.Add(inventoryCard);
-                    insertionIndex++;
-                    if (!setItems.TryGetValue(card.Edition, out OLVSetItem setItem))
-                        if ((setItem = Globals.Forms.DBViewForm.SetItems.FirstOrDefault(x => x.Name == card.Edition)) != null)
-                            setItems.Add(card.Edition, setItem);
-                }
-                context.SaveChanges();
-                var cvForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.Collection.Id == collection.Id);
-                var fullCardsAdded = new List<FullInventoryCard>();
-                foreach (InventoryCard card in cardsAdded)
-                {
-                    if (cvForm != null)
-                    {
-                        var fullCard = card.ToFullCard(context);
-                        if (fullCard != null)
-                            fullCardsAdded.Add(fullCard);
-                    }
-                    if (!card.Virtual && Globals.Collections.AllMagicCards.TryGetValue(card.uuid, out MagicCard magicCard))
-                        magicCard.CopiesOwned++;
-                }
-                if (cvForm != null)
-                    cvForm.AddFullInventoryCards(fullCardsAdded);
-                Globals.Forms.DBViewForm.setListView.RefreshObjects(setItems.Values.ToArray());
-            }
-        }
-
-        private void MoveFullInventoryCardsToDocument(ArrayList fullInventoryCards, CollectionViewForm sourceCVForm, CollectionViewForm targetCVForm)
-        {
-            var cardsList = new List<FullInventoryCard>();
-            try
-            {
-                using (var context = new MyDbContext())
-                {
-                    foreach (FullInventoryCard fullInventoryCard in fullInventoryCards)
-                    {
-                        fullInventoryCard.CollectionId = targetCVForm.Collection.Id;
-                        fullInventoryCard.Virtual = targetCVForm.Collection.Virtual;
-                        context.Update(fullInventoryCard.InventoryCard);
-                        cardsList.Add(fullInventoryCard);
-                    }
-                    context.SaveChanges();
-                }
-                sourceCVForm.RemoveFullInventoryCards(cardsList);
-                targetCVForm.AddFullInventoryCards(cardsList);
-            }
-            catch (Exception ex)
-            {
-                DebugOutput.WriteLine(ex.ToString());
-                MessageBox.Show("Could not move cards to collection.");
-            }
-        }
-
-        private void MoveFullInventoryCardsToCollection(ArrayList fullInventoryCards, CollectionViewForm sourceCVForm, CardCollection collection)
-        {
-            var cardsList = new List<FullInventoryCard>();
-            try
-            {
-                using (var context = new MyDbContext())
-                {
-                    foreach (FullInventoryCard fullInventoryCard in fullInventoryCards)
-                    {
-                        fullInventoryCard.CollectionId = collection.Id;
-                        fullInventoryCard.Virtual = collection.Virtual;
-                        context.Update(fullInventoryCard.InventoryCard);
-                        cardsList.Add(fullInventoryCard);
-                    }
-                    context.SaveChanges();
-                }
-                sourceCVForm.RemoveFullInventoryCards(cardsList);
-                Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.Collection.Id == collection.Id)?.AddFullInventoryCards(cardsList);
-            }
-            catch (Exception ex)
-            {
-                DebugOutput.WriteLine(ex.ToString());
-                MessageBox.Show("Could not move cards to collection.");
-            }
-        }
-
-        private void AddSetIcon(string SetCode)
+        public void AddSetIcon(string SetCode)
         {
             using (var context = new MyDbContext())
             {
@@ -329,35 +166,6 @@ namespace MTG_Librarian
             }
         }
 
-        public CollectionViewForm LoadCollection(int id, DockState dockState = DockState.Document)
-        {
-            CollectionViewForm collectionViewForm = null;
-            CardCollection collection;
-            using (var context = new MyDbContext())
-            {
-                collection = (from c in context.Collections
-                              where c.Id == id
-                              select c).FirstOrDefault();
-            }
-            if (collection != null)
-                collectionViewForm = LoadCollection(collection, dockState);
-
-            return collectionViewForm;
-        }
-
-        public CollectionViewForm LoadCollection(CardCollection collection, DockState dockState = DockState.Document)
-        {
-            var document = new CollectionViewForm { Collection = collection, Text = collection.CollectionName };
-            document.LoadCollection();
-            document.CardsDropped += cvFormCardsDropped;
-            document.CardsUpdated += cvFormCardsUpdated;
-            document.CardSelected += CardSelected;
-            document.cardListView.SmallImageList = Globals.ImageLists.SmallIconList;
-            document.Show(Globals.Forms.DockPanel, dockState);
-            Globals.Forms.DockPanel.ActiveDocumentPane.SetDoubleBuffered();
-            return document;
-        }
-
         #endregion Methods
 
         #region Events
@@ -374,239 +182,6 @@ namespace MTG_Librarian
             var settingsManager = new SettingsManager();
             settingsManager.FillSettings();
             settingsManager.SaveSettings();
-        }
-
-        public static void CardFocused(object sender, CardFocusedEventArgs e)
-        {
-            Globals.States.CardFocusedUuid = e.uuid;
-        }
-
-        private delegate void SetDownloadedDelegate(object sender, SetDownloadedEventArgs e);
-
-        private void SetDownloaded(object sender, SetDownloadedEventArgs e)
-        {
-            if (InvokeRequired)
-                BeginInvoke(new SetDownloadedDelegate(SetDownloaded), sender, e);
-            else
-            {
-                AddSetIcon(e.SetCode);
-                Globals.Forms.DBViewForm.LoadSet(e.SetCode);
-                if (Globals.Forms.TasksForm.TaskManager.TaskCount == 0)
-                    Globals.Forms.DBViewForm.SortCardListView();
-
-                CountInventory();
-            }
-        }
-
-        private delegate void PricesUpdatedDelegate(object sender, PricesUpdatedEventArgs e);
-
-        private void PricesUpdated(object sender, PricesUpdatedEventArgs e)
-        {
-            if (InvokeRequired)
-                BeginInvoke(new PricesUpdatedDelegate(PricesUpdated), sender, e);
-            else
-            {
-                using (var context = new MyDbContext())
-                {
-                    MagicCard dbMatch;
-                    foreach (var price in e.Prices)
-                    {
-                        if (price.Value.HasValue && (dbMatch = Globals.Collections.AllMagicCards.FirstOrDefault(x => x.Value.tcgplayerProductId == price.Key).Value) != null)
-                        {
-                            dbMatch.tcgplayerMarketPrice = price.Value.Value;
-                            context.Update(dbMatch);
-                        }
-                    }
-                    context.SaveChanges();
-                }
-
-                foreach (var form in Globals.Forms.OpenCollectionForms)
-                {
-                    var cardsToRefresh = new List<FullInventoryCard>();
-                    foreach (var price in e.Prices)
-                    {
-                        if (price.Value.HasValue)
-                        {
-                            var matches = new List<FullInventoryCard>();
-                            foreach (var row in form.cardListView.Objects)
-                                if (row is FullInventoryCard card && card.tcgplayerProductId == price.Key)
-                                    matches.Add(row as FullInventoryCard);
-                            if (matches.Count() > 0)
-                            {
-                                foreach (var match in matches)
-                                {
-                                    match.tcgplayerMarketPrice = price.Value.Value;
-                                    cardsToRefresh.Add(match);
-                                }
-                            }
-                        }
-                    }
-                    if (cardsToRefresh.Count > 0)
-                    {
-                        form.cardListView.RefreshObjects(cardsToRefresh);
-                        form.UpdateTotals();
-                    }
-                }
-            }
-        }
-
-        private void navigationFormCardsDropped(object sender, CardsDroppedEventArgs e)
-        {
-            if (e.Items[0] is OLVCardItem)
-            {
-                var cardItems = new List<OLVCardItem>();
-                foreach (OLVCardItem cardItem in e.Items)
-                    cardItems.Add(cardItem);
-                AddMagicCardsToCollection(cardItems, e.TargetCollectionViewForm.Collection);
-            }
-            else if (e.Items[0] is OLVSetItem setItem)
-                AddMagicCardsToCollection(setItem.Cards, e.TargetCollectionViewForm.Collection);
-            else if (e.Items[0] is OLVRarityItem rarityItem)
-                AddMagicCardsToCollection(rarityItem.Cards, e.TargetCollectionViewForm.Collection);
-            else if (e.Items[0] is FullInventoryCard)
-                MoveFullInventoryCardsToCollection(e.Items, e.SourceForm as CollectionViewForm, e.TargetCollection);
-        }
-
-        private void cvFormCardsDropped(object sender, CardsDroppedEventArgs e)
-        {
-            if (e.Items[0] is OLVCardItem)
-            {
-                var cardItems = new List<OLVCardItem>();
-                foreach (OLVCardItem cardItem in e.Items)
-                    cardItems.Add(cardItem);
-                AddMagicCardsToDocument(cardItems, e.TargetCollectionViewForm);
-            }
-            else if (e.Items[0] is OLVSetItem setItem)
-                AddMagicCardsToDocument(setItem.Cards, e.TargetCollectionViewForm);
-            else if (e.Items[0] is OLVRarityItem rarityItem)
-                AddMagicCardsToDocument(rarityItem.Cards, e.TargetCollectionViewForm);
-            else if (e.Items[0] is FullInventoryCard && e.SourceForm != e.TargetCollectionViewForm)
-                MoveFullInventoryCardsToDocument(e.Items, e.SourceForm as CollectionViewForm, e.TargetCollectionViewForm);
-        }
-
-        private void cvFormCardsUpdated(object sender, CardsUpdatedEventArgs e)
-        {
-            if (e.CollectionViewForm != null)
-            {
-                var setItems = new Dictionary<string, OLVSetItem>();
-                using (MyDbContext context = new MyDbContext())
-                {
-                    try
-                    {
-                        foreach (FullInventoryCard card in e.Items)
-                        {
-                            if (card.Count > 0)
-                            {
-                                context.Library.Update(card.InventoryCard);
-                                if (!setItems.TryGetValue(card.Edition, out OLVSetItem setItem))
-                                    if ((setItem = Globals.Forms.DBViewForm.SetItems.FirstOrDefault(x => x.Name == card.Edition)) != null)
-                                        setItems.Add(card.Edition, setItem);
-                            }
-                            else
-                                context.Library.Remove(card.InventoryCard);
-                        }
-                        context.SaveChanges();
-                        var cardsStillSelected = new List<FullInventoryCard>();
-                        var cardsToRemove = new List<FullInventoryCard>();
-                        foreach (FullInventoryCard card in e.Items)
-                        {
-                            var allCopiesSum = (from c in context.LibraryView
-                                                where c.uuid == card.uuid
-                                                select c.Count).Sum();
-                            if (allCopiesSum.HasValue && Globals.Collections.AllMagicCards.TryGetValue(card.uuid, out MagicCard magicCard))
-                                magicCard.CopiesOwned = allCopiesSum.Value;
-                            if (card.Count < 1)
-                                cardsToRemove.Add(card);
-                            else
-                                cardsStillSelected.Add(card);
-                        }
-                        e.CollectionViewForm.cardListView.RemoveObjects(cardsToRemove);
-                        e.CollectionViewForm.cardListView.SelectedObjects = cardsStillSelected; // workaround: list view will not actually update selected items when removing from SelectedObjects
-                        Globals.Forms.DBViewForm.setListView.RefreshObjects(setItems.Values.ToArray());
-                    }
-                    catch (Exception ex)
-                    {
-                        DebugOutput.WriteLine(ex.ToString());
-                        foreach (FullInventoryCard card in e.Items)
-                            context.Entry(card).Reload();
-
-                        MessageBox.Show(ex.ToString());
-                    }
-                    finally
-                    {
-                        e.CollectionViewForm.UpdateTotals();
-                        e.CollectionViewForm.cardListView.Refresh();
-                    }
-                }
-            }
-        }
-
-        private void dbFormCardActivated(object sender, CardsActivatedEventArgs args)
-        {
-            cvFormCardsDropped(sender, new CardsDroppedEventArgs { Items = args.CardItems });
-        }
-
-        private void navFormCollectionActivated(object sender, CollectionActivatedEventArgs e)
-        {
-            if (e.NavigatorCollection?.Id is int id)
-            {
-                if (dockPanel1.Documents.FirstOrDefault(x => (x as CollectionViewForm).Collection.Id == id) is CollectionViewForm document)
-                    document.Activate();
-                else
-                    LoadCollection(e.NavigatorCollection.CardCollection);
-            }
-        }
-
-        public static void CardSelected(object sender, CardSelectedEventArgs e)
-        {
-            var card = e.MagicCard;
-            Globals.Forms.CardInfoForm.CardSelected(card);
-            CardFocused(sender, new CardFocusedEventArgs { uuid = card.uuid });
-
-            using (CardImagesDbContext context = new CardImagesDbContext(card.Edition))
-            {
-                var imageBytes = (from i in context.CardImages
-                                  where i.uuid == card.uuid
-                                  select i).FirstOrDefault()?.CardImageBytes;
-
-                if (imageBytes != null)
-                {
-                    var img = ImageExtensions.FromByteArray(imageBytes);
-                    OnCardImageRetrieved(new CardImageRetrievedEventArgs { uuid = card.uuid, CardImage = img });
-                }
-                else
-                {
-                    string displayName;
-                    if (card is FullInventoryCard fullInventoryCard)
-                        displayName = fullInventoryCard.DisplayName;
-                    else
-                        displayName = card.DisplayName;
-                    Globals.Forms.TasksForm.TaskManager.AddTask(new DownloadResourceTask { AddFirst = true, Caption = $"Card Image: {displayName}", URL = $"http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={card.multiverseId}&type=card", TaskObject = new BasicCardArgs { uuid = card.uuid, MultiverseId = card.multiverseId, Edition = card.Edition }, OnTaskCompleted = ImageDownloadCompleted });
-                }
-            }
-        }
-
-        private static void ImageDownloadCompleted(object sender, RunWorkerCompletedEventArgs e)
-        {
-            var args = e.Result as CardResourceArgs;
-            try
-            {
-                using (CardImagesDbContext context = new CardImagesDbContext(args.Edition))
-                {
-                    context.Add(new DbCardImage { uuid = args.uuid, CardImageBytes = args.Data });
-                    context.SaveChanges();
-                }
-                var img = ImageExtensions.FromByteArray(args.Data);
-                OnCardImageRetrieved(new CardImageRetrievedEventArgs { uuid = args.uuid, MultiverseId = args.MultiverseId, CardImage = img });
-            }
-            catch (Exception ex) { DebugOutput.WriteLine(ex.ToString()); }
-        }
-
-        static public event EventHandler<CardImageRetrievedEventArgs> CardImageRetrieved;
-
-        private static void OnCardImageRetrieved(CardImageRetrievedEventArgs args)
-        {
-            CardImageRetrieved?.Invoke(Globals.Forms.MainForm, args);
         }
 
         #endregion MainForm Events

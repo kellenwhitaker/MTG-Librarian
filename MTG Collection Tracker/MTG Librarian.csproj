@@ -270,8 +270,10 @@
   <ItemGroup>
     <Compile Include="Classes\AlphaNumericString.cs" />
     <Compile Include="Classes\ApplicationSettings.cs" />
+    <Compile Include="Classes\CardManager.cs" />
     <Compile Include="Classes\ConcurrentDeque.cs" />
     <Compile Include="Classes\DebugOutput.cs" />
+    <Compile Include="Classes\EventManager.cs" />
     <Compile Include="Classes\Globals.cs" />
     <Compile Include="Classes\SettingsManager.cs" />
     <Compile Include="Entities\CardCollection.cs" />

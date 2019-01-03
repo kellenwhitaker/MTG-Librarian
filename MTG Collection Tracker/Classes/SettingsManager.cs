@@ -162,7 +162,7 @@ namespace MTG_Librarian
             else if (contentSettings.ContentType == ApplicationSettings.DockContentEnum.TasksForm)
                 dockContent = Globals.Forms.TasksForm;
             else
-                dockContent = Globals.Forms.MainForm.LoadCollection(contentSettings.DocumentId, dockState);
+                dockContent = CardManager.LoadCollection(contentSettings.DocumentId, dockState);
 
             dockContent?.Show(Globals.Forms.DockPanel, dockState);
             return dockContent;
@@ -189,7 +189,7 @@ namespace MTG_Librarian
                                   select c).FirstOrDefault();
 
             if (mainCollection != null)
-                Globals.Forms.MainForm.LoadCollection(mainCollection);
+                CardManager.LoadCollection(mainCollection);
         }
 
         #endregion Restore Methods

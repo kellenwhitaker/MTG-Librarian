@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
-using KW.WinFormsUI.Docking;
 
 namespace MTG_Librarian
 {
@@ -63,7 +62,7 @@ namespace MTG_Librarian
             Globals.Forms.DBViewForm.LoadSets();
             InitUIWorker.ReportProgress(0, new SplashProgressObject("Loading collections...", 2));
             Globals.Forms.NavigationForm.LoadGroups();
-            CountInventory();
+            CardManager.CountInventory();
             AddSetIcons();
             InitUIWorker.ReportProgress(0, new SplashProgressObject("Starting application...", 3));
             Thread.Sleep(100);
@@ -80,7 +79,7 @@ namespace MTG_Librarian
             settingsManager.LayoutDockPanel();
             Globals.Forms.NavigationForm.LoadTree();
             Globals.Forms.DBViewForm.LoadTree();
-            Globals.Forms.NavigationForm.CollectionActivated += navFormCollectionActivated;
+            Globals.Forms.NavigationForm.CollectionActivated += EventManager.NavigationFormCollectionActivated;
             Show();
             settingsManager.LayoutMainForm();
             CheckForNewSetsWorker.RunWorkerCompleted += CheckForNewSetsWorker_RunWorkerCompleted;

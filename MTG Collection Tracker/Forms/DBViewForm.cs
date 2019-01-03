@@ -7,7 +7,6 @@ using System.Windows.Forms;
 using KW.WinFormsUI.Docking;
 using BrightIdeasSoftware;
 using System.Collections;
-using System.Reflection;
 
 namespace MTG_Librarian
 {

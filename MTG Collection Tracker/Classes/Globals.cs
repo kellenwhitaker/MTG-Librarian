@@ -11,10 +11,10 @@ namespace MTG_Librarian
         }
 
         public static class States
-        {  
+        {
             public static string CardFocusedUuid { get; set; }
         }
-    
+
         public static class Forms
         {
             public static KW.WinFormsUI.Docking.DockPanel DockPanel { get; set; }

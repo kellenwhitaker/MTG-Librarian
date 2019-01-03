@@ -10,7 +10,6 @@ namespace MTG_Librarian
         public CardInfoForm()
         {
             InitializeComponent();
-            MainForm.CardImageRetrieved += cardImageRetrieved;
             DockAreas = DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockBottom;
         }
 
@@ -70,7 +69,7 @@ namespace MTG_Librarian
 
         #region Events
 
-        private void cardImageRetrieved(object sender, CardImageRetrievedEventArgs e)
+        public void cardImageRetrieved(object sender, CardImageRetrievedEventArgs e)
         {
             if (e.uuid == Globals.States.CardFocusedUuid)
                 pictureBox1.Image = e.CardImage.ScaleImage(pictureBox1.Width, pictureBox1.Height);

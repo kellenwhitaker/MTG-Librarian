@@ -220,7 +220,7 @@ namespace MTG_Librarian
             OnCardsDropped(new CardsDroppedEventArgs
             {
                 Items = e.SourceModels as ArrayList,
-                TargetCollectionViewForm = this,
+                TargetCollection = Collection,
                 SourceForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.cardListView == e.SourceListView)
             });
         }

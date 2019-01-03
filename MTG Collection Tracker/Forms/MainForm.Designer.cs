@@ -1,6 +1,4 @@
-﻿using KW.WinFormsUI.Docking;
-
-namespace MTG_Librarian
+﻿namespace MTG_Librarian
 {
     partial class MainForm
     {
