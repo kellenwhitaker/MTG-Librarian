@@ -61,7 +61,7 @@ namespace MTG_Librarian
             totalsRow.tcgplayerMarketPrice = 0;
             totalsRow.Cost = 0;
             totalsRow.Count = 0;
-            foreach (var row in cardListView.Objects)
+            foreach (var row in cardListView.FilteredObjects)
             {
                 if (row is FullInventoryCard card)
                 {
@@ -92,6 +92,7 @@ namespace MTG_Librarian
                 cardListView.ModelFilter = new ModelFilter(GetCardFilter());
                 cardListView.SelectedObjects = selectedObjects;
                 cardListView.RefreshSelectedObjects();
+                UpdateTotals();
             }
         }
 
