@@ -254,6 +254,8 @@ namespace MTG_Librarian
                                 card.Count = editedCard.Count;
                             else if (e.Column.AspectName == "Cost")
                                 card.Cost = editedCard.Cost;
+                            else if (e.Column.AspectName == "Foil")
+                                card.Foil = editedCard.Foil;
                             args.Items.Add(card);
                         }
                     }

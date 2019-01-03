@@ -180,7 +180,7 @@ namespace MTG_Librarian
                         var magicCard = UpdateCopiesOwned(context, card);
                         if (magicCard != null)
                             magicCardsCopiesUpdated.Add(magicCard);
-                        if (card.Count < 1) // add to remove list or still selected list
+                        if (card.Count < 1)
                         {
                             inventoryCardsStillSelected.Remove(card);
                             inventoryCardsToRemove.Add(card);

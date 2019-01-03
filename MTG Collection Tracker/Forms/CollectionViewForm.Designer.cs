@@ -83,7 +83,6 @@
             this.cardListView.AllColumns.Add(this.TimeAddedColumn);
             this.cardListView.AllowDrop = true;
             this.cardListView.BackColor = System.Drawing.Color.White;
-            this.cardListView.CellEditUseWholeCell = false;
             this.cardListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.CardName,
             this.FoilColumn,
