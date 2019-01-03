@@ -12,7 +12,13 @@ namespace MTG_Librarian
 {
     public partial class CollectionNavigatorForm : DockForm
     {
+        #region Fields
+
         private List<NavigatorGroup> groupList;
+
+        #endregion Fields
+
+        #region Constructors
 
         public CollectionNavigatorForm()
         {
@@ -28,6 +34,10 @@ namespace MTG_Librarian
             dropSink.Billboard.TextColor = Color.White;
             DockAreas = DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockBottom;
         }
+
+        #endregion Constructors
+
+        #region Methods
 
         public void LoadGroups()
         {
@@ -55,7 +65,12 @@ namespace MTG_Librarian
             navigatorListView.AddObjects(groupList);
         }
 
+        #endregion Methods
+
+        #region Events
+
         public event EventHandler<CollectionActivatedEventArgs> CollectionActivated;
+
         private void OnCollectionActivated(CollectionActivatedEventArgs args)
         {
             CollectionActivated?.Invoke(this, args);
@@ -278,7 +293,7 @@ namespace MTG_Librarian
                 }
             }
             else if (!(e.SourceModels[0] is InventoryTotalsItem) && rowObjectUnderMouse is NavigatorCollection navigatorCollection)
-            {                
+            {
                 string DocumentName = navigatorCollection.CardCollection.CollectionName;
                 e.Effect = DragDropEffects.Move;
                 if (e.SourceModels[0] is OLVCardItem)
@@ -322,7 +337,6 @@ namespace MTG_Librarian
                             context.Entry(collection.CardCollection).Reload();
                         }
                     }
-
                 }
             }
             else if (rowObjectUnderMouse is NavigatorCollection navigatorCollection)
@@ -337,10 +351,14 @@ namespace MTG_Librarian
         }
 
         public event EventHandler<CardsDroppedEventArgs> CardsDropped;
+
         private void OnCardsDropped(CardsDroppedEventArgs args)
         {
             CardsDropped?.Invoke(this, args);
         }
+
+        #endregion Events
+
     }
 
     public class CollectionActivatedEventArgs
@@ -357,13 +375,16 @@ namespace MTG_Librarian
         public override bool Virtual => CardCollection?.Virtual ?? false;
         public CardCollection CardCollection { get; set; }
         private string _name;
+
         public override string Name
         {
             get => CardCollection?.CollectionName ?? _name;
             set => _name = value;
         }
+
         public string Text => Name;
         public NavigatorGroup Parent { get; set; }
+
         public void RemoveFromParent()
         {
             Parent?.RemoveCollection(this);
@@ -380,6 +401,7 @@ namespace MTG_Librarian
         public override bool CanExpand => Collections != null ? Collections.Count > 0 : false;
         public List<NavigatorCollection> Collections { get; }
         private string _name;
+
         public override string Name
         {
             get => CollectionGroup?.GroupName ?? _name;

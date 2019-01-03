@@ -12,22 +12,7 @@ namespace MTG_Librarian
 {
     public partial class MainForm : Form
     {
-        private void InitUIWorker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            InitUIWorker.ReportProgress(0, new SplashProgressObject("Loading catalog...", 1));
-            Globals.Forms.DBViewForm.LoadSets();
-            InitUIWorker.ReportProgress(0, new SplashProgressObject("Loading collections...", 2));
-            Globals.Forms.NavigationForm.LoadGroups();
-            CountInventory();
-            AddSetIcons();
-            InitUIWorker.ReportProgress(0, new SplashProgressObject("Starting application...", 3));
-            Thread.Sleep(100);
-        }
-
-        private void InitUIWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
-        {
-            splash.ProgressChanged(e.UserState as SplashProgressObject);
-        }
+        #region Methods
 
         private void SetupDockPanel(DockState dockState, SortedDictionary<int, DockState> ZOrderDictionary)
         {
@@ -91,6 +76,66 @@ namespace MTG_Librarian
                 LoadCollection(mainCollection);
         }
 
+        private List<CardSet> GetMTGJSONSets()
+        {
+            var matchCode_Date = new Regex("</strong><br>(.+)<br><a");
+            const string URL = "https://mtgjson.com/sets.html";
+            var sets = new List<CardSet>();
+            try
+            {
+                var doc = new HtmlWeb().Load(URL);
+                var tableCells = doc.DocumentNode.SelectNodes("//td[i[@class='set']]");
+                CardSet set;
+                foreach (var Cell in tableCells)
+                {
+                    set = new CardSet { ScrapedName = Cell.Descendants().ElementAt(2).InnerText.Replace("&amp;", "&") };
+                    string InnerHTML = Cell.InnerHtml;
+                    var matches = matchCode_Date.Matches(InnerHTML);
+                    string matchString;
+                    if (matches.Count > 0)
+                    {
+                        matchString = matches[0].Groups[1].Value;
+                        var code_Date = matchString.Split(new[] { '—' });
+                        if (code_Date.Length > 0)
+                            set.Code = code_Date[0].Trim().ToLower();
+                        if (code_Date.Length > 1)
+                            set.ReleaseDate = code_Date[1].Trim();
+                    }
+                    string href = Cell.Descendants().FirstOrDefault(a => a.Attributes.Contains("href"))?.Attributes.FirstOrDefault(a => a.Name == "href")?.Value;
+                    if (href != null)
+                        set.MTGJSONURL = $"http://mtgjson.com/{href}.zip";
+                    sets.Add(set);
+                }
+            }
+            catch (Exception ex)
+            {
+                DebugOutput.WriteLine(ex.ToString());
+                MessageBox.Show("Failed to gather list of available sets.");
+            }
+            return sets;
+        }
+
+        #endregion Methods
+
+        #region Events
+
+        private void InitUIWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            InitUIWorker.ReportProgress(0, new SplashProgressObject("Loading catalog...", 1));
+            Globals.Forms.DBViewForm.LoadSets();
+            InitUIWorker.ReportProgress(0, new SplashProgressObject("Loading collections...", 2));
+            Globals.Forms.NavigationForm.LoadGroups();
+            CountInventory();
+            AddSetIcons();
+            InitUIWorker.ReportProgress(0, new SplashProgressObject("Starting application...", 3));
+            Thread.Sleep(100);
+        }
+
+        private void InitUIWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            splash.ProgressChanged(e.UserState as SplashProgressObject);
+        }
+
         private void InitUIWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             ApplicationSettings = new ApplicationSettings();
@@ -130,45 +175,6 @@ namespace MTG_Librarian
             Globals.Forms.TasksForm.ResumeLayout();
             CheckForNewSetsWorker.RunWorkerCompleted += CheckForNewSetsWorker_RunWorkerCompleted;
             CheckForNewSetsWorker.RunWorkerAsync();
-        }
-
-        private List<CardSet> GetMTGJSONSets()
-        {
-            var matchCode_Date = new Regex("</strong><br>(.+)<br><a");
-            const string URL = "https://mtgjson.com/sets.html";
-            var sets = new List<CardSet>();
-            try
-            {
-                var doc = new HtmlWeb().Load(URL);
-                var tableCells = doc.DocumentNode.SelectNodes("//td[i[@class='set']]");
-                CardSet set;
-                foreach (var Cell in tableCells)
-                {
-                    set = new CardSet { ScrapedName = Cell.Descendants().ElementAt(2).InnerText.Replace("&amp;", "&") };
-                    string InnerHTML = Cell.InnerHtml;
-                    var matches = matchCode_Date.Matches(InnerHTML);
-                    string matchString;
-                    if (matches.Count > 0)
-                    {
-                        matchString = matches[0].Groups[1].Value;
-                        var code_Date = matchString.Split(new[] { '—' });
-                        if (code_Date.Length > 0)
-                            set.Code = code_Date[0].Trim().ToLower();
-                        if (code_Date.Length > 1)
-                            set.ReleaseDate = code_Date[1].Trim();
-                    }
-                    string href = Cell.Descendants().FirstOrDefault(a => a.Attributes.Contains("href"))?.Attributes.FirstOrDefault(a => a.Name == "href")?.Value;
-                    if (href != null)
-                        set.MTGJSONURL = $"http://mtgjson.com/{href}.zip";
-                    sets.Add(set);
-                }
-            }
-            catch (Exception ex)
-            {
-                DebugOutput.WriteLine(ex.ToString());
-                MessageBox.Show("Failed to gather list of available sets.");
-            }
-            return sets;
         }
 
         private void checkForNewSetsWorker_DoWork(object sender, DoWorkEventArgs e)
@@ -235,5 +241,7 @@ namespace MTG_Librarian
                 };
             }
         }
+
+        #endregion Events
     }
 }

@@ -7,13 +7,28 @@ namespace MTG_Librarian
 {
     public class DownloadResourceTask : BackgroundTask
     {
+        #region Properties
+
         public string URL { get; set; }
+
+        #endregion Properties
+
+        #region Fields
+
         private byte[] downloadData;
+
+        #endregion Fields
+
+        #region Constructors
 
         public DownloadResourceTask()
         {
             TotalWorkUnits = 1;
         }
+
+        #endregion Constructors
+
+        #region Methods
 
         public override void Run()
         {
@@ -51,5 +66,7 @@ namespace MTG_Librarian
             catch (Exception ex) { DebugOutput.WriteLine(ex.ToString()); }
             finally { watch.Stop(); }
         }
+
+        #endregion Methods
     }
 }

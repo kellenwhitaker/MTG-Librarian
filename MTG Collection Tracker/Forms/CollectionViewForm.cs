@@ -13,9 +13,10 @@ namespace MTG_Librarian
 {
     public partial class CollectionViewForm : DockContent
     {
+        #region Properties
+
         public string DocumentName => Collection?.CollectionName;
         public CardCollection Collection { get; set; }
-        private readonly System.Timers.Timer TextChangedWaitTimer = new System.Timers.Timer();
 
         public override string Text
         {
@@ -26,6 +27,16 @@ namespace MTG_Librarian
                     Collection.CollectionName = value;
             }
         }
+
+        #endregion Properties
+
+        #region Fields
+
+        private readonly System.Timers.Timer TextChangedWaitTimer = new System.Timers.Timer();
+
+        #endregion Fields
+
+        #region Constructors
 
         public CollectionViewForm()
         {
@@ -54,6 +65,10 @@ namespace MTG_Librarian
                 UpdateModelFilter();
             };
         }
+
+        #endregion Constructors
+
+        #region Mehthods
 
         public void UpdateTotals()
         {
@@ -174,6 +189,17 @@ namespace MTG_Librarian
             cardListView.RemoveObjects(cards);
         }
 
+        private DialogResult ConfirmCardDeletion(string message = "The highlighted card(s) will be deleted. Are you sure you wish to continue?")
+        {
+            return MessageBox.Show(message, "Pending delete", MessageBoxButtons.YesNo);
+        }
+
+        #endregion Mehthods
+
+        #region Events
+
+        #region OLV Events
+
         private void fastObjectListView1_ModelCanDrop(object sender, ModelDropEventArgs e)
         {
             e.Effect = DragDropEffects.Move;
@@ -197,18 +223,6 @@ namespace MTG_Librarian
                 TargetCollectionViewForm = this,
                 SourceForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.cardListView == e.SourceListView)
             });
-        }
-
-        public event EventHandler<CardsDroppedEventArgs> CardsDropped;
-
-        private void OnCardsDropped(CardsDroppedEventArgs args)
-        {
-            CardsDropped?.Invoke(this, args);
-        }
-
-        private DialogResult ConfirmCardDeletion(string message = "The highlighted card(s) will be deleted. Are you sure you wish to continue?")
-        {
-            return MessageBox.Show(message, "Pending delete", MessageBoxButtons.YesNo);
         }
 
         private void fastObjectListView1_CellEditFinished(object sender, CellEditEventArgs e)
@@ -245,20 +259,6 @@ namespace MTG_Librarian
                     }
                 OnCardsUpdated(args);
             }
-        }
-
-        public event EventHandler<CardsUpdatedEventArgs> CardsUpdated;
-
-        private void OnCardsUpdated(CardsUpdatedEventArgs args)
-        {
-            CardsUpdated?.Invoke(this, args);
-        }
-
-        public event EventHandler<CardSelectedEventArgs> CardSelected;
-
-        private void OnCardSelected(CardSelectedEventArgs args)
-        {
-            CardSelected?.Invoke(this, args);
         }
 
         private void fastObjectListView1_KeyPress(object sender, KeyPressEventArgs e)
@@ -357,6 +357,68 @@ namespace MTG_Librarian
             }
         }
 
+        private void cardListView_CellEditStarting(object sender, CellEditEventArgs e)
+        {
+            if (e.RowObject is FullInventoryCard card)
+            {
+                int costIndex = cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "Cost").DisplayIndex;
+                if (e.SubItemIndex == costIndex)
+                {
+                    var editor = new NumericUpDown
+                    {
+                        Bounds = e.CellBounds,
+                        DecimalPlaces = 2,
+                        Value = decimal.TryParse(e.Value?.ToString(), out decimal cellValue) ? cellValue : 0.0M
+                    };
+                    e.Control = editor;
+                }
+            }
+        }
+
+        private void cardListView_CellEditFinishing(object sender, CellEditEventArgs e)
+        {
+            if (e.RowObject is FullInventoryCard card)
+            {
+                int costIndex = cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "Cost").DisplayIndex;
+                if (e.SubItemIndex == costIndex)
+                {
+                    if (double.TryParse(e.NewValue?.ToString(), out double cellValue))
+                        card.Cost = cellValue;
+                    cardListView.RefreshObject(card);
+                    e.Cancel = true;
+                }
+            }
+        }
+
+        #endregion OLV Events
+
+        #region CollectionViewForm Events
+
+        public event EventHandler<CardsDroppedEventArgs> CardsDropped;
+
+        private void OnCardsDropped(CardsDroppedEventArgs args)
+        {
+            CardsDropped?.Invoke(this, args);
+        }
+
+        public event EventHandler<CardsUpdatedEventArgs> CardsUpdated;
+
+        private void OnCardsUpdated(CardsUpdatedEventArgs args)
+        {
+            CardsUpdated?.Invoke(this, args);
+        }
+
+        public event EventHandler<CardSelectedEventArgs> CardSelected;
+
+        private void OnCardSelected(CardSelectedEventArgs args)
+        {
+            CardSelected?.Invoke(this, args);
+        }
+
+        #endregion CollectionViewForm Events
+
+        #region Menu Events
+
         private void deleteCardsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (cardListView.SelectedObjects?.Count > 0)
@@ -376,10 +438,36 @@ namespace MTG_Librarian
                 e.Cancel = true;
         }
 
+        #endregion Menu Events
+
+        #region Misc Events
+
         private void CollectionViewForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             Globals.Forms.OpenCollectionForms.Remove(this);
         }
+
+        private void cardNameFilterTextBox_TextChanged(object sender, EventArgs e)
+        {
+            TextChangedWaitTimer.Stop();
+            TextChangedWaitTimer.Start();
+        }
+
+        private void whiteManaButton_Click(object sender, EventArgs e)
+        {
+            UpdateModelFilter();
+        }
+
+        private void rarityFilterComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            UpdateModelFilter();
+        }
+
+        #endregion Misc Events
+
+        #endregion Events
+
+        #region Classes
 
         public class MyCustomSortingDataSource : FastObjectListDataSource
         {
@@ -475,53 +563,6 @@ namespace MTG_Librarian
             }
         }
 
-        private void cardNameFilterTextBox_TextChanged(object sender, EventArgs e)
-        {
-            TextChangedWaitTimer.Stop();
-            TextChangedWaitTimer.Start();
-        }
-
-        private void whiteManaButton_Click(object sender, EventArgs e)
-        {
-            UpdateModelFilter();
-        }
-
-        private void rarityFilterComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            UpdateModelFilter();
-        }
-
-        private void cardListView_CellEditStarting(object sender, CellEditEventArgs e)
-        {
-            if (e.RowObject is FullInventoryCard card)
-            {
-                int costIndex = cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "Cost").DisplayIndex;
-                if (e.SubItemIndex == costIndex)
-                {
-                    var editor = new NumericUpDown
-                    {
-                        Bounds = e.CellBounds,
-                        DecimalPlaces = 2,
-                        Value = decimal.TryParse(e.Value?.ToString(), out decimal cellValue) ? cellValue : 0.0M
-                    };
-                    e.Control = editor;
-                }
-            }
-        }
-
-        private void cardListView_CellEditFinishing(object sender, CellEditEventArgs e)
-        {
-            if (e.RowObject is FullInventoryCard card)
-            {
-                int costIndex = cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "Cost").DisplayIndex;
-                if (e.SubItemIndex == costIndex)
-                {
-                    if (double.TryParse(e.NewValue?.ToString(), out double cellValue))
-                        card.Cost = cellValue;
-                    cardListView.RefreshObject(card);
-                    e.Cancel = true;
-                }
-            }
-        }
+        #endregion Classes
     }
 }

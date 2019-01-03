@@ -12,8 +12,14 @@ namespace MTG_Librarian
 {
     public class GetTCGPlayerPricesTask : BackgroundTask
     {
+        #region Fields
+
         private List<FullInventoryCard> cardsToPrice;
         public Dictionary<int, double?> productIdDictionary = new Dictionary<int, double?>();
+
+        #endregion Fields
+
+        #region Constructors
 
         public GetTCGPlayerPricesTask(List<FullInventoryCard> cards)
         {
@@ -22,6 +28,10 @@ namespace MTG_Librarian
             cardsToPrice = cards;
             TotalWorkUnits = 1;
         }
+
+        #endregion Constructors
+
+        #region Methods
 
         public override void Run()
         {
@@ -68,6 +78,10 @@ namespace MTG_Librarian
             finally { watch.Stop(); }
         }
 
+        #endregion Methods
+
+        #region Classes
+
         private class ProductPricesResponseObject
         {
             public bool success;
@@ -85,5 +99,7 @@ namespace MTG_Librarian
                 public string subTypeName;
             }
         }
+
+        #endregion Classes
     }
 }

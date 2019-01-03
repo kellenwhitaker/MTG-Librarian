@@ -5,6 +5,8 @@ using CustomControls;
 
 namespace MTG_Librarian
 {
+    #region Interfaces
+
     public interface IBackgroundTask
     {
         object TaskObject { get; set; }
@@ -19,23 +21,29 @@ namespace MTG_Librarian
         Image Icon { get; }
     }
 
+    #endregion Interfaces
+
+    #region Enums
+
     public enum RunState { Initialized, Running, Paused, Stopped, Completed, Failed }
+
+    #endregion Enums
+
+    #region Classes
 
     [DesignerCategory("Code")]
     public abstract class BackgroundTask : BackgroundWorker, IBackgroundTask
     {
-        protected Stopwatch watch;
-        protected object lockObject = new object();
-        public object TaskObject { get; set; }
-        public string Caption { get; set; }
+        #region Properties
+
         public RunWorkerCompletedEventHandler OnTaskCompleted { set => RunWorkerCompleted += value; }
         public int Runtime { get => (int)(watch.ElapsedMilliseconds / 1000); }
         public bool Running { get => RunState == RunState.Running; }
         public BlockProgressBar ProgressBar { get; private set; }
         public bool AddFirst { get; set; } = false;
-        private RunState _runState;
+        public object TaskObject { get; set; }
+        public string Caption { get; set; }
         public RunState RunState { get => _runState; protected set { _runState = value; if (_runState == RunState.Failed) Caption = $"[Failed] {Caption}"; } }
-        private Image _icon;
 
         public Image Icon
         {
@@ -53,8 +61,6 @@ namespace MTG_Librarian
             }
         }
 
-        private int _TotalWorkUnits;
-
         public int TotalWorkUnits
         {
             get => _TotalWorkUnits;
@@ -71,8 +77,6 @@ namespace MTG_Librarian
             }
         }
 
-        private int _CompletedWorkUnits;
-
         public int CompletedWorkUnits
         {
             get => _CompletedWorkUnits;
@@ -82,6 +86,38 @@ namespace MTG_Librarian
                 SetProgressBarCurrentBlocks((int)((float)_CompletedWorkUnits / _TotalWorkUnits * ProgressBar.MaxBlocks));
             }
         }
+
+        #endregion Properties
+
+        #region Fields
+
+        protected Stopwatch watch;
+        protected object lockObject = new object();
+        private RunState _runState;
+        private Image _icon;
+        private int _TotalWorkUnits;
+        private int _CompletedWorkUnits;
+
+        #endregion Fields
+
+        #region Constructors
+
+        public BackgroundTask()
+        {
+            ProgressBar = new BlockProgressBar
+            {
+                Height = 5,
+                Width = 190,
+                MaxBlocks = 5,
+                CurrentBlocks = 0
+            };
+            watch = new Stopwatch();
+            RunState = RunState.Initialized;
+        }
+
+        #endregion Constructors
+
+        #region Methods
 
         private delegate void SetProgressBarCurrentBlocksDelegate(int blocks);
 
@@ -100,17 +136,8 @@ namespace MTG_Librarian
             RunWorkerAsync();
         }
 
-        public BackgroundTask()
-        {
-            ProgressBar = new BlockProgressBar
-            {
-                Height = 5,
-                Width = 190,
-                MaxBlocks = 5,
-                CurrentBlocks = 0
-            };
-            watch = new Stopwatch();
-            RunState = RunState.Initialized;
-        }
+        #endregion Methods
     }
+
+    #endregion Classes
 }

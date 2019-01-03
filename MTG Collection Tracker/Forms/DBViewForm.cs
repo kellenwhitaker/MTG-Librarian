@@ -13,13 +13,19 @@ namespace MTG_Librarian
 {
     public partial class DBViewForm : DockForm
     {
+        #region Fields
+
         private Dictionary<string, OLVSetItem> sets;
         private readonly System.Timers.Timer TextChangedWaitTimer = new System.Timers.Timer();
         public List<OLVSetItem> SetItems = new List<OLVSetItem>();
 
+        #endregion Fields
+
+        #region Constructors
+
         public DBViewForm()
         {
-            InitializeComponent();           
+            InitializeComponent();
             setListView.SmallImageList = Globals.ImageLists.SmallIconList;
             setListView.TreeColumnRenderer = new SetRenderer();
             setListView.UseFiltering = true;
@@ -42,13 +48,14 @@ namespace MTG_Librarian
             DockAreas = DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockBottom;
         }
 
-        public event EventHandler<CardsActivatedEventArgs> CardsActivated;
-        private void OnCardsActivated(CardsActivatedEventArgs args)
-        {
-            CardsActivated?.Invoke(this, args);
-        }
+        #endregion Constructors
+
+        #region Methods
+
         #region Filters
+
         private delegate void UpdateModelFilterDelegate();
+
         private void UpdateCardModelFilter()
         {
             if (InvokeRequired)
@@ -81,8 +88,8 @@ namespace MTG_Librarian
         private Predicate<object> GetSetTypeTreeFilter()
         {
             string comboBoxText = setTypeFilterComboBox.Text;
-            return x => comboBoxText == "All Set Types" || comboBoxText == "" 
-                ? true 
+            return x => comboBoxText == "All Set Types" || comboBoxText == ""
+                ? true
                 : (x as OLVSetItem).CardSet.BoosterV3 != null && (x as OLVSetItem).CardSet.BoosterV3.Length > 0;
         }
 
@@ -95,13 +102,13 @@ namespace MTG_Librarian
         {
             Predicate<object> combinedFilter = x => true;
 
-            if (whiteManaButton.Checked)    combinedFilter = combinedFilter.And(x => (x as OLVCardItem).ManaCost?.Contains("W") ?? false);
-            if (blueManaButton.Checked)     combinedFilter = combinedFilter.And(x => (x as OLVCardItem).ManaCost?.Contains("U") ?? false);
-            if (blackManaButton.Checked)    combinedFilter = combinedFilter.And(x => (x as OLVCardItem).ManaCost?.Contains("B") ?? false);
-            if (redManaButton.Checked)      combinedFilter = combinedFilter.And(x => (x as OLVCardItem).ManaCost?.Contains("R") ?? false);
-            if (greenManaButton.Checked)    combinedFilter = combinedFilter.And(x => (x as OLVCardItem).ManaCost?.Contains("G") ?? false);
-            if (colorlessManaButton.Checked)combinedFilter = combinedFilter.And(x => (x as OLVCardItem).ManaCost?.Contains("C") ?? false);
-            if (genericManaButton.Checked)  combinedFilter = combinedFilter.And(x => ((x as OLVCardItem).ManaCost?.Contains("X") ?? false) || ((x as OLVCardItem).ManaCost?.Any(c => char.IsDigit(c)) ?? false));
+            if (whiteManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as OLVCardItem).ManaCost?.Contains("W") ?? false);
+            if (blueManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as OLVCardItem).ManaCost?.Contains("U") ?? false);
+            if (blackManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as OLVCardItem).ManaCost?.Contains("B") ?? false);
+            if (redManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as OLVCardItem).ManaCost?.Contains("R") ?? false);
+            if (greenManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as OLVCardItem).ManaCost?.Contains("G") ?? false);
+            if (colorlessManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as OLVCardItem).ManaCost?.Contains("C") ?? false);
+            if (genericManaButton.Checked) combinedFilter = combinedFilter.And(x => ((x as OLVCardItem).ManaCost?.Contains("X") ?? false) || ((x as OLVCardItem).ManaCost?.Any(c => char.IsDigit(c)) ?? false));
             return combinedFilter;
         }
 
@@ -128,7 +135,9 @@ namespace MTG_Librarian
                     ? (x as OLVCardItem).CopiesOwned > 0
                     : (x as OLVCardItem).CopiesOwned == 0);
         }
-        #endregion
+
+        #endregion Filters
+
         public void SortCardListView()
         {
             if (cardListView.PrimarySortColumn == null) // sort by set, number if not already sorted
@@ -274,7 +283,36 @@ namespace MTG_Librarian
             }
             setListView.Sort(setListView.AllColumns[1], SortOrder.Descending);
         }
+
+        private void UpdateSetModelFilter()
+        {
+            setListView.ModelFilter = new ModelFilter(GetSetNameTreeFilter().And(GetSetTypeTreeFilter()));
+        }
+
+        #endregion Methods
+
         #region Events
+
+        #region DBViewForm Events
+
+        public event EventHandler<CardsActivatedEventArgs> CardsActivated;
+
+        private void OnCardsActivated(CardsActivatedEventArgs args)
+        {
+            CardsActivated?.Invoke(this, args);
+        }
+
+        public event EventHandler<CardSelectedEventArgs> CardSelected;
+
+        private void OnCardSelected(CardSelectedEventArgs args)
+        {
+            CardSelected?.Invoke(this, args);
+        }
+
+        #endregion DBViewForm Events
+
+        #region setListView Events
+
         private void treeListView1_FormatCell(object sender, FormatCellEventArgs e)
         {
             if (e.Model is OLVCardItem)
@@ -295,19 +333,21 @@ namespace MTG_Librarian
             }
         }
 
-        private void setFilterBox_TextChanged(object sender, EventArgs e)
+        private void setListView_SelectionChanged(object sender, EventArgs e)
         {
-            UpdateSetModelFilter();
-        }
-
-        private void UpdateSetModelFilter()
-        {
-            setListView.ModelFilter = new ModelFilter(GetSetNameTreeFilter().And(GetSetTypeTreeFilter()));
-        }
-
-        private void whiteManaButton_Click(object sender, EventArgs e)
-        {
+            cardListView.SelectedObject = null;
             UpdateCardModelFilter();
+        }
+
+        #endregion setListView Events
+
+        #region cardListView Events
+
+        private void fastObjectListView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var card = (cardListView.SelectedObject as OLVCardItem)?.MagicCard;
+            if (card != null)
+                OnCardSelected(new CardSelectedEventArgs { MagicCard = card });
         }
 
         private void fastObjectListView1_ItemActivate(object sender, EventArgs e)
@@ -321,31 +361,16 @@ namespace MTG_Librarian
             Cursor.Current = new Cursor(Properties.Resources.hand.GetHicon());
         }
 
-        public event EventHandler<CardSelectedEventArgs> CardSelected;
-        private void OnCardSelected(CardSelectedEventArgs args)
-        {
-            CardSelected?.Invoke(this, args);
-        }
-
-        private void fastObjectListView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            var card = (cardListView.SelectedObject as OLVCardItem)?.MagicCard;
-            if (card != null)
-                OnCardSelected(new CardSelectedEventArgs { MagicCard = card });
-        }
-
-        private void cardNameFilterBox_TextChanged(object sender, EventArgs e)
-        {
-            TextChangedWaitTimer.Stop();
-            TextChangedWaitTimer.Start();
-        }
-
         private void cardListView_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (cardListView.SelectedItems != null)
                 if (e.KeyChar == '\r')
                     e.Handled = true;
         }
+
+        #endregion cardListView Events
+
+        #region Menu Events
 
         private void updateThisSetToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -362,11 +387,9 @@ namespace MTG_Librarian
                 e.Cancel = true;
         }
 
-        private void setListView_SelectionChanged(object sender, EventArgs e)
-        {
-            cardListView.SelectedObject = null;
-            UpdateCardModelFilter();
-        }
+        #endregion Menu Events
+
+        #region Misc Events
 
         private void copiesOwnedFilterBox_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -377,10 +400,34 @@ namespace MTG_Librarian
         {
             UpdateSetModelFilter();
         }
-        #endregion
+
+        private void cardNameFilterBox_TextChanged(object sender, EventArgs e)
+        {
+            TextChangedWaitTimer.Stop();
+            TextChangedWaitTimer.Start();
+        }
+
+        private void setFilterBox_TextChanged(object sender, EventArgs e)
+        {
+            UpdateSetModelFilter();
+        }
+
+        private void whiteManaButton_Click(object sender, EventArgs e)
+        {
+            UpdateCardModelFilter();
+        }
+
+        #endregion Misc Events
+
+        #endregion Events
+
+        #region Classes
+
         public class MyCustomSortingDataSource : FastObjectListDataSource
         {
-            public MyCustomSortingDataSource(FastObjectListView listView) : base(listView) { }
+            public MyCustomSortingDataSource(FastObjectListView listView) : base(listView)
+            {
+            }
 
             override public void Sort(OLVColumn column, SortOrder order)
             {
@@ -402,6 +449,7 @@ namespace MTG_Librarian
             private class CopiesOwnedComparer : IComparer
             {
                 public SortOrder SortOrder;
+
                 public int Compare(object x, object y)
                 {
                     int result = (x as OLVCardItem).CopiesOwned.CompareTo((y as OLVCardItem).CopiesOwned);
@@ -412,6 +460,7 @@ namespace MTG_Librarian
             private class CollectorNumberComparer : IComparer
             {
                 public SortOrder SortOrder;
+
                 public int Compare(object x, object y)
                 {
                     int result = (x as OLVCardItem).CollectorNumber.CompareTo((y as OLVCardItem).CollectorNumber);
@@ -422,6 +471,7 @@ namespace MTG_Librarian
             private class NameComparer : IComparer
             {
                 public SortOrder SortOrder;
+
                 public int Compare(object x, object y)
                 {
                     int result = (x as OLVCardItem).Name.CompareTo((y as OLVCardItem).Name);
@@ -432,6 +482,7 @@ namespace MTG_Librarian
             private class TypeComparer : IComparer
             {
                 public SortOrder SortOrder;
+
                 public int Compare(object x, object y)
                 {
                     int result = (x as OLVCardItem).Type.CompareTo((y as OLVCardItem).Type);
@@ -442,6 +493,7 @@ namespace MTG_Librarian
             private class SetComparer : IComparer
             {
                 public SortOrder SortOrder;
+
                 public int Compare(object x, object y)
                 {
                     int result = (x as OLVCardItem).Set.CompareTo((y as OLVCardItem).Set);
@@ -452,6 +504,7 @@ namespace MTG_Librarian
             private class ManaCostComparer : IComparer
             {
                 public SortOrder SortOrder;
+
                 public int Compare(object x, object y)
                 {
                     int result;
@@ -462,5 +515,7 @@ namespace MTG_Librarian
                 }
             }
         }
+
+        #endregion Classes
     }
 }

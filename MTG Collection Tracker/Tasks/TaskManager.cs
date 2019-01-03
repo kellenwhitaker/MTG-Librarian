@@ -14,6 +14,8 @@ namespace MTG_Librarian
     [DesignerCategory("Code")]
     public class TaskManager : BackgroundWorker
     {
+        #region Fields
+
         private readonly ConcurrentDeque<BackgroundTask> _IncomingTasks;
         private readonly ConcurrentDeque<BackgroundTask> _AllTasks;
         private readonly List<BackgroundTask> _activeTasks;
@@ -22,6 +24,10 @@ namespace MTG_Librarian
         private readonly Label tasksLabel;
         private readonly BlockProgressBar progressBar;
         public int TaskCount => _AllTasks.Count;
+
+        #endregion Fields
+
+        #region Constructors
 
         public TaskManager(Label label, BlockProgressBar progressBar)
         {
@@ -34,6 +40,10 @@ namespace MTG_Librarian
             _activeTasks = new List<BackgroundTask>();
             RunWorkerAsync();
         }
+
+        #endregion Constructors
+
+        #region Methods
 
         public void AddTask(BackgroundTask task)
         {
@@ -119,20 +129,6 @@ namespace MTG_Librarian
             _completedTasks.Clear();
         }
 
-        public event EventHandler<SetDownloadedEventArgs> SetDownloaded;
-
-        private void OnSetDownloaded(SetDownloadedEventArgs args)
-        {
-            SetDownloaded?.Invoke(this, args);
-        }
-
-        public event EventHandler<PricesUpdatedEventArgs> PricesUpdated;
-
-        private void OnPricesUpdated(PricesUpdatedEventArgs args)
-        {
-            PricesUpdated?.Invoke(this, args);
-        }
-
         private void PullIncomingTasks()
         {
             while (_IncomingTasks.TryDequeue(out BackgroundTask nextTask))
@@ -200,5 +196,25 @@ namespace MTG_Librarian
                 }
             }
         }
+
+        #endregion Methods
+
+        #region Events
+
+        public event EventHandler<SetDownloadedEventArgs> SetDownloaded;
+
+        private void OnSetDownloaded(SetDownloadedEventArgs args)
+        {
+            SetDownloaded?.Invoke(this, args);
+        }
+
+        public event EventHandler<PricesUpdatedEventArgs> PricesUpdated;
+
+        private void OnPricesUpdated(PricesUpdatedEventArgs args)
+        {
+            PricesUpdated?.Invoke(this, args);
+        }
+
+        #endregion Events
     }
 }

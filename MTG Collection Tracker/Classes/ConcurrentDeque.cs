@@ -8,19 +8,33 @@ namespace MTG_Librarian
 {
     public class ConcurrentDeque<T> : IProducerConsumerCollection<T>
     {
+        #region Fields
+
         private readonly object lockObject = new object();
         private readonly LinkedList<T> BackingList = null;
 
-        public ConcurrentDeque()
-        {
-            BackingList = new LinkedList<T>();
-        }
+        #endregion Fields
+
+        #region Properties
 
         public int Count => BackingList.Count;
 
         public object SyncRoot => lockObject;
 
         public bool IsSynchronized => true;
+
+        #endregion Properties
+
+        #region Constructors
+
+        public ConcurrentDeque()
+        {
+            BackingList = new LinkedList<T>();
+        }
+
+        #endregion Constructors
+
+        #region Methods
 
         public void CopyTo(T[] array, int index)
         {
@@ -104,5 +118,7 @@ namespace MTG_Librarian
             }
             return success;
         }
+
+        #endregion Methods
     }
 }

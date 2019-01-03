@@ -11,8 +11,19 @@ namespace MTG_Librarian
 {
     public class DownloadSetTask : BackgroundTask
     {
+        #region Properties
+
         public CardSet CardSet { get; private set; }
+
+        #endregion Properties
+
+        #region Fields
+
         private Image commonIcon, uncommonIcon, rareIcon, mythicIcon;
+
+        #endregion Fields
+
+        #region Constructors
 
         public DownloadSetTask(CardSet set)
         {
@@ -20,6 +31,10 @@ namespace MTG_Librarian
             Caption = "Set: " + set.ScrapedName;
             TotalWorkUnits = 5;
         }
+
+        #endregion Constructors
+
+        #region Methods
 
         public override void Run()
         {
@@ -156,5 +171,7 @@ namespace MTG_Librarian
             else
                 Icon = commonIcon;
         }
+
+        #endregion Methods
     }
 }

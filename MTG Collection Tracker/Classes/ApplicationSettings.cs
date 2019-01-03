@@ -8,7 +8,13 @@ namespace MTG_Librarian
 {
     public class ApplicationSettings : ApplicationSettingsBase
     {
+        #region Enums
+
         public enum DockContentEnum { CollectionViewForm, DBViewForm, NavigatorForm, CardInfoForm, TasksForm }
+
+        #endregion Enums
+
+        #region Classes
 
         public class DockContentSettings
         {
@@ -24,6 +30,10 @@ namespace MTG_Librarian
             public int ZOrderIndex { get; set; }
         }
 
+        #endregion Classes
+
+        #region Methods
+
         public void ClearDockPaneSettings()
         {
             DockPaneLeft = new DockPaneSettings();
@@ -37,6 +47,10 @@ namespace MTG_Librarian
             DockLeftPortion = 0.25;
             DockBottomPortion = 0.45;
         }
+
+        #endregion Methods
+
+        #region Settings Properties
 
         [UserScopedSetting()]
         [DefaultSettingValue("true")]
@@ -85,7 +99,6 @@ namespace MTG_Librarian
             get => (Size)this["MainFormSize"];
             set => this["MainFormSize"] = value;
         }
-
 
         [UserScopedSetting()]
         [DefaultSettingValue("2")] // maximized
@@ -187,6 +200,7 @@ namespace MTG_Librarian
                 default: return DockPaneDocuments;
             }
         }
+
+        #endregion Settings Properties
     }
 }
-

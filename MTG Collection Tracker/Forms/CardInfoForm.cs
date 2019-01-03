@@ -5,6 +5,8 @@ namespace MTG_Librarian
 {
     public partial class CardInfoForm : DockForm
     {
+        #region Constructors
+
         public CardInfoForm()
         {
             InitializeComponent();
@@ -12,11 +14,9 @@ namespace MTG_Librarian
             DockAreas = DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockBottom;
         }
 
-        private void cardImageRetrieved(object sender, CardImageRetrievedEventArgs e)
-        {
-            if (e.uuid == Globals.States.CardFocusedUuid)
-                pictureBox1.Image = e.CardImage.ScaleImage(pictureBox1.Width, pictureBox1.Height);
-        }
+        #endregion Constructors
+
+        #region Methods
 
         private string ManaCostToImgs(string manaCost)
         {
@@ -26,9 +26,7 @@ namespace MTG_Librarian
                 var reg = new Regex("{([A-Z0-9/]+)}");
                 var costParts = reg.Matches(manaCost);
                 foreach (Match part in costParts)
-                {
                     imgs += $"<img src='Icons/{part.Groups[1].Value.Replace("/", "")}_16.png'>";
-                }
             }
             return imgs;
         }
@@ -67,5 +65,17 @@ namespace MTG_Librarian
             html += "</table>";
             cardTextHtmlPanel.Text = html;
         }
+
+        #endregion Methods
+
+        #region Events
+
+        private void cardImageRetrieved(object sender, CardImageRetrievedEventArgs e)
+        {
+            if (e.uuid == Globals.States.CardFocusedUuid)
+                pictureBox1.Image = e.CardImage.ScaleImage(pictureBox1.Width, pictureBox1.Height);
+        }
+
+        #endregion Events
     }
 }

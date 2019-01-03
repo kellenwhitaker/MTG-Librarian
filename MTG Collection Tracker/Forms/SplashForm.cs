@@ -7,13 +7,24 @@ namespace MTG_Librarian
 {
     public partial class SplashForm : Form
     {
-        readonly Image srcImage;
-        Double currentOpacity = 0.3;
+        #region Fields
+
+        private readonly Image srcImage;
+        private Double currentOpacity = 0.3;
+
+        #endregion Fields
+
+        #region Constructors
+
         public SplashForm()
         {
             InitializeComponent();
             srcImage = (Image)pictureBox1.Image.Clone();
         }
+
+        #endregion Constructors
+
+        #region Methods
 
         public static Bitmap ChangeOpacity(Image img, float opacityvalue)
         {
@@ -39,6 +50,10 @@ namespace MTG_Librarian
             }
         }
 
+        #endregion Methods
+
+        #region Events
+
         private void timer1_Tick(object sender, EventArgs e)
         {
             currentOpacity += 0.05;
@@ -57,6 +72,8 @@ namespace MTG_Librarian
             var p = new Pen(Brushes.DimGray) { Width = 4 };
             e.Graphics.DrawRectangle(p, e.ClipRectangle);
         }
+
+        #endregion Events
     }
 
     public class SplashProgressObject
