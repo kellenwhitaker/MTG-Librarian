@@ -68,7 +68,7 @@ namespace MTG_Librarian
 
         #endregion Constructors
 
-        #region Mehthods
+        #region Methods
 
         #region Filters
 
@@ -186,9 +186,26 @@ namespace MTG_Librarian
             UpdateTotals();
         }
 
-        public void RemoveFullInventoryCards(List<FullInventoryCard> cards)
+        public void RemoveFullInventoryCards(List<FullInventoryCard> cardsToRemove)
         {
-            cardListView.RemoveObjects(cards);
+            var inventoryCardsStillSelected = cardListView.SelectedObjects.Cast<object>().Where(x => x is FullInventoryCard).Cast<FullInventoryCard>().ToList();
+            foreach (var card in cardsToRemove)
+                if (inventoryCardsStillSelected.Contains(card))
+                    inventoryCardsStillSelected.Remove(card);
+            int indexAfterLast = cardsToRemove.Max(x => cardListView.IndexOf(x)) + 1;
+            object objectAfterLast = null;
+            if (indexAfterLast > -1 && indexAfterLast < cardListView.Objects.Count())
+                objectAfterLast = cardListView.GetModelObject(indexAfterLast);
+            cardListView.RemoveObjects(cardsToRemove);
+            cardListView.SelectedObjects = inventoryCardsStillSelected;
+            if (cardListView.SelectedObject == null)
+            {
+                if (objectAfterLast != null)
+                    cardListView.SelectedObject = objectAfterLast;
+                else
+                    if (cardListView.Objects.Count() > -1)
+                    cardListView.SelectedIndex = cardListView.Objects.Count() - 1;
+            }
         }
 
         private DialogResult ConfirmCardDeletion(string message = "The highlighted card(s) will be deleted. Are you sure you wish to continue?")
@@ -196,7 +213,7 @@ namespace MTG_Librarian
             return MessageBox.Show(message, "Pending delete", MessageBoxButtons.YesNo);
         }
 
-        #endregion Mehthods
+        #endregion Methods
 
         #region Events
 

@@ -168,7 +168,6 @@ namespace MTG_Librarian
                 try
                 {
                     UpdateCardsInDB(context, e.Items);
-                    var inventoryCardsStillSelected = e.CollectionViewForm.cardListView.SelectedObjects.Cast<object>().Where(x => x is FullInventoryCard).Cast<FullInventoryCard>().ToList();
                     var inventoryCardsToRemove = new List<FullInventoryCard>();
                     var magicCardsCopiesUpdated = new List<MagicCard>();
                     foreach (FullInventoryCard card in e.Items)
@@ -181,13 +180,9 @@ namespace MTG_Librarian
                         if (magicCard != null)
                             magicCardsCopiesUpdated.Add(magicCard);
                         if (card.Count < 1)
-                        {
-                            inventoryCardsStillSelected.Remove(card);
                             inventoryCardsToRemove.Add(card);
-                        }
                     }
-                    e.CollectionViewForm.cardListView.RemoveObjects(inventoryCardsToRemove);
-                    e.CollectionViewForm.cardListView.SelectedObjects = inventoryCardsStillSelected; // workaround: list view will not actually update selected items when removing from SelectedObjects
+                    e.CollectionViewForm.RemoveFullInventoryCards(inventoryCardsToRemove);
                     Globals.Forms.DBViewForm.cardListView.RefreshObjects(magicCardsCopiesUpdated);
                     Globals.Forms.DBViewForm.setListView.RefreshObjects(setItems.Values.ToArray());
                 }
