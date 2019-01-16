@@ -150,6 +150,7 @@ namespace MTG_Librarian
                         totalsRow.Cost += card.Cost.Value * cardCount;
                 }
             }
+            cardListView.RefreshObject(totalsRow);
         }
 
         public void LoadCollection()
@@ -181,30 +182,39 @@ namespace MTG_Librarian
 
         public void AddFullInventoryCards(List<FullInventoryCard> cards)
         {
-            cardListView.AddObjects(cards);
-            cardListView.EnsureModelVisible(cards[cards.Count - 1]);
-            UpdateTotals();
+            if (cards.Count > 0)
+            {
+                cardListView.AddObjects(cards);
+                cardListView.EnsureModelVisible(cards[cards.Count - 1]);
+                UpdateTotals();
+            }
         }
 
         public void RemoveFullInventoryCards(List<FullInventoryCard> cardsToRemove)
         {
-            var inventoryCardsStillSelected = cardListView.SelectedObjects.Cast<object>().Where(x => x is FullInventoryCard).Cast<FullInventoryCard>().ToList();
-            foreach (var card in cardsToRemove)
-                if (inventoryCardsStillSelected.Contains(card))
-                    inventoryCardsStillSelected.Remove(card);
-            int indexAfterLast = cardsToRemove.Max(x => cardListView.IndexOf(x)) + 1;
-            object objectAfterLast = null;
-            if (indexAfterLast > -1 && indexAfterLast < cardListView.Objects.Count())
-                objectAfterLast = cardListView.GetModelObject(indexAfterLast);
-            cardListView.RemoveObjects(cardsToRemove);
-            cardListView.SelectedObjects = inventoryCardsStillSelected;
-            if (cardListView.SelectedObject == null)
+            if (cardsToRemove.Count > 0)
             {
-                if (objectAfterLast != null)
-                    cardListView.SelectedObject = objectAfterLast;
-                else
-                    if (cardListView.Objects.Count() > -1)
-                    cardListView.SelectedIndex = cardListView.Objects.Count() - 1;
+                var inventoryCardsStillSelected = cardListView.SelectedObjects.Cast<object>().Where(x => x is FullInventoryCard).Cast<FullInventoryCard>().ToList();
+                foreach (var card in cardsToRemove)
+                    if (inventoryCardsStillSelected.Contains(card))
+                        inventoryCardsStillSelected.Remove(card);
+                int indexAfterLast = cardsToRemove.Max(x => cardListView.IndexOf(x)) + 1;
+                object objectAfterLast = null;
+                if (indexAfterLast > -1 && indexAfterLast < cardListView.Objects.Count())
+                    objectAfterLast = cardListView.GetModelObject(indexAfterLast);
+                cardListView.RemoveObjects(cardsToRemove);
+                cardListView.SelectedObjects = inventoryCardsStillSelected;
+                if (cardListView.SelectedObject == null)
+                {
+                    if (objectAfterLast != null)
+                        cardListView.SelectedObject = objectAfterLast;
+                    else
+                    {
+                        if (cardListView.Objects.Count() > -1)
+                            cardListView.SelectedIndex = cardListView.Objects.Count() - 1;
+                    }
+                }
+                UpdateTotals();
             }
         }
 
@@ -228,7 +238,7 @@ namespace MTG_Librarian
                 e.InfoMessage = $"Add set [{setItem.Name}] to {DocumentName}";
             else if (e.SourceModels[0] is OLVRarityItem rarityItem)
                 e.InfoMessage = $"Add {rarityItem.Rarity}s from [{(rarityItem.Parent as OLVSetItem).Name}] to {DocumentName}";
-            else if (e.SourceModels[0] is FullInventoryCard fullInventoryCard && e.SourceListView != this.cardListView)
+            else if (e.SourceModels[0] is FullInventoryCard fullInventoryCard && e.SourceListView != cardListView)
                 e.InfoMessage = $"Add {e.SourceModels.Count} card{(e.SourceModels.Count == 1 ? "" : "s")} to {DocumentName}";
             else
                 e.Effect = DragDropEffects.None;
@@ -284,31 +294,36 @@ namespace MTG_Librarian
 
         private void fastObjectListView1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (cardListView.SelectedObjects?.Count > 0)
+            if (cardListView.SelectedObjects?.Count > 0 && !(cardListView.SelectedObjects?.Count == 1 && cardListView.SelectedObject is InventoryTotalsItem))
             {
                 if (e.KeyChar == '=' || e.KeyChar == '+')
                 {
                     e.Handled = true;
-                    foreach (FullInventoryCard item in cardListView.SelectedObjects)
-                        item.Count++;
+                    foreach (var item in cardListView.SelectedObjects)
+                        if (item is FullInventoryCard card)
+                            card.Count++;
                     OnCardsUpdated(new CardsUpdatedEventArgs { Items = cardListView.SelectedObjects as ArrayList, CollectionViewForm = this });
                 }
                 else if (e.KeyChar == '-' || e.KeyChar == '_')
                 {
                     e.Handled = true;
                     bool pendingDeletion = false;
-                    foreach (FullInventoryCard item in cardListView.SelectedObjects)
+                    foreach (var item in cardListView.SelectedObjects)
                     {
-                        item.Count--;
-                        if (item.Count < 1)
-                            pendingDeletion = true;
+                        if (item is FullInventoryCard card)
+                        {
+                            card.Count--;
+                            if (card.Count < 1)
+                                pendingDeletion = true;
+                        }
                     }
                     if (pendingDeletion)
                     {
                         if (ConfirmCardDeletion("Some of the highlighted cards will be deleted. Are you sure you wish to continue?") != DialogResult.Yes)
                         {
-                            foreach (FullInventoryCard item in cardListView.SelectedObjects)
-                                item.Count++;
+                            foreach (var item in cardListView.SelectedObjects)
+                                if (item is FullInventoryCard card)
+                                    card.Count++;
                             return;
                         }
                     }

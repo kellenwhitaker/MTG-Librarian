@@ -182,21 +182,24 @@ namespace MTG_Librarian
                         if (card.Count < 1)
                             inventoryCardsToRemove.Add(card);
                     }
-                    e.CollectionViewForm.RemoveFullInventoryCards(inventoryCardsToRemove);
+                    if (inventoryCardsToRemove.Count > 0)
+                        e.CollectionViewForm.RemoveFullInventoryCards(inventoryCardsToRemove);
+                    else
+                        e.CollectionViewForm.UpdateTotals();
                     Globals.Forms.DBViewForm.cardListView.RefreshObjects(magicCardsCopiesUpdated);
                     Globals.Forms.DBViewForm.setListView.RefreshObjects(setItems.Values.ToArray());
                 }
                 catch (Exception ex)
                 {
                     DebugOutput.WriteLine(ex.ToString());
-                    foreach (FullInventoryCard card in e.Items)
-                        context.Entry(card).Reload();
+                    foreach (var item in e.Items)
+                        if (item is FullInventoryCard card)
+                            context.Entry(card).Reload();
 
                     MessageBox.Show(ex.ToString());
                 }
                 finally
                 {
-                    e.CollectionViewForm.UpdateTotals();
                     e.CollectionViewForm.cardListView.Refresh();
                 }
             }
