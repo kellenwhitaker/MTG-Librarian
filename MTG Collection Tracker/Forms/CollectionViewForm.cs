@@ -94,21 +94,36 @@ namespace MTG_Librarian
         private Predicate<object> GetCardFilter()
         {
             return new Predicate<object>(x => x is InventoryTotalsItem)
-                .Or(GetManaCostFilter()
-                .And(GetSetFilter())
-                .And(GetCardNameFilter())
-                .And(GetRarityFilter()));
+              .Or(
+                  GetManaCostFilter()
+                  .And(GetCommentsFilter())
+                  .And(GetCardNameFilter())
+                  .And(GetCardTextFilter())
+                  .And(GetRarityFilter())
+                  .And(GetSetFilter())
+                  .And(GetTypeFilter())
+              );
         }
 
-        private Predicate<object> GetRarityFilter()
+        private Predicate<object> GetCommentsFilter()
         {
-            string rarityFilterText = rarityFilterComboBox.Text.ToUpper();
-            return x => rarityFilterText == "ALL RARITIES" || rarityFilterText == "" ? true : (x as FullInventoryCard).rarity.ToUpper() == rarityFilterText;
+            return x => commentsFilterTextBox.UserText == ""
+                ? true
+                : (x as FullInventoryCard).Tags?.ToUpper().Contains(commentsFilterTextBox.UserText.ToUpper()) ?? false;
         }
 
         private Predicate<object> GetCardNameFilter()
         {
-            return x => cardNameFilterTextBox.UserText == "" ? true : (x as FullInventoryCard).name.ToUpper().Contains(cardNameFilterTextBox.UserText.ToUpper());
+            return x => cardNameFilterTextBox.UserText == ""
+                ? true
+                : (x as FullInventoryCard).name?.ToUpper().Contains(cardNameFilterTextBox.UserText.ToUpper()) ?? false;
+        }
+
+        private Predicate<object> GetCardTextFilter()
+        {
+            return x => cardTextFilterTextBox.UserText == ""
+                ? true
+                : (x as FullInventoryCard).text?.ToUpper().Contains(cardTextFilterTextBox.UserText.ToUpper()) ?? false;
         }
 
         private Predicate<object> GetManaCostFilter()
@@ -121,13 +136,31 @@ namespace MTG_Librarian
             if (redManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as FullInventoryCard).manaCost?.Contains("R") ?? false);
             if (greenManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as FullInventoryCard).manaCost?.Contains("G") ?? false);
             if (colorlessManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as FullInventoryCard).manaCost?.Contains("C") ?? false);
-            if (genericManaButton.Checked) combinedFilter = combinedFilter.And(x => ((x as FullInventoryCard).manaCost?.Contains("X") ?? false) || ((x as FullInventoryCard).manaCost?.Any(c => char.IsDigit(c)) ?? false));
+            if (genericManaButton.Checked) combinedFilter = combinedFilter.And(x => ((x as FullInventoryCard).manaCost?.Contains("X") ?? false)
+                || ((x as FullInventoryCard).manaCost?.Any(c => char.IsDigit(c)) ?? false));
             return combinedFilter;
+        }
+
+        private Predicate<object> GetRarityFilter()
+        {
+            string rarityFilterText = rarityFilterComboBox.Text.ToUpper();
+            return x => rarityFilterText == "ALL RARITIES" || rarityFilterText == ""
+                ? true
+                : (x as FullInventoryCard).rarity?.ToUpper() == rarityFilterText;
+        }
+
+        private Predicate<object> GetTypeFilter()
+        {
+            return x => typeFilterTextBox.UserText == ""
+                ? true
+                : (x as FullInventoryCard).type?.ToUpper().Contains(typeFilterTextBox.UserText.ToUpper()) ?? false;
         }
 
         private Predicate<object> GetSetFilter()
         {
-            return x => setFilterTextBox.UserText == "" ? true : (x as FullInventoryCard).Edition.ToUpper().Contains(setFilterTextBox.UserText.ToUpper());
+            return x => setFilterTextBox.UserText == ""
+                ? true
+                : (x as FullInventoryCard).Edition?.ToUpper().Contains(setFilterTextBox.UserText.ToUpper()) ?? false;
         }
 
         #endregion Filters
@@ -535,6 +568,18 @@ namespace MTG_Librarian
                         return x.Value.CompareTo(y.Value);
                 }
 
+                private static int CompareText(string x, string y)
+                {
+                    if (x == null && y != null)
+                        return -1;
+                    else if (x != null && y == null)
+                        return 1;
+                    else if (x == null && y == null)
+                        return 0;
+                    else
+                        return x.CompareTo(y);
+                }
+
                 public int Compare(object x, object y)
                 {
                     if (x is InventoryTotalsItem)
@@ -580,18 +625,9 @@ namespace MTG_Librarian
                                 result = cx.Value.CompareTo(cy.Value);
                         }
                         else if (AspectName == "Tags")
-                        {
-                            var tx = (x as FullInventoryCard).Tags;
-                            var ty = (y as FullInventoryCard).Tags;
-                            if (tx == null && ty != null)
-                                result = -1;
-                            else if (tx != null && ty == null)
-                                result = 1;
-                            else if (tx == null && ty == null)
-                                result = 0;
-                            else
-                                result = tx.CompareTo(ty);
-                        }
+                            result = CompareText((x as FullInventoryCard).Tags, (y as FullInventoryCard).Tags);
+                        else if (AspectName == "text")
+                            result = CompareText((x as FullInventoryCard).text, (y as FullInventoryCard).text);
 
                         return SortOrder == SortOrder.Ascending ? result : -1 * result;
                     }
