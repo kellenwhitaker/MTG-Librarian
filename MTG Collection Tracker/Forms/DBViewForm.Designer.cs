@@ -95,7 +95,7 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.splitContainer1);
-            this.splitContainer2.Size = new System.Drawing.Size(1153, 463);
+            this.splitContainer2.Size = new System.Drawing.Size(1427, 463);
             this.splitContainer2.SplitterDistance = 30;
             this.splitContainer2.SplitterWidth = 1;
             this.splitContainer2.TabIndex = 2;
@@ -261,8 +261,8 @@
             // splitContainer1.Panel2
             // 
             this.splitContainer1.Panel2.Controls.Add(this.cardListView);
-            this.splitContainer1.Size = new System.Drawing.Size(1153, 432);
-            this.splitContainer1.SplitterDistance = 450;
+            this.splitContainer1.Size = new System.Drawing.Size(1427, 432);
+            this.splitContainer1.SplitterDistance = 556;
             this.splitContainer1.TabIndex = 2;
             // 
             // setListView
@@ -288,7 +288,7 @@
             this.setListView.SelectedBackColor = System.Drawing.Color.SteelBlue;
             this.setListView.SelectedForeColor = System.Drawing.Color.White;
             this.setListView.ShowGroups = false;
-            this.setListView.Size = new System.Drawing.Size(450, 432);
+            this.setListView.Size = new System.Drawing.Size(556, 432);
             this.setListView.TabIndex = 3;
             this.setListView.UnfocusedSelectedBackColor = System.Drawing.Color.LightGray;
             this.setListView.UseCellFormatEvents = true;
@@ -353,6 +353,7 @@
             this.olvColumn3,
             this.olvColumn4,
             this.CollectorNumber});
+            this.cardListView.Cursor = System.Windows.Forms.Cursors.Default;
             this.cardListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cardListView.EmptyListMsg = "No cards";
             this.cardListView.FullRowSelect = true;
@@ -364,7 +365,7 @@
             this.cardListView.SelectedBackColor = System.Drawing.Color.SteelBlue;
             this.cardListView.SelectedForeColor = System.Drawing.Color.White;
             this.cardListView.ShowGroups = false;
-            this.cardListView.Size = new System.Drawing.Size(699, 432);
+            this.cardListView.Size = new System.Drawing.Size(867, 432);
             this.cardListView.TabIndex = 0;
             this.cardListView.UnfocusedSelectedBackColor = System.Drawing.Color.LightGray;
             this.cardListView.UseCompatibleStateImageBehavior = false;
@@ -423,7 +424,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1153, 463);
+            this.ClientSize = new System.Drawing.Size(1427, 463);
             this.Controls.Add(this.splitContainer2);
             this.Name = "DBViewForm";
             this.Text = "Catalog";

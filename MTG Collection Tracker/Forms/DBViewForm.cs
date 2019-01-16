@@ -433,7 +433,7 @@ namespace MTG_Librarian
             {
                 if (column == listView.AllColumns.FirstOrDefault(x => x.AspectName == "CollectorNumber"))
                     FilteredObjectList.Sort(new CollectorNumberComparer { SortOrder = order });
-                else if (column == listView.AllColumns.FirstOrDefault(x => x.AspectName == "Name"))
+                else if (column == listView.AllColumns.FirstOrDefault(x => x.AspectName == "DisplayName"))
                     FilteredObjectList.Sort(new NameComparer { SortOrder = order });
                 else if (column == listView.AllColumns.FirstOrDefault(x => x.AspectName == "Type"))
                     FilteredObjectList.Sort(new TypeComparer { SortOrder = order });
