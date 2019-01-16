@@ -107,6 +107,7 @@ namespace MTG_Librarian
             byte[] zip;
             using (var client = new HttpClient())
             {
+                client.Timeout = new TimeSpan(0, 0, 15);
                 var httpResponseMessage = client.GetAsync(uri).Result;
                 if (httpResponseMessage.IsSuccessStatusCode)
                     zip = httpResponseMessage.Content.ReadAsByteArrayAsync().Result;
@@ -120,6 +121,7 @@ namespace MTG_Librarian
         {
             Image img = null;
             var request = (HttpWebRequest)WebRequest.Create(uri);
+            request.Timeout = 15000;
             var response = (HttpWebResponse)request.GetResponse();
             if ((response.StatusCode == HttpStatusCode.OK ||
                 response.StatusCode == HttpStatusCode.Moved ||

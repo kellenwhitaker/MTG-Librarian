@@ -40,7 +40,7 @@ namespace MTG_Librarian
             try
             {
                 string token = ThirdPartyAPI.TCGPlayer.GetBearerToken();
-                var client = new RestClient("https://api.tcgplayer.com/v1.19.0");
+                var client = new RestClient("https://api.tcgplayer.com/v1.19.0") { Timeout = 15000 };
                 var builder = new StringBuilder();
                 foreach (var card in cardsToPrice)
                     if (!productIdDictionary.ContainsKey(card.tcgplayerProductId))

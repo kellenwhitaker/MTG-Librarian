@@ -40,6 +40,7 @@ namespace MTG_Librarian
             try
             {
                 var request = (HttpWebRequest)WebRequest.Create(URL);
+                request.Timeout = 15000;
                 var response = (HttpWebResponse)request.GetResponse();
                 if ((response.StatusCode == HttpStatusCode.OK ||
                     response.StatusCode == HttpStatusCode.Moved ||
