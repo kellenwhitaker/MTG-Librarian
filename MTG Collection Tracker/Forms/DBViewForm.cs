@@ -75,7 +75,7 @@ namespace MTG_Librarian
             string boxText = setFilterBox.UserText.ToUpper();
             return x => boxText == ""
                 ? true
-                : (x is OLVRarityItem && ((x as OLVRarityItem).Parent as OLVSetItem).Name.ToUpper().Contains(boxText))
+                : (x is OLVRarityItem rarityItem && (rarityItem.Parent as OLVSetItem).Name.ToUpper().Contains(boxText))
                   || (x is OLVSetItem && (x as OLVSetItem).Name.ToUpper().Contains(boxText));
         }
 
@@ -89,7 +89,8 @@ namespace MTG_Librarian
             string comboBoxText = setTypeFilterComboBox.Text;
             return x => comboBoxText == "All Set Types" || comboBoxText == ""
                 ? true
-                : (x as OLVSetItem).CardSet.BoosterV3 != null && (x as OLVSetItem).CardSet.BoosterV3.Length > 0;
+                : (x is OLVRarityItem rarityItem && (rarityItem.Parent as OLVSetItem).CardSet.BoosterV3 != null) ||
+                  (x is OLVSetItem setItem && setItem.CardSet.BoosterV3 != null && setItem.CardSet.BoosterV3.Length > 0);
         }
 
         private Predicate<object> GetCardNameFilter()

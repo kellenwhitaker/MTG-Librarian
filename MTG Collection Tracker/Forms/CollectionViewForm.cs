@@ -70,26 +70,6 @@ namespace MTG_Librarian
 
         #region Mehthods
 
-        public void UpdateTotals()
-        {
-            var totalsRow = (cardListView.Objects as ArrayList)[0] as InventoryTotalsItem;
-            totalsRow.tcgplayerMarketPrice = 0;
-            totalsRow.Cost = 0;
-            totalsRow.Count = 0;
-            foreach (var row in cardListView.FilteredObjects)
-            {
-                if (row is FullInventoryCard card)
-                {
-                    int cardCount = card.Count.HasValue ? card.Count.Value : 1;
-                    totalsRow.Count += cardCount;
-                    if (card.tcgplayerMarketPrice.HasValue)
-                        totalsRow.tcgplayerMarketPrice += card.tcgplayerMarketPrice.Value * cardCount;
-                    if (card.Cost.HasValue)
-                        totalsRow.Cost += card.Cost.Value * cardCount;
-                }
-            }
-        }
-
         #region Filters
 
         private delegate void UpdateModelFilterDelegate();
@@ -152,6 +132,26 @@ namespace MTG_Librarian
 
         #endregion Filters
 
+        public void UpdateTotals()
+        {
+            var totalsRow = (cardListView.Objects as ArrayList)[0] as InventoryTotalsItem;
+            totalsRow.tcgplayerMarketPrice = 0;
+            totalsRow.Cost = 0;
+            totalsRow.Count = 0;
+            foreach (var row in cardListView.FilteredObjects)
+            {
+                if (row is FullInventoryCard card)
+                {
+                    int cardCount = card.Count.HasValue ? card.Count.Value : 1;
+                    totalsRow.Count += cardCount;
+                    if (card.tcgplayerMarketPrice.HasValue)
+                        totalsRow.tcgplayerMarketPrice += card.tcgplayerMarketPrice.Value * cardCount;
+                    if (card.Cost.HasValue)
+                        totalsRow.Cost += card.Cost.Value * cardCount;
+                }
+            }
+        }
+
         public void LoadCollection()
         {
             if (Collection != null)
@@ -175,12 +175,14 @@ namespace MTG_Librarian
         public void AddFullInventoryCard(FullInventoryCard cardInstance)
         {
             cardListView.AddObject(cardInstance);
+            cardListView.EnsureModelVisible(cardInstance);
             UpdateTotals();
         }
 
         public void AddFullInventoryCards(List<FullInventoryCard> cards)
         {
             cardListView.AddObjects(cards);
+            cardListView.EnsureModelVisible(cards[cards.Count - 1]);
             UpdateTotals();
         }
 
