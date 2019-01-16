@@ -128,6 +128,12 @@ namespace MTG_Librarian
             {
                 Globals.Forms.MainForm.AddSetIcon(e.SetCode);
                 Globals.Forms.DBViewForm.LoadSet(e.SetCode);
+                foreach (var form in Globals.Forms.OpenCollectionForms)
+                {
+                    var cardsNeedingUpdates = form.cardListView.Objects.Cast<object>().Where(x => x is FullInventoryCard card && card.SetCode == e.SetCode).Cast<FullInventoryCard>();
+                    foreach (var card in cardsNeedingUpdates)
+                        card.CopyFromMagicCard(Globals.Collections.MagicCardCache[card.uuid]);
+                }
                 if (Globals.Forms.TasksForm.TaskManager.TaskCount == 0)
                     Globals.Forms.DBViewForm.SortCardListView();
 
