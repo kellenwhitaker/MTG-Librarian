@@ -109,6 +109,8 @@ namespace MTG_Librarian
                     foreach (FullInventoryCard fullInventoryCard in fullInventoryCards)
                     {
                         fullInventoryCard.CollectionId = collection.Id;
+                        if (fullInventoryCard.Virtual != collection.Virtual)
+                            fullInventoryCard.TimeAdded = DateTime.Now;
                         fullInventoryCard.Virtual = collection.Virtual;
                         context.Update(fullInventoryCard.InventoryCard);
                         cardsList.Add(fullInventoryCard);
