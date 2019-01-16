@@ -6,10 +6,6 @@ using KW.WinFormsUI.Docking;
 using System.Drawing;
 
 //Note: editable columns - count, cost, tags, foil
-//TODO4 CollectionViewForms must also be updated after set updates
-//TODO4 mtgjson issues: no tcgplayerProductId for split cards, lands
-//TODO2 add card preview
-//TODO3 allow updating of card images
 
 namespace MTG_Librarian
 {
