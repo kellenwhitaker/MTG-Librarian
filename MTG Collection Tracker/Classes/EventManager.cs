@@ -170,7 +170,8 @@ namespace MTG_Librarian
 
         public static void DBViewFormCardActivated(object sender, CardsActivatedEventArgs args)
         {
-            CollectionViewFormCardsDropped(sender, new CardsDroppedEventArgs { Items = args.CardItems });
+            if (Globals.Forms.DockPanel.ActiveDocument != null)
+                CollectionViewFormCardsDropped(sender, new CardsDroppedEventArgs { Items = args.CardItems, TargetCollection = (Globals.Forms.DockPanel.ActiveDocument as CollectionViewForm).Collection });
         }
 
         public static void NavigationFormCollectionActivated(object sender, CollectionActivatedEventArgs e)
