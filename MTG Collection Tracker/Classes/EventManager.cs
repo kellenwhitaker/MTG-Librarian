@@ -79,7 +79,7 @@ namespace MTG_Librarian
                     MagicCard dbMatch;
                     foreach (var price in e.Prices)
                     {
-                        if (price.Value.HasValue && (dbMatch = Globals.Collections.AllMagicCards.FirstOrDefault(x => x.Value.tcgplayerProductId == price.Key).Value) != null)
+                        if (price.Value.HasValue && (dbMatch = Globals.Collections.MagicCardCache.FirstOrDefault(x => x.Value.tcgplayerProductId == price.Key).Value) != null)
                         {
                             dbMatch.tcgplayerMarketPrice = price.Value.Value;
                             context.Update(dbMatch);

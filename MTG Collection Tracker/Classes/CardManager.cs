@@ -87,8 +87,11 @@ namespace MTG_Librarian
                         if (fullCard != null)
                             fullCardsAdded.Add(fullCard);
                     }
-                    if (!card.Virtual && Globals.Collections.AllMagicCards.TryGetValue(card.uuid, out MagicCard magicCard))
+                    if (!card.Virtual && Globals.Collections.MagicCardCache.TryGetValue(card.uuid, out MagicCard magicCard))
+                    {
                         magicCard.CopiesOwned++;
+                        Globals.Forms.DBViewForm.cardListView.RefreshObject(magicCard);
+                    }
                 }
                 if (cvForm != null)
                     cvForm.AddFullInventoryCards(fullCardsAdded);
@@ -129,11 +132,11 @@ namespace MTG_Librarian
                 var inventoryCards = from c in context.Library
                                      select c;
 
-                foreach (var magicCard in Globals.Collections.AllMagicCards.Values)
+                foreach (var magicCard in Globals.Collections.MagicCardCache.Values)
                     magicCard.CopiesOwned = 0;
 
                 foreach (var inventoryCard in inventoryCards)
-                    if (!inventoryCard.Virtual && inventoryCard.Count.HasValue && Globals.Collections.AllMagicCards.TryGetValue(inventoryCard.uuid, out MagicCard magicCard))
+                    if (!inventoryCard.Virtual && inventoryCard.Count.HasValue && Globals.Collections.MagicCardCache.TryGetValue(inventoryCard.uuid, out MagicCard magicCard))
                         magicCard.CopiesOwned += inventoryCard.Count.Value;
             }
         }
@@ -154,7 +157,7 @@ namespace MTG_Librarian
         {
             MagicCard magicCard = null;
             var allCopiesSum = context.LibraryView.Where(x => x.uuid == card.uuid && !x.Virtual).Sum(x => x.Count);
-            if (allCopiesSum.HasValue && Globals.Collections.AllMagicCards.TryGetValue(card.uuid, out magicCard))
+            if (allCopiesSum.HasValue && Globals.Collections.MagicCardCache.TryGetValue(card.uuid, out magicCard))
                 magicCard.CopiesOwned = allCopiesSum.Value;
 
             return magicCard;

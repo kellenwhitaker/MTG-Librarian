@@ -157,7 +157,7 @@ namespace MTG_Librarian
             {
                 var existingCards = cardListView.Objects.Cast<OLVCardItem>().Where(x => x.MagicCard.SetCode == SetCode).ToArray();
                 foreach (var card in existingCards)
-                    Globals.Collections.AllMagicCards.Remove(card.MagicCard.uuid);
+                    Globals.Collections.MagicCardCache.Remove(card.MagicCard.uuid);
                 setListView.RemoveObject(existingSet);
                 cardListView.RemoveObjects(existingCards);
             }
@@ -185,7 +185,7 @@ namespace MTG_Librarian
                     setListView.AddObject(set);
                     cardListView.AddObjects(set.Cards);
                     foreach (var card in set.Cards)
-                        Globals.Collections.AllMagicCards.Add(card.MagicCard.uuid, card.MagicCard);
+                        Globals.Collections.MagicCardCache.Add(card.MagicCard.uuid, card.MagicCard);
                     if (setListView.Objects.Count() == 1) // first set added, must sort the tree
                         setListView.Sort(setListView.AllColumns[1], SortOrder.Descending);
                     SetItems.Add(set);
@@ -221,7 +221,7 @@ namespace MTG_Librarian
                         sets.Add(card.Edition, set);
                     }
                     set.AddCard(card);
-                    Globals.Collections.AllMagicCards.Add(card.uuid, card);
+                    Globals.Collections.MagicCardCache.Add(card.uuid, card);
                 }
             }
             CollapseParts(sets);

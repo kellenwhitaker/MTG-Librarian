@@ -7,7 +7,7 @@ namespace MTG_Librarian
     {
         public static class Collections
         {
-            public static Dictionary<string, MagicCard> AllMagicCards { get; set; } = new Dictionary<string, MagicCard>();
+            public static Dictionary<string, MagicCard> MagicCardCache { get; set; } = new Dictionary<string, MagicCard>();
         }
 
         public static class States
