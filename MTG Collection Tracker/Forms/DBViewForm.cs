@@ -202,7 +202,7 @@ namespace MTG_Librarian
                         set.AddCard(card);
                     }
 
-                    CollapseParts(set);
+                    set.CollapseParts();
                     set.BuildRarityItems();
                     setListView.AddObject(set);
                     cardListView.AddObjects(set.Cards);
@@ -252,48 +252,10 @@ namespace MTG_Librarian
             SetItems.AddRange(sets.Values);
         }
 
-        private void CollapseParts(OLVSetItem set)
-        {
-            var cardsToRemove = new List<OLVCardItem>();
-            var olvCards = set.Cards;
-            foreach (var olvCard in olvCards)
-            {
-                var magicCard = olvCard.MagicCard;
-                if (magicCard.side == "b" && magicCard.layout != "meld") // add to part A
-                {
-                    var PartA = olvCards.FirstOrDefault(x => x.MagicCard.side == "a" && x.MagicCard.number == magicCard.number);
-                    if (PartA != null)
-                    {
-                        PartA.MagicCard.PartB = magicCard;
-                        if (PartA.MagicCard.layout == "split")
-                            PartA.DisplayName = $"{PartA.MagicCard.name} // {magicCard.name}";
-                        cardsToRemove.Add(olvCard);
-                    }
-                }
-                else if (magicCard.side == "c" && magicCard.layout == "meld") // add to parts A and B
-                {
-                    var PartA = olvCards.FirstOrDefault(x => x.MagicCard.text?.Contains($"into {magicCard.name}") ?? false);
-                    if (PartA != null)
-                    {
-                        PartA.MagicCard.PartB = magicCard;
-                        cardsToRemove.Add(olvCard);
-                    }
-                    var PartB = olvCards.FirstOrDefault(x => x.MagicCard.text?.Contains($"Melds with {PartA.MagicCard.name}") ?? false);
-                    if (PartB != null)
-                    {
-                        PartB.MagicCard.PartB = magicCard;
-                        cardsToRemove.Add(olvCard);
-                    }
-                }
-            }
-            foreach (var card in cardsToRemove)
-                olvCards.Remove(card);
-        }
-
-        private void CollapseParts(Dictionary<string, OLVSetItem> sets)
+        private static void CollapseParts(Dictionary<string, OLVSetItem> sets)
         {
             foreach (var OLVSet in sets.Values)
-                CollapseParts(OLVSet);
+                OLVSet.CollapseParts();
         }
 
         public void LoadTree()

@@ -114,6 +114,44 @@ namespace MTG_Librarian
             }
         }
 
+        public void CollapseParts()
+        {
+            var cardsToRemove = new List<OLVCardItem>();
+            var olvCards = Cards;
+            foreach (var olvCard in olvCards)
+            {
+                var magicCard = olvCard.MagicCard;
+                if (magicCard.side == "b" && magicCard.layout != "meld") // add to part A
+                {
+                    var PartA = olvCards.FirstOrDefault(x => x.MagicCard.side == "a" && x.MagicCard.number == magicCard.number);
+                    if (PartA != null)
+                    {
+                        PartA.MagicCard.PartB = magicCard;
+                        if (PartA.MagicCard.layout == "split")
+                            PartA.DisplayName = $"{PartA.MagicCard.name} // {magicCard.name}";
+                        cardsToRemove.Add(olvCard);
+                    }
+                }
+                else if (magicCard.side == "c" && magicCard.layout == "meld") // add to parts A and B
+                {
+                    var PartA = olvCards.FirstOrDefault(x => x.MagicCard.text?.Contains($"into {magicCard.name}") ?? false);
+                    if (PartA != null)
+                    {
+                        PartA.MagicCard.PartB = magicCard;
+                        cardsToRemove.Add(olvCard);
+                    }
+                    var PartB = olvCards.FirstOrDefault(x => x.MagicCard.text?.Contains($"Melds with {PartA.MagicCard.name}") ?? false);
+                    if (PartB != null)
+                    {
+                        PartB.MagicCard.PartB = magicCard;
+                        cardsToRemove.Add(olvCard);
+                    }
+                }
+            }
+            foreach (var card in cardsToRemove)
+                olvCards.Remove(card);
+        }
+
         public void AddCard(MagicCard card)
         {
             Cards.Add(new OLVCardItem(card));
