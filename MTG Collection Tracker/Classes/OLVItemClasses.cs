@@ -6,19 +6,21 @@ namespace MTG_Librarian
 {
     public class OLVCardItem : OLVItem
     {
-        public string    DisplayName
+        public string DisplayName
         {
-            get => MagicCard.DisplayName;            
-            set =>  MagicCard.DisplayName = value;
+            get => MagicCard.DisplayName;
+            set => MagicCard.DisplayName = value;
         }
-        public string    Name => MagicCard.name;
+
+        public string Name => MagicCard.name;
         public MagicCard MagicCard { get; set; }
-        public string    Type => MagicCard.type;
-        public string    ManaCost => MagicCard.manaCost;
-        public string    Set => MagicCard.Edition;
-        public string    CollectorNumber => MagicCard.number;
-        public string    Rarity => MagicCard.rarity;
-        public int       CopiesOwned => MagicCard.CopiesOwned;
+        public string Type => MagicCard.type;
+        public string ManaCost => MagicCard.manaCost;
+        public string Set => MagicCard.Edition;
+        public string CollectorNumber => MagicCard.number;
+        public string Rarity => MagicCard.rarity;
+        public int CopiesOwned => MagicCard.CopiesOwned;
+        public string Text => MagicCard.text;
         public override string ImageKey => $"{MagicCard.Edition}: {MagicCard.rarity}";
         public override OLVItem Parent { get; set; }
         public override Predicate<object> Filter => throw new NotImplementedException();
@@ -86,6 +88,7 @@ namespace MTG_Librarian
         public string Complete => $"{100 * Cards.Count(x => x.CopiesOwned > 0) / Cards.Count}%";
         public string Complete4 => $"{100 * Cards.Count(x => x.CopiesOwned > 3) / Cards.Count}%";
         public string Text => $"{Name} [{CardCount}]".PadRight(500);
+
         public OLVSetItem(CardSet set)
         {
             Name = set.Name;
@@ -101,7 +104,7 @@ namespace MTG_Librarian
         {
             foreach (var cardItem in Cards)
             {
-                if (!(Rarities.FirstOrDefault(x => x.Rarity == cardItem.MagicCard.rarity)is OLVRarityItem rarityItem))
+                if (!(Rarities.FirstOrDefault(x => x.Rarity == cardItem.MagicCard.rarity) is OLVRarityItem rarityItem))
                 {
                     rarityItem = new OLVRarityItem(this, cardItem.MagicCard.Edition, cardItem.MagicCard.rarity);
                     Rarities.Add(rarityItem);

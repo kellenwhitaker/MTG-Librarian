@@ -70,32 +70,28 @@ namespace MTG_Librarian
             }
         }
 
-        private Predicate<object> GetSetNameTreeFilter()
-        {
-            string boxText = setFilterBox.UserText.ToUpper();
-            return x => boxText == ""
-                ? true
-                : (x is OLVRarityItem rarityItem && (rarityItem.Parent as OLVSetItem).Name.ToUpper().Contains(boxText))
-                  || (x is OLVSetItem && (x as OLVSetItem).Name.ToUpper().Contains(boxText));
-        }
-
         private Predicate<object> GetCardFilter()
         {
-            return GetManaCostFilter().And(GetTreeViewFilter()).And(GetCardNameFilter()).And(GetOwnedStatusFilter());
-        }
-
-        private Predicate<object> GetSetTypeTreeFilter()
-        {
-            string comboBoxText = setTypeFilterComboBox.Text;
-            return x => comboBoxText == "All Set Types" || comboBoxText == ""
-                ? true
-                : (x is OLVRarityItem rarityItem && (rarityItem.Parent as OLVSetItem).CardSet.BoosterV3 != null) ||
-                  (x is OLVSetItem setItem && setItem.CardSet.BoosterV3 != null && setItem.CardSet.BoosterV3.Length > 0);
+            return GetManaCostFilter()
+                .And(GetCardNameFilter())
+                .And(GetCardTextFilter())
+                .And(GetOwnedStatusFilter()
+                .And(GetTreeViewFilter())
+                .And(GetTypeFilter()));
         }
 
         private Predicate<object> GetCardNameFilter()
         {
-            return x => cardNameFilterBox.UserText == "" ? true : (x as OLVCardItem).Name.ToUpper().Contains(cardNameFilterBox.UserText.ToUpper());
+            return x => cardNameFilterBox.UserText == ""
+                ? true
+                : (x as OLVCardItem).Name?.ToUpper().Contains(cardNameFilterBox.UserText.ToUpper()) ?? false;
+        }
+
+        private Predicate<object> GetCardTextFilter()
+        {
+            return x => cardTextFilterTextBox.UserText == ""
+                ? true
+                : (x as OLVCardItem).Text?.ToUpper().Contains(cardTextFilterTextBox.UserText.ToUpper()) ?? false;
         }
 
         private Predicate<object> GetManaCostFilter()
@@ -108,8 +104,37 @@ namespace MTG_Librarian
             if (redManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as OLVCardItem).ManaCost?.Contains("R") ?? false);
             if (greenManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as OLVCardItem).ManaCost?.Contains("G") ?? false);
             if (colorlessManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as OLVCardItem).ManaCost?.Contains("C") ?? false);
-            if (genericManaButton.Checked) combinedFilter = combinedFilter.And(x => ((x as OLVCardItem).ManaCost?.Contains("X") ?? false) || ((x as OLVCardItem).ManaCost?.Any(c => char.IsDigit(c)) ?? false));
+            if (genericManaButton.Checked) combinedFilter = combinedFilter.And(x => ((x as OLVCardItem).ManaCost?.Contains("X") ?? false)
+                || ((x as OLVCardItem).ManaCost?.Any(c => char.IsDigit(c)) ?? false));
             return combinedFilter;
+        }
+
+        private Predicate<object> GetOwnedStatusFilter()
+        {
+            string ownedText = copiesOwnedFilterBox.Text;
+            return x => ownedText == "" || ownedText == "All"
+                ? true
+                : (ownedText == "Owned"
+                    ? (x as OLVCardItem).CopiesOwned > 0
+                    : (x as OLVCardItem).CopiesOwned == 0);
+        }
+
+        private Predicate<object> GetSetNameTreeFilter()
+        {
+            string boxText = setFilterBox.UserText.ToUpper();
+            return x => boxText == ""
+                ? true
+                : (x is OLVRarityItem rarityItem && (rarityItem.Parent as OLVSetItem).Name.ToUpper().Contains(boxText))
+                  || (x is OLVSetItem && (x as OLVSetItem).Name.ToUpper().Contains(boxText));
+        }
+
+        private Predicate<object> GetSetTypeTreeFilter()
+        {
+            string comboBoxText = setTypeFilterComboBox.Text;
+            return x => comboBoxText == "All Set Types" || comboBoxText == ""
+                ? true
+                : (x is OLVRarityItem rarityItem && (rarityItem.Parent as OLVSetItem).CardSet.BoosterV3 != null) ||
+                  (x is OLVSetItem setItem && setItem.CardSet.BoosterV3 != null && setItem.CardSet.BoosterV3.Length > 0);
         }
 
         private Predicate<object> GetTreeViewFilter()
@@ -126,14 +151,11 @@ namespace MTG_Librarian
             return combinedFilter;
         }
 
-        private Predicate<object> GetOwnedStatusFilter()
+        private Predicate<object> GetTypeFilter()
         {
-            string ownedText = copiesOwnedFilterBox.Text;
-            return x => ownedText == "" || ownedText == "All"
+            return x => typeFilterTextBox.UserText == ""
                 ? true
-                : (ownedText == "Owned"
-                    ? (x as OLVCardItem).CopiesOwned > 0
-                    : (x as OLVCardItem).CopiesOwned == 0);
+                : (x as OLVCardItem).MagicCard.type?.ToUpper().Contains(typeFilterTextBox.UserText.ToUpper()) ?? false;
         }
 
         #endregion Filters
