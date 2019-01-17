@@ -34,7 +34,7 @@ namespace MTG_Librarian
                         matchString = matches[0].Groups[1].Value;
                         var code_Date = matchString.Split(new[] { '—' });
                         if (code_Date.Length > 0)
-                            set.Code = code_Date[0].Trim().ToLower();
+                            set.Code = code_Date[0].Trim().ToUpper();
                         if (code_Date.Length > 1)
                             set.ReleaseDate = code_Date[1].Trim();
                     }

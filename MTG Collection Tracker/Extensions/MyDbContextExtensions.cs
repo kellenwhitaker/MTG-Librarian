@@ -18,6 +18,8 @@ namespace MTG_Librarian
 
         public static void Upsert(this MyDbContext context, MagicCard card)
         {
+            if (card.originalText == null)
+                card.originalText = "";
             var existing = context.Catalog.AsNoTracking().FirstOrDefault(x => x.uuid == card.uuid);
             if (existing == null) // new card
             {
