@@ -18,6 +18,7 @@ namespace MTG_Librarian
         public string ManaCost => MagicCard.manaCost;
         public string Set => MagicCard.Edition;
         public string CollectorNumber => MagicCard.number;
+        public AlphaNumericString SortableNumber => new AlphaNumericString(MagicCard.number);
         public string Rarity => MagicCard.rarity;
         public int CopiesOwned => MagicCard.CopiesOwned;
         public string Text => MagicCard.text;

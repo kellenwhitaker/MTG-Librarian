@@ -21,7 +21,7 @@ namespace MTG_Librarian
 
         private static string PadNumbers(string inputString)
         {
-            return Regex.Replace(inputString, "[0-9]+", match => match.Value.PadLeft(3, '0'));
+            return Regex.Replace(inputString, "[0-9]+", match => match.Value.PadLeft(10, '0'));
         }
 
         public override string ToString()

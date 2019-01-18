@@ -447,7 +447,7 @@ namespace MTG_Librarian
 
                 public int Compare(object x, object y)
                 {
-                    int result = (x as OLVCardItem).CollectorNumber.CompareTo((y as OLVCardItem).CollectorNumber);
+                    int result = (x as OLVCardItem).SortableNumber.CompareTo((y as OLVCardItem).SortableNumber);
                     return SortOrder == SortOrder.Ascending ? result : -1 * result;
                 }
             }
