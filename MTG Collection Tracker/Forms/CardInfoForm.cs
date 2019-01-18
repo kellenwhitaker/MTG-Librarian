@@ -5,6 +5,13 @@ namespace MTG_Librarian
 {
     public partial class CardInfoForm : DockForm
     {
+        #region Fields
+
+        private MagicCardBase MagicCard;
+        private MagicCardBase DisplayedCard;
+
+        #endregion Fields
+
         #region Constructors
 
         public CardInfoForm()
@@ -17,7 +24,7 @@ namespace MTG_Librarian
 
         #region Methods
 
-        private string ManaCostToImgs(string manaCost)
+        private static string ManaCostToImgs(string manaCost)
         {
             string imgs = "";
             if (manaCost != null && manaCost != "")
@@ -30,9 +37,9 @@ namespace MTG_Librarian
             return imgs;
         }
 
-        public void CardSelected(MagicCardBase card)
+        private static string GetHTMLForPart(MagicCardBase card)
         {
-            string html = $"<table width='100%'>" +
+            string html =
                 $"<tr>" +
                 $"<td>{ManaCostToImgs(card.manaCost)}</td>" +
                 $"</tr>" +
@@ -55,13 +62,38 @@ namespace MTG_Librarian
                 html += $"<tr>" +
                     $"<td><br><br><i>{card.flavorText}</i></td>" +
                     $"</tr>";
-            html += "<tr>" +
-                $"<td><hr><b>{card.Edition} [{card.SetCode.ToUpper()}] - #{card.number}</b></td>" +
+            html += "<tr><td><br><div style='font-size: 2px;'><hr>&nbsp;</div></td></tr>";
+            return html;
+        }
+
+        private static string GetHTMLFooter(MagicCardBase card)
+        {
+            return "<tr>" +
+                $"<td><b>{card.Edition} [{card.SetCode.ToUpper()}] - #{card.number}</b></td>" +
                 $"</tr>" +
                 $"<tr>" +
                 $"<td>Artist: {card.artist}</td>" +
                 $"</tr>";
-            html += "</table>";
+        }
+
+        public void CardSelected(MagicCardBase card)
+        {
+            MagicCard = DisplayedCard = card;
+            if (card.layout == "transform")
+            {
+                flipButton.Visible = true;
+                cardTextHtmlPanel.Top = flipButton.Bottom + 5;
+            }
+            else
+            {
+                flipButton.Visible = false;
+                cardTextHtmlPanel.Top = cardPictureBox.Bottom + 5;
+            }
+            string html = $"<table width='100%'>" + GetHTMLForPart(card);
+            if (card.PartB != null)
+                html += GetHTMLForPart(card.PartB);
+
+            html += GetHTMLFooter(card) + "</table>";
             cardTextHtmlPanel.Text = html;
         }
 
@@ -71,10 +103,24 @@ namespace MTG_Librarian
 
         public void cardImageRetrieved(object sender, CardImageRetrievedEventArgs e)
         {
-            if (e.uuid == Globals.States.CardFocusedUuid)
-                pictureBox1.Image = e.CardImage.ScaleImage(pictureBox1.Width, pictureBox1.Height);
+            if (e.uuid == DisplayedCard.uuid)
+                cardPictureBox.Image = e.CardImage.ScaleImage(cardPictureBox.Width, cardPictureBox.Height);
         }
 
         #endregion Events
+
+        private void flipButton_Click(object sender, System.EventArgs e)
+        {
+            if (DisplayedCard == MagicCard)
+            {
+                DisplayedCard = MagicCard.PartB;
+                CardManager.RetrieveImage(MagicCard.PartB);
+            }
+            else
+            {
+                DisplayedCard = MagicCard;
+                CardManager.RetrieveImage(MagicCard);
+            }
+        }
     }
 }

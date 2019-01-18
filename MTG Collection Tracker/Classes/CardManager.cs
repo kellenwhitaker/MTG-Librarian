@@ -155,6 +155,31 @@ namespace MTG_Librarian
             context.SaveChanges();
         }
 
+        public static void RetrieveImage(MagicCardBase card)
+        {
+            using (CardImagesDbContext context = new CardImagesDbContext(card.Edition))
+            {
+                var imageBytes = (from i in context.CardImages
+                                  where i.uuid == card.uuid
+                                  select i).FirstOrDefault()?.CardImageBytes;
+
+                if (imageBytes != null)
+                {
+                    var img = ImageExtensions.FromByteArray(imageBytes);
+                    EventManager.OnCardImageRetrieved(new CardImageRetrievedEventArgs { uuid = card.uuid, CardImage = img });
+                }
+                else
+                {
+                    string displayName;
+                    if (card is FullInventoryCard fullInventoryCard)
+                        displayName = fullInventoryCard.DisplayName;
+                    else
+                        displayName = card.DisplayName;
+                    Globals.Forms.TasksForm.TaskManager.AddTask(new DownloadResourceTask { AddFirst = true, Caption = $"Card Image: {displayName}", URL = $"http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={card.multiverseId}&type=card", TaskObject = new BasicCardArgs { uuid = card.uuid, MultiverseId = card.multiverseId, Edition = card.Edition }, OnTaskCompleted = EventManager.ImageDownloadCompleted });
+                }
+            }
+        }
+
         private static MagicCard UpdateCopiesOwned(MyDbContext context, FullInventoryCard card)
         {
             MagicCard magicCard = null;

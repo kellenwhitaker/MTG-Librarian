@@ -19,28 +19,7 @@ namespace MTG_Librarian
             var card = e.MagicCard;
             Globals.Forms.CardInfoForm.CardSelected(card);
             CardFocused(sender, new CardFocusedEventArgs { uuid = card.uuid });
-
-            using (CardImagesDbContext context = new CardImagesDbContext(card.Edition))
-            {
-                var imageBytes = (from i in context.CardImages
-                                  where i.uuid == card.uuid
-                                  select i).FirstOrDefault()?.CardImageBytes;
-
-                if (imageBytes != null)
-                {
-                    var img = ImageExtensions.FromByteArray(imageBytes);
-                    OnCardImageRetrieved(new CardImageRetrievedEventArgs { uuid = card.uuid, CardImage = img });
-                }
-                else
-                {
-                    string displayName;
-                    if (card is FullInventoryCard fullInventoryCard)
-                        displayName = fullInventoryCard.DisplayName;
-                    else
-                        displayName = card.DisplayName;
-                    Globals.Forms.TasksForm.TaskManager.AddTask(new DownloadResourceTask { AddFirst = true, Caption = $"Card Image: {displayName}", URL = $"http://gatherer.wizards.com/Handlers/Image.ashx?multiverseid={card.multiverseId}&type=card", TaskObject = new BasicCardArgs { uuid = card.uuid, MultiverseId = card.multiverseId, Edition = card.Edition }, OnTaskCompleted = ImageDownloadCompleted });
-                }
-            }
+            CardManager.RetrieveImage(card);
         }
 
         public static void ImageDownloadCompleted(object sender, RunWorkerCompletedEventArgs e)
@@ -61,7 +40,7 @@ namespace MTG_Librarian
 
         static public event EventHandler<CardImageRetrievedEventArgs> CardImageRetrieved;
 
-        private static void OnCardImageRetrieved(CardImageRetrievedEventArgs args)
+        public static void OnCardImageRetrieved(CardImageRetrievedEventArgs args)
         {
             CardImageRetrieved?.Invoke(Globals.Forms.MainForm, args);
         }
