@@ -503,8 +503,48 @@ namespace MTG_Librarian
 
         private void cardListViewMenuStrip_Opening(object sender, CancelEventArgs e)
         {
-            if (cardListView.SelectedObjects?.Count < 1)
+            if (cardListView.SelectedObjects?.Count < 1 || cardListView.SelectedObject is InventoryTotalsItem)
                 e.Cancel = true;
+            else
+            {
+                if (cardListView.SelectedObject is FullInventoryCard card && card.Count > 1)
+                    splitToolStripMenuItem.Visible = true;
+                else
+                    splitToolStripMenuItem.Visible = false;
+            }
+        }
+
+        private void splitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (cardListView.SelectedObject is FullInventoryCard card && card.Count > 1)
+            {
+                int total = card.Count.Value;
+                var card1 = card.InventoryCard;
+                card1.Count = total / 2;
+                var card2 = card.InventoryCard;
+                card2.Count = total - card1.Count;
+                card2.InventoryId = 0;
+
+                try
+                {
+                    using (var context = new MyDbContext())
+                    {
+                        context.Update(card1);
+                        context.Add(card2);
+                        context.SaveChanges();
+                        card.Count = card1.Count;
+                        cardListView.RefreshObject(card);
+                        int selectedIndex = cardListView.SelectedIndex;
+                        cardListView.AddObject(card2.ToFullCard(context));
+                        cardListView.SelectedIndex = selectedIndex;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    DebugOutput.WriteLine(ex.ToString());
+                    MessageBox.Show("Failed to split cards");
+                }
+            }
         }
 
         #endregion Menu Events

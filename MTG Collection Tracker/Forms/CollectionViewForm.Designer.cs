@@ -53,15 +53,16 @@
             this.cardTextFilterTextBox = new EnhancedTextBox.EnhancedTextBox();
             this.typeFilterTextBox = new EnhancedTextBox.EnhancedTextBox();
             this.rarityFilterComboBox = new System.Windows.Forms.ComboBox();
-            this.genericManaButton = new CustomControls.FlatButton();
-            this.colorlessManaButton = new CustomControls.FlatButton();
-            this.greenManaButton = new CustomControls.FlatButton();
-            this.redManaButton = new CustomControls.FlatButton();
-            this.blackManaButton = new CustomControls.FlatButton();
-            this.blueManaButton = new CustomControls.FlatButton();
-            this.whiteManaButton = new CustomControls.FlatButton();
             this.setFilterTextBox = new EnhancedTextBox.EnhancedTextBox();
             this.manaButtonsPanel = new System.Windows.Forms.Panel();
+            this.whiteManaButton = new CustomControls.FlatButton();
+            this.blueManaButton = new CustomControls.FlatButton();
+            this.redManaButton = new CustomControls.FlatButton();
+            this.greenManaButton = new CustomControls.FlatButton();
+            this.blackManaButton = new CustomControls.FlatButton();
+            this.colorlessManaButton = new CustomControls.FlatButton();
+            this.genericManaButton = new CustomControls.FlatButton();
+            this.splitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.cardListView)).BeginInit();
             this.cardListViewMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -265,15 +266,16 @@
             // cardListViewMenuStrip
             // 
             this.cardListViewMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.deleteCardsToolStripMenuItem});
+            this.deleteCardsToolStripMenuItem,
+            this.splitToolStripMenuItem});
             this.cardListViewMenuStrip.Name = "cardListViewMenuStrip";
-            this.cardListViewMenuStrip.Size = new System.Drawing.Size(147, 26);
+            this.cardListViewMenuStrip.Size = new System.Drawing.Size(181, 70);
             this.cardListViewMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.cardListViewMenuStrip_Opening);
             // 
             // deleteCardsToolStripMenuItem
             // 
             this.deleteCardsToolStripMenuItem.Name = "deleteCardsToolStripMenuItem";
-            this.deleteCardsToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
+            this.deleteCardsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.deleteCardsToolStripMenuItem.Text = "Delete card(s)";
             this.deleteCardsToolStripMenuItem.Click += new System.EventHandler(this.deleteCardsToolStripMenuItem_Click);
             // 
@@ -368,103 +370,6 @@
             this.rarityFilterComboBox.TabIndex = 16;
             this.rarityFilterComboBox.SelectedIndexChanged += new System.EventHandler(this.rarityFilterComboBox_SelectedIndexChanged);
             // 
-            // genericManaButton
-            // 
-            this.genericManaButton.Checked = false;
-            this.genericManaButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
-            this.genericManaButton.FlatAppearance.BorderSize = 0;
-            this.genericManaButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.genericManaButton.Location = new System.Drawing.Point(159, 0);
-            this.genericManaButton.Name = "genericManaButton";
-            this.genericManaButton.Size = new System.Drawing.Size(25, 25);
-            this.genericManaButton.TabIndex = 14;
-            this.genericManaButton.Text = "flatButton1";
-            this.genericManaButton.UseVisualStyleBackColor = false;
-            this.genericManaButton.Click += new System.EventHandler(this.whiteManaButton_Click);
-            // 
-            // colorlessManaButton
-            // 
-            this.colorlessManaButton.Checked = false;
-            this.colorlessManaButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
-            this.colorlessManaButton.FlatAppearance.BorderSize = 0;
-            this.colorlessManaButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.colorlessManaButton.Location = new System.Drawing.Point(133, 0);
-            this.colorlessManaButton.Name = "colorlessManaButton";
-            this.colorlessManaButton.Size = new System.Drawing.Size(25, 25);
-            this.colorlessManaButton.TabIndex = 13;
-            this.colorlessManaButton.Text = "flatButton1";
-            this.colorlessManaButton.UseVisualStyleBackColor = false;
-            this.colorlessManaButton.Click += new System.EventHandler(this.whiteManaButton_Click);
-            // 
-            // greenManaButton
-            // 
-            this.greenManaButton.Checked = false;
-            this.greenManaButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
-            this.greenManaButton.FlatAppearance.BorderSize = 2;
-            this.greenManaButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.greenManaButton.Location = new System.Drawing.Point(107, 0);
-            this.greenManaButton.Name = "greenManaButton";
-            this.greenManaButton.Size = new System.Drawing.Size(25, 25);
-            this.greenManaButton.TabIndex = 12;
-            this.greenManaButton.Text = "G";
-            this.greenManaButton.UseVisualStyleBackColor = false;
-            this.greenManaButton.Click += new System.EventHandler(this.whiteManaButton_Click);
-            // 
-            // redManaButton
-            // 
-            this.redManaButton.Checked = false;
-            this.redManaButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
-            this.redManaButton.FlatAppearance.BorderSize = 2;
-            this.redManaButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.redManaButton.Location = new System.Drawing.Point(81, 0);
-            this.redManaButton.Name = "redManaButton";
-            this.redManaButton.Size = new System.Drawing.Size(25, 25);
-            this.redManaButton.TabIndex = 11;
-            this.redManaButton.Text = "R";
-            this.redManaButton.UseVisualStyleBackColor = false;
-            this.redManaButton.Click += new System.EventHandler(this.whiteManaButton_Click);
-            // 
-            // blackManaButton
-            // 
-            this.blackManaButton.Checked = false;
-            this.blackManaButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
-            this.blackManaButton.FlatAppearance.BorderSize = 2;
-            this.blackManaButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.blackManaButton.Location = new System.Drawing.Point(55, 0);
-            this.blackManaButton.Name = "blackManaButton";
-            this.blackManaButton.Size = new System.Drawing.Size(25, 25);
-            this.blackManaButton.TabIndex = 10;
-            this.blackManaButton.Text = "B";
-            this.blackManaButton.UseVisualStyleBackColor = false;
-            this.blackManaButton.Click += new System.EventHandler(this.whiteManaButton_Click);
-            // 
-            // blueManaButton
-            // 
-            this.blueManaButton.Checked = false;
-            this.blueManaButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
-            this.blueManaButton.FlatAppearance.BorderSize = 2;
-            this.blueManaButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.blueManaButton.Location = new System.Drawing.Point(29, 0);
-            this.blueManaButton.Name = "blueManaButton";
-            this.blueManaButton.Size = new System.Drawing.Size(25, 25);
-            this.blueManaButton.TabIndex = 9;
-            this.blueManaButton.UseVisualStyleBackColor = false;
-            this.blueManaButton.Click += new System.EventHandler(this.whiteManaButton_Click);
-            // 
-            // whiteManaButton
-            // 
-            this.whiteManaButton.Checked = false;
-            this.whiteManaButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
-            this.whiteManaButton.FlatAppearance.BorderSize = 0;
-            this.whiteManaButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.whiteManaButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.whiteManaButton.Location = new System.Drawing.Point(3, 0);
-            this.whiteManaButton.Name = "whiteManaButton";
-            this.whiteManaButton.Size = new System.Drawing.Size(25, 25);
-            this.whiteManaButton.TabIndex = 8;
-            this.whiteManaButton.UseVisualStyleBackColor = false;
-            this.whiteManaButton.Click += new System.EventHandler(this.whiteManaButton_Click);
-            // 
             // setFilterTextBox
             // 
             this.setFilterTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic);
@@ -490,6 +395,110 @@
             this.manaButtonsPanel.Name = "manaButtonsPanel";
             this.manaButtonsPanel.Size = new System.Drawing.Size(190, 27);
             this.manaButtonsPanel.TabIndex = 20;
+            // 
+            // whiteManaButton
+            // 
+            this.whiteManaButton.Checked = false;
+            this.whiteManaButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.whiteManaButton.FlatAppearance.BorderSize = 0;
+            this.whiteManaButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.whiteManaButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.whiteManaButton.Location = new System.Drawing.Point(3, 0);
+            this.whiteManaButton.Name = "whiteManaButton";
+            this.whiteManaButton.Size = new System.Drawing.Size(25, 25);
+            this.whiteManaButton.TabIndex = 8;
+            this.whiteManaButton.UseVisualStyleBackColor = false;
+            this.whiteManaButton.Click += new System.EventHandler(this.whiteManaButton_Click);
+            // 
+            // blueManaButton
+            // 
+            this.blueManaButton.Checked = false;
+            this.blueManaButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.blueManaButton.FlatAppearance.BorderSize = 2;
+            this.blueManaButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.blueManaButton.Location = new System.Drawing.Point(29, 0);
+            this.blueManaButton.Name = "blueManaButton";
+            this.blueManaButton.Size = new System.Drawing.Size(25, 25);
+            this.blueManaButton.TabIndex = 9;
+            this.blueManaButton.UseVisualStyleBackColor = false;
+            this.blueManaButton.Click += new System.EventHandler(this.whiteManaButton_Click);
+            // 
+            // redManaButton
+            // 
+            this.redManaButton.Checked = false;
+            this.redManaButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.redManaButton.FlatAppearance.BorderSize = 2;
+            this.redManaButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.redManaButton.Location = new System.Drawing.Point(81, 0);
+            this.redManaButton.Name = "redManaButton";
+            this.redManaButton.Size = new System.Drawing.Size(25, 25);
+            this.redManaButton.TabIndex = 11;
+            this.redManaButton.Text = "R";
+            this.redManaButton.UseVisualStyleBackColor = false;
+            this.redManaButton.Click += new System.EventHandler(this.whiteManaButton_Click);
+            // 
+            // greenManaButton
+            // 
+            this.greenManaButton.Checked = false;
+            this.greenManaButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.greenManaButton.FlatAppearance.BorderSize = 2;
+            this.greenManaButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.greenManaButton.Location = new System.Drawing.Point(107, 0);
+            this.greenManaButton.Name = "greenManaButton";
+            this.greenManaButton.Size = new System.Drawing.Size(25, 25);
+            this.greenManaButton.TabIndex = 12;
+            this.greenManaButton.Text = "G";
+            this.greenManaButton.UseVisualStyleBackColor = false;
+            this.greenManaButton.Click += new System.EventHandler(this.whiteManaButton_Click);
+            // 
+            // blackManaButton
+            // 
+            this.blackManaButton.Checked = false;
+            this.blackManaButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.blackManaButton.FlatAppearance.BorderSize = 2;
+            this.blackManaButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.blackManaButton.Location = new System.Drawing.Point(55, 0);
+            this.blackManaButton.Name = "blackManaButton";
+            this.blackManaButton.Size = new System.Drawing.Size(25, 25);
+            this.blackManaButton.TabIndex = 10;
+            this.blackManaButton.Text = "B";
+            this.blackManaButton.UseVisualStyleBackColor = false;
+            this.blackManaButton.Click += new System.EventHandler(this.whiteManaButton_Click);
+            // 
+            // colorlessManaButton
+            // 
+            this.colorlessManaButton.Checked = false;
+            this.colorlessManaButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.colorlessManaButton.FlatAppearance.BorderSize = 0;
+            this.colorlessManaButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.colorlessManaButton.Location = new System.Drawing.Point(133, 0);
+            this.colorlessManaButton.Name = "colorlessManaButton";
+            this.colorlessManaButton.Size = new System.Drawing.Size(25, 25);
+            this.colorlessManaButton.TabIndex = 13;
+            this.colorlessManaButton.Text = "flatButton1";
+            this.colorlessManaButton.UseVisualStyleBackColor = false;
+            this.colorlessManaButton.Click += new System.EventHandler(this.whiteManaButton_Click);
+            // 
+            // genericManaButton
+            // 
+            this.genericManaButton.Checked = false;
+            this.genericManaButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.genericManaButton.FlatAppearance.BorderSize = 0;
+            this.genericManaButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.genericManaButton.Location = new System.Drawing.Point(159, 0);
+            this.genericManaButton.Name = "genericManaButton";
+            this.genericManaButton.Size = new System.Drawing.Size(25, 25);
+            this.genericManaButton.TabIndex = 14;
+            this.genericManaButton.Text = "flatButton1";
+            this.genericManaButton.UseVisualStyleBackColor = false;
+            this.genericManaButton.Click += new System.EventHandler(this.whiteManaButton_Click);
+            // 
+            // splitToolStripMenuItem
+            // 
+            this.splitToolStripMenuItem.Name = "splitToolStripMenuItem";
+            this.splitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.splitToolStripMenuItem.Text = "Split";
+            this.splitToolStripMenuItem.Click += new System.EventHandler(this.splitToolStripMenuItem_Click);
             // 
             // CollectionViewForm
             // 
@@ -547,5 +556,6 @@
         private EnhancedTextBox.EnhancedTextBox cardTextFilterTextBox;
         private EnhancedTextBox.EnhancedTextBox commentsFilterTextBox;
         private System.Windows.Forms.Panel manaButtonsPanel;
+        private System.Windows.Forms.ToolStripMenuItem splitToolStripMenuItem;
     }
 }
