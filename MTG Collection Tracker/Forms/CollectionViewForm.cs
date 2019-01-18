@@ -510,7 +510,20 @@ namespace MTG_Librarian
                 if (cardListView.SelectedObject is FullInventoryCard card && card.Count > 1)
                     splitToolStripMenuItem.Visible = true;
                 else
+                {
                     splitToolStripMenuItem.Visible = false;
+                    combineToolStripMenuItem.Visible = false;
+                    if (cardListView.SelectedObjects != null && cardListView.SelectedObjects.Count > 1)
+                    {
+                        var selectedCards = cardListView.SelectedObjects.Cast<object>().Where(x => x is FullInventoryCard).Cast<FullInventoryCard>();
+                        var firstCard = selectedCards.First();
+                        foreach (var selectedCard in selectedCards)
+                            if (selectedCard.uuid != firstCard.uuid)
+                                return;
+
+                        combineToolStripMenuItem.Visible = true;
+                    }
+                }
             }
         }
 
@@ -544,6 +557,39 @@ namespace MTG_Librarian
                     DebugOutput.WriteLine(ex.ToString());
                     MessageBox.Show("Failed to split cards");
                 }
+            }
+        }
+
+        private void combineToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (cardListView.SelectedObjects != null && cardListView.SelectedObjects.Count > 1)
+            {
+                var selectedCards = cardListView.SelectedObjects.Cast<object>().Where(x => x is FullInventoryCard).Cast<FullInventoryCard>();
+                var firstCard = selectedCards.First();
+                foreach (var selectedCard in selectedCards)
+                    if (selectedCard.uuid != firstCard.uuid)
+                    {
+                        MessageBox.Show("Unable to combine cards");
+                        return;
+                    }
+
+                int totalCount = selectedCards.Sum(x => x.Count).Value;
+                double avgCost = Math.Round(selectedCards.Sum(x => x.Count * x.Cost).Value / totalCount, 2);
+                firstCard.Cost = avgCost;
+                firstCard.Count = totalCount;
+                using (var context = new MyDbContext())
+                {
+                    context.Update(firstCard.InventoryCard);
+                    foreach (var selectedCard in selectedCards)
+                        if (selectedCard != firstCard)
+                        {
+                            cardListView.RemoveObject(selectedCard);
+                            context.Remove(selectedCard.InventoryCard);
+                        }
+                    context.SaveChanges();
+                }
+                cardListView.SelectedObject = firstCard;
+                UpdateTotals();
             }
         }
 

@@ -47,6 +47,8 @@
             this.TimeAddedColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.cardListViewMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.deleteCardsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.splitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.combineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cardNameFilterTextBox = new EnhancedTextBox.EnhancedTextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.commentsFilterTextBox = new EnhancedTextBox.EnhancedTextBox();
@@ -62,7 +64,6 @@
             this.blackManaButton = new CustomControls.FlatButton();
             this.colorlessManaButton = new CustomControls.FlatButton();
             this.genericManaButton = new CustomControls.FlatButton();
-            this.splitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.cardListView)).BeginInit();
             this.cardListViewMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -267,9 +268,10 @@
             // 
             this.cardListViewMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.deleteCardsToolStripMenuItem,
-            this.splitToolStripMenuItem});
+            this.splitToolStripMenuItem,
+            this.combineToolStripMenuItem});
             this.cardListViewMenuStrip.Name = "cardListViewMenuStrip";
-            this.cardListViewMenuStrip.Size = new System.Drawing.Size(181, 70);
+            this.cardListViewMenuStrip.Size = new System.Drawing.Size(181, 92);
             this.cardListViewMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.cardListViewMenuStrip_Opening);
             // 
             // deleteCardsToolStripMenuItem
@@ -278,6 +280,20 @@
             this.deleteCardsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.deleteCardsToolStripMenuItem.Text = "Delete card(s)";
             this.deleteCardsToolStripMenuItem.Click += new System.EventHandler(this.deleteCardsToolStripMenuItem_Click);
+            // 
+            // splitToolStripMenuItem
+            // 
+            this.splitToolStripMenuItem.Name = "splitToolStripMenuItem";
+            this.splitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.splitToolStripMenuItem.Text = "Split";
+            this.splitToolStripMenuItem.Click += new System.EventHandler(this.splitToolStripMenuItem_Click);
+            // 
+            // combineToolStripMenuItem
+            // 
+            this.combineToolStripMenuItem.Name = "combineToolStripMenuItem";
+            this.combineToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.combineToolStripMenuItem.Text = "Combine";
+            this.combineToolStripMenuItem.Click += new System.EventHandler(this.combineToolStripMenuItem_Click);
             // 
             // cardNameFilterTextBox
             // 
@@ -493,13 +509,6 @@
             this.genericManaButton.UseVisualStyleBackColor = false;
             this.genericManaButton.Click += new System.EventHandler(this.whiteManaButton_Click);
             // 
-            // splitToolStripMenuItem
-            // 
-            this.splitToolStripMenuItem.Name = "splitToolStripMenuItem";
-            this.splitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.splitToolStripMenuItem.Text = "Split";
-            this.splitToolStripMenuItem.Click += new System.EventHandler(this.splitToolStripMenuItem_Click);
-            // 
             // CollectionViewForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -557,5 +566,6 @@
         private EnhancedTextBox.EnhancedTextBox commentsFilterTextBox;
         private System.Windows.Forms.Panel manaButtonsPanel;
         private System.Windows.Forms.ToolStripMenuItem splitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem combineToolStripMenuItem;
     }
 }
