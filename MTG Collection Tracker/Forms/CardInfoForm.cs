@@ -107,8 +107,6 @@ namespace MTG_Librarian
                 cardPictureBox.Image = e.CardImage.ScaleImage(cardPictureBox.Width, cardPictureBox.Height);
         }
 
-        #endregion Events
-
         private void flipButton_Click(object sender, System.EventArgs e)
         {
             if (DisplayedCard == MagicCard)
@@ -122,5 +120,7 @@ namespace MTG_Librarian
                 CardManager.RetrieveImage(MagicCard);
             }
         }
+
+        #endregion Events
     }
 }
