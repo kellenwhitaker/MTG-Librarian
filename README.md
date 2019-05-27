@@ -1,3 +1,5 @@
+<img src="https://i.ibb.co/nkczDYs/mtgl-logo.png" alt="mtgl-logo" border="0">
+
 # MTG-Librarian
 MTG Librarian is a Magic: the Gathering card library and collection tracker, inspired by *Magic Assistant*.
 
