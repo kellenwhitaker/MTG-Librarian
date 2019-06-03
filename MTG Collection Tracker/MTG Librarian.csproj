@@ -276,6 +276,7 @@
     <Compile Include="Classes\EventManager.cs" />
     <Compile Include="Classes\Globals.cs" />
     <Compile Include="Classes\SettingsManager.cs" />
+    <Compile Include="Classes\Unzipper.cs" />
     <Compile Include="Entities\CardCollection.cs" />
     <Compile Include="Entities\FullInventoryCard.cs" />
     <Compile Include="Entities\CardSet.cs" />

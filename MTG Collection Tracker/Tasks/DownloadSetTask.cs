@@ -39,19 +39,7 @@ namespace MTG_Librarian
         public override void Run()
         {
             base.Run();
-        }
-
-        private static byte[] Unzip(byte[] zipped)
-        {
-            using (var ms = new MemoryStream(zipped))
-            using (var archive = new ZipArchive(ms, ZipArchiveMode.Read))
-            using (var entryStream = archive.Entries[0].Open())
-            using (var outputStream = new MemoryStream())
-            {
-                entryStream.CopyTo(outputStream);
-                return outputStream.ToArray();
-            }
-        }
+        } 
 
         protected override void OnDoWork(DoWorkEventArgs e)
         {
@@ -63,7 +51,7 @@ namespace MTG_Librarian
                 string scrapedName = CardSet.ScrapedName;
                 string mtgjsonUrl = CardSet.MTGJSONURL;
                 var zipped = DownloadZIP(CardSet.MTGJSONURL);
-                var unzipped = Unzip(zipped);
+                var unzipped = Unzipper.Unzip(zipped);
                 string json = System.Text.Encoding.UTF8.GetString(unzipped);
                 CardSet = JsonConvert.DeserializeObject<CardSet>(json);
                 if (CardSet == null) throw new InvalidDataException("Invalid JSON encountered");
