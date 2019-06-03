@@ -1,8 +1,11 @@
 ﻿using HtmlAgilityPack;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
@@ -15,32 +18,20 @@ namespace MTG_Librarian
 
         private List<CardSet> GetMTGJSONSets()
         {
-            var matchCode_Date = new Regex("</strong><br>(.+)<br><a");
-            const string URL = "https://mtgjson.com/sets.html";
+            const string URL = "https://mtgjson.com/json/SetList.json.zip";
             var sets = new List<CardSet>();
             try
             {
-                var doc = new HtmlWeb().Load(URL);
-                var tableCells = doc.DocumentNode.SelectNodes("//td[i[@class='set']]");
+                var zip = DownloadZIP(URL);
+                var unzipped = Unzipper.Unzip(zip);
+                string json = System.Text.Encoding.UTF8.GetString(unzipped);
+                MTGJSONSetListSet[] setList = JsonConvert.DeserializeObject<MTGJSONSetListSet[]>(json);
+                if (setList == null) throw new InvalidDataException("Invalid JSON encountered");
                 CardSet set;
-                foreach (var Cell in tableCells)
+                foreach (var mtgjsonSet in setList)
                 {
-                    set = new CardSet { ScrapedName = Cell.Descendants().ElementAt(2).InnerText.Replace("&amp;", "&") };
-                    string InnerHTML = Cell.InnerHtml;
-                    var matches = matchCode_Date.Matches(InnerHTML);
-                    string matchString;
-                    if (matches.Count > 0)
-                    {
-                        matchString = matches[0].Groups[1].Value;
-                        var code_Date = matchString.Split(new[] { '—' });
-                        if (code_Date.Length > 0)
-                            set.Code = code_Date[0].Trim().ToUpper();
-                        if (code_Date.Length > 1)
-                            set.ReleaseDate = code_Date[1].Trim();
-                    }
-                    string href = Cell.Descendants().FirstOrDefault(a => a.Attributes.Contains("href"))?.Attributes.FirstOrDefault(a => a.Name == "href")?.Value;
-                    if (href != null)
-                        set.MTGJSONURL = $"http://mtgjson.com/{href}.zip";
+                    var code = mtgjsonSet.code;
+                    set = new CardSet { Name = mtgjsonSet.name, Code = code, MTGJSONURL = $"https://mtgjson.com/json/{code}.json.zip"};
                     sets.Add(set);
                 }
             }
@@ -50,6 +41,21 @@ namespace MTG_Librarian
                 MessageBox.Show("Failed to gather list of available sets.");
             }
             return sets;
+        }
+
+        private static byte[] DownloadZIP(string url)
+        {
+            byte[] zip;
+            using (var client = new HttpClient())
+            {
+                client.Timeout = new TimeSpan(0, 0, 15);
+                var httpResponseMessage = client.GetAsync(url).Result;
+                if (httpResponseMessage.IsSuccessStatusCode)
+                    zip = httpResponseMessage.Content.ReadAsByteArrayAsync().Result;
+                else
+                    throw new HttpRequestException($"{(int)httpResponseMessage.StatusCode}: {httpResponseMessage.StatusCode.ToString()}");
+                return zip;
+            }
         }
 
         #endregion Methods
@@ -116,9 +122,9 @@ namespace MTG_Librarian
                     if (count < 11)
                     {
                         if (builder.Length == 0)
-                            builder.Append($"{set.ScrapedName}");
+                            builder.Append($"{set.Name}");
                         else
-                            builder.Append($"\n{set.ScrapedName}");
+                            builder.Append($"\n{set.Name}");
                     }
                     else
                     {
@@ -152,5 +158,21 @@ namespace MTG_Librarian
         }
 
         #endregion Events
+
+        private class MTGJSONSetListSet
+        {
+            public string code;
+            public MTGJSONSetListSetMetadata meta;
+            public string name;
+            public string releaseDate;
+            public string type;
+        }
+
+        private class MTGJSONSetListSetMetadata
+        {
+            public string date;
+            public string pricesDate;
+            public string version;
+        }
     }
 }
