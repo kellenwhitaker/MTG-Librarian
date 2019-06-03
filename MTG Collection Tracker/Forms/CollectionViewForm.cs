@@ -305,7 +305,8 @@ namespace MTG_Librarian
                     }
                 }
 
-                if (cardListView.SelectedObjects != null)
+                if (cardListView.SelectedObjects != null && 
+                    !(!cardListView.SelectedObjects.Contains(editedCard) && e.Column.CheckBoxes))
                     foreach (FullInventoryCard card in cardListView.SelectedObjects)
                     {
                         if (card != editedCard)
