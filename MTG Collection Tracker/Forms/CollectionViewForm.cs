@@ -44,6 +44,7 @@ namespace MTG_Librarian
             cardListView.SetDoubleBuffered();
             cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "PaddedName").Renderer = new CardInstanceNameRenderer();
             cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "ManaCost").Renderer = new ManaCostRenderer();
+            cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "Foil").Renderer = new CheckBoxRenderer();
             cardListView.VirtualListDataSource = new MyCustomSortingDataSource(cardListView);
             cardListView.AddDecoration(new EditingCellBorderDecoration { UseLightbox = false, BorderPen = new Pen(Brushes.DodgerBlue, 3), BoundsPadding = new Size(1, 0) });
             cardListView.UseFiltering = true;
@@ -383,10 +384,26 @@ namespace MTG_Librarian
 
         private void fastObjectListView1_CellClick(object sender, CellClickEventArgs e)
         {
-            if (e.ClickCount == 2 && e.Column.IsEditable && !e.Column.CheckBoxes && e.Model is FullInventoryCard)
+            if (e.Column.IsEditable && e.Model is FullInventoryCard card)
             {
-                e.ListView.StartCellEdit(e.Item, e.Item.SubItems.IndexOf(e.SubItem));
-                e.Handled = true;
+                if (e.ClickCount == 2 && !e.Column.CheckBoxes)
+                {
+                    e.ListView.StartCellEdit(e.Item, e.Item.SubItems.IndexOf(e.SubItem));
+                    e.Handled = true;
+                }
+                else if (e.ClickCount == 1 && e.Column.CheckBoxes)
+                {
+                    var hotItemRect = e.HitTest.SubItem.Bounds;
+                    int boxWidth = CheckBoxRenderer.CheckBoxWidth;
+                    int boxHeight = CheckBoxRenderer.CheckBoxHeight;
+                    int boxLeft = hotItemRect.Left + (hotItemRect.Right - hotItemRect.Left - boxWidth) / 2;
+                    int boxTop = hotItemRect.Top + (hotItemRect.Bottom - hotItemRect.Top - boxHeight) / 2;
+                    if (e.Location.X > boxLeft && e.Location.X < boxLeft + boxWidth     // checkbox clicked
+                        && e.Location.Y > boxTop && e.Location.Y < boxTop + boxHeight)
+                    {
+                        cardListView.ToggleSubItemCheckBox(card, e.Column);
+                    }
+                }
             }
         }
 

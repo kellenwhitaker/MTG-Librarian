@@ -305,6 +305,9 @@
     <Compile Include="OLVRenderers\CardInstanceNameRenderer.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="OLVRenderers\CheckBoxRenderer.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="OLVRenderers\IconRenderer.cs">
       <SubType>Component</SubType>
     </Compile>
