@@ -20,7 +20,7 @@ namespace MTG_Librarian
         public DateTime? TimeAdded { get => _timeAdded; set { _timeAdded = value; UpdateSortableTimeAdded(); } }
         private int? _insertionIndex;
         public int? InsertionIndex { get => _insertionIndex; set { _insertionIndex = value; UpdateSortableTimeAdded(); } }
-
+        public string Condition { get; set; }
         [NotMapped]
         public string SortableTimeAdded
         {
@@ -58,7 +58,8 @@ namespace MTG_Librarian
                     uuid = uuid,
                     Foil = Foil,
                     DisplayName = DisplayName,
-                    Virtual = Virtual
+                    Virtual = Virtual,
+                    Condition = Condition
                 };
             }
         }

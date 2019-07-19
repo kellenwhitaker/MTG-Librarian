@@ -32,6 +32,7 @@
             this.cardListView = new BrightIdeasSoftware.FastObjectListView();
             this.CardName = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.FoilColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.ConditionColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn10 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn2 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.ManaCost = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -77,6 +78,7 @@
             // 
             this.cardListView.AllColumns.Add(this.CardName);
             this.cardListView.AllColumns.Add(this.FoilColumn);
+            this.cardListView.AllColumns.Add(this.ConditionColumn);
             this.cardListView.AllColumns.Add(this.olvColumn10);
             this.cardListView.AllColumns.Add(this.olvColumn2);
             this.cardListView.AllColumns.Add(this.ManaCost);
@@ -96,6 +98,7 @@
             this.cardListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.CardName,
             this.FoilColumn,
+            this.ConditionColumn,
             this.olvColumn2,
             this.ManaCost,
             this.olvColumn4,
@@ -155,6 +158,11 @@
             this.FoilColumn.Text = "Foil";
             this.FoilColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             this.FoilColumn.Width = 30;
+            // 
+            // ConditionColumn
+            // 
+            this.ConditionColumn.AspectName = "Condition";
+            this.ConditionColumn.Text = "Cond";
             // 
             // olvColumn10
             // 
@@ -271,27 +279,27 @@
             this.splitToolStripMenuItem,
             this.combineToolStripMenuItem});
             this.cardListViewMenuStrip.Name = "cardListViewMenuStrip";
-            this.cardListViewMenuStrip.Size = new System.Drawing.Size(181, 92);
+            this.cardListViewMenuStrip.Size = new System.Drawing.Size(147, 70);
             this.cardListViewMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.cardListViewMenuStrip_Opening);
             // 
             // deleteCardsToolStripMenuItem
             // 
             this.deleteCardsToolStripMenuItem.Name = "deleteCardsToolStripMenuItem";
-            this.deleteCardsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.deleteCardsToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.deleteCardsToolStripMenuItem.Text = "Delete card(s)";
             this.deleteCardsToolStripMenuItem.Click += new System.EventHandler(this.deleteCardsToolStripMenuItem_Click);
             // 
             // splitToolStripMenuItem
             // 
             this.splitToolStripMenuItem.Name = "splitToolStripMenuItem";
-            this.splitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.splitToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.splitToolStripMenuItem.Text = "Split";
             this.splitToolStripMenuItem.Click += new System.EventHandler(this.splitToolStripMenuItem_Click);
             // 
             // combineToolStripMenuItem
             // 
             this.combineToolStripMenuItem.Name = "combineToolStripMenuItem";
-            this.combineToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.combineToolStripMenuItem.Size = new System.Drawing.Size(146, 22);
             this.combineToolStripMenuItem.Text = "Combine";
             this.combineToolStripMenuItem.Click += new System.EventHandler(this.combineToolStripMenuItem_Click);
             // 
@@ -567,5 +575,6 @@
         private System.Windows.Forms.Panel manaButtonsPanel;
         private System.Windows.Forms.ToolStripMenuItem splitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem combineToolStripMenuItem;
+        private BrightIdeasSoftware.OLVColumn ConditionColumn;
     }
 }

@@ -33,6 +33,7 @@ namespace MTG_Librarian
         #region Fields
 
         private readonly System.Timers.Timer TextChangedWaitTimer = new System.Timers.Timer();
+        private ComboBox EditorComboBox;
 
         #endregion Fields
 
@@ -320,6 +321,8 @@ namespace MTG_Librarian
                                 card.Cost = editedCard.Cost;
                             else if (e.Column.AspectName == "Foil")
                                 card.Foil = editedCard.Foil;
+                            else if (e.Column.AspectName == "Condition")
+                                card.Condition = editedCard.Condition;
                             args.Items.Add(card);
                         }
                     }
@@ -449,6 +452,7 @@ namespace MTG_Librarian
             if (e.RowObject is FullInventoryCard card)
             {
                 int costIndex = cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "Cost").DisplayIndex;
+                int condIndex = cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "Condition").DisplayIndex;
                 if (e.SubItemIndex == costIndex)
                 {
                     var editor = new NumericUpDown
@@ -459,6 +463,18 @@ namespace MTG_Librarian
                     };
                     e.Control = editor;
                 }
+                else if (e.SubItemIndex == condIndex)
+                {
+                    EditorComboBox = new ComboBox { Bounds = e.CellBounds, DropDownStyle = ComboBoxStyle.DropDownList };
+                    EditorComboBox.Items.AddRange(new object[] { "", "NM", "LP", "MP", "HP", "DG" });
+                    foreach (var item in EditorComboBox.Items)
+                        if (item.ToString() == card.Condition)
+                        {
+                            EditorComboBox.SelectedItem = item;
+                            break;
+                        }
+                    e.Control = EditorComboBox;
+                }
             }
         }
 
@@ -467,10 +483,20 @@ namespace MTG_Librarian
             if (e.RowObject is FullInventoryCard card)
             {
                 int costIndex = cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "Cost").DisplayIndex;
+                int condIndex = cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "Condition").DisplayIndex;
                 if (e.SubItemIndex == costIndex)
                 {
                     if (double.TryParse(e.NewValue?.ToString(), out double cellValue))
                         card.Cost = cellValue;
+                    cardListView.RefreshObject(card);
+                    e.Cancel = true;
+                }
+                else if (e.SubItemIndex == condIndex)
+                {
+                    if (EditorComboBox.SelectedIndex == 0)
+                        card.Condition = null;
+                    else
+                        card.Condition = EditorComboBox.SelectedItem?.ToString();
                     cardListView.RefreshObject(card);
                     e.Cancel = true;
                 }

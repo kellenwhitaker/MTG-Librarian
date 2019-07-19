@@ -21,5 +21,6 @@ namespace MTG_Librarian
         public string       PartB_uuid { get; set; }
         public string       DisplayName { get; set; }
         public bool         Virtual { get; set; }
+        public string       Condition { get; set; }
     }
 }
