@@ -64,7 +64,11 @@ namespace MTG_Librarian
                     }
                 }
             }
-            catch (Exception ex) { DebugOutput.WriteLine(ex.ToString()); }
+            catch (Exception ex)
+            {
+                DebugOutput.WriteLine(ex.ToString());
+                RunState = RunState.Failed;
+            }
             finally { watch.Stop(); }
         }
 
