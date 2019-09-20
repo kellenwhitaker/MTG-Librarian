@@ -377,7 +377,7 @@ namespace MTG_Librarian
                             if (row is FullInventoryCard card && card.tcgplayerProductId != 0)
                                 cardsToPrice.Add(row as FullInventoryCard);
                         if (cardsToPrice.Count > 0)
-                            Globals.Forms.TasksForm.TaskManager.AddTask(new GetTCGPlayerPricesTask(cardsToPrice) { AddFirst = true });
+                            CardManager.FetchPrices(cardsToPrice);
                         else
                             MessageBox.Show("No valid product IDs were found. Please try updating the set(s)");
                     }

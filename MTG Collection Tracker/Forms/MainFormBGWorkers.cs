@@ -81,13 +81,12 @@ namespace MTG_Librarian
 
         private void InitUIWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            var settingsManager = new SettingsManager();
-            settingsManager.LayoutDockPanel();
+            SettingsManager.LayoutDockPanel();
             Globals.Forms.NavigationForm.LoadTree();
             Globals.Forms.DBViewForm.LoadTree();
             Globals.Forms.NavigationForm.CollectionActivated += EventManager.NavigationFormCollectionActivated;
             Show();
-            settingsManager.LayoutMainForm();
+            SettingsManager.LayoutMainForm();
             CheckForNewSetsWorker.RunWorkerCompleted += CheckForNewSetsWorker_RunWorkerCompleted;
             CheckForNewSetsWorker.RunWorkerAsync();
         }

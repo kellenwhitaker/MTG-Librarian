@@ -96,7 +96,23 @@ namespace MTG_Librarian
                 if (cvForm != null)
                     cvForm.AddFullInventoryCards(fullCardsAdded);
                 Globals.Forms.DBViewForm.setListView.RefreshObjects(setItems.Values.ToArray());
+                if (SettingsManager.ApplicationSettings.AutoFetchCardPricesOnAdd)
+                {
+                    var pricesToFetch = new List<FullInventoryCard>();
+                    foreach (FullInventoryCard fullInventoryCard in fullCardsAdded)
+                        if (fullInventoryCard.tcgplayerMarketPrice == null)
+                            pricesToFetch.Add(fullInventoryCard);
+
+                    if (pricesToFetch.Count > 0)
+                        FetchPrices(pricesToFetch);
+                }
             }
+        }
+
+        public static void FetchPrices(List<FullInventoryCard> pricesToFetch)
+        {
+            var fetchPricesTask = new GetTCGPlayerPricesTask(pricesToFetch) { AddFirst = true };
+            Globals.Forms.TasksForm.TaskManager.AddTask(fetchPricesTask);
         }
 
         public static void MoveFullInventoryCardsToCollection(ArrayList fullInventoryCards, CollectionViewForm sourceCVForm, CardCollection collection)

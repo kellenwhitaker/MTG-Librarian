@@ -201,6 +201,14 @@ namespace MTG_Librarian
             }
         }
 
+        [UserScopedSetting()]
+        [DefaultSettingValue("true")]
+        public bool AutoFetchCardPricesOnAdd
+        {
+            get => (bool)this["AutoFetchCardPricesOnAdd"];
+            set => this["AutoFetchCardPricesOnAdd"] = value;
+        }
+
         #endregion Settings Properties
     }
 }

@@ -5,42 +5,40 @@ using System.Windows.Forms;
 
 namespace MTG_Librarian
 {
-    public class SettingsManager
+    public static class SettingsManager
     {
-        #region Fields
-
-        private ApplicationSettings ApplicationSettings;
-
-        #endregion Fields
-
         #region Constructors
 
-        public SettingsManager()
+        static SettingsManager()
         {
             ApplicationSettings = new ApplicationSettings();
         }
 
         #endregion Constructors
 
+        #region Properties
+        public static ApplicationSettings ApplicationSettings { get; }
+        #endregion
+
         #region Methods
 
         #region Fill Methods
 
-        public void FillSettings()
+        public static void FillSettings()
         {
             ApplicationSettings.InInitialState = false;
             FillMainFormSettings();
             FillDockSettings();
         }
 
-        private void FillMainFormSettings()
+        private static void FillMainFormSettings()
         {
             ApplicationSettings.MainFormWindowState = Globals.Forms.MainForm.WindowState;
             ApplicationSettings.MainFormLocation = Globals.Forms.MainForm.Location;
             ApplicationSettings.MainFormSize = Globals.Forms.MainForm.Size;
         }
 
-        private void FillDockSettings()
+        private static void FillDockSettings()
         {
             ApplicationSettings.ClearDockPaneSettings();
             ApplicationSettings.DockLeftPortion = Globals.Forms.DockPanel.DockLeftPortion;
@@ -52,7 +50,7 @@ namespace MTG_Librarian
             FillDockState(DockState.DockRight);
         }
 
-        public void FillDockState(DockState dockState)
+        public static void FillDockState(DockState dockState)
         {
             var dockWindow = Globals.Forms.DockPanel.DockWindows[dockState];
             if (dockWindow != null && dockWindow.NestedPanes.Count > 0)
@@ -82,7 +80,7 @@ namespace MTG_Librarian
 
         #region Save Methods
 
-        public void SaveSettings()
+        public static void SaveSettings()
         {
             ApplicationSettings.Save();
         }
@@ -91,14 +89,14 @@ namespace MTG_Librarian
 
         #region Restore Methods
 
-        public void LayoutMainForm()
+        public static void LayoutMainForm()
         {
             Globals.Forms.MainForm.WindowState = ApplicationSettings.MainFormWindowState;
             Globals.Forms.MainForm.Location = ApplicationSettings.MainFormLocation;
             Globals.Forms.MainForm.Size = ApplicationSettings.MainFormSize;
         }
 
-        public void LayoutDockPanel()
+        public static void LayoutDockPanel()
         {
             Globals.Forms.DockPanel.SuspendLayout();
             Globals.Forms.DBViewForm.SuspendLayout();
@@ -130,7 +128,7 @@ namespace MTG_Librarian
             Globals.Forms.TasksForm.ResumeLayout();
         }
 
-        private void SetupDockPanel(DockState dockState, SortedDictionary<int, DockState> ZOrderDictionary)
+        private static void SetupDockPanel(DockState dockState, SortedDictionary<int, DockState> ZOrderDictionary)
         {
             var settings = ApplicationSettings.GetDockPaneSettings(dockState);
             if (!ZOrderDictionary.Keys.Any(x => x == settings.ZOrderIndex))
@@ -150,7 +148,7 @@ namespace MTG_Librarian
             }
         }
 
-        private DockContent ShowForm(ApplicationSettings.DockContentSettings contentSettings, DockState dockState)
+        private static DockContent ShowForm(ApplicationSettings.DockContentSettings contentSettings, DockState dockState)
         {
             DockContent dockContent;
             if (contentSettings.ContentType == ApplicationSettings.DockContentEnum.CardInfoForm)
@@ -168,13 +166,13 @@ namespace MTG_Librarian
             return dockContent;
         }
 
-        private void RestoreZOrder(SortedDictionary<int, DockState> ZOrderDictionary)
+        private static void RestoreZOrder(SortedDictionary<int, DockState> ZOrderDictionary)
         {
             foreach (KeyValuePair<int, DockState> pair in ZOrderDictionary)
                 Globals.Forms.DockPanel.UpdateDockWindowZOrder(pair.Value.ToDockStyle(), true);
         }
 
-        private void SetupDefaultDockConfiguration()
+        private static void SetupDefaultDockConfiguration()
         {
             Globals.Forms.DBViewForm.Show(Globals.Forms.DockPanel, DockState.DockBottom);
             Globals.Forms.CardInfoForm.Show(Globals.Forms.DockPanel, DockState.DockLeft);

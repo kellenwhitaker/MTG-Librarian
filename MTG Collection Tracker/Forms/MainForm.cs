@@ -175,9 +175,8 @@ namespace MTG_Librarian
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-            var settingsManager = new SettingsManager();
-            settingsManager.FillSettings();
-            settingsManager.SaveSettings();
+            SettingsManager.FillSettings();
+            SettingsManager.SaveSettings();
         }
 
         #endregion MainForm Events
