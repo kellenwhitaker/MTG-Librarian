@@ -49,6 +49,7 @@
             this.mainPanel = new System.Windows.Forms.Panel();
             this.TasksProgressBar = new CustomControls.BlockProgressBar();
             this.TasksLabel = new System.Windows.Forms.Label();
+            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -89,12 +90,13 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.statusPanel);
             this.splitContainer1.Size = new System.Drawing.Size(1924, 782);
-            this.splitContainer1.SplitterDistance = 722;
+            this.splitContainer1.SplitterDistance = 728;
             this.splitContainer1.SplitterWidth = 1;
             this.splitContainer1.TabIndex = 2;
             // 
             // dockPanel1
             // 
+            this.dockPanel1.Theme = this.vS2015LightTheme1;
             this.dockPanel1.AllowEndUserNestedDocking = false;
             this.dockPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.dockPanel1.DockBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(238)))), ((int)(((byte)(238)))), ((int)(((byte)(242)))));
@@ -102,7 +104,6 @@
             this.dockPanel1.DockLeftPortion = 0.15D;
             this.dockPanel1.DockRightPortion = 0.15D;
             this.dockPanel1.DockTopPortion = 0.5D;
-            this.dockPanel1.Theme = this.vS2015LightTheme1;
             this.dockPanel1.DocumentStyle = KW.WinFormsUI.Docking.DocumentStyle.DockingWindow;
             this.dockPanel1.DoubleClickCaptionAction = KW.WinFormsUI.Docking.DockPanel.DoubleClickCaptionActionEnum.SendToBack;
             this.dockPanel1.Location = new System.Drawing.Point(0, 28);
@@ -110,7 +111,7 @@
             this.dockPanel1.Name = "dockPanel1";
             this.dockPanel1.Padding = new System.Windows.Forms.Padding(6);
             this.dockPanel1.ShowAutoHideContentOnHover = false;
-            this.dockPanel1.Size = new System.Drawing.Size(1924, 694);
+            this.dockPanel1.Size = new System.Drawing.Size(1924, 700);
             this.dockPanel1.TabIndex = 1;
             // 
             // mainMenuStrip
@@ -128,7 +129,8 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.exportDeckcollectionToolStripMenuItem});
+            this.exportDeckcollectionToolStripMenuItem,
+            this.settingsToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 24);
             this.fileToolStripMenuItem.Text = "File";
@@ -162,7 +164,7 @@
             // 
             this.dBToolStripMenuItem.Name = "dBToolStripMenuItem";
             this.dBToolStripMenuItem.Size = new System.Drawing.Size(158, 26);
-            this.dBToolStripMenuItem.Text = "DB";
+            this.dBToolStripMenuItem.Text = "Catalog";
             this.dBToolStripMenuItem.Click += new System.EventHandler(this.dBToolStripMenuItem_Click);
             // 
             // navigatorToolStripMenuItem
@@ -188,7 +190,7 @@
             this.statusPanel.Location = new System.Drawing.Point(0, 0);
             this.statusPanel.Margin = new System.Windows.Forms.Padding(4);
             this.statusPanel.Name = "statusPanel";
-            this.statusPanel.Size = new System.Drawing.Size(1924, 59);
+            this.statusPanel.Size = new System.Drawing.Size(1924, 53);
             this.statusPanel.TabIndex = 3;
             // 
             // panel1
@@ -199,7 +201,7 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(677, 59);
+            this.panel1.Size = new System.Drawing.Size(677, 53);
             this.panel1.TabIndex = 2;
             // 
             // mainStatusLabel
@@ -237,7 +239,7 @@
             this.mainPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.mainPanel.Controls.Add(this.TasksProgressBar);
             this.mainPanel.Controls.Add(this.TasksLabel);
-            this.mainPanel.Location = new System.Drawing.Point(1079, 28);
+            this.mainPanel.Location = new System.Drawing.Point(1079, 22);
             this.mainPanel.Margin = new System.Windows.Forms.Padding(4);
             this.mainPanel.Name = "mainPanel";
             this.mainPanel.Size = new System.Drawing.Size(841, 31);
@@ -267,6 +269,13 @@
             this.TasksLabel.TabIndex = 0;
             this.TasksLabel.Text = "No active tasks";
             this.TasksLabel.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // settingsToolStripMenuItem
+            // 
+            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(241, 26);
+            this.settingsToolStripMenuItem.Text = "Settings...";
+            this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -319,6 +328,7 @@
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportDeckcollectionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
     }
 }
 

@@ -13,6 +13,8 @@ namespace MTG_Librarian
 {
     public partial class CollectionViewForm : DockContent
     {
+        private string DefaultCurrency = SettingsManager.ApplicationSettings.DefaultCurrency;
+
         #region Properties
 
         public string DocumentName => Collection?.CollectionName;
@@ -120,7 +122,7 @@ namespace MTG_Librarian
         {
             return x => cardNameFilterTextBox.UserText == ""
                 ? true
-                : (x as FullInventoryCard).name?.ToUpper().Contains(cardNameFilterTextBox.UserText.ToUpper()) ?? false;
+                : (x as FullInventoryCard).Name?.ToUpper().Contains(cardNameFilterTextBox.UserText.ToUpper()) ?? false;
         }
 
         private Predicate<object> GetCardTextFilter()
@@ -134,14 +136,14 @@ namespace MTG_Librarian
         {
             Predicate<object> combinedFilter = x => true;
 
-            if (whiteManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as FullInventoryCard).manaCost?.Contains("W") ?? false);
-            if (blueManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as FullInventoryCard).manaCost?.Contains("U") ?? false);
-            if (blackManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as FullInventoryCard).manaCost?.Contains("B") ?? false);
-            if (redManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as FullInventoryCard).manaCost?.Contains("R") ?? false);
-            if (greenManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as FullInventoryCard).manaCost?.Contains("G") ?? false);
-            if (colorlessManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as FullInventoryCard).manaCost?.Contains("C") ?? false);
-            if (genericManaButton.Checked) combinedFilter = combinedFilter.And(x => ((x as FullInventoryCard).manaCost?.Contains("X") ?? false)
-                || ((x as FullInventoryCard).manaCost?.Any(c => char.IsDigit(c)) ?? false));
+            if (whiteManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as FullInventoryCard).mana_cost?.Contains("W") ?? false);
+            if (blueManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as FullInventoryCard).mana_cost?.Contains("U") ?? false);
+            if (blackManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as FullInventoryCard).mana_cost?.Contains("B") ?? false);
+            if (redManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as FullInventoryCard).mana_cost?.Contains("R") ?? false);
+            if (greenManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as FullInventoryCard).mana_cost?.Contains("G") ?? false);
+            if (colorlessManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as FullInventoryCard).mana_cost?.Contains("C") ?? false);
+            if (genericManaButton.Checked) combinedFilter = combinedFilter.And(x => ((x as FullInventoryCard).mana_cost?.Contains("X") ?? false)
+                || ((x as FullInventoryCard).mana_cost?.Any(c => char.IsDigit(c)) ?? false));
             return combinedFilter;
         }
 
@@ -157,22 +159,21 @@ namespace MTG_Librarian
         {
             return x => typeFilterTextBox.UserText == ""
                 ? true
-                : (x as FullInventoryCard).type?.ToUpper().Contains(typeFilterTextBox.UserText.ToUpper()) ?? false;
+                : (x as FullInventoryCard).type_line?.ToUpper().Contains(typeFilterTextBox.UserText.ToUpper()) ?? false;
         }
 
         private Predicate<object> GetSetFilter()
         {
             return x => setFilterTextBox.UserText == ""
                 ? true
-                : (x as FullInventoryCard).Edition?.ToUpper().Contains(setFilterTextBox.UserText.ToUpper()) ?? false;
+                : (x as FullInventoryCard).set_name?.ToUpper().Contains(setFilterTextBox.UserText.ToUpper()) ?? false;
         }
 
         #endregion Filters
-
         public void UpdateTotals()
-        {
+        {            
             var totalsRow = (cardListView.Objects as ArrayList)[0] as InventoryTotalsItem;
-            totalsRow.tcgplayerMarketPrice = 0;
+            totalsRow.Price = 0;
             totalsRow.Cost = 0;
             totalsRow.Count = 0;
             foreach (var row in cardListView.FilteredObjects)
@@ -181,8 +182,8 @@ namespace MTG_Librarian
                 {
                     int cardCount = card.Count.HasValue ? card.Count.Value : 1;
                     totalsRow.Count += cardCount;
-                    if (card.tcgplayerMarketPrice.HasValue)
-                        totalsRow.tcgplayerMarketPrice += card.tcgplayerMarketPrice.Value * cardCount;
+                    if (card.Price.HasValue)
+                        totalsRow.Price += card.Price.Value * cardCount;
                     if (card.Cost.HasValue)
                         totalsRow.Cost += card.Cost.Value * cardCount;
                 }
@@ -194,12 +195,21 @@ namespace MTG_Librarian
         {
             if (Collection != null)
             {
-                using (CardsDbContext context = new CardsDbContext())
+                using (ScryfallCardsDbContext context = new ScryfallCardsDbContext())
                 {
                     var items = from c in context.LibraryView
                                 where c.CollectionId == Collection.Id
                                 select c;
 
+                    foreach (var fullCard in items)
+                    {
+                        string priceString;
+                        string key = $"{DefaultCurrency.ToLower()}{(fullCard.Foil ? "_foil" : "")}";
+                        if (fullCard.prices.TryGetValue(key, out priceString) && priceString != null)
+                        {
+                            fullCard.Price = Convert.ToDouble(priceString);
+                        }
+                    }
                     cardListView.AddObject(new InventoryTotalsItem { DisplayName = "        Totals:" });
                     cardListView.AddObjects(items.ToList());
                 }
@@ -219,6 +229,7 @@ namespace MTG_Librarian
 
         public void AddFullInventoryCards(List<FullInventoryCard> cards)
         {
+            DefaultCurrency = SettingsManager.ApplicationSettings.DefaultCurrency;
             if (cards.Count > 0)
             {
                 cardListView.AddObjects(cards);
@@ -376,7 +387,7 @@ namespace MTG_Librarian
                     {
                         var cardsToPrice = new List<FullInventoryCard>();
                         foreach (var row in cardListView.SelectedObjects)
-                            if (row is FullInventoryCard card && card.tcgplayerProductId != 0)
+                            if (row is FullInventoryCard card && card.ScryfallId != null)
                                 cardsToPrice.Add(row as FullInventoryCard);
                         if (cardsToPrice.Count > 0)
                             CardManager.FetchPrices(cardsToPrice);
@@ -389,7 +400,7 @@ namespace MTG_Librarian
 
         private void fastObjectListView1_CellClick(object sender, CellClickEventArgs e)
         {
-            if (e.Column.IsEditable && e.Model is FullInventoryCard card)
+            if (e.Column != null && e.Column.IsEditable && e.Model is FullInventoryCard card)
             {
                 if (e.ClickCount == 2 && !e.Column.CheckBoxes)
                 {
@@ -414,7 +425,7 @@ namespace MTG_Librarian
 
         private void fastObjectListView1_SelectionChanged(object sender, EventArgs e)
         {
-            if (cardListView.SelectedObjects != null && cardListView.SelectedObjects.Count > 0 && cardListView.SelectedObjects[0] is MagicCardBase)
+            if (cardListView.SelectedObjects != null && cardListView.SelectedObjects.Count > 0 && cardListView.SelectedObjects[0] is ScryfallMagicCardBase)
                 OnCardSelected(new CardSelectedEventArgs { MagicCards = cardListView.SelectedObjects });
         }
 
@@ -422,8 +433,10 @@ namespace MTG_Librarian
         {
             if (e.RowObject is FullInventoryCard card)
             {
-                if (card.isFoilOnly || !card.hasFoil)
+                if (!(card.has_foil && card.has_nonfoil))
+                {
                     e.Canceled = true;
+                }
                 else
                 {
                     card.Foil = e.NewValue == CheckState.Checked ? true : false;
@@ -451,7 +464,7 @@ namespace MTG_Librarian
             {
                 var cardsToPrice = new List<FullInventoryCard>();
                 foreach (var row in cardListView.Objects)
-                    if (row is FullInventoryCard card && card.tcgplayerProductId != 0)
+                    if (row is FullInventoryCard card && card.ScryfallId != null)
                         cardsToPrice.Add(row as FullInventoryCard);
                 if (cardsToPrice.Count > 0)
                     CardManager.FetchPrices(cardsToPrice);
@@ -574,7 +587,7 @@ namespace MTG_Librarian
                         var selectedCards = cardListView.SelectedObjects.Cast<object>().Where(x => x is FullInventoryCard).Cast<FullInventoryCard>();
                         var firstCard = selectedCards.First();
                         foreach (var selectedCard in selectedCards)
-                            if (selectedCard.uuid != firstCard.uuid)
+                            if (selectedCard.ScryfallId != firstCard.ScryfallId)
                                 return;
 
                         combineToolStripMenuItem.Visible = true;
@@ -596,7 +609,7 @@ namespace MTG_Librarian
 
                 try
                 {
-                    using (var context = new CardsDbContext())
+                    using (var context = new ScryfallCardsDbContext())
                     {
                         context.Update(card1);
                         context.Add(card2);
@@ -623,7 +636,7 @@ namespace MTG_Librarian
                 var selectedCards = cardListView.SelectedObjects.Cast<object>().Where(x => x is FullInventoryCard).Cast<FullInventoryCard>();
                 var firstCard = selectedCards.First();
                 foreach (var selectedCard in selectedCards)
-                    if (selectedCard.uuid != firstCard.uuid)
+                    if (selectedCard.ScryfallId != firstCard.ScryfallId)
                     {
                         MessageBox.Show("Unable to combine cards");
                         return;
@@ -633,7 +646,7 @@ namespace MTG_Librarian
                 double avgCost = Math.Round(selectedCards.Sum(x => x.Count * x.Cost).Value / totalCount, 2);
                 firstCard.Cost = avgCost;
                 firstCard.Count = totalCount;
-                using (var context = new CardsDbContext())
+                using (var context = new ScryfallCardsDbContext())
                 {
                     context.Update(firstCard.InventoryCard);
                     foreach (var selectedCard in selectedCards)
@@ -734,15 +747,15 @@ namespace MTG_Librarian
                         if (AspectName == "number")
                             result = (x as FullInventoryCard).SortableNumber.CompareTo((y as FullInventoryCard).SortableNumber);
                         else if (AspectName == "PaddedName")
-                            result = (x as FullInventoryCard).name.CompareTo((y as FullInventoryCard).name);
+                            result = (x as FullInventoryCard).Name.CompareTo((y as FullInventoryCard).Name);
                         else if (AspectName == "type")
-                            result = (x as FullInventoryCard).type.CompareTo((y as FullInventoryCard).type);
+                            result = (x as FullInventoryCard).type_line.CompareTo((y as FullInventoryCard).type_line);
                         else if (AspectName == "Edition")
-                            result = (x as FullInventoryCard).Edition.CompareTo((y as FullInventoryCard).Edition);
+                            result = (x as FullInventoryCard).set_name.CompareTo((y as FullInventoryCard).set_name);
                         else if (AspectName == "ManaCost")
                         {
-                            string valueX = (x as FullInventoryCard).manaCost ?? "";
-                            string valueY = (y as FullInventoryCard).manaCost ?? "";
+                            string valueX = (x as FullInventoryCard).mana_cost ?? "";
+                            string valueY = (y as FullInventoryCard).mana_cost ?? "";
                             result = valueX.CompareTo(valueY);
                         }
                         else if (AspectName == "TimeAdded")
@@ -751,8 +764,8 @@ namespace MTG_Librarian
                             result = (x as FullInventoryCard).Foil.CompareTo((y as FullInventoryCard).Foil);
                         else if (AspectName == "Cost")
                             result = CompareNullableDoubles((x as FullInventoryCard).Cost, (y as FullInventoryCard).Cost);
-                        else if (AspectName == "tcgplayerMarketPrice")
-                            result = CompareNullableDoubles((x as FullInventoryCard).tcgplayerMarketPrice, (y as FullInventoryCard).tcgplayerMarketPrice);
+                        else if (AspectName == "Price")
+                            result = CompareNullableDoubles((x as FullInventoryCard).Price, (y as FullInventoryCard).Price);
                         else if (AspectName == "Count")
                         {
                             var cx = (x as FullInventoryCard).Count;

@@ -6,20 +6,17 @@ using System.IO;
 
 namespace MTG_Librarian
 {
-    public class MagicCardBase : MTGJSONCard
+    public class ScryfallMagicCardBase : ScryfallCard
     {
         [NotMapped]
-        public string   DisplayName { get; set; }
-        public string   SetCode { get; set; }
-        public string   Edition { get; set; }
-        public double?  tcgplayerMarketPrice { get; set; }
-        public double?  tcgplayerLowPrice { get; set; }
-        public double?  tcgplayerMidPrice { get; set; }
-        public double?  tcgplayerHighPrice { get; set; }
+        public string DisplayName => card_faces != null ? (card_faces[0].DisplayName + " // " + card_faces[1].DisplayName) : (printed_name != null ? printed_name : Name);
         [NotMapped]
-        public MagicCard PartB { get; set; }
+        public string DisplayTypeLine => card_faces != null ? (card_faces[0].DisplayTypeLine + " // " + card_faces[1].DisplayTypeLine) : (printed_type_line != null ? printed_type_line : type_line);
+        [NotMapped]
+        public string DisplayText => card_faces != null ? (card_faces[0].DisplayText) : (printed_text != null ? printed_text : oracle_text);
+        [NotMapped]
+        public ScryfallMagicCard PartB { get; set; }
     }
-
     public class CardCollectionItem
     {
         [Key]
@@ -33,14 +30,13 @@ namespace MTG_Librarian
         public string   Type { get; set; }
         public bool     Virtual { get; set; }
     }
-
-    public class CardsDbContext : DbContext
+    public class ScryfallCardsDbContext : DbContext
     {
         #region DbSet
-        public DbSet<MagicCard> Catalog { get; set; }
+        public DbSet<ScryfallMagicCard> Catalog { get; set; }
         public DbSet<InventoryCard> Library { get; set; }
         public DbSet<FullInventoryCard> LibraryView { get; set; }
-        public DbSet<CardSet> Sets { get; set; }
+        public DbSet<ScryfallCardSet> Sets { get; set; }
         public DbSet<CardCollection> Collections { get; set; }
         public DbSet<CollectionGroup> CollectionGroups { get; set; }
         public DbSet<CardCollectionItem> CollectionsView { get; set; }
@@ -48,18 +44,17 @@ namespace MTG_Librarian
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Ignore<MagicCardBase>();
+            modelBuilder.Ignore<ScryfallMagicCardBase>();
             modelBuilder.Entity<InventoryCard>().Property(b => b.TimeAdded).HasDefaultValueSql("datetime('now','localtime')");
-            modelBuilder.Entity<MagicCard>().HasKey(x => x.uuid);
+            modelBuilder.Entity<ScryfallMagicCard>().HasKey(x => x.ScryfallId);
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var sqliteConn = new SqliteConnection("Data Source=cards.db;");
+            var sqliteConn = new SqliteConnection("Data Source=scryfallcards.db;");
             optionsBuilder.UseSqlite(sqliteConn);
         }
     }
-
     public class CardImagesDbContext : DbContext
     {
         #region DbSet
@@ -77,7 +72,7 @@ namespace MTG_Librarian
             if (!file.Exists)
             {
                 using (SqliteConnection conn = new SqliteConnection($"Data Source={fileName}"))
-                using (SqliteCommand createDB = new SqliteCommand("CREATE TABLE CardImages (uuid TEXT PRIMARY KEY, MVid INTEGER, CardImageBytes BLOB); ", conn))
+                using (SqliteCommand createDB = new SqliteCommand("CREATE TABLE CardImages (ScryfallId TEXT, Side TEXT DEFAULT A, MVid INTEGER, CardImageBytes BLOB, PRIMARY KEY (ScryfallId, Side)); ", conn))
                 {
                     conn.Open();
                     createDB.ExecuteNonQuery();

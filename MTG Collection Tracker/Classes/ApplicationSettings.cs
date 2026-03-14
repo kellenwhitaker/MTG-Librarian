@@ -53,6 +53,22 @@ namespace MTG_Librarian
         #region Settings Properties
 
         [UserScopedSetting()]
+        [DefaultSettingValue("English")]
+        public string DefaultSearchLanguage
+        {
+            get => (string)this["DefaultSearchLanguage"];
+            set => this["DefaultSearchLanguage"] = value;
+        }
+
+        [UserScopedSetting()]
+        [DefaultSettingValue("USD")]
+        public string DefaultCurrency
+        {
+            get => (string)this["DefaultCurrency"];
+            set => this["DefaultCurrency"] = value;
+        }
+
+        [UserScopedSetting()]
         [DefaultSettingValue("true")]
         public bool InInitialState
         {

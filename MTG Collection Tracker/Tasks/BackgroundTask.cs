@@ -25,7 +25,7 @@ namespace MTG_Librarian
 
     #region Enums
 
-    public enum RunState { Initialized, Running, Paused, Stopped, Completed, Failed }
+    public enum RunState { Initialized, Running, Paused, Stopped, Completed, Failed, WaitingForInput }
 
     #endregion Enums
 

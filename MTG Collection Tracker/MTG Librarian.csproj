@@ -54,6 +54,9 @@
     <ApplicationIcon>dragon icon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=10.0.0.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.10.1.1\lib\net461\AutoMapper.dll</HintPath>
+    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.5.1\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -306,6 +309,7 @@
     <Compile Include="Classes\DebugOutput.cs" />
     <Compile Include="Classes\EventManager.cs" />
     <Compile Include="Classes\Globals.cs" />
+    <Compile Include="Classes\ScryfallList.cs" />
     <Compile Include="Classes\SettingsManager.cs" />
     <Compile Include="Classes\Unzipper.cs" />
     <Compile Include="Entities\CardCollection.cs" />
@@ -315,7 +319,8 @@
     <Compile Include="Entities\DbCardImage.cs" />
     <Compile Include="Entities\InventoryCard.cs" />
     <Compile Include="Entities\MagicCard.cs" />
-    <Compile Include="Entities\MTGJSONCard.cs" />
+    <Compile Include="Entities\ScryfallCard.cs" />
+    <Compile Include="Entities\ScryfallCardFace.cs" />
     <Compile Include="Events\EventArgs.cs" />
     <Compile Include="Extensions\DockPanelSuiteExtensions.cs" />
     <Compile Include="Extensions\MyDbContextExtensions.cs" />
@@ -331,6 +336,12 @@
     </Compile>
     <Compile Include="Forms\DockForm.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SettingsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SettingsForm.Designer.cs">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="OLVRenderers\CardInstanceNameRenderer.cs">
@@ -420,7 +431,8 @@
     <Compile Include="Forms\TasksForm.Designer.cs">
       <DependentUpon>TasksForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Tasks\GetTCGPlayerPricesTask.cs" />
+    <Compile Include="Tasks\UpdateCardsTask.cs" />
+    <Compile Include="Tasks\ScryfallSearchTask.cs" />
     <Compile Include="Tasks\TaskManager.cs" />
     <EmbeddedResource Include="Forms\CardInfoForm.resx">
       <DependentUpon>CardInfoForm.cs</DependentUpon>
@@ -440,6 +452,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SettingsForm.resx">
+      <DependentUpon>SettingsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -648,6 +663,9 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Icons\C_20.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Icons\doubleslash.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Icons\E_16.png">

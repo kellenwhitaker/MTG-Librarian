@@ -15,8 +15,9 @@ namespace MTG_Librarian
         #region Fields
 
         private Dictionary<string, OLVSetItem> sets;
-        private readonly System.Timers.Timer TextChangedWaitTimer = new System.Timers.Timer();
         public List<OLVSetItem> SetItems = new List<OLVSetItem>();
+        public bool SearchHasMoreResults = false;
+        object SetSelected = null;
 
         #endregion Fields
 
@@ -38,12 +39,7 @@ namespace MTG_Librarian
             cardListView.UseFiltering = true;
             cardListView.SetDoubleBuffered();
             cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "ManaCost").Renderer = new ManaCostRenderer();
-            TextChangedWaitTimer.Interval = 400;
-            TextChangedWaitTimer.Elapsed += (sender, e) =>
-            {
-                TextChangedWaitTimer.Stop();
-                UpdateCardModelFilter();
-            };
+            formatFilterComboBox.SelectedIndex = 0;
             DockAreas = DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockBottom;
         }
 
@@ -51,74 +47,34 @@ namespace MTG_Librarian
 
         #region Methods
 
-        #region Filters
-
-        private delegate void UpdateModelFilterDelegate();
-
-        private void UpdateCardModelFilter()
+        private string BuildScryfallQuery()
         {
-            if (InvokeRequired)
-                BeginInvoke(new UpdateModelFilterDelegate(UpdateCardModelFilter));
-            else
+            string query = "";
+            string manaSymbols = "";
+            string amp = "+";
+            if (whiteManaButton.Checked) manaSymbols += "W";
+            if (blueManaButton.Checked) manaSymbols += "U";
+            if (blackManaButton.Checked) manaSymbols += "B";
+            if (redManaButton.Checked) manaSymbols += "R";
+            if (greenManaButton.Checked) manaSymbols += "G";
+            if (colorlessManaButton.Checked) manaSymbols += "C";
+            if (manaSymbols != "")
+                query += $"(m:{manaSymbols})";
+            if (cardNameFilterBox.UserText != "")
+                query += $"{(query.Length > 0 ? amp : "")}name%3A{cardNameFilterBox.UserText}";
+            if (cardTextFilterTextBox.UserText != "")
+                query += $"{(query.Length > 0 ? amp : "")}oracle%3A{cardTextFilterTextBox.UserText}";
+            if (typeFilterTextBox.UserText != "")
+                query += $"{(query.Length > 0 ? amp : "")}type:{typeFilterTextBox.UserText}";
+            if (setListView.SelectedObject != null)
             {
-                var selectedObjects = new List<object>();
-                foreach (object o in cardListView.SelectedObjects)
-                    selectedObjects.Add(o);
-                cardListView.ModelFilter = new ModelFilter(GetCardFilter());
-                cardListView.SelectedObjects = selectedObjects;
-                cardListView.RefreshSelectedObjects();
+                string setCode = (setListView.SelectedObject as OLVSetItem).CardSet.code;
+                query += $"{(query.Length > 0 ? amp : "")}set%3A{setCode}";
             }
+            if (formatFilterComboBox.SelectedIndex > 0)
+                query += $"{(query.Length > 0 ? amp : "")}(legal:{formatFilterComboBox.SelectedItem.ToString()}+or+restricted:{formatFilterComboBox.SelectedItem.ToString()})";
+            return query;
         }
-
-        private Predicate<object> GetCardFilter()
-        {
-            return GetManaCostFilter()
-                .And(GetCardNameFilter())
-                .And(GetCardTextFilter())
-                .And(GetOwnedStatusFilter()
-                .And(GetTreeViewFilter())
-                .And(GetTypeFilter()));
-        }
-
-        private Predicate<object> GetCardNameFilter()
-        {
-            return x => cardNameFilterBox.UserText == ""
-                ? true
-                : (x as OLVCardItem).Name?.ToUpper().Contains(cardNameFilterBox.UserText.ToUpper()) ?? false;
-        }
-
-        private Predicate<object> GetCardTextFilter()
-        {
-            return x => cardTextFilterTextBox.UserText == ""
-                ? true
-                : (x as OLVCardItem).Text?.ToUpper().Contains(cardTextFilterTextBox.UserText.ToUpper()) ?? false;
-        }
-
-        private Predicate<object> GetManaCostFilter()
-        {
-            Predicate<object> combinedFilter = x => true;
-
-            if (whiteManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as OLVCardItem).ManaCost?.Contains("W") ?? false);
-            if (blueManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as OLVCardItem).ManaCost?.Contains("U") ?? false);
-            if (blackManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as OLVCardItem).ManaCost?.Contains("B") ?? false);
-            if (redManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as OLVCardItem).ManaCost?.Contains("R") ?? false);
-            if (greenManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as OLVCardItem).ManaCost?.Contains("G") ?? false);
-            if (colorlessManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as OLVCardItem).ManaCost?.Contains("C") ?? false);
-            if (genericManaButton.Checked) combinedFilter = combinedFilter.And(x => ((x as OLVCardItem).ManaCost?.Contains("X") ?? false)
-                || ((x as OLVCardItem).ManaCost?.Any(c => char.IsDigit(c)) ?? false));
-            return combinedFilter;
-        }
-
-        private Predicate<object> GetOwnedStatusFilter()
-        {
-            string ownedText = copiesOwnedFilterBox.Text;
-            return x => ownedText == "" || ownedText == "All"
-                ? true
-                : (ownedText == "Owned"
-                    ? (x as OLVCardItem).CopiesOwned > 0
-                    : (x as OLVCardItem).CopiesOwned == 0);
-        }
-
         private Predicate<object> GetSetNameTreeFilter()
         {
             string boxText = setFilterBox.UserText.ToUpper();
@@ -127,44 +83,11 @@ namespace MTG_Librarian
                 : (x is OLVRarityItem rarityItem && (rarityItem.Parent as OLVSetItem).Name.ToUpper().Contains(boxText))
                   || (x is OLVSetItem && (x as OLVSetItem).Name.ToUpper().Contains(boxText));
         }
-
-        private Predicate<object> GetSetTypeTreeFilter()
-        {
-            string comboBoxText = setTypeFilterComboBox.Text;
-            return x => comboBoxText == "All Set Types" || comboBoxText == ""
-                ? true
-                : (x is OLVRarityItem rarityItem && (rarityItem.Parent as OLVSetItem).CardSet.BoosterV3 != null) ||
-                  (x is OLVSetItem setItem && setItem.CardSet.BoosterV3 != null && setItem.CardSet.BoosterV3.Length > 0);
-        }
-
-        private Predicate<object> GetTreeViewFilter()
-        {
-            Predicate<object> combinedFilter = x => true;
-            if (setListView.SelectedIndex != -1)
-            {
-                var lvItem = setListView.SelectedItem.RowObject as OLVItem;
-                do
-                {
-                    combinedFilter = combinedFilter.And(lvItem.Filter);
-                } while ((lvItem = lvItem.Parent) != null);
-            }
-            return combinedFilter;
-        }
-
-        private Predicate<object> GetTypeFilter()
-        {
-            return x => typeFilterTextBox.UserText == ""
-                ? true
-                : (x as OLVCardItem).MagicCard.type?.ToUpper().Contains(typeFilterTextBox.UserText.ToUpper()) ?? false;
-        }
-
-        #endregion Filters
-
         public void SortCardListView()
         {
             if (cardListView.PrimarySortColumn == null) // sort by set, number if not already sorted
             {
-                var sorted = cardListView.Objects.Cast<OLVCardItem>().OrderBy(x => x.MagicCard.Edition).ThenBy(x => x.MagicCard.SortableNumber);
+                var sorted = cardListView.Objects.Cast<OLVCardItem>().OrderBy(x => x.MagicCard.set_name).ThenBy(x => x.MagicCard.SortableNumber);
                 cardListView.Objects = sorted;
             }
             else
@@ -173,104 +96,135 @@ namespace MTG_Librarian
 
         public void LoadSet(string SetCode)
         {
-            var existingSet = setListView.Objects.Cast<OLVSetItem>().FirstOrDefault(x => x.CardSet.Code == SetCode);
+            var existingSet = setListView.Objects.Cast<OLVSetItem>().FirstOrDefault(x => x.CardSet.code == SetCode);
             var selectedSet = setListView.SelectedObject as OLVSetItem;
             if (existingSet != null)
             {
-                var existingCards = cardListView.Objects.Cast<OLVCardItem>().Where(x => x.MagicCard.SetCode == SetCode).ToArray();
+                var existingCards = cardListView.Objects.Cast<OLVCardItem>().Where(x => x.MagicCard.set == SetCode).ToArray();
                 foreach (var card in existingCards)
-                    Globals.Collections.MagicCardCache.Remove(card.MagicCard.uuid);
+                    Globals.Collections.MagicCardCache.Remove(card.MagicCard.ScryfallId);
                 setListView.RemoveObject(existingSet);
                 cardListView.RemoveObjects(existingCards);
             }
-            using (var context = new CardsDbContext())
+            try
             {
-                var dbSet = (from s in context.Sets
-                             where s.Code == SetCode
-                             select s).FirstOrDefault();
-                if (dbSet != null)
+                using (var context = new ScryfallCardsDbContext())
                 {
-                    var set = new OLVSetItem(dbSet);
-                    var cards = from c in context.Catalog
-                                where c.SetCode == SetCode
-                                orderby new AlphaNumericString(c.number), c.name
-                                select c;
-
-                    foreach (var card in cards)
+                    var dbSet = (from s in context.Sets
+                                 where s.code == SetCode
+                                 select s).FirstOrDefault();
+                    if (dbSet != null)
                     {
-                        card.DisplayName = card.name;
-                        set.AddCard(card);
-                    }
+                        var set = new OLVSetItem(dbSet);
+                        var cards = from c in context.Catalog
+                                    where c.set == SetCode
+                                    orderby new AlphaNumericString(c.collector_number), c.Name
+                                    select c;
 
-                    set.CollapseParts();
-                    set.BuildRarityItems();
-                    setListView.AddObject(set);
-                    cardListView.AddObjects(set.Cards);
-                    foreach (var card in set.Cards)
-                        Globals.Collections.MagicCardCache.Add(card.MagicCard.uuid, card.MagicCard);
-                    if (setListView.Objects.Count() == 1) // first set added, must sort the tree
-                        setListView.Sort(setListView.AllColumns[1], SortOrder.Descending);
-                    SetItems.Add(set);
+                        foreach (var card in cards)
+                        {
+                            var invItems = from i in context.LibraryView
+                                           where i.set == card.set && i.collector_number == card.collector_number
+                                           select i;
+
+                            if (invItems.FirstOrDefault() != null)
+                            {
+                                int count = 0;
+                                foreach (var item in invItems)
+                                    if (!item.Virtual && item.Count.HasValue)
+                                        count += item.Count.Value;
+                                card.CopiesOwned = count;
+                                set.AddCard(card);
+                            }
+                        }
+
+                        setListView.AddObject(set);
+                        if (setListView.Objects.Count() == 1) // first set added, must sort the tree
+                            setListView.Sort(setListView.AllColumns[1], SortOrder.Descending);
+                        SetItems.Add(set);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                DebugOutput.WriteLine(ex.ToString());
             }
             if (selectedSet != null)
-                setListView.SelectedObject = setListView.Objects.Cast<OLVSetItem>().FirstOrDefault(x => x.CardSet.Code == selectedSet.CardSet.Code);
+                setListView.SelectedObject = setListView.Objects.Cast<OLVSetItem>().FirstOrDefault(x => x.CardSet.code == selectedSet.CardSet.code);
         }
-
+        // TODO: refactor
+        public delegate void LoadSetsDelegate();
         public void LoadSets()
         {
-            setListView.CanExpandGetter = x => x is OLVSetItem;
-            setListView.ChildrenGetter = x => (x as OLVSetItem).Rarities;
-            var renderer = setListView.TreeColumnRenderer;
-            renderer.IsShowLines = false;
-            renderer.UseTriangles = true;
-            sets = new Dictionary<string, OLVSetItem>();
-            using (var context = new CardsDbContext())
+            if (InvokeRequired)
+                BeginInvoke(new LoadSetsDelegate(LoadSets), null);
+            else
             {
-                var dbSets = from s in context.Sets
-                             orderby s.Name
-                             select s;
-                var cards = from c in context.Catalog
-                            orderby c.Edition, new AlphaNumericString(c.number), c.name
-                            select c;
-
-                foreach (var card in cards)
+                setListView.CanExpandGetter = x => x is OLVSetItem;
+                setListView.ChildrenGetter = x => (x as OLVSetItem).Rarities;
+                var renderer = setListView.TreeColumnRenderer;
+                renderer.IsShowLines = false;
+                renderer.UseTriangles = true;
+                sets = new Dictionary<string, OLVSetItem>();
+                try
                 {
-                    card.DisplayName = card.name;
-                    if (!sets.TryGetValue(card.Edition, out OLVSetItem set))
+                    using (var context = new ScryfallCardsDbContext())
                     {
-                        set = new OLVSetItem(dbSets.FirstOrDefault(x => x.Name == card.Edition));
-                        sets.Add(card.Edition, set);
+                        var dbSets = from s in context.Sets
+                                     orderby s.name
+                                     select s;
+
+                        OLVSetItem set;
+                        foreach (var dbSet in dbSets)
+                        {
+                            set = new OLVSetItem(dbSet);
+                            var cards = from c in context.Catalog
+                                        where c.set == dbSet.code
+                                        orderby new AlphaNumericString(c.collector_number), c.Name
+                                        select c;
+
+                            foreach (var card in cards)
+                            {
+                                var invItems = from i in context.LibraryView
+                                               where i.set == card.set && i.collector_number == card.collector_number
+                                               select i;
+
+                                if (invItems.FirstOrDefault() != null)
+                                {
+                                    int count = 0;
+                                    foreach (var item in invItems)
+                                        if (!item.Virtual && item.Count.HasValue)
+                                            count += item.Count.Value;
+                                    card.CopiesOwned = count;
+                                    set.AddCard(card);
+                                }
+                            }
+
+                            setListView.AddObject(set);
+                            //if (setListView.Objects.Count() == 1) // first set added, must sort the tree
+                            //setListView.Sort(setListView.AllColumns[1], SortOrder.Descending);
+                            SetItems.Add(set);
+                        }
                     }
-                    set.AddCard(card);
-                    Globals.Collections.MagicCardCache.Add(card.uuid, card);
                 }
+                catch (Exception ex)
+                {
+                    DebugOutput.WriteLine(ex.ToString());
+                }
+
+                SetItems.AddRange(sets.Values);
             }
-            CollapseParts(sets);
-            foreach (var set in sets.Values)
-                set.BuildRarityItems();
-            SetItems.AddRange(sets.Values);
         }
-
-        private static void CollapseParts(Dictionary<string, OLVSetItem> sets)
-        {
-            foreach (var OLVSet in sets.Values)
-                OLVSet.CollapseParts();
-        }
-
         public void LoadTree()
         {
             foreach (var set in sets.Values)
-            {
                 setListView.AddObject(set);
-                cardListView.AddObjects(set.Cards);
-            }
+
             setListView.Sort(setListView.AllColumns[1], SortOrder.Descending);
         }
-
         private void UpdateSetModelFilter()
         {
-            setListView.ModelFilter = new ModelFilter(GetSetNameTreeFilter().And(GetSetTypeTreeFilter()));
+            setListView.ModelFilter = new ModelFilter(GetSetNameTreeFilter());
         }
 
         #endregion Methods
@@ -319,8 +273,12 @@ namespace MTG_Librarian
 
         private void setListView_SelectionChanged(object sender, EventArgs e)
         {
-            cardListView.SelectedObject = null;
-            UpdateCardModelFilter();
+            if (setListView.SelectedObject != SetSelected)
+            {
+                SetSelected = setListView.SelectedObject;
+                cardListView.SelectedObject = null;
+                DoScryfallQuery();
+            }
         }
 
         #endregion setListView Events
@@ -351,7 +309,13 @@ namespace MTG_Librarian
                 if (e.KeyChar == '\r')
                     e.Handled = true;
         }
-
+        private void cardListView_Scroll(object sender, ScrollEventArgs e)
+        {
+            if (cardListView.Items[cardListView.Items.Count - 1].Bounds.Top < 500)
+            {
+                FetchMoreResults();
+            }
+        }
         #endregion cardListView Events
 
         #region Menu Events
@@ -375,22 +339,6 @@ namespace MTG_Librarian
 
         #region Misc Events
 
-        private void copiesOwnedFilterBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            UpdateCardModelFilter();
-        }
-
-        private void setTypeFilterComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            UpdateSetModelFilter();
-        }
-
-        private void cardNameFilterBox_TextChanged(object sender, EventArgs e)
-        {
-            TextChangedWaitTimer.Stop();
-            TextChangedWaitTimer.Start();
-        }
-
         private void setFilterBox_TextChanged(object sender, EventArgs e)
         {
             UpdateSetModelFilter();
@@ -398,7 +346,83 @@ namespace MTG_Librarian
 
         private void whiteManaButton_Click(object sender, EventArgs e)
         {
-            UpdateCardModelFilter();
+            DoScryfallQuery();
+        }
+        private void cardNameFilterBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                e.Handled = true;
+                DoScryfallQuery();
+            }
+        }
+        private void formatFilterComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            DoScryfallQuery();
+        }
+        public void InventoryChanged(object sender, InventoryChangedEventArgs e)
+        {
+            using (var context = new ScryfallCardsDbContext())
+            {
+                var setsNeedingRecount = new List<string>();
+                foreach (var card in e.Cards)
+                {
+                    var scryfallCard = card.ToScryfallMagicCard();
+                    var invCards = from i in context.LibraryView
+                                   where i.ScryfallId == scryfallCard.ScryfallId
+                                   select i;
+                    int count = 0;
+                    foreach (var inv in invCards)
+                    {
+                        if (inv.Count.HasValue)
+                            count += inv.Count.Value;
+                    }
+                    foreach (OLVCardItem lvCard in cardListView.Objects)
+                        if (lvCard.MagicCard.ScryfallId == card.ScryfallId)
+                        {
+                            lvCard.MagicCard.CopiesOwned = count;
+                            cardListView.RefreshObject(lvCard);
+                        }
+                    if (!setsNeedingRecount.Contains(scryfallCard.set))
+                        setsNeedingRecount.Add(scryfallCard.set);
+                }
+                foreach (var set in setsNeedingRecount)
+                {
+                    OLVSetItem olvSet = null;
+                    foreach (OLVSetItem item in setListView.Objects)
+                        if (item.CardSet.code == set)
+                        {
+                            olvSet = item;
+                            break;
+                        }
+                    if (olvSet != null)
+                    {
+                        olvSet.Cards.Clear();
+                        var cards = from c in context.Catalog
+                                    where c.set == set
+                                    orderby new AlphaNumericString(c.collector_number), c.Name
+                                    select c;
+
+                        foreach (var card in cards)
+                        {
+                            var invItems = from i in context.LibraryView
+                                           where i.set == card.set && i.collector_number == card.collector_number
+                                           select i;
+
+                            if (invItems.FirstOrDefault() != null)
+                            {
+                                int count = 0;
+                                foreach (var item in invItems)
+                                    if (!item.Virtual && item.Count.HasValue)
+                                        count += item.Count.Value;
+                                card.CopiesOwned = count;
+                                olvSet.AddCard(card);
+                            }
+                        }
+                        setListView.RefreshObject(olvSet);
+                    }
+                }
+            }
         }
 
         #endregion Misc Events
@@ -501,5 +525,21 @@ namespace MTG_Librarian
         }
 
         #endregion Classes
+        
+        private void FetchMoreResults()
+        {
+            Globals.Forms.TasksForm.TaskManager.ContinueWaitingTask();
+        }
+        private void DoScryfallQuery()
+        {
+            string query = BuildScryfallQuery();
+            if (query != "")
+            {
+                cardListView.ClearObjects();
+                cardListView.EmptyListMsg = "Performing query...";
+                var newTask = new ScryfallSearchTask(query);
+                Globals.Forms.TasksForm.TaskManager.AddTask(newTask);
+            }
+        }      
     }
 }

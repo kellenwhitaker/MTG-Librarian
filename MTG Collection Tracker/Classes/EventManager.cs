@@ -11,21 +11,21 @@ namespace MTG_Librarian
     {
         public static void CardFocused(object sender, CardFocusedEventArgs e)
         {
-            Globals.States.CardFocusedUuid = e.uuid;
+            Globals.States.CardFocusedUuid = e.ScryfallId;
         }
 
         public static void CardSelected(object sender, CardSelectedEventArgs e)
         {
             if (e.MagicCards.Count == 1)
             {
-                MagicCardBase card = null;
+                ScryfallMagicCardBase card = null;
                 if (e.MagicCards[0] is FullInventoryCard)
-                    card = e.MagicCards[0] as MagicCardBase;
+                    card = e.MagicCards[0] as ScryfallMagicCardBase;
                 else if (e.MagicCards[0] is OLVCardItem cardItem)
                     card = cardItem.MagicCard;
                 Globals.Forms.CardInfoForm.CardSelected(card);
-                CardFocused(sender, new CardFocusedEventArgs { uuid = card.uuid });
-                CardManager.RetrieveImage(card);
+                CardFocused(sender, new CardFocusedEventArgs { ScryfallId = card.ScryfallId });
+                CardManager.RetrieveImage(card, "A");
                 if (card is FullInventoryCard)
                     Globals.Forms.MainForm.UpdateStatusBarTotals(e.MagicCards);
             }
@@ -45,7 +45,7 @@ namespace MTG_Librarian
             {
                 using (CardImagesDbContext context = new CardImagesDbContext(args.Edition))
                 {
-                    context.Add(new DbCardImage { uuid = args.uuid, CardImageBytes = args.Data });
+                    context.Add(new DbCardImage { ScryfallId = args.uuid, Side = args.Side, CardImageBytes = args.Data });
                     context.SaveChanges();
                 }
                 var img = ImageExtensions.FromByteArray(args.Data);
@@ -54,53 +54,87 @@ namespace MTG_Librarian
             catch (Exception ex) { DebugOutput.WriteLine(ex.ToString()); }
         }
 
-        static public event EventHandler<CardImageRetrievedEventArgs> CardImageRetrieved;
+        public static event EventHandler<CardImageRetrievedEventArgs> CardImageRetrieved;
 
         public static void OnCardImageRetrieved(CardImageRetrievedEventArgs args)
         {
             CardImageRetrieved?.Invoke(Globals.Forms.MainForm, args);
         }
 
-        private delegate void PricesFetchedDelegate(object sender, PricesUpdatedEventArgs e);
+        public static event EventHandler DefaultCurrencyChanged;
 
-        public static void PricesFetched(object sender, PricesUpdatedEventArgs e)
+        public static void OnDefaultCurrencyChanged()
+        {
+            DefaultCurrencyChanged?.Invoke(Globals.Forms.MainForm, null);
+        }
+
+        public static event EventHandler<InventoryChangedEventArgs> InventoryChanged;
+
+        public static void OnInventoryChanged(InventoryChangedEventArgs args)
+        {
+            InventoryChanged?.Invoke(Globals.Forms.MainForm, args);
+        }
+
+        private delegate void ScryfallSearchEndedDelegate(object sender,  ScryfallSearchEndedEventArgs e);
+
+        public static void ScryfallSearchEnded(object sender, ScryfallSearchEndedEventArgs e)
         {
             if (Globals.Forms.MainForm.InvokeRequired)
-                Globals.Forms.MainForm.BeginInvoke(new PricesFetchedDelegate(PricesFetched), sender, e);
+                Globals.Forms.MainForm.BeginInvoke(new ScryfallSearchEndedDelegate(ScryfallSearchEnded), sender, e);
             else
             {
-                using (var context = new CardsDbContext())
+                if (e.Results.Count > 0)
                 {
-                    MagicCard dbMatch;
-                    foreach (var price in e.Prices)
+                    var cardItems = new List<OLVCardItem>();
+                    using (var context = new ScryfallCardsDbContext())
                     {
-                        if (price.Value.HasValue && (dbMatch = Globals.Collections.MagicCardCache.FirstOrDefault(x => x.Value.tcgplayerProductId == price.Key).Value) != null)
+                        foreach (var card in e.Results)
                         {
-                            dbMatch.tcgplayerMarketPrice = price.Value.Value;
-                            context.Update(dbMatch);
+                            var inventory = from c in context.Library
+                                            where c.ScryfallId == card.ScryfallId
+                                            select c;
+                            foreach (var item in inventory)
+                            {
+                                if (!item.Virtual)
+                                    card.CopiesOwned += item.Count.GetValueOrDefault();
+                            }
+                            cardItems.Add(new OLVCardItem(card));
                         }
                     }
-                    context.SaveChanges();
+                    Globals.Forms.DBViewForm.cardListView.AddObjects(cardItems);
+                    Globals.Forms.DBViewForm.SearchHasMoreResults = e.Waiting;
                 }
+                else
+                    Globals.Forms.DBViewForm.cardListView.EmptyListMsg = "Query returned no results.";
+            }
+        }
 
+        private delegate void CardsUpdatedFromScryfallDelegate(object sender, CardsUpdatedFromScryfallEventArgs e);
+        public static void CardsUpdatedFromScryfall(object sender, CardsUpdatedFromScryfallEventArgs e)
+        {
+            var DefaultCurrency = SettingsManager.ApplicationSettings.DefaultCurrency;
+            if (Globals.Forms.MainForm.InvokeRequired)
+                Globals.Forms.MainForm.BeginInvoke(new CardsUpdatedFromScryfallDelegate(CardsUpdatedFromScryfall), sender, e);
+            else
+            {
                 foreach (var form in Globals.Forms.OpenCollectionForms)
                 {
                     var cardsToRefresh = new List<FullInventoryCard>();
-                    foreach (var price in e.Prices)
+                    foreach (var scryfallCard in e.Cards)
                     {
-                        if (price.Value.HasValue)
+                        var matches = new List<FullInventoryCard>();
+                        foreach (var row in form.cardListView.Objects)
+                            if (row is FullInventoryCard card && card.ScryfallId == scryfallCard.ScryfallId)
+                                matches.Add(row as FullInventoryCard);
+                        if (matches.Count() > 0)
                         {
-                            var matches = new List<FullInventoryCard>();
-                            foreach (var row in form.cardListView.Objects)
-                                if (row is FullInventoryCard card && card.tcgplayerProductId == price.Key)
-                                    matches.Add(row as FullInventoryCard);
-                            if (matches.Count() > 0)
+                            foreach (var match in matches)
                             {
-                                foreach (var match in matches)
-                                {
-                                    match.tcgplayerMarketPrice = price.Value.Value;
-                                    cardsToRefresh.Add(match);
-                                }
+                                match.CopyFromMagicCard(scryfallCard);
+                                string priceString;
+                                if (match.prices.TryGetValue($"{DefaultCurrency.ToLower()}{(match.Foil ? "_foil" : "")}", out priceString))
+                                    match.Price = Convert.ToDouble(priceString);
+                                cardsToRefresh.Add(match);
                             }
                         }
                     }
@@ -109,7 +143,7 @@ namespace MTG_Librarian
                         form.cardListView.RefreshObjects(cardsToRefresh);
                         form.UpdateTotals();
                     }
-                }
+                }            
             }
         }
 
@@ -123,13 +157,6 @@ namespace MTG_Librarian
             {
                 Globals.Forms.MainForm.AddSetIcon(e.SetCode);
                 Globals.Forms.DBViewForm.LoadSet(e.SetCode);
-                foreach (var form in Globals.Forms.OpenCollectionForms)
-                {
-                    var cardsNeedingUpdates = form.cardListView.Objects.Cast<object>().Where(x => x is FullInventoryCard card && card.SetCode == e.SetCode).Cast<FullInventoryCard>().ToList();
-                    foreach (var card in cardsNeedingUpdates)
-                        card.CopyFromMagicCard(Globals.Collections.MagicCardCache[card.uuid]);
-                    form.cardListView.RefreshObjects(cardsNeedingUpdates);
-                }
                 if (Globals.Forms.TasksForm.TaskManager.TaskCount == 0)
                     Globals.Forms.DBViewForm.SortCardListView();
 
@@ -146,10 +173,10 @@ namespace MTG_Librarian
                     cardItems.Add(cardItem);
                 CardManager.AddMagicCardsToCollection(cardItems, e.TargetCollection);
             }
-            else if (e.Items[0] is OLVSetItem setItem)
-                CardManager.AddMagicCardsToCollection(setItem.Cards, e.TargetCollection);
-            else if (e.Items[0] is OLVRarityItem rarityItem)
-                CardManager.AddMagicCardsToCollection(rarityItem.Cards, e.TargetCollection);
+            //else if (e.Items[0] is OLVSetItem setItem) // TODO: must be redone
+                //CardManager.AddMagicCardsToCollection(setItem.Cards, e.TargetCollection);
+            //else if (e.Items[0] is OLVRarityItem rarityItem)
+                //CardManager.AddMagicCardsToCollection(rarityItem.Cards, e.TargetCollection);
             else if (e.Items[0] is FullInventoryCard)
                 CardManager.MoveFullInventoryCardsToCollection(e.Items, e.SourceForm as CollectionViewForm, e.TargetCollection);
         }

@@ -181,7 +181,7 @@ namespace MTG_Librarian
             Globals.Forms.DockPanel.UpdateDockWindowZOrder(DockStyle.Left, true);
             Globals.Forms.DockPanel.UpdateDockWindowZOrder(DockStyle.Right, true);
             CardCollection mainCollection;
-            using (var context = new CardsDbContext())
+            using (var context = new ScryfallCardsDbContext())
                 mainCollection = (from c in context.Collections
                                   where c.CollectionName == "Main"
                                   select c).FirstOrDefault();

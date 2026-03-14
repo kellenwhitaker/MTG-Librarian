@@ -1,4 +1,5 @@
 ﻿using HtmlAgilityPack;
+using RestSharp;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -15,49 +16,36 @@ namespace MTG_Librarian
     public partial class MainForm : Form
     {
         #region Methods
-
-        private List<CardSet> GetMTGJSONSets()
+        private List<ScryfallCardSet> GetScryfallSets()
         {
-            const string URL = "https://mtgjson.com/json/SetList.json.zip";
-            var sets = new List<CardSet>();
+            const string URL = "https://api.scryfall.com";
+            var scryfallCardSets = new List<ScryfallCardSet>();
             try
             {
-                var zip = DownloadZIP(URL);
-                var unzipped = Unzipper.Unzip(zip);
-                string json = System.Text.Encoding.UTF8.GetString(unzipped);
-                MTGJSONSetListSet[] setList = JsonConvert.DeserializeObject<MTGJSONSetListSet[]>(json);
-                if (setList == null) throw new InvalidDataException("Invalid JSON encountered");
-                CardSet set;
-                foreach (var mtgjsonSet in setList)
+                var client = new RestClient(URL);
+                var request = new RestRequest("sets", Method.Get);
+                string responseContent = client.Execute(request).Content;
+                var responseObject = JsonConvert.DeserializeObject<ScryfallSetList>(responseContent);
+                if (responseObject == null) throw new InvalidDataException("Invalid JSON encountered");
+                scryfallCardSets.AddRange(responseObject.data as ScryfallCardSet[]);
+                while (responseObject.has_more)
                 {
-                    var code = mtgjsonSet.code;
-                    set = new CardSet { Name = mtgjsonSet.name, Code = code, MTGJSONURL = $"https://mtgjson.com/json/{code}.json.zip"};
-                    sets.Add(set);
+                    string relativeURL = responseObject.next_page.Substring(URL.Count());
+                    request = new RestRequest(relativeURL, Method.Get);
+                    responseContent = client.Execute(request).Content;
+                    responseObject = JsonConvert.DeserializeObject<ScryfallSetList>(responseContent);
+                    if (responseObject == null) throw new InvalidDataException("Invalid JSON encountered");
+                    scryfallCardSets.AddRange(responseObject.data as ScryfallCardSet[]);
                 }
             }
-            catch (Exception ex)
+            catch (Exception ex) 
             {
                 DebugOutput.WriteLine(ex.ToString());
                 MessageBox.Show("Failed to gather list of available sets.");
             }
-            return sets;
+          
+            return scryfallCardSets;
         }
-
-        private static byte[] DownloadZIP(string url)
-        {
-            byte[] zip;
-            using (var client = new HttpClient())
-            {
-                client.Timeout = new TimeSpan(0, 0, 15);
-                var httpResponseMessage = client.GetAsync(url).Result;
-                if (httpResponseMessage.IsSuccessStatusCode)
-                    zip = httpResponseMessage.Content.ReadAsByteArrayAsync().Result;
-                else
-                    throw new HttpRequestException($"{(int)httpResponseMessage.StatusCode}: {httpResponseMessage.StatusCode.ToString()}");
-                return zip;
-            }
-        }
-
         #endregion Methods
 
         #region Events
@@ -93,85 +81,44 @@ namespace MTG_Librarian
 
         private void checkForNewSetsWorker_DoWork(object sender, DoWorkEventArgs e)
         {
-            var sets = GetMTGJSONSets();
-            sets.RemoveAll(x => x.Code == "ps11"); // redundant set
-            using (var context = new CardsDbContext())
+            var sets = GetScryfallSets();
+            try
             {
-                var DBSets = from s in context.Sets
-                             select s;
-
-                foreach (var set in DBSets)
+                using (var context = new ScryfallCardsDbContext())
                 {
-                    sets.RemoveAll(x => x.Code == set.Code);
+                    var DBSets = from s in context.Sets
+                                 select s;
+
+                    foreach (var set in DBSets)
+                    {
+                        sets.RemoveAll(x => x.code == set.code);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                if (!ex.ToString().Contains("no such table: Sets"))
+                    MessageBox.Show(ex.ToString());
             }
             e.Result = sets;
         }
 
         private void CheckForNewSetsWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            var sets = e.Result as List<CardSet>;
+            var sets = e.Result as List<ScryfallCardSet>;
             if (sets.Count > 0)
             {
-                var builder = new System.Text.StringBuilder();
-                int count = 0;
-                foreach (var set in sets)
-                {
-                    count++;
-                    if (count < 11)
-                    {
-                        if (builder.Length == 0)
-                            builder.Append($"{set.Name}");
-                        else
-                            builder.Append($"\n{set.Name}");
-                    }
-                    else
-                    {
-                        builder.Append("\n...");
-                        break;
-                    }
-                }
-                string newSets = builder.ToString();
-                mainStatusLabel.Text = $"{sets.Count} new set{(sets.Count > 1 ? "s" : "")} available for download.";
-                statusBarActionButton.Left = mainStatusLabel.Right;
                 mainStatusLabel.Top = statusBarActionButton.Top + 5;
-                mainStatusLabel.Visible = statusBarActionButton.Visible = true;
-                var yourToolTip = new ToolTip
-                {
-                    IsBalloon = true,
-                    ShowAlways = true,
-                    AutoPopDelay = 30000
-                };
-                yourToolTip.SetToolTip(mainStatusLabel, builder.ToString());
-                statusBarActionButtonClickDelegate = () =>
-                {
-                    var tasksToAdd = new List<BackgroundTask>();
-                    foreach (var set in sets)
-                        tasksToAdd.Add(new DownloadSetTask(set));
+                mainStatusLabel.Visible = true;
+                var tasksToAdd = new List<BackgroundTask>();
+                foreach (var set in sets)
+                    tasksToAdd.Add(new DownloadSetTask(set));
 
-                    Globals.Forms.TasksForm.TaskManager.AddTasks(tasksToAdd);
-                    mainStatusLabel.Text = $"{sets.Count} set{(sets.Count > 1 ? "s" : "")} added to download queue.";
-                    statusBarActionButton.Visible = false;
-                };
+                Globals.Forms.TasksForm.TaskManager.AddTasks(tasksToAdd);
+                mainStatusLabel.Text = $"{sets.Count} set{(sets.Count > 1 ? "s" : "")} added to download queue.";
             }
         }
 
         #endregion Events
-
-        private class MTGJSONSetListSet
-        {
-            public string code;
-            public MTGJSONSetListSetMetadata meta;
-            public string name;
-            public string releaseDate;
-            public string type;
-        }
-
-        private class MTGJSONSetListSetMetadata
-        {
-            public string date;
-            public string pricesDate;
-            public string version;
-        }
     }
 }

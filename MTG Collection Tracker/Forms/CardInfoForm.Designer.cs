@@ -36,9 +36,10 @@
             // 
             // cardPictureBox
             // 
-            this.cardPictureBox.Location = new System.Drawing.Point(12, 12);
+            this.cardPictureBox.Location = new System.Drawing.Point(16, 15);
+            this.cardPictureBox.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.cardPictureBox.Name = "cardPictureBox";
-            this.cardPictureBox.Size = new System.Drawing.Size(223, 310);
+            this.cardPictureBox.Size = new System.Drawing.Size(297, 382);
             this.cardPictureBox.TabIndex = 0;
             this.cardPictureBox.TabStop = false;
             // 
@@ -47,17 +48,19 @@
             this.cardTextHtmlPanel.AutoScroll = true;
             this.cardTextHtmlPanel.BackColor = System.Drawing.SystemColors.Control;
             this.cardTextHtmlPanel.BaseStylesheet = null;
-            this.cardTextHtmlPanel.Location = new System.Drawing.Point(12, 357);
+            this.cardTextHtmlPanel.Location = new System.Drawing.Point(16, 439);
+            this.cardTextHtmlPanel.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.cardTextHtmlPanel.Name = "cardTextHtmlPanel";
-            this.cardTextHtmlPanel.Size = new System.Drawing.Size(223, 448);
+            this.cardTextHtmlPanel.Size = new System.Drawing.Size(297, 551);
             this.cardTextHtmlPanel.TabIndex = 1;
             this.cardTextHtmlPanel.Text = null;
             // 
             // flipButton
             // 
-            this.flipButton.Location = new System.Drawing.Point(97, 328);
+            this.flipButton.Location = new System.Drawing.Point(129, 404);
+            this.flipButton.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.flipButton.Name = "flipButton";
-            this.flipButton.Size = new System.Drawing.Size(49, 23);
+            this.flipButton.Size = new System.Drawing.Size(65, 28);
             this.flipButton.TabIndex = 2;
             this.flipButton.Text = "Flip";
             this.flipButton.UseVisualStyleBackColor = true;
@@ -66,14 +69,16 @@
             // 
             // CardInfoForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(284, 788);
+            this.ClientSize = new System.Drawing.Size(379, 970);
             this.Controls.Add(this.flipButton);
             this.Controls.Add(this.cardTextHtmlPanel);
             this.Controls.Add(this.cardPictureBox);
+            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
             this.Name = "CardInfoForm";
             this.Text = "Card Info";
+            this.Resize += new System.EventHandler(this.CardInfoForm_Resize);
             ((System.ComponentModel.ISupportInitialize)(this.cardPictureBox)).EndInit();
             this.ResumeLayout(false);
 

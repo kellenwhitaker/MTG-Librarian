@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Windows.Forms;
-
+// TODO: remove MagicCardCache
 namespace MTG_Librarian
 {
     public static class Globals
     {
         public static class Collections
         {
-            public static Dictionary<string, MagicCard> MagicCardCache { get; set; } = new Dictionary<string, MagicCard>();
+            public static Dictionary<string, ScryfallMagicCard> MagicCardCache { get; set; } = new Dictionary<string, ScryfallMagicCard>();
         }
 
         public static class States

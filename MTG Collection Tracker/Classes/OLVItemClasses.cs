@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO.Ports;
 using System.Linq;
 
 namespace MTG_Librarian
@@ -9,24 +10,31 @@ namespace MTG_Librarian
         public string DisplayName
         {
             get => MagicCard.DisplayName;
-            set => MagicCard.DisplayName = value;
+        }
+        public string DisplayTypeLine
+        {
+            get => MagicCard.DisplayTypeLine;
+        }
+        public string DisplayText
+        {
+            get => MagicCard.DisplayText;
         }
 
-        public string Name => MagicCard.name;
-        public MagicCard MagicCard { get; set; }
-        public string Type => MagicCard.type;
-        public string ManaCost => MagicCard.manaCost;
-        public string Set => MagicCard.Edition;
-        public string CollectorNumber => MagicCard.number;
-        public AlphaNumericString SortableNumber => new AlphaNumericString(MagicCard.number);
+        public string Name => MagicCard.Name;
+        public ScryfallMagicCard MagicCard { get; set; }
+        public string Type => MagicCard.type_line;
+        public string ManaCost => MagicCard.mana_cost;
+        public string Set => MagicCard.set_name;
+        public string CollectorNumber => MagicCard.collector_number;
+        public AlphaNumericString SortableNumber => new AlphaNumericString(MagicCard.collector_number);
         public string Rarity => MagicCard.rarity;
         public int CopiesOwned => MagicCard.CopiesOwned;
         public string Text => MagicCard.text;
-        public override string ImageKey => $"{MagicCard.Edition}: {MagicCard.rarity}";
+        public override string ImageKey => $"{MagicCard.set_name}: {MagicCard.rarity}";
         public override OLVItem Parent { get; set; }
         public override Predicate<object> Filter => throw new NotImplementedException();
 
-        public OLVCardItem(MagicCard mCard)
+        public OLVCardItem(ScryfallMagicCard mCard)
         {
             MagicCard = mCard;
         }
@@ -34,7 +42,7 @@ namespace MTG_Librarian
 
     public class OLVRarityItem : OLVItem, IComparable<OLVRarityItem>
     {
-        public List<OLVCardItem> Cards { get; set; } = new List<OLVCardItem>();
+        public List<ScryfallMagicCard> Cards { get; set; } = new List<ScryfallMagicCard>();
         public string Rarity { get; set; }
         public string Set { get; set; }
         public int Count => Cards?.Count ?? 0;
@@ -42,7 +50,7 @@ namespace MTG_Librarian
         public string Complete4 => $"{100 * Cards.Count(x => x.CopiesOwned > 3) / Cards.Count}%";
         public string Text => ToString();
         public override OLVItem Parent { get; set; }
-        public override string ImageKey => Rarity != "Basic Land" ? $"{Set}: {Rarity}" : null;
+        public override string ImageKey => $"{Set}: {Rarity}";
         public override Predicate<object> Filter => x => (x as OLVCardItem).Rarity == Rarity;
         public string ReleaseDate => SortValue.ToString(); // ensures correct sorting when TreeListView is sorted by ReleaseDate
 
@@ -78,21 +86,36 @@ namespace MTG_Librarian
     public class OLVSetItem : OLVItem
     {
         public string Name;
-        public DateTime ReleaseDate => DateTime.TryParse(CardSet.ReleaseDate, out DateTime value) ? value : DateTime.MinValue;
-        public List<OLVCardItem> Cards = new List<OLVCardItem>();
+        public DateTime ReleaseDate => DateTime.TryParse(CardSet.released_at, out DateTime value) ? value : DateTime.MinValue;
+        public Dictionary<string, ScryfallMagicCard> Cards = new Dictionary<string, ScryfallMagicCard>();
         public List<OLVRarityItem> Rarities = new List<OLVRarityItem>();
-        public CardSet CardSet { get; set; }
+        public ScryfallCardSet CardSet { get; set; } = new ScryfallCardSet();
         public override OLVItem Parent { get; set; }
         public override Predicate<object> Filter => x => (x as OLVCardItem).Set == Name;
-        public override string ImageKey => $"{Rarities.Last(x => x.ImageKey != null).ImageKey}";
-        public int CardCount => Cards.Count;
-        public string Complete => $"{100 * Cards.Count(x => x.CopiesOwned > 0) / Cards.Count}%";
-        public string Complete4 => $"{100 * Cards.Count(x => x.CopiesOwned > 3) / Cards.Count}%";
+        public override string ImageKey 
+        {
+            get
+            {
+                string Rarity = null;
+                if (CardSet.MythicRareIcon != null)
+                    Rarity = "mythic";
+                else if (CardSet.RareIcon != null)
+                    Rarity = "rare";
+                else if (CardSet.UncommonIcon != null)
+                    Rarity = "uncommon";
+                else if (CardSet.CommonIcon != null)
+                    Rarity = "common";
+                return $"{Name}: {Rarity}";
+            }
+        }
+        public int CardCount => CardSet != null ? CardSet.card_count : 0;
+        public string Complete => CardCount > 0 ? $"{100 * Cards.Values.Count(x => x.CopiesOwned > 0) / CardCount}%" : "0%";
+        public string Complete4 => CardCount > 0 ? $"{100 * Cards.Values.Count(x => x.CopiesOwned > 3) / CardCount}%" : "0%";
         public string Text => $"{Name} [{CardCount}]".PadRight(500);
 
-        public OLVSetItem(CardSet set)
+        public OLVSetItem(ScryfallCardSet set)
         {
-            Name = set.Name;
+            Name = set.name;
             CardSet = set;
         }
 
@@ -101,61 +124,15 @@ namespace MTG_Librarian
             Name = name;
         }
 
-        public void BuildRarityItems()
+        public void AddCard(ScryfallMagicCard card)
         {
-            foreach (var cardItem in Cards)
+            ScryfallMagicCard existing;
+            if (Cards.TryGetValue(card.collector_number, out existing))
+                existing.CopiesOwned += card.CopiesOwned;
+            else
             {
-                if (!(Rarities.FirstOrDefault(x => x.Rarity == cardItem.MagicCard.rarity) is OLVRarityItem rarityItem))
-                {
-                    rarityItem = new OLVRarityItem(this, cardItem.MagicCard.Edition, cardItem.MagicCard.rarity);
-                    Rarities.Add(rarityItem);
-                    Rarities.Sort();
-                }
-                rarityItem.Cards.Add(cardItem);
+                Cards.Add(card.collector_number, card);
             }
-        }
-
-        public void CollapseParts()
-        {
-            var cardsToRemove = new List<OLVCardItem>();
-            var olvCards = Cards;
-            foreach (var olvCard in olvCards)
-            {
-                var magicCard = olvCard.MagicCard;
-                if (magicCard.side == "b" && magicCard.layout != "meld") // add to part A
-                {
-                    var PartA = olvCards.FirstOrDefault(x => x.MagicCard.side == "a" && x.MagicCard.number == magicCard.number);
-                    if (PartA != null)
-                    {
-                        PartA.MagicCard.PartB = magicCard;
-                        if (PartA.MagicCard.layout == "split")
-                            PartA.DisplayName = $"{PartA.MagicCard.name} // {magicCard.name}";
-                        cardsToRemove.Add(olvCard);
-                    }
-                }
-                else if (magicCard.side == "c" && magicCard.layout == "meld") // add to parts A and B
-                {
-                    var PartA = olvCards.FirstOrDefault(x => x.MagicCard.text?.Contains($"into {magicCard.name}") ?? false);
-                    if (PartA != null)
-                    {
-                        PartA.MagicCard.PartB = magicCard;
-                        cardsToRemove.Add(olvCard);
-                    }
-                    var PartB = olvCards.FirstOrDefault(x => x.MagicCard.text?.Contains($"Melds with {PartA.MagicCard.name}") ?? false);
-                    if (PartB != null)
-                    {
-                        PartB.MagicCard.PartB = magicCard;
-                        cardsToRemove.Add(olvCard);
-                    }
-                }
-            }
-            foreach (var card in cardsToRemove)
-                olvCards.Remove(card);
-        }
-
-        public void AddCard(MagicCard card)
-        {
-            Cards.Add(new OLVCardItem(card));
         }
 
         public void AddRarity(OLVRarityItem rarity)
@@ -171,7 +148,7 @@ namespace MTG_Librarian
         public override Predicate<object> Filter => throw new NotImplementedException();
         public string DisplayName { get; set; }
         public string PaddedName => DisplayName.PadRight(500);
-        public double tcgplayerMarketPrice;
+        public double Price;
         public double Cost;
         public int Count;
     }

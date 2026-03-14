@@ -19,5 +19,9 @@ namespace MTG_Librarian
         {
             return tasks.Where(x => x.RunState == RunState.Initialized);
         }
+        public static IEnumerable<BackgroundTask> FindWaiting(this IEnumerable<BackgroundTask> tasks)
+        {
+            return tasks.Where(x => x.RunState == RunState.WaitingForInput);
+        }
     }
 }

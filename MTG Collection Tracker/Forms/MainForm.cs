@@ -1,11 +1,14 @@
-﻿using System;
+﻿using KW.WinFormsUI.Docking;
+using MTG_Librarian.Forms;
+using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Windows.Forms;
-using KW.WinFormsUI.Docking;
 using System.Drawing;
 using System.IO;
-using System.Collections;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 //Note: editable columns - count, cost, tags, foil
 
@@ -42,11 +45,15 @@ namespace MTG_Librarian
         private void SetupUI()
         {
             SetupImageLists();
+            EventManager.DefaultCurrencyChanged += DefaultCurrencyChanged;
             Globals.Forms.CardInfoForm = new CardInfoForm();
             EventManager.CardImageRetrieved += Globals.Forms.CardInfoForm.cardImageRetrieved;
             Globals.Forms.NavigationForm = new CollectionNavigatorForm();
             Globals.Forms.NavigationForm.CardsDropped += EventManager.NavigationFormCardsDropped;
             Globals.Forms.DBViewForm = new DBViewForm();
+            EventManager.InventoryChanged += Globals.Forms.DBViewForm.InventoryChanged;
+            Globals.Forms.DBViewForm.setListView.AddObject(new OLVSetItem(""));
+            Globals.Forms.DBViewForm.setListView.ClearObjects();
             Globals.Forms.DBViewForm.CardsActivated += EventManager.DBViewFormCardActivated;
             Globals.Forms.DBViewForm.CardSelected += EventManager.CardSelected;
             Globals.Forms.TasksForm = new TasksForm();
@@ -54,7 +61,8 @@ namespace MTG_Librarian
             Globals.Forms.TasksForm.tasksListView.GetColumn(0).Renderer = new IconRenderer();
             Globals.Forms.TasksForm.tasksListView.GetColumn(1).Renderer = new ProgressBarRenderer();
             Globals.Forms.TasksForm.TaskManager.SetDownloaded += EventManager.SetDownloaded;
-            Globals.Forms.TasksForm.TaskManager.PricesFetched += EventManager.PricesFetched;
+            Globals.Forms.TasksForm.TaskManager.ScryfallSearchEnded += EventManager.ScryfallSearchEnded;
+            Globals.Forms.TasksForm.TaskManager.CardsUpdatedFromScryfall += EventManager.CardsUpdatedFromScryfall;
             splitContainer1.SplitterDistance = Height;
             InitUIWorker.RunWorkerAsync();
         }
@@ -74,8 +82,8 @@ namespace MTG_Librarian
                         cardCount += count;
                         if (inventoryCard.Cost.HasValue)
                             costTotal += count * inventoryCard.Cost.Value;
-                        if (inventoryCard.tcgplayerMarketPrice.HasValue)
-                            priceTotal += count * inventoryCard.tcgplayerMarketPrice.Value;
+                        if (inventoryCard.Price.HasValue)
+                            priceTotal += count * inventoryCard.Price.Value;
                     }
                 }
             }
@@ -164,17 +172,17 @@ namespace MTG_Librarian
 
         public void AddSetIcon(string SetCode)
         {
-            using (var context = new CardsDbContext())
+            using (var context = new ScryfallCardsDbContext())
             {
                 var set = (from s in context.Sets
-                           where s.Code == SetCode
+                           where s.code == SetCode
                            select s).FirstOrDefault();
                 if (set != null)
                 {
-                    if (set.CommonIcon != null) AddOrUpdateImageListImage(Globals.ImageLists.SmallIconList, $"{set.Name}: Common", set.CommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
-                    if (set.UncommonIcon != null) AddOrUpdateImageListImage(Globals.ImageLists.SmallIconList, $"{set.Name}: Uncommon", set.UncommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
-                    if (set.RareIcon != null) AddOrUpdateImageListImage(Globals.ImageLists.SmallIconList, $"{set.Name}: Rare", set.RareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
-                    if (set.MythicRareIcon != null) AddOrUpdateImageListImage(Globals.ImageLists.SmallIconList, $"{set.Name}: Mythic", set.MythicRareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.CommonIcon != null) AddOrUpdateImageListImage(Globals.ImageLists.SmallIconList, $"{set.name}: Common", set.CommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.UncommonIcon != null) AddOrUpdateImageListImage(Globals.ImageLists.SmallIconList, $"{set.name}: Uncommon", set.UncommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.RareIcon != null) AddOrUpdateImageListImage(Globals.ImageLists.SmallIconList, $"{set.name}: Rare", set.RareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.MythicRareIcon != null) AddOrUpdateImageListImage(Globals.ImageLists.SmallIconList, $"{set.name}: Mythic", set.MythicRareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
                 }
             }
         }
@@ -190,17 +198,17 @@ namespace MTG_Librarian
 
         private void AddSetIcons()
         {
-            using (var context = new CardsDbContext())
+            using (var context = new ScryfallCardsDbContext())
             {
                 var sets = from s in context.Sets
                            select s;
 
                 foreach (var set in sets)
                 {
-                    if (set.CommonIcon != null) Globals.ImageLists.SmallIconList.Images.Add($"{set.Name}: Common", set.CommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
-                    if (set.UncommonIcon != null) Globals.ImageLists.SmallIconList.Images.Add($"{set.Name}: Uncommon", set.UncommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
-                    if (set.RareIcon != null) Globals.ImageLists.SmallIconList.Images.Add($"{set.Name}: Rare", set.RareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
-                    if (set.MythicRareIcon != null) Globals.ImageLists.SmallIconList.Images.Add($"{set.Name}: Mythic", set.MythicRareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.CommonIcon != null) Globals.ImageLists.SmallIconList.Images.Add($"{set.name}: Common", set.CommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.UncommonIcon != null) Globals.ImageLists.SmallIconList.Images.Add($"{set.name}: Uncommon", set.UncommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.RareIcon != null) Globals.ImageLists.SmallIconList.Images.Add($"{set.name}: Rare", set.RareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.MythicRareIcon != null) Globals.ImageLists.SmallIconList.Images.Add($"{set.name}: Mythic", set.MythicRareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
                 }
             }
         }
@@ -257,10 +265,49 @@ namespace MTG_Librarian
             else
                 Globals.Forms.TasksForm.Activate();
         }
-
+        private void settingsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var settingsForm = new SettingsForm())
+            {
+                settingsForm.defaultCurrencyComboBox.Text = SettingsManager.ApplicationSettings.DefaultCurrency;
+                settingsForm.defaultSearchLanguageComboBox.Text = SettingsManager.ApplicationSettings.DefaultSearchLanguage;
+                if (settingsForm.ShowDialog() == DialogResult.OK)
+                {
+                    string defaultCurrency = SettingsManager.ApplicationSettings.DefaultCurrency;
+                    SettingsManager.ApplicationSettings.DefaultCurrency = settingsForm.defaultCurrencyComboBox.Text;
+                    SettingsManager.ApplicationSettings.DefaultSearchLanguage = settingsForm.defaultSearchLanguageComboBox.Text;
+                    SettingsManager.ApplicationSettings.Save();
+                    if (defaultCurrency != SettingsManager.ApplicationSettings.DefaultCurrency)
+                        EventManager.OnDefaultCurrencyChanged();
+                }
+            }
+        }
         #endregion Menu Events
 
         #region Misc Events
+
+        private void DefaultCurrencyChanged(object sender, EventArgs e)
+        {
+            string DefaultCurrency = SettingsManager.ApplicationSettings.DefaultCurrency;
+            foreach (var form in Globals.Forms.OpenCollectionForms)
+            {
+                var cardsToRefresh = new List<FullInventoryCard>();
+                foreach (var item in form.cardListView.Objects)
+                {
+                    if (item is FullInventoryCard card)
+                    {
+                        cardsToRefresh.Add(card);
+                        string priceString;
+                        if (card.prices.TryGetValue($"{DefaultCurrency.ToLower()}{(card.Foil ? "_foil" : "")}", out priceString))
+                            card.Price = Convert.ToDouble(priceString);
+                        else
+                            card.Price = null;
+                    }
+                }
+                form.UpdateTotals();
+                form.cardListView.RefreshObjects(cardsToRefresh);
+            }
+        }
 
         private delegate void StatusBarActionButtonClickDelegate();
 
@@ -287,7 +334,7 @@ namespace MTG_Librarian
                     foreach (var row in targetLV.Objects)
                     {
                         if (row is FullInventoryCard card)
-                            file.WriteLine($"{card.Count},\"{card.DisplayName}\",{card.SetCode},{(card.Cost.HasValue ? card.Cost : 0)},{(card.Foil ? 1 : 0)},0,0,{card.TimeAdded.Value.Date}");                       
+                            file.WriteLine($"{card.Count},\"{card.DisplayName}\",{card.set_id},{(card.Cost.HasValue ? card.Cost : 0)},{(card.Foil ? 1 : 0)},0,0,{card.TimeAdded}");                       
                     }
                     
                 }

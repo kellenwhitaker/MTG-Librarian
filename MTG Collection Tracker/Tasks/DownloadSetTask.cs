@@ -5,7 +5,7 @@ using System.Drawing;
 using System.IO;
 using System.Net.Http;
 using Newtonsoft.Json;
-using System.IO.Compression;
+using RestSharp;
 
 namespace MTG_Librarian
 {
@@ -13,7 +13,7 @@ namespace MTG_Librarian
     {
         #region Properties
 
-        public CardSet CardSet { get; private set; }
+        public ScryfallCardSet CardSet { get; private set; }
 
         #endregion Properties
 
@@ -25,10 +25,10 @@ namespace MTG_Librarian
 
         #region Constructors
 
-        public DownloadSetTask(CardSet set)
+        public DownloadSetTask(ScryfallCardSet set)
         {
             CardSet = set;
-            Caption = "Set: " + set.Name;
+            Caption = "Set: " + set.name;
             TotalWorkUnits = 5;
         }
 
@@ -39,42 +39,22 @@ namespace MTG_Librarian
         public override void Run()
         {
             base.Run();
-        } 
+        }
 
         protected override void OnDoWork(DoWorkEventArgs e)
         {
             try
             {
                 DownloadIcons();
-                CompletedWorkUnits = 4;
-                UpdateIcon();
-                string name = CardSet.Name;
-                string mtgjsonUrl = CardSet.MTGJSONURL;
-                var zipped = DownloadZIP(CardSet.MTGJSONURL);
-                var unzipped = Unzipper.Unzip(zipped);
-                string json = System.Text.Encoding.UTF8.GetString(unzipped);
-                CardSet = JsonConvert.DeserializeObject<CardSet>(json);
-                if (CardSet == null) throw new InvalidDataException("Invalid JSON encountered");
-                CardSet.Name = name;
-                CardSet.MTGJSONURL = mtgjsonUrl;
-                foreach (var card in CardSet.Cards)
-                {
-                    card.SetCode = CardSet.Code;
-                    card.Edition = CardSet.Name;
-                }
+                CompletedWorkUnits = 3;
                 (CardSet.MythicRareIcon, CardSet.RareIcon, CardSet.UncommonIcon, CardSet.CommonIcon) = (mythicIcon, rareIcon, uncommonIcon, commonIcon);
-                using (var context = new CardsDbContext())
+                
+                using (var context = new ScryfallCardsDbContext())
                 {
                     context.Upsert(CardSet);
-                    foreach (var card in CardSet.Cards)
-                    {
-                        if (card.type.Contains("Basic Land")) // workaround needed because mtgjson thinks basic land is not a separate rarity from common
-                            card.rarity = "basic land";
-                        context.Upsert(card);
-                    }
-
                     context.SaveChanges();
                 }
+                
                 RunState = RunState.Completed;
                 CompletedWorkUnits = TotalWorkUnits;
             }
@@ -90,62 +70,49 @@ namespace MTG_Librarian
             }
         }
 
-        private static byte[] DownloadZIP(string uri)
-        {
-            byte[] zip;
-            using (var client = new HttpClient())
-            {
-                client.Timeout = new TimeSpan(0, 0, 15);
-                var httpResponseMessage = client.GetAsync(uri).Result;
-                if (httpResponseMessage.IsSuccessStatusCode)
-                    zip = httpResponseMessage.Content.ReadAsByteArrayAsync().Result;
-                else
-                    throw new HttpRequestException($"{(int)httpResponseMessage.StatusCode}: {httpResponseMessage.StatusCode.ToString()}");
-                return zip;
-            }
-        }
-
         private static Image DownloadRemoteImageFile(string uri)
         {
             Image img = null;
-            var request = (HttpWebRequest)WebRequest.Create(uri);
-            request.Timeout = 15000;
-            var response = (HttpWebResponse)request.GetResponse();
-            if ((response.StatusCode == HttpStatusCode.OK ||
-                response.StatusCode == HttpStatusCode.Moved ||
-                response.StatusCode == HttpStatusCode.Redirect) &&
-                response.ContentType.StartsWith("image", StringComparison.OrdinalIgnoreCase))
+            try
             {
-                using (Stream inputStream = response.GetResponseStream())
-                using (Stream outputStream = new MemoryStream())
+                var request = (HttpWebRequest)WebRequest.Create(uri);
+                request.Timeout = 15000;
+                var response = (HttpWebResponse)request.GetResponse();
+                if ((response.StatusCode == HttpStatusCode.OK ||
+                    response.StatusCode == HttpStatusCode.Moved ||
+                    response.StatusCode == HttpStatusCode.Redirect) &&
+                    response.ContentType.StartsWith("image", StringComparison.OrdinalIgnoreCase))
                 {
-                    var buffer = new byte[4096];
-                    int bytesRead;
-                    do
+                    using (Stream inputStream = response.GetResponseStream())
+                    using (Stream outputStream = new MemoryStream())
                     {
-                        bytesRead = inputStream.Read(buffer, 0, buffer.Length);
-                        outputStream.Write(buffer, 0, bytesRead);
-                    } while (bytesRead != 0);
-                    try
-                    {
+                        var buffer = new byte[4096];
+                        int bytesRead;
+                        do
+                        {
+                            bytesRead = inputStream.Read(buffer, 0, buffer.Length);
+                            outputStream.Write(buffer, 0, bytesRead);
+                        } while (bytesRead != 0);
                         img = Image.FromStream(outputStream);
                     }
-                    catch (Exception ex) { DebugOutput.WriteLine(ex.ToString()); }
-                }
+                }        
             }
+            catch (Exception ex) { DebugOutput.WriteLine(ex.ToString()); }
+
             return img;
         }
 
         private void DownloadIcons()
         {
-            const string URL = "http://gatherer.wizards.com/Handlers/Image.ashx?type=symbol&set={0}&size=small&rarity={1}";
-            string imgURL = String.Format(URL, CardSet.Code, "C");
+            const string URL = "http://gatherer-static.wizards.com/set_symbols/{0}/small-{1}-{0}.png";
+            string imgURL = String.Format(URL, CardSet.code.ToUpper(), "common");
+            DebugOutput.WriteLine(imgURL);
             Icon = commonIcon = DownloadRemoteImageFile(imgURL);
-            imgURL = String.Format(URL, CardSet.Code, "U");
+            imgURL = String.Format(URL, CardSet.code.ToUpper(), "uncommon");
             uncommonIcon = DownloadRemoteImageFile(imgURL);
-            imgURL = String.Format(URL, CardSet.Code, "R");
+            imgURL = String.Format(URL, CardSet.code.ToUpper(), "rare");
             rareIcon = DownloadRemoteImageFile(imgURL);
-            imgURL = String.Format(URL, CardSet.Code, "M");
+            imgURL = String.Format(URL, CardSet.code.ToUpper(), "mythic");
             mythicIcon = DownloadRemoteImageFile(imgURL);
         }
 

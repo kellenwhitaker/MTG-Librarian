@@ -18,6 +18,7 @@ namespace MTG_Librarian
         private readonly ConcurrentDeque<BackgroundTask> allTasks;
         private readonly List<BackgroundTask> activeTasks;
         private readonly List<BackgroundTask> completedTasks;
+        private readonly List<BackgroundTask> waitingTasks;
         private readonly BrightIdeasSoftware.ObjectListView listView;
         private readonly Label tasksLabel;
         private readonly BlockProgressBar progressBar;
@@ -41,13 +42,23 @@ namespace MTG_Librarian
             allTasks = new ConcurrentDeque<BackgroundTask>();
             completedTasks = new List<BackgroundTask>();
             activeTasks = new List<BackgroundTask>();
+            waitingTasks = new List<BackgroundTask>();
             RunWorkerAsync();
         }
 
         #endregion Constructors
 
         #region Methods
-
+        public void ContinueWaitingTask()
+        {
+            if (waitingTasks.Count > 0)
+            {
+                var waiting = waitingTasks[0];
+                waitingTasks.Remove(waiting);
+                activeTasks.Add(waiting);
+                waiting.Run();
+            }
+        }
         public void AddTask(BackgroundTask task)
         {
             if (task != null)
@@ -150,12 +161,26 @@ namespace MTG_Librarian
                 var notStarted = allTasks.FindInitialized().FirstOrDefault();
                 if (notStarted != null)
                 {
+                    if (notStarted is DownloadSetTask)
+                        Thread.Sleep(100);
                     activeTasks.Add(notStarted);
                     notStarted.Run();
                 }
             }
         }
-
+        private void CheckWaitingTasks()
+        {
+            var waiting = activeTasks.FindWaiting().FirstOrDefault();
+            if (waiting != null)
+            {
+                activeTasks.Remove(waiting);
+                waitingTasks.Add(waiting);
+                if (waiting is ScryfallSearchTask searchTask)
+                {
+                    OnScryfallSearchEnded(new ScryfallSearchEndedEventArgs { Results = searchTask.Results, Waiting = true });
+                }
+            }
+        }
         private void CheckEndedTasks()
         {
             var completedOrFailed = activeTasks.FindCompletedOrFailed().ToArray();
@@ -164,12 +189,12 @@ namespace MTG_Librarian
                 activeTasks.Remove(task);
                 completedTasks.Add(task);
                 if (task is DownloadSetTask downloadTask && task.RunState != RunState.Failed)
-                    OnSetDownloaded(new SetDownloadedEventArgs { SetCode = downloadTask.CardSet.Code });
-                else if (task is GetTCGPlayerPricesTask getPricesTask && task.RunState != RunState.Failed)
-                    OnPricesFetched(new PricesUpdatedEventArgs { Prices = getPricesTask.productIdDictionary });
+                    OnSetDownloaded(new SetDownloadedEventArgs { SetCode = downloadTask.CardSet.code });
+                else if (task is UpdateCardsTask updateCardsTask && task.RunState != RunState.Failed)
+                    OnCardsUpdatedFromScryfall(new CardsUpdatedFromScryfallEventArgs { Cards = updateCardsTask.CardsUpdated });
+                else if (task is ScryfallSearchTask searchTask && task.RunState != RunState.Failed)
+                    OnScryfallSearchEnded(new ScryfallSearchEndedEventArgs { Results = searchTask.Results });
             }
-            if (activeTasks.Count == 0 && incomingTasks.Count == 0)
-                ResetState();
             if (completedOrFailed.Count() > 0)
                 MoveLVObjects(completedOrFailed);
         }
@@ -184,25 +209,26 @@ namespace MTG_Librarian
 
         protected override void OnDoWork(DoWorkEventArgs e)
         {
-            var watch = new Stopwatch();
-            watch.Start();
             while (true)
             {
                 PullIncomingTasks();
                 FillActiveTasks();
                 Thread.Sleep(100);
-                if (watch.ElapsedMilliseconds > 500)
-                {
-                    CheckEndedTasks();
-                    UpdateGUI();
-                    watch.Restart();
-                }
+                CheckEndedTasks();
+                CheckWaitingTasks();
+                UpdateGUI();
             }
         }
 
         #endregion Methods
 
         #region Events
+
+        public event EventHandler<CardsUpdatedFromScryfallEventArgs> CardsUpdatedFromScryfall;
+        private void OnCardsUpdatedFromScryfall(CardsUpdatedFromScryfallEventArgs args)
+        {
+            CardsUpdatedFromScryfall.Invoke(this, args);
+        }
 
         public event EventHandler<SetDownloadedEventArgs> SetDownloaded;
 
@@ -218,6 +244,12 @@ namespace MTG_Librarian
             PricesFetched?.Invoke(this, args);
         }
 
+        public event EventHandler<ScryfallSearchEndedEventArgs> ScryfallSearchEnded;
+
+        private void OnScryfallSearchEnded(ScryfallSearchEndedEventArgs args)
+        {
+            ScryfallSearchEnded?.Invoke(this, args);
+        }
         #endregion Events
     }
 }

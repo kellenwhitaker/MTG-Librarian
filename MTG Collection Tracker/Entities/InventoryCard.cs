@@ -10,15 +10,15 @@ namespace MTG_Librarian
         [Key]
         public int          InventoryId { get; set; }
         public int          CollectionId { get; set; }
-        public int          multiverseId_Inv { get; set; }
         public int?         Count { get; set; }
         public double?      Cost { get; set; }
         public string       Tags { get; set; }
         public DateTime?    TimeAdded { get; set; }
         public int?         InsertionIndex { get; set; }
-        public string       uuid { get; set; }
+        public string       ScryfallId { get; set; }
         public bool         Foil { get; set; }
-        public string       PartB_uuid { get; set; }
+        public string       PartB_ScryfallId { get; set; }
+        [NotMapped]
         public string       DisplayName { get; set; }
         public bool         Virtual { get; set; }
         public string       Condition { get; set; }

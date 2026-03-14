@@ -42,7 +42,7 @@ namespace MTG_Librarian
         public void LoadGroups()
         {
             groupList = new List<NavigatorGroup>();
-            using (var context = new CardsDbContext())
+            using (var context = new ScryfallCardsDbContext())
             {
                 var groups = from g in context.CollectionGroups
                              select g;
@@ -106,7 +106,7 @@ namespace MTG_Librarian
         {
             if (e.RowObject is NavigatorGroup navGroup)
             {
-                using (var context = new CardsDbContext())
+                using (var context = new ScryfallCardsDbContext())
                 {
                     if (e.Control.Text == "Collections" || e.Control.Text == "Wish Lists" || e.Control.Text == "Decks")
                     {
@@ -140,7 +140,7 @@ namespace MTG_Librarian
             }
             else if (e.RowObject is NavigatorCollection navCollection)
             {
-                using (var context = new CardsDbContext())
+                using (var context = new ScryfallCardsDbContext())
                 {
                     if (e.Control.Text == "Main")
                     {
@@ -222,7 +222,7 @@ namespace MTG_Librarian
                 {
                     try
                     {
-                        using (var context = new CardsDbContext())
+                        using (var context = new ScryfallCardsDbContext())
                         {
                             context.Remove(navigatorItem.Entity);
                             context.SaveChanges();
@@ -318,7 +318,7 @@ namespace MTG_Librarian
             {
                 if (!collection.Permanent && rowObjectUnderMouse is NavigatorGroup group)
                 {
-                    using (var context = new CardsDbContext())
+                    using (var context = new ScryfallCardsDbContext())
                     {
                         try
                         {

@@ -4,7 +4,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 
-//TODO2 make card properties uniform
 namespace MTG_Librarian
 {
     public class SetDownloadedEventArgs : EventArgs
@@ -19,6 +18,15 @@ namespace MTG_Librarian
         public DockContent SourceForm { get; set; }
     }
 
+    public class InventoryChangedEventArgs : EventArgs
+    {
+        public List<FullInventoryCard> Cards { get; set; }
+    }
+
+    public class CardsUpdatedFromScryfallEventArgs : EventArgs
+    {
+        public List<ScryfallMagicCard> Cards { get; set; }
+    }
     public class CardsUpdatedEventArgs : EventArgs
     {
         public ArrayList Items { get; set; }
@@ -27,13 +35,13 @@ namespace MTG_Librarian
 
     public class CardFocusedEventArgs : EventArgs
     {
-        public string uuid { get; set; }
+        public string ScryfallId { get; set; }
         public string Edition { get; set; }
     }
 
     public class CardSelectedEventArgs : EventArgs
     {
-        public MagicCardBase MagicCard { get; set; }
+        public ScryfallMagicCardBase MagicCard { get; set; }
         public IList MagicCards { get; set; }
     }
 
@@ -54,15 +62,22 @@ namespace MTG_Librarian
         public Dictionary<int, double?> Prices { get; set; }
     }
 
+    public class ScryfallSearchEndedEventArgs : EventArgs
+    {
+        public List<ScryfallMagicCard> Results { get; set; }
+        public bool Waiting { get; set; } = false;
+    }
+
     public class CardResourceArgs : BasicCardArgs
     {
         public byte[] Data { get; set; }
-        public BasicCardArgs BasicCardArgs { set { uuid = value.uuid; MultiverseId = value.MultiverseId; Edition = value.Edition; } }
+        public BasicCardArgs BasicCardArgs { set { uuid = value.uuid; Side = value.Side; MultiverseId = value.MultiverseId; Edition = value.Edition; } }
     }
 
     public class BasicCardArgs
     {
         public string uuid { get; set; }
+        public string Side { get; set; } = "A";
         public int MultiverseId { get; set; }
         public string Edition { get; set; }
     }

@@ -31,6 +31,7 @@
             this.components = new System.ComponentModel.Container();
             this.cardListView = new BrightIdeasSoftware.FastObjectListView();
             this.CardName = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.rarityColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.FoilColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.ConditionColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn10 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -68,7 +69,6 @@
             this.blackManaButton = new CustomControls.FlatButton();
             this.colorlessManaButton = new CustomControls.FlatButton();
             this.genericManaButton = new CustomControls.FlatButton();
-            this.rarityColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             ((System.ComponentModel.ISupportInitialize)(this.cardListView)).BeginInit();
             this.cardListViewMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -163,6 +163,11 @@
             this.CardName.Text = "Card";
             this.CardName.Width = 200;
             // 
+            // rarityColumn
+            // 
+            this.rarityColumn.AspectName = "rarity";
+            this.rarityColumn.Text = "Rarity";
+            // 
             // FoilColumn
             // 
             this.FoilColumn.AspectName = "Foil";
@@ -185,7 +190,7 @@
             // 
             // olvColumn2
             // 
-            this.olvColumn2.AspectName = "type";
+            this.olvColumn2.AspectName = "DisplayTypeLine";
             this.olvColumn2.IsEditable = false;
             this.olvColumn2.MinimumWidth = 100;
             this.olvColumn2.Text = "Type";
@@ -201,7 +206,7 @@
             // 
             // olvColumn4
             // 
-            this.olvColumn4.AspectName = "Edition";
+            this.olvColumn4.AspectName = "set_name";
             this.olvColumn4.IsEditable = false;
             this.olvColumn4.MinimumWidth = 100;
             this.olvColumn4.Text = "Set";
@@ -209,7 +214,7 @@
             // 
             // olvColumn5
             // 
-            this.olvColumn5.AspectName = "number";
+            this.olvColumn5.AspectName = "collector_number";
             this.olvColumn5.IsEditable = false;
             this.olvColumn5.MinimumWidth = 50;
             this.olvColumn5.Text = "#";
@@ -238,10 +243,10 @@
             // 
             // tcgplayerMarketPriceColumn
             // 
-            this.tcgplayerMarketPriceColumn.AspectName = "tcgplayerMarketPrice";
+            this.tcgplayerMarketPriceColumn.AspectName = "Price";
             this.tcgplayerMarketPriceColumn.AspectToStringFormat = "{0:0.00}";
             this.tcgplayerMarketPriceColumn.IsEditable = false;
-            this.tcgplayerMarketPriceColumn.Text = "TCGP Market Price";
+            this.tcgplayerMarketPriceColumn.Text = "Price";
             this.tcgplayerMarketPriceColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // tcgPlayerMidPriceColumn
@@ -272,7 +277,7 @@
             // 
             // cardTextColumn
             // 
-            this.cardTextColumn.AspectName = "text";
+            this.cardTextColumn.AspectName = "DisplayText";
             this.cardTextColumn.Text = "Text";
             this.cardTextColumn.Width = 200;
             // 
@@ -413,11 +418,11 @@
             // 
             this.typeFilterTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic);
             this.typeFilterTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
-            this.typeFilterTextBox.Location = new System.Drawing.Point(681, 10);
+            this.typeFilterTextBox.Location = new System.Drawing.Point(645, 10);
             this.typeFilterTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.typeFilterTextBox.Name = "typeFilterTextBox";
             this.typeFilterTextBox.Placeholder = "Type Filter";
-            this.typeFilterTextBox.Size = new System.Drawing.Size(175, 23);
+            this.typeFilterTextBox.Size = new System.Drawing.Size(211, 23);
             this.typeFilterTextBox.TabIndex = 17;
             this.typeFilterTextBox.Text = "Type Filter";
             this.typeFilterTextBox.TextChanged += new System.EventHandler(this.cardNameFilterTextBox_TextChanged);
@@ -570,12 +575,8 @@
             this.genericManaButton.TabIndex = 14;
             this.genericManaButton.Text = "flatButton1";
             this.genericManaButton.UseVisualStyleBackColor = false;
+            this.genericManaButton.Visible = false;
             this.genericManaButton.Click += new System.EventHandler(this.whiteManaButton_Click);
-            // 
-            // rarityColumn
-            // 
-            this.rarityColumn.AspectName = "rarity";
-            this.rarityColumn.Text = "Rarity";
             // 
             // CollectionViewForm
             // 
