@@ -18,6 +18,7 @@ namespace MTG_Librarian
         public List<OLVSetItem> SetItems = new List<OLVSetItem>();
         public bool SearchHasMoreResults = false;
         object SetSelected = null;
+        public bool addingToCLV = false;
 
         #endregion Fields
 
@@ -52,6 +53,25 @@ namespace MTG_Librarian
             string query = "";
             string manaSymbols = "";
             string amp = "+";
+            if (cardListView.LastSortColumn != null)
+            {
+                switch (cardListView.LastSortColumn.AspectName)
+                {
+                    case "DisplayName": query += "order=name"; break;
+                    case "ManaCost": query += "order=cmc"; break;
+                    case "Set": query += "order=set"; break;
+                    case "Price": query += $"order={SettingsManager.ApplicationSettings.DefaultCurrency.ToLower()}"; break;
+                    default: break;
+                }
+            }
+            if (query != "")
+            {
+                if (cardListView.LastSortOrder == SortOrder.Ascending)
+                    query += "&dir=asc&";
+                else if (cardListView.LastSortOrder == SortOrder.Descending)
+                    query += "&dir=desc&";
+            }
+            query += "include_variations=true&unique=prints&q=";
             if (whiteManaButton.Checked) manaSymbols += "W";
             if (blueManaButton.Checked) manaSymbols += "U";
             if (blackManaButton.Checked) manaSymbols += "B";
@@ -73,6 +93,7 @@ namespace MTG_Librarian
             }
             if (formatFilterComboBox.SelectedIndex > 0)
                 query += $"{(query.Length > 0 ? amp : "")}(legal:{formatFilterComboBox.SelectedItem.ToString()}+or+restricted:{formatFilterComboBox.SelectedItem.ToString()})";
+
             return query;
         }
         private Predicate<object> GetSetNameTreeFilter()
@@ -533,13 +554,29 @@ namespace MTG_Librarian
         private void DoScryfallQuery()
         {
             string query = BuildScryfallQuery();
-            if (query != "")
+            if (query != "" && Globals.Forms.TasksForm != null)
             {
                 cardListView.ClearObjects();
                 cardListView.EmptyListMsg = "Performing query...";
                 var newTask = new ScryfallSearchTask(query);
                 Globals.Forms.TasksForm.TaskManager.AddTask(newTask);
             }
-        }      
+        }
+
+        private void cardListView_BeforeSorting(object sender, BeforeSortingEventArgs e)
+        {
+            e.Handled = true;
+            if (!addingToCLV)
+            {
+                if (e.ColumnToSort.AspectName == "DisplayName" || e.ColumnToSort.AspectName == "ManaCost" || e.ColumnToSort.AspectName == "Set" || e.ColumnToSort.AspectName == "Price")
+                {
+                    cardListView.LastSortColumn = e.ColumnToSort;
+                    cardListView.LastSortOrder = e.SortOrder;
+                    DoScryfallQuery();
+                }
+                else
+                    e.Canceled = true;
+            }
+        }
     }
 }

@@ -53,10 +53,11 @@
             this.updateThisSetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cardListView = new BrightIdeasSoftware.FastObjectListView();
             this.copiesOwnedColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumn1 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.priceColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.DisplayName = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn2 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumn3 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.olvColumn4 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.ManaCost = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.Set = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.CollectorNumber = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.cardTextColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
@@ -387,19 +388,21 @@
             // cardListView
             // 
             this.cardListView.AllColumns.Add(this.copiesOwnedColumn);
-            this.cardListView.AllColumns.Add(this.olvColumn1);
+            this.cardListView.AllColumns.Add(this.priceColumn);
+            this.cardListView.AllColumns.Add(this.DisplayName);
             this.cardListView.AllColumns.Add(this.olvColumn2);
-            this.cardListView.AllColumns.Add(this.olvColumn3);
-            this.cardListView.AllColumns.Add(this.olvColumn4);
+            this.cardListView.AllColumns.Add(this.ManaCost);
+            this.cardListView.AllColumns.Add(this.Set);
             this.cardListView.AllColumns.Add(this.CollectorNumber);
             this.cardListView.AllColumns.Add(this.cardTextColumn);
             this.cardListView.CellEditUseWholeCell = false;
             this.cardListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.copiesOwnedColumn,
-            this.olvColumn1,
+            this.priceColumn,
+            this.DisplayName,
             this.olvColumn2,
-            this.olvColumn3,
-            this.olvColumn4,
+            this.ManaCost,
+            this.Set,
             this.CollectorNumber,
             this.cardTextColumn});
             this.cardListView.Cursor = System.Windows.Forms.Cursors.Default;
@@ -421,6 +424,7 @@
             this.cardListView.UseCompatibleStateImageBehavior = false;
             this.cardListView.View = System.Windows.Forms.View.Details;
             this.cardListView.VirtualMode = true;
+            this.cardListView.BeforeSorting += new System.EventHandler<BrightIdeasSoftware.BeforeSortingEventArgs>(this.cardListView_BeforeSorting);
             this.cardListView.Scroll += new System.EventHandler<System.Windows.Forms.ScrollEventArgs>(this.cardListView_Scroll);
             this.cardListView.ItemActivate += new System.EventHandler(this.fastObjectListView1_ItemActivate);
             this.cardListView.SelectedIndexChanged += new System.EventHandler(this.fastObjectListView1_SelectedIndexChanged);
@@ -434,13 +438,19 @@
             this.copiesOwnedColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.copiesOwnedColumn.Width = 50;
             // 
-            // olvColumn1
+            // priceColumn
             // 
-            this.olvColumn1.AspectName = "DisplayName";
-            this.olvColumn1.ImageAspectName = "ImageKey";
-            this.olvColumn1.MinimumWidth = 200;
-            this.olvColumn1.Text = "Card Name";
-            this.olvColumn1.Width = 200;
+            this.priceColumn.AspectName = "Price";
+            this.priceColumn.AspectToStringFormat = "{0:0.00}";
+            this.priceColumn.Text = "Price";
+            // 
+            // DisplayName
+            // 
+            this.DisplayName.AspectName = "DisplayName";
+            this.DisplayName.ImageAspectName = "ImageKey";
+            this.DisplayName.MinimumWidth = 200;
+            this.DisplayName.Text = "Card Name";
+            this.DisplayName.Width = 200;
             // 
             // olvColumn2
             // 
@@ -449,19 +459,19 @@
             this.olvColumn2.Text = "Type";
             this.olvColumn2.Width = 100;
             // 
-            // olvColumn3
+            // ManaCost
             // 
-            this.olvColumn3.AspectName = "ManaCost";
-            this.olvColumn3.MinimumWidth = 100;
-            this.olvColumn3.Text = "Mana Cost";
-            this.olvColumn3.Width = 100;
+            this.ManaCost.AspectName = "ManaCost";
+            this.ManaCost.MinimumWidth = 100;
+            this.ManaCost.Text = "Mana Cost";
+            this.ManaCost.Width = 100;
             // 
-            // olvColumn4
+            // Set
             // 
-            this.olvColumn4.AspectName = "Set";
-            this.olvColumn4.MinimumWidth = 100;
-            this.olvColumn4.Text = "Set";
-            this.olvColumn4.Width = 100;
+            this.Set.AspectName = "Set";
+            this.Set.MinimumWidth = 100;
+            this.Set.Text = "Set";
+            this.Set.Width = 100;
             // 
             // CollectorNumber
             // 
@@ -510,10 +520,10 @@
         public BrightIdeasSoftware.TreeListView setListView;
         private BrightIdeasSoftware.OLVColumn SetName;
         private EnhancedTextBox.EnhancedTextBox setFilterBox;
-        private BrightIdeasSoftware.OLVColumn olvColumn1;
+        private BrightIdeasSoftware.OLVColumn DisplayName;
         private BrightIdeasSoftware.OLVColumn olvColumn2;
-        private BrightIdeasSoftware.OLVColumn olvColumn3;
-        private BrightIdeasSoftware.OLVColumn olvColumn4;
+        private BrightIdeasSoftware.OLVColumn ManaCost;
+        private BrightIdeasSoftware.OLVColumn Set;
         private BrightIdeasSoftware.OLVColumn CollectorNumber;
         private CustomControls.FlatButton whiteManaButton;
         private CustomControls.FlatButton blueManaButton;
@@ -535,5 +545,6 @@
         private EnhancedTextBox.EnhancedTextBox typeFilterTextBox;
         private EnhancedTextBox.EnhancedTextBox cardTextFilterTextBox;
         private BrightIdeasSoftware.OLVColumn cardTextColumn;
+        private BrightIdeasSoftware.OLVColumn priceColumn;
     }
 }

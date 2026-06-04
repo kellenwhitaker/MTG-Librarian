@@ -8,5 +8,7 @@ namespace MTG_Librarian
     {        
         [NotMapped]
         public int CopiesOwned { get; set; }
+        [NotMapped]
+        public double? Price { get; set; }
     }
 }

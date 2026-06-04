@@ -29,6 +29,7 @@ namespace MTG_Librarian
         public AlphaNumericString SortableNumber => new AlphaNumericString(MagicCard.collector_number);
         public string Rarity => MagicCard.rarity;
         public int CopiesOwned => MagicCard.CopiesOwned;
+        public double? Price => MagicCard.Price;
         public string Text => MagicCard.text;
         public override string ImageKey => $"{MagicCard.set_name}: {MagicCard.rarity}";
         public override OLVItem Parent { get; set; }

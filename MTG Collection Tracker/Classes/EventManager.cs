@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 namespace MTG_Librarian
@@ -85,6 +86,7 @@ namespace MTG_Librarian
             {
                 if (e.Results.Count > 0)
                 {
+                    var DefaultCurrency = SettingsManager.ApplicationSettings.DefaultCurrency;
                     var cardItems = new List<OLVCardItem>();
                     using (var context = new ScryfallCardsDbContext())
                     {
@@ -98,10 +100,18 @@ namespace MTG_Librarian
                                 if (!item.Virtual)
                                     card.CopiesOwned += item.Count.GetValueOrDefault();
                             }
+                            string priceString;
+                            string finish = "nonfoil";
+                            if (card.finishes.Count() == 1)
+                                finish = card.finishes[0];
+                            if (card.prices.TryGetValue($"{DefaultCurrency.ToLower()}{((finish != "nonfoil") ? $"_{finish}" : "")}", out priceString))
+                                card.Price = Convert.ToDouble(priceString);
                             cardItems.Add(new OLVCardItem(card));
                         }
                     }
+                    Globals.Forms.DBViewForm.addingToCLV = true;
                     Globals.Forms.DBViewForm.cardListView.AddObjects(cardItems);
+                    Globals.Forms.DBViewForm.addingToCLV = false;
                     Globals.Forms.DBViewForm.SearchHasMoreResults = e.Waiting;
                 }
                 else

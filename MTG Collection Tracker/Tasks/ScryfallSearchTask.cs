@@ -137,7 +137,7 @@ namespace MTG_Librarian
                 string scryfallBaseUrl = "https://api.scryfall.com";
                 string lang = SettingsManager.ApplicationSettings.DefaultSearchLanguage;
                 string abbr = AbbreviateLanguage(lang);
-                if (scryfallUrl == null) scryfallUrl = $"/cards/search?include_variations=true&unique=prints&q=lang%3A{abbr}+{Query}";
+                if (scryfallUrl == null) scryfallUrl = $"/cards/search?{Query}+lang%3A{abbr}";
                 Results.Clear();
                 var client = new RestClient(scryfallBaseUrl);
                 var request = new RestRequest(scryfallUrl, Method.Get);

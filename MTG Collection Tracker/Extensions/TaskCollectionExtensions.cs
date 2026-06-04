@@ -23,5 +23,10 @@ namespace MTG_Librarian
         {
             return tasks.Where(x => x.RunState == RunState.WaitingForInput);
         }
+
+        public static IEnumerable<BackgroundTask> FindSearchTasks(this IEnumerable<BackgroundTask> tasks)
+        {
+            return tasks.Where(x => x is ScryfallSearchTask);
+        }
     }
 }

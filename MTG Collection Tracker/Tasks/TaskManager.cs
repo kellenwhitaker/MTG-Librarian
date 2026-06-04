@@ -63,6 +63,8 @@ namespace MTG_Librarian
         {
             if (task != null)
             {
+                if (task is ScryfallSearchTask)
+                    ClearSearchTasks();
                 if (task.AddFirst)
                 {
                     incomingTasks.AddFirst(task);
@@ -74,6 +76,12 @@ namespace MTG_Librarian
                     listView?.AddObject(task);
                 }
             }
+        }
+        // TODO: background workers should be canceled
+        private void ClearSearchTasks()
+        {
+            activeTasks.RemoveAll(x => x is ScryfallSearchTask);
+            waitingTasks.RemoveAll(x => x is ScryfallSearchTask);
         }
 
         public void AddTasks(List<BackgroundTask> tasks)
