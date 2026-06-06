@@ -142,6 +142,7 @@ namespace MTG_Librarian
                     progressBar.MaxBlocks = progressBar.CurrentBlocks = 0;
                     tasksLabel.Text = "No active tasks";
                 }
+                tasksLabel.Refresh();
             }
         }
 
