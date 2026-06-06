@@ -114,7 +114,6 @@ namespace MTG_Librarian
             else
                 cardListView.Sort();
         }
-
         public void LoadSet(string SetCode)
         {
             var existingSet = setListView.Objects.Cast<OLVSetItem>().FirstOrDefault(x => x.CardSet.code == SetCode);

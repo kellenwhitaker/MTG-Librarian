@@ -340,5 +340,9 @@ namespace MTG_Librarian
                 }
             }
         }
+        private void updateMissingSetIconsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            UpdateMissingSetIconsWorker.RunWorkerAsync();
+        }
     }
 }

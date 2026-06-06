@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.ComponentModel.DataAnnotations.Schema;
 using Newtonsoft.Json;
+using System;
 
 namespace MTG_Librarian
 {
@@ -41,6 +42,7 @@ namespace MTG_Librarian
         [NotMapped]
         public Image MythicRareIcon { get; set; }
         public byte[] MythicRareIconBytes { get => MythicRareIcon?.GetCopyOf().ToByteArray(); set => MythicRareIcon = ImageExtensions.FromByteArray(value); }
+        public DateTime? LastUpdated { get; set; }
     }
 
     [Table("Sets")]
