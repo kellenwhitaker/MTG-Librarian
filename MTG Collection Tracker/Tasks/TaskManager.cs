@@ -218,14 +218,20 @@ namespace MTG_Librarian
 
         protected override void OnDoWork(DoWorkEventArgs e)
         {
+            int count = 0;
             while (true)
             {
+                count++;
                 PullIncomingTasks();
                 FillActiveTasks();
                 Thread.Sleep(100);
                 CheckEndedTasks();
                 CheckWaitingTasks();
-                UpdateGUI();
+                if (count == 10)
+                {
+                    count = 0;
+                    UpdateGUI();
+                }
             }
         }
 
