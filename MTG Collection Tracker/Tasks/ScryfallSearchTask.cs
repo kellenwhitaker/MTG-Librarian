@@ -19,6 +19,7 @@ namespace MTG_Librarian
         public List<ScryfallMagicCard> Results = new List<ScryfallMagicCard>();
         public ScryfallSearchTask(string query)
         {
+            WorkerSupportsCancellation = true;
             Query = query;
             Caption = $"Search: {Query.Replace("%3A", "=")}";
             TotalWorkUnits = 5;
@@ -142,6 +143,11 @@ namespace MTG_Librarian
                 var client = new RestClient(scryfallBaseUrl);
                 var request = new RestRequest(scryfallUrl, Method.Get);
                 string responseContent = client.Execute(request).Content;
+                if (CancellationPending)
+                {
+                    RunState = RunState.Canceled;
+                    return;
+                }
                 var responseObject = JsonConvert.DeserializeObject<ScryfallCardList>(responseContent);
                 if (responseObject == null) throw new InvalidDataException("Invalid JSON encountered");
                 if (responseObject.Object == "error")

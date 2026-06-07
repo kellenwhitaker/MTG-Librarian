@@ -64,7 +64,10 @@ namespace MTG_Librarian
             if (task != null)
             {
                 if (task is ScryfallSearchTask)
+                {
                     ClearSearchTasks();
+                    task.AddFirst = true;
+                }
                 if (task.AddFirst)
                 {
                     incomingTasks.AddFirst(task);
@@ -77,9 +80,11 @@ namespace MTG_Librarian
                 }
             }
         }
-        // TODO: background workers should be canceled
         private void ClearSearchTasks()
         {
+            foreach (var task in activeTasks)
+                if (task is ScryfallSearchTask)
+                    task.CancelAsync();
             activeTasks.RemoveAll(x => x is ScryfallSearchTask);
             waitingTasks.RemoveAll(x => x is ScryfallSearchTask);
         }
@@ -197,11 +202,11 @@ namespace MTG_Librarian
             {
                 activeTasks.Remove(task);
                 completedTasks.Add(task);
-                if (task is DownloadSetTask downloadTask && task.RunState != RunState.Failed)
+                if (task is DownloadSetTask downloadTask && task.RunState == RunState.Completed)
                     OnSetDownloaded(new SetDownloadedEventArgs { SetCode = downloadTask.CardSet.code });
-                else if (task is UpdateCardsTask updateCardsTask && task.RunState != RunState.Failed)
+                else if (task is UpdateCardsTask updateCardsTask && task.RunState == RunState.Completed)
                     OnCardsUpdatedFromScryfall(new CardsUpdatedFromScryfallEventArgs { Cards = updateCardsTask.CardsUpdated });
-                else if (task is ScryfallSearchTask searchTask && task.RunState != RunState.Failed)
+                else if (task is ScryfallSearchTask searchTask && task.RunState == RunState.Completed)
                     OnScryfallSearchEnded(new ScryfallSearchEndedEventArgs { Results = searchTask.Results });
             }
             if (completedOrFailed.Count() > 0)
