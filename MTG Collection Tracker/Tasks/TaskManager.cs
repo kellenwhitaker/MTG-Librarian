@@ -82,9 +82,10 @@ namespace MTG_Librarian
         }
         private void ClearSearchTasks()
         {
-            foreach (var task in activeTasks)
-                if (task is ScryfallSearchTask)
-                    task.CancelAsync();
+            if (activeTasks.Count > 0)
+                foreach (var task in activeTasks)
+                    if (task is ScryfallSearchTask)
+                        task.CancelAsync();
             activeTasks.RemoveAll(x => x is ScryfallSearchTask);
             waitingTasks.RemoveAll(x => x is ScryfallSearchTask);
         }
