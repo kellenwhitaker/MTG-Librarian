@@ -120,13 +120,8 @@ namespace MTG_Librarian
             var existingSet = setListView.Objects.Cast<OLVSetItem>().FirstOrDefault(x => x.CardSet.code == SetCode);
             var selectedSet = setListView.SelectedObject as OLVSetItem;
             if (existingSet != null)
-            {
-                var existingCards = cardListView.Objects.Cast<OLVCardItem>().Where(x => x.MagicCard.set == SetCode).ToArray();
-                foreach (var card in existingCards)
-                    Globals.Collections.MagicCardCache.Remove(card.MagicCard.ScryfallId);
                 setListView.RemoveObject(existingSet);
-                cardListView.RemoveObjects(existingCards);
-            }
+
             try
             {
                 using (var context = new ScryfallCardsDbContext())

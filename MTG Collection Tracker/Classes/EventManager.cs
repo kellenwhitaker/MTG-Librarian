@@ -163,7 +163,6 @@ namespace MTG_Librarian
         }
 
         private delegate void SetDownloadedDelegate(object sender, SetDownloadedEventArgs e);
-
         public static void SetDownloaded(object sender, SetDownloadedEventArgs e)
         {
             if (Globals.Forms.MainForm.InvokeRequired)
@@ -172,10 +171,23 @@ namespace MTG_Librarian
             {
                 Globals.Forms.MainForm.AddSetIcon(e.SetCode);
                 Globals.Forms.DBViewForm.LoadSet(e.SetCode);
-                if (Globals.Forms.TasksForm.TaskManager.TaskCount == 0)
-                    Globals.Forms.DBViewForm.SortCardListView();
+                var cardsNeedingRefresh = new List<OLVCardItem>();
+                foreach (var obj in Globals.Forms.DBViewForm.cardListView.Objects)
+                    if ((obj as OLVCardItem).MagicCard.set == e.SetCode)
+                        cardsNeedingRefresh.Add(obj as OLVCardItem);
 
-                CardManager.CountInventory();
+                if (cardsNeedingRefresh.Count > 0)
+                    Globals.Forms.DBViewForm.cardListView.RefreshObjects(cardsNeedingRefresh);
+
+                foreach (var form in Globals.Forms.OpenCollectionForms)
+                {
+                    var matches = new List<FullInventoryCard>();
+                    foreach (var row in form.cardListView.Objects)
+                        if (row is FullInventoryCard card && card.set == e.SetCode)
+                            matches.Add(row as FullInventoryCard);
+                    if (matches.Count > 0)
+                        form.cardListView.RefreshObjects(matches);
+                }
             }
         }
 
