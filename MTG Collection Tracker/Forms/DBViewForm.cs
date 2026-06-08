@@ -19,6 +19,7 @@ namespace MTG_Librarian
         public bool SearchHasMoreResults = false;
         object SetSelected = null;
         public bool addingToCLV = false;
+        private Point mouseLocation;
 
         #endregion Fields
 
@@ -548,7 +549,7 @@ namespace MTG_Librarian
         
         private void FetchMoreResults()
         {
-            Globals.Forms.TasksForm.TaskManager.ContinueWaitingTask();
+            Globals.Forms.TasksForm.TaskManager.ContinueSearch();
         }
         private void DoScryfallQuery()
         {
@@ -567,7 +568,7 @@ namespace MTG_Librarian
             e.Handled = true;
             if (!addingToCLV)
             {
-                if (e.ColumnToSort.AspectName == "DisplayName" || e.ColumnToSort.AspectName == "ManaCost" || e.ColumnToSort.AspectName == "Set" || e.ColumnToSort.AspectName == "Price")
+                if (e.ColumnToSort != null && (e.ColumnToSort.AspectName == "DisplayName" || e.ColumnToSort.AspectName == "ManaCost" || e.ColumnToSort.AspectName == "Set" || e.ColumnToSort.AspectName == "Price"))
                 {
                     cardListView.LastSortColumn = e.ColumnToSort;
                     cardListView.LastSortOrder = e.SortOrder;

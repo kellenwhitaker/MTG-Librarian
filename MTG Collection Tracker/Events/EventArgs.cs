@@ -65,7 +65,9 @@ namespace MTG_Librarian
     public class ScryfallSearchEndedEventArgs : EventArgs
     {
         public List<ScryfallMagicCard> Results { get; set; }
+        public int TotalCards { get; set; }
         public bool Waiting { get; set; } = false;
+        public string Query { get; set; }
     }
 
     public class CardResourceArgs : BasicCardArgs

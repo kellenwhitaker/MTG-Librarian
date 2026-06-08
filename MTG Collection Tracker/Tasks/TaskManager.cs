@@ -18,7 +18,8 @@ namespace MTG_Librarian
         private readonly ConcurrentDeque<BackgroundTask> allTasks;
         private readonly List<BackgroundTask> activeTasks;
         private readonly List<BackgroundTask> completedTasks;
-        private readonly List<BackgroundTask> waitingTasks;
+        private ScryfallSearchTask searchTask = null;
+        private bool searchTaskEndedEventDispatched = false;
         private readonly BrightIdeasSoftware.ObjectListView listView;
         private readonly Label tasksLabel;
         private readonly BlockProgressBar progressBar;
@@ -42,52 +43,48 @@ namespace MTG_Librarian
             allTasks = new ConcurrentDeque<BackgroundTask>();
             completedTasks = new List<BackgroundTask>();
             activeTasks = new List<BackgroundTask>();
-            waitingTasks = new List<BackgroundTask>();
             RunWorkerAsync();
         }
 
         #endregion Constructors
 
         #region Methods
-        public void ContinueWaitingTask()
-        {
-            if (waitingTasks.Count > 0)
-            {
-                var waiting = waitingTasks[0];
-                waitingTasks.Remove(waiting);
-                activeTasks.Add(waiting);
-                waiting.Run();
-            }
-        }
+
         public void AddTask(BackgroundTask task)
         {
             if (task != null)
             {
-                if (task is ScryfallSearchTask)
+                if (task is ScryfallSearchTask sTask)
                 {
-                    ClearSearchTasks();
-                    task.AddFirst = true;
-                }
-                if (task.AddFirst)
-                {
-                    incomingTasks.AddFirst(task);
-                    listView?.InsertObject(0, task);
+                    if (searchTask != null)
+                        searchTask.CancelAsync();
+                    searchTask = sTask;
+                    searchTaskEndedEventDispatched = false;
+                    searchTask.Run();
                 }
                 else
                 {
-                    incomingTasks.Enqueue(task);
-                    listView?.AddObject(task);
+                    if (task.AddFirst)
+                    {
+                        incomingTasks.AddFirst(task);
+                        listView?.InsertObject(0, task);
+                    }
+                    else
+                    {
+                        incomingTasks.Enqueue(task);
+                        listView?.AddObject(task);
+                    }
                 }
             }
         }
-        private void ClearSearchTasks()
+
+        public void ContinueSearch()
         {
-            if (activeTasks.Count > 0)
-                foreach (var task in activeTasks)
-                    if (task is ScryfallSearchTask)
-                        task.CancelAsync();
-            activeTasks.RemoveAll(x => x is ScryfallSearchTask);
-            waitingTasks.RemoveAll(x => x is ScryfallSearchTask);
+            if (searchTask != null && searchTask.RunState == RunState.WaitingForInput)
+            {
+                searchTaskEndedEventDispatched = false;
+                searchTask.Run();
+            }
         }
 
         public void AddTasks(List<BackgroundTask> tasks)
@@ -183,17 +180,12 @@ namespace MTG_Librarian
                 }
             }
         }
-        private void CheckWaitingTasks()
+        private void CheckSearchTask()
         {
-            var waiting = activeTasks.FindWaiting().FirstOrDefault();
-            if (waiting != null)
+            if (searchTask != null && (searchTask.RunState == RunState.WaitingForInput || searchTask.RunState == RunState.Completed) && !searchTaskEndedEventDispatched)
             {
-                activeTasks.Remove(waiting);
-                waitingTasks.Add(waiting);
-                if (waiting is ScryfallSearchTask searchTask)
-                {
-                    OnScryfallSearchEnded(new ScryfallSearchEndedEventArgs { Results = searchTask.Results, Waiting = true });
-                }
+                searchTaskEndedEventDispatched = true;
+                OnScryfallSearchEnded(new ScryfallSearchEndedEventArgs { Query = searchTask.Query, Results = searchTask.Results, TotalCards = searchTask.totalCards, Waiting = (searchTask.RunState == RunState.WaitingForInput) });
             }
         }
         private void CheckEndedTasks()
@@ -207,8 +199,6 @@ namespace MTG_Librarian
                     OnSetDownloaded(new SetDownloadedEventArgs { SetCode = downloadTask.CardSet.code });
                 else if (task is UpdateCardsTask updateCardsTask && task.RunState == RunState.Completed)
                     OnCardsUpdatedFromScryfall(new CardsUpdatedFromScryfallEventArgs { Cards = updateCardsTask.CardsUpdated });
-                else if (task is ScryfallSearchTask searchTask && task.RunState == RunState.Completed)
-                    OnScryfallSearchEnded(new ScryfallSearchEndedEventArgs { Results = searchTask.Results });
             }
             if (completedOrFailed.Count() > 0)
                 MoveLVObjects(completedOrFailed);
@@ -232,7 +222,7 @@ namespace MTG_Librarian
                 FillActiveTasks();
                 Thread.Sleep(100);
                 CheckEndedTasks();
-                CheckWaitingTasks();
+                CheckSearchTask();
                 if (count == 10)
                 {
                     count = 0;

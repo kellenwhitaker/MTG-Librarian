@@ -14,9 +14,10 @@ namespace MTG_Librarian
 {
     public class ScryfallSearchTask : BackgroundTask
     {
-        private string Query;
+        public string Query;
         private string scryfallUrl = null;
         public List<ScryfallMagicCard> Results = new List<ScryfallMagicCard>();
+        public int totalCards = 0;
         public ScryfallSearchTask(string query)
         {
             WorkerSupportsCancellation = true;
@@ -161,6 +162,7 @@ namespace MTG_Librarian
                     return;
                 }
                 DebugOutput.WriteLine(responseContent);
+                totalCards = responseObject.total_cards;
                 foreach (var item in responseObject.data)
                     Results.Add(item.ToScryfallMagicCard());
                 if (responseObject.has_more)

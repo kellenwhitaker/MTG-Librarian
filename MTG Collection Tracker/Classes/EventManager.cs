@@ -112,10 +112,15 @@ namespace MTG_Librarian
                     Globals.Forms.DBViewForm.addingToCLV = true;
                     Globals.Forms.DBViewForm.cardListView.AddObjects(cardItems);
                     Globals.Forms.DBViewForm.addingToCLV = false;
+                    Globals.Forms.DBViewForm.Text = $"Catalog | Query returned with {Globals.Forms.DBViewForm.cardListView.Objects.Count()} / {e.TotalCards} results: {e.Query}".Replace("&", "&&").Replace("%3A", "=");
                     Globals.Forms.DBViewForm.SearchHasMoreResults = e.Waiting;
                 }
                 else
+                {
+
+                    Globals.Forms.DBViewForm.Text = $"Catalog | Query returned no results: {e.Query}".Replace("&", "&&").Replace("%3A", "=");
                     Globals.Forms.DBViewForm.cardListView.EmptyListMsg = "Query returned no results.";
+                }
             }
         }
 
