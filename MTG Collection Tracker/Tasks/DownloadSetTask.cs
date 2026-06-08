@@ -104,15 +104,16 @@ namespace MTG_Librarian
 
         private void DownloadIcons()
         {
+            string gathererSetCode = Globals.Methods.ConvertScryfallSetCodeToGatherer(CardSet.code);
             const string URL = "http://gatherer-static.wizards.com/set_symbols/{0}/small-{1}-{0}.png";
-            string imgURL = String.Format(URL, CardSet.code.ToUpper(), "common");
+            string imgURL = String.Format(URL, gathererSetCode.ToUpper(), "common");
             DebugOutput.WriteLine(imgURL);
             Icon = commonIcon = DownloadRemoteImageFile(imgURL);
-            imgURL = String.Format(URL, CardSet.code.ToUpper(), "uncommon");
+            imgURL = String.Format(URL, gathererSetCode.ToUpper(), "uncommon");
             uncommonIcon = DownloadRemoteImageFile(imgURL);
-            imgURL = String.Format(URL, CardSet.code.ToUpper(), "rare");
+            imgURL = String.Format(URL, gathererSetCode.ToUpper(), "rare");
             rareIcon = DownloadRemoteImageFile(imgURL);
-            imgURL = String.Format(URL, CardSet.code.ToUpper(), "mythic");
+            imgURL = String.Format(URL, gathererSetCode.ToUpper(), "mythic");
             mythicIcon = DownloadRemoteImageFile(imgURL);
         }
 
