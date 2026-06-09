@@ -70,7 +70,7 @@ namespace MTG_Librarian
             }
         }
         [NotMapped]
-        public string ImageKey => $"{set_name}: {rarity}";
+        public string ImageKey => $"{SymbolCode}: {rarity}";
 
         [NotMapped]
         public string PaddedName => DisplayName != null ? DisplayName?.PadRight(500) : Name.PadRight(500);

@@ -15,6 +15,8 @@ namespace MTG_Librarian
         [NotMapped]
         public string DisplayText => card_faces != null ? (card_faces[0].DisplayText) : (printed_text != null ? printed_text : oracle_text);
         [NotMapped]
+        public string SymbolCode => set != null && set.Length == 4 && (set_type == "token" || set_type == "promo" || set_type == "memorabilia") ? set.Substring(1) : set;
+        [NotMapped]
         public ScryfallMagicCard PartB { get; set; }
     }
     public class CardCollectionItem

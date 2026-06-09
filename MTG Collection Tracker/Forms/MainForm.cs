@@ -179,10 +179,10 @@ namespace MTG_Librarian
                            select s).FirstOrDefault();
                 if (set != null)
                 {
-                    if (set.CommonIcon != null) AddOrUpdateImageListImage(Globals.ImageLists.SmallIconList, $"{set.name}: Common", set.CommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
-                    if (set.UncommonIcon != null) AddOrUpdateImageListImage(Globals.ImageLists.SmallIconList, $"{set.name}: Uncommon", set.UncommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
-                    if (set.RareIcon != null) AddOrUpdateImageListImage(Globals.ImageLists.SmallIconList, $"{set.name}: Rare", set.RareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
-                    if (set.MythicRareIcon != null) AddOrUpdateImageListImage(Globals.ImageLists.SmallIconList, $"{set.name}: Mythic", set.MythicRareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.CommonIcon != null) AddOrUpdateImageListImage(Globals.ImageLists.SmallIconList, $"{set.SymbolCode}: Common", set.CommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.UncommonIcon != null) AddOrUpdateImageListImage(Globals.ImageLists.SmallIconList, $"{set.SymbolCode}: Uncommon", set.UncommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.RareIcon != null) AddOrUpdateImageListImage(Globals.ImageLists.SmallIconList, $"{set.SymbolCode}: Rare", set.RareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.MythicRareIcon != null) AddOrUpdateImageListImage(Globals.ImageLists.SmallIconList, $"{set.SymbolCode}: Mythic", set.MythicRareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
                 }
             }
         }
@@ -205,10 +205,10 @@ namespace MTG_Librarian
 
                 foreach (var set in sets)
                 {
-                    if (set.CommonIcon != null) Globals.ImageLists.SmallIconList.Images.Add($"{set.name}: Common", set.CommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
-                    if (set.UncommonIcon != null) Globals.ImageLists.SmallIconList.Images.Add($"{set.name}: Uncommon", set.UncommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
-                    if (set.RareIcon != null) Globals.ImageLists.SmallIconList.Images.Add($"{set.name}: Rare", set.RareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
-                    if (set.MythicRareIcon != null) Globals.ImageLists.SmallIconList.Images.Add($"{set.name}: Mythic", set.MythicRareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.CommonIcon != null) Globals.ImageLists.SmallIconList.Images.Add($"{set.SymbolCode}: Common", set.CommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.UncommonIcon != null) Globals.ImageLists.SmallIconList.Images.Add($"{set.SymbolCode}: Uncommon", set.UncommonIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.RareIcon != null) Globals.ImageLists.SmallIconList.Images.Add($"{set.SymbolCode}: Rare", set.RareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
+                    if (set.MythicRareIcon != null) Globals.ImageLists.SmallIconList.Images.Add($"{set.SymbolCode}: Mythic", set.MythicRareIcon.SetCanvasSize(SmallIconWidth, SmallIconHeight));
                 }
             }
         }

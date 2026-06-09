@@ -31,7 +31,7 @@ namespace MTG_Librarian
         public int CopiesOwned => MagicCard.CopiesOwned;
         public double? Price => MagicCard.Price;
         public string Text => MagicCard.text;
-        public override string ImageKey => $"{MagicCard.set_name}: {MagicCard.rarity}";
+        public override string ImageKey => $"{MagicCard.SymbolCode}: {MagicCard.rarity}";
         public override OLVItem Parent { get; set; }
         public override Predicate<object> Filter => throw new NotImplementedException();
 
@@ -97,16 +97,17 @@ namespace MTG_Librarian
         {
             get
             {
-                string Rarity = null;
+                string Rarity;
                 if (CardSet.MythicRareIcon != null)
                     Rarity = "mythic";
                 else if (CardSet.RareIcon != null)
                     Rarity = "rare";
                 else if (CardSet.UncommonIcon != null)
                     Rarity = "uncommon";
-                else if (CardSet.CommonIcon != null)
+                else
                     Rarity = "common";
-                return $"{Name}: {Rarity}";
+
+                return $"{CardSet.SymbolCode}: {Rarity}"; ;
             }
         }
         public int CardCount => CardSet != null ? CardSet.card_count : 0;

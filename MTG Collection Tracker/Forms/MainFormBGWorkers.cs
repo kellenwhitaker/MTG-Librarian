@@ -101,7 +101,7 @@ namespace MTG_Librarian
                                     select s;
 
                         var match = dbSet.FirstOrDefault();
-                        if (match == null) // new set
+                        if (match == null && set.code == set.SymbolCode)
                             result.setsNeedingIcons.Add(set);
                         else
                         {
@@ -165,9 +165,9 @@ namespace MTG_Librarian
             using (var context = new ScryfallCardsDbContext())
             {
                 var DBSets = from s in context.Sets
-                             where s.CommonIconBytes == null && s.UncommonIconBytes == null && s.RareIconBytes == null && s.MythicRareIconBytes == null
+                             where s.code == s.SymbolCode && s.CommonIconBytes == null && s.UncommonIconBytes == null && s.RareIconBytes == null && s.MythicRareIconBytes == null
                              select s;
-
+         
                 e.Result = DBSets.ToList();
             }
         }

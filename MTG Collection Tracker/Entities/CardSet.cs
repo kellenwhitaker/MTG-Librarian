@@ -13,6 +13,8 @@ namespace MTG_Librarian
         [Key]
         public string id { get; set; }
         public string code { get; set; }
+        [NotMapped]
+        public string SymbolCode => code != null && code.Length == 4 && (set_type == "token" || set_type == "promo" || set_type == "memorabilia") ? code.Substring(1) : code;
         public string mtgo_code { get; set; }
         public string arena_code { get; set; }
         public int tcgplayer_id { get; set; }
