@@ -42,6 +42,7 @@ namespace MTG_Librarian
             cardListView.SetDoubleBuffered();
             cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "ManaCost").Renderer = new ManaCostRenderer();
             formatFilterComboBox.SelectedIndex = 0;
+            uniqueComboBox.SelectedIndex = 2;
             DockAreas = DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockBottom;
         }
 
@@ -54,6 +55,13 @@ namespace MTG_Librarian
             string query = "";
             string manaSymbols = "";
             string amp = "+";
+            query += $"include_variations={(includeVariationsCheckBox.Checked ? "true" : "false")}";
+            switch (uniqueComboBox.SelectedIndex)
+            {
+                case 0: query += "&unique=cards"; break;
+                case 1: query += "&unique=art"; break;
+                default: query += "&unique=prints"; break;
+            }
             if (cardListView.LastSortColumn != null)
             {
                 switch (cardListView.LastSortColumn.AspectName)
@@ -65,14 +73,11 @@ namespace MTG_Librarian
                     default: break;
                 }
             }
-            if (query != "")
-            {
-                if (cardListView.LastSortOrder == SortOrder.Ascending)
-                    query += "&dir=asc&";
-                else if (cardListView.LastSortOrder == SortOrder.Descending)
-                    query += "&dir=desc&";
-            }
-            query += "include_variations=true&unique=prints&q=";
+            if (cardListView.LastSortOrder == SortOrder.Ascending)
+                query += "&dir=asc";
+            else if (cardListView.LastSortOrder == SortOrder.Descending)
+                query += "&dir=desc";
+            query += "&q=";
             if (whiteManaButton.Checked) manaSymbols += "W";
             if (blueManaButton.Checked) manaSymbols += "U";
             if (blackManaButton.Checked) manaSymbols += "B";
@@ -551,6 +556,7 @@ namespace MTG_Librarian
             string query = BuildScryfallQuery();
             if (query != "" && Globals.Forms.TasksForm != null)
             {
+                Text = $"Catalog | Query: {query.Replace("&", "&&")}";
                 cardListView.ClearObjects();
                 cardListView.EmptyListMsg = "Performing query...";
                 var newTask = new ScryfallSearchTask(query);

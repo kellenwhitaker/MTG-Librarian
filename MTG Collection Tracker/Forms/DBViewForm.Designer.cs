@@ -30,6 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.uniqueComboBox = new System.Windows.Forms.ComboBox();
+            this.includeVariationsCheckBox = new System.Windows.Forms.CheckBox();
             this.cardTextFilterTextBox = new EnhancedTextBox.EnhancedTextBox();
             this.typeFilterTextBox = new EnhancedTextBox.EnhancedTextBox();
             this.manaButtonsPanel = new System.Windows.Forms.Panel();
@@ -86,6 +88,8 @@
             // 
             // splitContainer2.Panel1
             // 
+            this.splitContainer2.Panel1.Controls.Add(this.uniqueComboBox);
+            this.splitContainer2.Panel1.Controls.Add(this.includeVariationsCheckBox);
             this.splitContainer2.Panel1.Controls.Add(this.cardTextFilterTextBox);
             this.splitContainer2.Panel1.Controls.Add(this.typeFilterTextBox);
             this.splitContainer2.Panel1.Controls.Add(this.manaButtonsPanel);
@@ -100,6 +104,33 @@
             this.splitContainer2.SplitterDistance = 30;
             this.splitContainer2.SplitterWidth = 1;
             this.splitContainer2.TabIndex = 2;
+            // 
+            // uniqueComboBox
+            // 
+            this.uniqueComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.uniqueComboBox.FormattingEnabled = true;
+            this.uniqueComboBox.Items.AddRange(new object[] {
+            "Unique cards",
+            "Unique art",
+            "Unique prints"});
+            this.uniqueComboBox.Location = new System.Drawing.Point(1486, 4);
+            this.uniqueComboBox.Name = "uniqueComboBox";
+            this.uniqueComboBox.Size = new System.Drawing.Size(121, 24);
+            this.uniqueComboBox.TabIndex = 15;
+            this.uniqueComboBox.SelectedIndexChanged += new System.EventHandler(this.formatFilterComboBox_SelectedIndexChanged);
+            // 
+            // includeVariationsCheckBox
+            // 
+            this.includeVariationsCheckBox.AutoSize = true;
+            this.includeVariationsCheckBox.Checked = true;
+            this.includeVariationsCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.includeVariationsCheckBox.Location = new System.Drawing.Point(1367, 7);
+            this.includeVariationsCheckBox.Name = "includeVariationsCheckBox";
+            this.includeVariationsCheckBox.Size = new System.Drawing.Size(113, 20);
+            this.includeVariationsCheckBox.TabIndex = 14;
+            this.includeVariationsCheckBox.Text = "Incl. variations";
+            this.includeVariationsCheckBox.UseVisualStyleBackColor = true;
+            this.includeVariationsCheckBox.CheckedChanged += new System.EventHandler(this.formatFilterComboBox_SelectedIndexChanged);
             // 
             // cardTextFilterTextBox
             // 
@@ -546,5 +577,7 @@
         private EnhancedTextBox.EnhancedTextBox cardTextFilterTextBox;
         private BrightIdeasSoftware.OLVColumn cardTextColumn;
         private BrightIdeasSoftware.OLVColumn priceColumn;
+        private System.Windows.Forms.CheckBox includeVariationsCheckBox;
+        private System.Windows.Forms.ComboBox uniqueComboBox;
     }
 }
