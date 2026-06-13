@@ -369,11 +369,8 @@ namespace MTG_Librarian
                 BeginInvoke(new LoadSetsDelegate(LoadSets), null);
             else
             {
-                setListView.CanExpandGetter = x => x is OLVSetItem;
-                setListView.ChildrenGetter = x => (x as OLVSetItem).Rarities;
                 var renderer = setListView.TreeColumnRenderer;
                 renderer.IsShowLines = false;
-                renderer.UseTriangles = true;
                 sets = new Dictionary<string, OLVSetItem>();
                 try
                 {
@@ -411,7 +408,7 @@ namespace MTG_Librarian
 
                             setListView.AddObject(set);
                             //if (setListView.Objects.Count() == 1) // first set added, must sort the tree
-                            //setListView.Sort(setListView.AllColumns[1], SortOrder.Descending);
+                                //setListView.Sort(setListView.AllColumns[1], SortOrder.Descending);
                             SetItems.Add(set);
                         }
                     }
