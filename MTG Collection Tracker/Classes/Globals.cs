@@ -8,6 +8,109 @@ namespace MTG_Librarian
     {
         public static class Methods
         {
+            public static string AbbreviateLanguage(string lang)
+            {
+                string abbr;
+                switch (lang)
+                {
+                    case "English":
+                        {
+                            abbr = "EN";
+                            break;
+                        }
+                    case "Spanish":
+                        {
+                            abbr = "ES";
+                            break;
+                        }
+                    case "French":
+                        {
+                            abbr = "FR";
+                            break;
+                        }
+                    case "German":
+                        {
+                            abbr = "DE";
+                            break;
+                        }
+                    case "Italian":
+                        {
+                            abbr = "IT";
+                            break;
+                        }
+                    case "Portuguese":
+                        {
+                            abbr = "PT";
+                            break;
+                        }
+                    case "Japanese":
+                        {
+                            abbr = "JA";
+                            break;
+                        }
+                    case "Korean":
+                        {
+                            abbr = "KO";
+                            break;
+                        }
+                    case "Russian":
+                        {
+                            abbr = "RU";
+                            break;
+                        }
+                    case "Simplified Chinese":
+                        {
+                            abbr = "ZHS";
+                            break;
+                        }
+                    case "Traditional Chinese":
+                        {
+                            abbr = "ZHT";
+                            break;
+                        }
+                    case "Hebrew":
+                        {
+                            abbr = "HE";
+                            break;
+                        }
+                    case "Latin":
+                        {
+                            abbr = "LA";
+                            break;
+                        }
+                    case "Ancient Greek":
+                        {
+                            abbr = "GRC";
+                            break;
+                        }
+                    case "Arabic":
+                        {
+                            abbr = "AR";
+                            break;
+                        }
+                    case "Sanskrit":
+                        {
+                            abbr = "SA";
+                            break;
+                        }
+                    case "Phyrexian":
+                        {
+                            abbr = "PH";
+                            break;
+                        }
+                    case "Quenya":
+                        {
+                            abbr = "QYA";
+                            break;
+                        }
+                    default:
+                        {
+                            abbr = "";
+                            break;
+                        }
+                }
+                return abbr;
+            }
             public static string ConvertScryfallSetCodeToGatherer(string code)
             {
                 switch (code)

@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-
+// TODO: fix bug where a search is performed again when set downloads are complete
 namespace MTG_Librarian
 {
     public static class EventManager
@@ -112,7 +112,7 @@ namespace MTG_Librarian
                     Globals.Forms.DBViewForm.addingToCLV = true;
                     Globals.Forms.DBViewForm.cardListView.AddObjects(cardItems);
                     Globals.Forms.DBViewForm.addingToCLV = false;
-                    Globals.Forms.DBViewForm.Text = $"Catalog | Query returned with {Globals.Forms.DBViewForm.cardListView.Objects.Count()} / {e.TotalCards} results: {e.Query}".Replace("&", "&&").Replace("%3A", "=");
+                    Globals.Forms.DBViewForm.Text = $"Catalog | Query returned with {Globals.Forms.DBViewForm.cardListView.Objects.Count()} / {e.TotalCards} results: {e.Query}".Replace("&", "&&").Replace("%3A", ":");
                     Globals.Forms.DBViewForm.SearchHasMoreResults = e.Waiting;
                 }
                 else

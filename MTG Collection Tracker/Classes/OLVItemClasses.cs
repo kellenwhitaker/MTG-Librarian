@@ -155,6 +155,16 @@ namespace MTG_Librarian
         public int Count;
     }
 
+    public class OLVAttributeItem : OLVItem
+    {
+        public override OLVItem Parent { get; set; }
+        public override string ImageKey => null;
+        public override Predicate<object> Filter => throw new NotImplementedException();
+        public string Attribute { get; set; }
+        public string Description { get; set; }
+        public bool Not { get; set; } = false;
+    }
+
     public abstract class OLVItem
     {
         public abstract OLVItem Parent { get; set; }

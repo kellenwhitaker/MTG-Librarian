@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+// TODO: add default platform
 namespace MTG_Librarian.Forms
 {
     public partial class SettingsForm : Form

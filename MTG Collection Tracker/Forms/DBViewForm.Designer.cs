@@ -46,6 +46,7 @@
             this.cardNameFilterBox = new EnhancedTextBox.EnhancedTextBox();
             this.setFilterBox = new EnhancedTextBox.EnhancedTextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.setsPanel = new System.Windows.Forms.Panel();
             this.setListView = new BrightIdeasSoftware.TreeListView();
             this.SetName = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.ReleaseDate = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -53,6 +54,64 @@
             this.complete4Column = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.updateThisSetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.compatibleTabControl1 = new CompatibleTabControl.CompatibleTabControl();
+            this.searchParametersPanel = new System.Windows.Forms.Panel();
+            this.manaCostTypeComboBox = new System.Windows.Forms.ComboBox();
+            this.rarityMythicCheckBox = new System.Windows.Forms.CheckBox();
+            this.rarityRareCheckBox = new System.Windows.Forms.CheckBox();
+            this.rarityUncommonCheckBox = new System.Windows.Forms.CheckBox();
+            this.rarityCommonCheckBox = new System.Windows.Forms.CheckBox();
+            this.colorsOperatorComboBox = new System.Windows.Forms.ComboBox();
+            this.colorsComboBox = new System.Windows.Forms.ComboBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.languageComboBox = new System.Windows.Forms.ComboBox();
+            this.label13 = new System.Windows.Forms.Label();
+            this.flavorTextTextBox = new System.Windows.Forms.TextBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this.artistTextBox = new System.Windows.Forms.TextBox();
+            this.label11 = new System.Windows.Forms.Label();
+            this.pricesPriceNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.pricesOperatorComboBox = new System.Windows.Forms.ComboBox();
+            this.pricesCurrencyComboBox = new System.Windows.Forms.ComboBox();
+            this.label10 = new System.Windows.Forms.Label();
+            this.attributesObjectListView = new BrightIdeasSoftware.FastObjectListView();
+            this.notColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.attributeColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.descriptionColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.attributesComboBox = new System.Windows.Forms.ComboBox();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.magicOnlineCheckBox = new System.Windows.Forms.CheckBox();
+            this.arenaCheckBox = new System.Windows.Forms.CheckBox();
+            this.paperCheckBox = new System.Windows.Forms.CheckBox();
+            this.loyaltyNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.loyaltyComboBox = new System.Windows.Forms.ComboBox();
+            this.label7 = new System.Windows.Forms.Label();
+            this.toughnessNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.toughnessComboBox = new System.Windows.Forms.ComboBox();
+            this.label6 = new System.Windows.Forms.Label();
+            this.powerNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.powerComboBox = new System.Windows.Forms.ComboBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.cmcNumericUpDown = new System.Windows.Forms.NumericUpDown();
+            this.cmcOperatorComboBox = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.manaCostComboBox = new System.Windows.Forms.ComboBox();
+            this.manaCostTextBox = new System.Windows.Forms.TextBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.commanderWhiteButton = new CustomControls.FlatButton();
+            this.commanderBlueButton = new CustomControls.FlatButton();
+            this.commanderBlackButton = new CustomControls.FlatButton();
+            this.commanderRedButton = new CustomControls.FlatButton();
+            this.commanderGreenButton = new CustomControls.FlatButton();
+            this.commanderColorlessButton = new CustomControls.FlatButton();
+            this.label2 = new System.Windows.Forms.Label();
+            this.colorsWhiteButton = new CustomControls.FlatButton();
+            this.colorsBlueButton = new CustomControls.FlatButton();
+            this.colorsBlackButton = new CustomControls.FlatButton();
+            this.colorsRedButton = new CustomControls.FlatButton();
+            this.colorsGreenButton = new CustomControls.FlatButton();
+            this.colorsColorlessButton = new CustomControls.FlatButton();
             this.cardListView = new BrightIdeasSoftware.FastObjectListView();
             this.copiesOwnedColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.priceColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -62,6 +121,14 @@
             this.Set = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.CollectorNumber = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.cardTextColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tabPage2 = new System.Windows.Forms.TabPage();
+            this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.tabPage4 = new System.Windows.Forms.TabPage();
+            this.tabPage5 = new System.Windows.Forms.TabPage();
+            this.tabPage6 = new System.Windows.Forms.TabPage();
+            this.tabPage7 = new System.Windows.Forms.TabPage();
+            this.tabPage8 = new System.Windows.Forms.TabPage();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
             this.splitContainer2.Panel1.SuspendLayout();
             this.splitContainer2.Panel2.SuspendLayout();
@@ -71,8 +138,17 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.setsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.setListView)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
+            this.compatibleTabControl1.SuspendLayout();
+            this.searchParametersPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pricesPriceNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.attributesObjectListView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.loyaltyNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.toughnessNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.powerNumericUpDown)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cmcNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cardListView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -332,7 +408,8 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.setListView);
+            this.splitContainer1.Panel1.Controls.Add(this.setsPanel);
+            this.splitContainer1.Panel1.Controls.Add(this.compatibleTabControl1);
             // 
             // splitContainer1.Panel2
             // 
@@ -341,6 +418,15 @@
             this.splitContainer1.SplitterDistance = 741;
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 2;
+            // 
+            // setsPanel
+            // 
+            this.setsPanel.Controls.Add(this.setListView);
+            this.setsPanel.Dock = System.Windows.Forms.DockStyle.Left;
+            this.setsPanel.Location = new System.Drawing.Point(0, 0);
+            this.setsPanel.Name = "setsPanel";
+            this.setsPanel.Size = new System.Drawing.Size(93, 539);
+            this.setsPanel.TabIndex = 1;
             // 
             // setListView
             // 
@@ -366,16 +452,14 @@
             this.setListView.SelectedBackColor = System.Drawing.Color.SteelBlue;
             this.setListView.SelectedForeColor = System.Drawing.Color.White;
             this.setListView.ShowGroups = false;
-            this.setListView.Size = new System.Drawing.Size(741, 539);
-            this.setListView.TabIndex = 3;
+            this.setListView.Size = new System.Drawing.Size(93, 539);
+            this.setListView.TabIndex = 5;
             this.setListView.UnfocusedSelectedBackColor = System.Drawing.Color.LightGray;
             this.setListView.UseCellFormatEvents = true;
             this.setListView.UseCompatibleStateImageBehavior = false;
             this.setListView.View = System.Windows.Forms.View.Details;
             this.setListView.VirtualMode = true;
-            this.setListView.FormatCell += new System.EventHandler<BrightIdeasSoftware.FormatCellEventArgs>(this.treeListView1_FormatCell);
             this.setListView.SelectionChanged += new System.EventHandler(this.setListView_SelectionChanged);
-            this.setListView.ItemActivate += new System.EventHandler(this.treeListView1_ItemActivate);
             // 
             // SetName
             // 
@@ -415,6 +499,880 @@
             this.updateThisSetToolStripMenuItem.Size = new System.Drawing.Size(177, 24);
             this.updateThisSetToolStripMenuItem.Text = "Update this set";
             this.updateThisSetToolStripMenuItem.Click += new System.EventHandler(this.updateThisSetToolStripMenuItem_Click);
+            // 
+            // compatibleTabControl1
+            // 
+            this.compatibleTabControl1.Controls.Add(this.searchParametersPanel);
+            this.compatibleTabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.compatibleTabControl1.Location = new System.Drawing.Point(0, 0);
+            this.compatibleTabControl1.Name = "compatibleTabControl1";
+            this.compatibleTabControl1.Size = new System.Drawing.Size(741, 539);
+            this.compatibleTabControl1.TabIndex = 2;
+            // 
+            // searchParametersPanel
+            // 
+            this.searchParametersPanel.AutoScroll = true;
+            this.searchParametersPanel.AutoScrollMargin = new System.Drawing.Size(0, 40);
+            this.searchParametersPanel.BackColor = System.Drawing.Color.White;
+            this.searchParametersPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.searchParametersPanel.Controls.Add(this.manaCostTypeComboBox);
+            this.searchParametersPanel.Controls.Add(this.rarityMythicCheckBox);
+            this.searchParametersPanel.Controls.Add(this.rarityRareCheckBox);
+            this.searchParametersPanel.Controls.Add(this.rarityUncommonCheckBox);
+            this.searchParametersPanel.Controls.Add(this.rarityCommonCheckBox);
+            this.searchParametersPanel.Controls.Add(this.colorsOperatorComboBox);
+            this.searchParametersPanel.Controls.Add(this.colorsComboBox);
+            this.searchParametersPanel.Controls.Add(this.label14);
+            this.searchParametersPanel.Controls.Add(this.languageComboBox);
+            this.searchParametersPanel.Controls.Add(this.label13);
+            this.searchParametersPanel.Controls.Add(this.flavorTextTextBox);
+            this.searchParametersPanel.Controls.Add(this.label12);
+            this.searchParametersPanel.Controls.Add(this.artistTextBox);
+            this.searchParametersPanel.Controls.Add(this.label11);
+            this.searchParametersPanel.Controls.Add(this.pricesPriceNumericUpDown);
+            this.searchParametersPanel.Controls.Add(this.pricesOperatorComboBox);
+            this.searchParametersPanel.Controls.Add(this.pricesCurrencyComboBox);
+            this.searchParametersPanel.Controls.Add(this.label10);
+            this.searchParametersPanel.Controls.Add(this.attributesObjectListView);
+            this.searchParametersPanel.Controls.Add(this.attributesComboBox);
+            this.searchParametersPanel.Controls.Add(this.label9);
+            this.searchParametersPanel.Controls.Add(this.label8);
+            this.searchParametersPanel.Controls.Add(this.magicOnlineCheckBox);
+            this.searchParametersPanel.Controls.Add(this.arenaCheckBox);
+            this.searchParametersPanel.Controls.Add(this.paperCheckBox);
+            this.searchParametersPanel.Controls.Add(this.loyaltyNumericUpDown);
+            this.searchParametersPanel.Controls.Add(this.loyaltyComboBox);
+            this.searchParametersPanel.Controls.Add(this.label7);
+            this.searchParametersPanel.Controls.Add(this.toughnessNumericUpDown);
+            this.searchParametersPanel.Controls.Add(this.toughnessComboBox);
+            this.searchParametersPanel.Controls.Add(this.label6);
+            this.searchParametersPanel.Controls.Add(this.powerNumericUpDown);
+            this.searchParametersPanel.Controls.Add(this.powerComboBox);
+            this.searchParametersPanel.Controls.Add(this.label5);
+            this.searchParametersPanel.Controls.Add(this.cmcNumericUpDown);
+            this.searchParametersPanel.Controls.Add(this.cmcOperatorComboBox);
+            this.searchParametersPanel.Controls.Add(this.label4);
+            this.searchParametersPanel.Controls.Add(this.manaCostComboBox);
+            this.searchParametersPanel.Controls.Add(this.manaCostTextBox);
+            this.searchParametersPanel.Controls.Add(this.label3);
+            this.searchParametersPanel.Controls.Add(this.commanderWhiteButton);
+            this.searchParametersPanel.Controls.Add(this.commanderBlueButton);
+            this.searchParametersPanel.Controls.Add(this.commanderBlackButton);
+            this.searchParametersPanel.Controls.Add(this.commanderRedButton);
+            this.searchParametersPanel.Controls.Add(this.commanderGreenButton);
+            this.searchParametersPanel.Controls.Add(this.commanderColorlessButton);
+            this.searchParametersPanel.Controls.Add(this.label2);
+            this.searchParametersPanel.Controls.Add(this.colorsWhiteButton);
+            this.searchParametersPanel.Controls.Add(this.colorsBlueButton);
+            this.searchParametersPanel.Controls.Add(this.colorsBlackButton);
+            this.searchParametersPanel.Controls.Add(this.colorsRedButton);
+            this.searchParametersPanel.Controls.Add(this.colorsGreenButton);
+            this.searchParametersPanel.Controls.Add(this.colorsColorlessButton);
+            this.searchParametersPanel.Location = new System.Drawing.Point(99, 0);
+            this.searchParametersPanel.Name = "searchParametersPanel";
+            this.searchParametersPanel.Size = new System.Drawing.Size(434, 527);
+            this.searchParametersPanel.TabIndex = 3;
+            // 
+            // manaCostTypeComboBox
+            // 
+            this.manaCostTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.manaCostTypeComboBox.FormattingEnabled = true;
+            this.manaCostTypeComboBox.Items.AddRange(new object[] {
+            "Mono",
+            "Generic",
+            "Hybrid",
+            "Phyrexian"});
+            this.manaCostTypeComboBox.Location = new System.Drawing.Point(252, 75);
+            this.manaCostTypeComboBox.Name = "manaCostTypeComboBox";
+            this.manaCostTypeComboBox.Size = new System.Drawing.Size(121, 24);
+            this.manaCostTypeComboBox.TabIndex = 62;
+            this.manaCostTypeComboBox.SelectedIndexChanged += new System.EventHandler(this.manaCostTypeComboBox_SelectedIndexChanged);
+            // 
+            // rarityMythicCheckBox
+            // 
+            this.rarityMythicCheckBox.AutoSize = true;
+            this.rarityMythicCheckBox.Location = new System.Drawing.Point(185, 277);
+            this.rarityMythicCheckBox.Name = "rarityMythicCheckBox";
+            this.rarityMythicCheckBox.Size = new System.Drawing.Size(94, 20);
+            this.rarityMythicCheckBox.TabIndex = 61;
+            this.rarityMythicCheckBox.Text = "Mythic rare";
+            this.rarityMythicCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // rarityRareCheckBox
+            // 
+            this.rarityRareCheckBox.AutoSize = true;
+            this.rarityRareCheckBox.Location = new System.Drawing.Point(96, 277);
+            this.rarityRareCheckBox.Name = "rarityRareCheckBox";
+            this.rarityRareCheckBox.Size = new System.Drawing.Size(59, 20);
+            this.rarityRareCheckBox.TabIndex = 60;
+            this.rarityRareCheckBox.Text = "Rare";
+            this.rarityRareCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // rarityUncommonCheckBox
+            // 
+            this.rarityUncommonCheckBox.AutoSize = true;
+            this.rarityUncommonCheckBox.Location = new System.Drawing.Point(185, 251);
+            this.rarityUncommonCheckBox.Name = "rarityUncommonCheckBox";
+            this.rarityUncommonCheckBox.Size = new System.Drawing.Size(98, 20);
+            this.rarityUncommonCheckBox.TabIndex = 59;
+            this.rarityUncommonCheckBox.Text = "Uncommon";
+            this.rarityUncommonCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // rarityCommonCheckBox
+            // 
+            this.rarityCommonCheckBox.AutoSize = true;
+            this.rarityCommonCheckBox.Location = new System.Drawing.Point(96, 251);
+            this.rarityCommonCheckBox.Name = "rarityCommonCheckBox";
+            this.rarityCommonCheckBox.Size = new System.Drawing.Size(83, 20);
+            this.rarityCommonCheckBox.TabIndex = 58;
+            this.rarityCommonCheckBox.Text = "Common";
+            this.rarityCommonCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // colorsOperatorComboBox
+            // 
+            this.colorsOperatorComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.colorsOperatorComboBox.FormattingEnabled = true;
+            this.colorsOperatorComboBox.Items.AddRange(new object[] {
+            "=",
+            "<=",
+            ">="});
+            this.colorsOperatorComboBox.Location = new System.Drawing.Point(142, 13);
+            this.colorsOperatorComboBox.Name = "colorsOperatorComboBox";
+            this.colorsOperatorComboBox.Size = new System.Drawing.Size(55, 24);
+            this.colorsOperatorComboBox.TabIndex = 57;
+            // 
+            // colorsComboBox
+            // 
+            this.colorsComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.colorsComboBox.FormattingEnabled = true;
+            this.colorsComboBox.Items.AddRange(new object[] {
+            "Colors",
+            "Color identity"});
+            this.colorsComboBox.Location = new System.Drawing.Point(15, 12);
+            this.colorsComboBox.Name = "colorsComboBox";
+            this.colorsComboBox.Size = new System.Drawing.Size(121, 24);
+            this.colorsComboBox.TabIndex = 56;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(12, 226);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(47, 16);
+            this.label14.TabIndex = 55;
+            this.label14.Text = "Game:";
+            // 
+            // languageComboBox
+            // 
+            this.languageComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.languageComboBox.FormattingEnabled = true;
+            this.languageComboBox.Items.AddRange(new object[] {
+            "English",
+            "Spanish",
+            "French",
+            "German",
+            "Italian",
+            "Portuguese",
+            "Japanese",
+            "Korean",
+            "Russian",
+            "Simplified Chinese",
+            "Traditional Chinese",
+            "Hebrew",
+            "Latin",
+            "Ancient Greek",
+            "Arabic",
+            "Sanskrit",
+            "Phyrexian",
+            "Quenya"});
+            this.languageComboBox.Location = new System.Drawing.Point(94, 695);
+            this.languageComboBox.Name = "languageComboBox";
+            this.languageComboBox.Size = new System.Drawing.Size(232, 24);
+            this.languageComboBox.TabIndex = 54;
+            // 
+            // label13
+            // 
+            this.label13.AutoSize = true;
+            this.label13.Location = new System.Drawing.Point(11, 698);
+            this.label13.Name = "label13";
+            this.label13.Size = new System.Drawing.Size(71, 16);
+            this.label13.TabIndex = 53;
+            this.label13.Text = "Language:";
+            // 
+            // flavorTextTextBox
+            // 
+            this.flavorTextTextBox.Location = new System.Drawing.Point(94, 659);
+            this.flavorTextTextBox.Name = "flavorTextTextBox";
+            this.flavorTextTextBox.Size = new System.Drawing.Size(309, 22);
+            this.flavorTextTextBox.TabIndex = 52;
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(11, 662);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(77, 16);
+            this.label12.TabIndex = 51;
+            this.label12.Text = "Flavor Text:";
+            // 
+            // artistTextBox
+            // 
+            this.artistTextBox.Location = new System.Drawing.Point(63, 627);
+            this.artistTextBox.Name = "artistTextBox";
+            this.artistTextBox.Size = new System.Drawing.Size(294, 22);
+            this.artistTextBox.TabIndex = 50;
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(11, 630);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(39, 16);
+            this.label11.TabIndex = 49;
+            this.label11.Text = "Artist:";
+            // 
+            // pricesPriceNumericUpDown
+            // 
+            this.pricesPriceNumericUpDown.DecimalPlaces = 2;
+            this.pricesPriceNumericUpDown.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            65536});
+            this.pricesPriceNumericUpDown.Location = new System.Drawing.Point(241, 592);
+            this.pricesPriceNumericUpDown.Maximum = new decimal(new int[] {
+            10000000,
+            0,
+            0,
+            0});
+            this.pricesPriceNumericUpDown.Name = "pricesPriceNumericUpDown";
+            this.pricesPriceNumericUpDown.Size = new System.Drawing.Size(176, 22);
+            this.pricesPriceNumericUpDown.TabIndex = 48;
+            // 
+            // pricesOperatorComboBox
+            // 
+            this.pricesOperatorComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.pricesOperatorComboBox.FormattingEnabled = true;
+            this.pricesOperatorComboBox.Items.AddRange(new object[] {
+            "<",
+            "<=",
+            ">",
+            ">="});
+            this.pricesOperatorComboBox.Location = new System.Drawing.Point(160, 591);
+            this.pricesOperatorComboBox.Name = "pricesOperatorComboBox";
+            this.pricesOperatorComboBox.Size = new System.Drawing.Size(75, 24);
+            this.pricesOperatorComboBox.TabIndex = 47;
+            // 
+            // pricesCurrencyComboBox
+            // 
+            this.pricesCurrencyComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.pricesCurrencyComboBox.FormattingEnabled = true;
+            this.pricesCurrencyComboBox.Items.AddRange(new object[] {
+            "USD",
+            "EUR",
+            "TIX"});
+            this.pricesCurrencyComboBox.Location = new System.Drawing.Point(63, 591);
+            this.pricesCurrencyComboBox.Name = "pricesCurrencyComboBox";
+            this.pricesCurrencyComboBox.Size = new System.Drawing.Size(91, 24);
+            this.pricesCurrencyComboBox.TabIndex = 46;
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(9, 594);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(48, 16);
+            this.label10.TabIndex = 45;
+            this.label10.Text = "Prices:";
+            // 
+            // attributesObjectListView
+            // 
+            this.attributesObjectListView.AllColumns.Add(this.notColumn);
+            this.attributesObjectListView.AllColumns.Add(this.attributeColumn);
+            this.attributesObjectListView.AllColumns.Add(this.descriptionColumn);
+            this.attributesObjectListView.CellEditUseWholeCell = false;
+            this.attributesObjectListView.CheckBoxes = true;
+            this.attributesObjectListView.CheckedAspectName = "Not";
+            this.attributesObjectListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.notColumn,
+            this.attributeColumn,
+            this.descriptionColumn});
+            this.attributesObjectListView.Cursor = System.Windows.Forms.Cursors.Default;
+            this.attributesObjectListView.EmptyListMsg = "";
+            this.attributesObjectListView.FullRowSelect = true;
+            this.attributesObjectListView.HeaderWordWrap = true;
+            this.attributesObjectListView.HideSelection = false;
+            this.attributesObjectListView.IsSimpleDragSource = true;
+            this.attributesObjectListView.Location = new System.Drawing.Point(114, 381);
+            this.attributesObjectListView.Margin = new System.Windows.Forms.Padding(4);
+            this.attributesObjectListView.Name = "attributesObjectListView";
+            this.attributesObjectListView.SelectedBackColor = System.Drawing.Color.SteelBlue;
+            this.attributesObjectListView.SelectedForeColor = System.Drawing.Color.White;
+            this.attributesObjectListView.ShowGroups = false;
+            this.attributesObjectListView.ShowImagesOnSubItems = true;
+            this.attributesObjectListView.Size = new System.Drawing.Size(466, 202);
+            this.attributesObjectListView.TabIndex = 44;
+            this.attributesObjectListView.UnfocusedSelectedBackColor = System.Drawing.Color.LightGray;
+            this.attributesObjectListView.UseCompatibleStateImageBehavior = false;
+            this.attributesObjectListView.View = System.Windows.Forms.View.Details;
+            this.attributesObjectListView.VirtualMode = true;
+            // 
+            // notColumn
+            // 
+            this.notColumn.AspectName = "";
+            this.notColumn.Text = "Not";
+            this.notColumn.Width = 35;
+            // 
+            // attributeColumn
+            // 
+            this.attributeColumn.AspectName = "Attribute";
+            this.attributeColumn.IsEditable = false;
+            this.attributeColumn.Text = "";
+            this.attributeColumn.Width = 31;
+            // 
+            // descriptionColumn
+            // 
+            this.descriptionColumn.AspectName = "Description";
+            this.descriptionColumn.IsEditable = false;
+            this.descriptionColumn.Text = "";
+            this.descriptionColumn.Width = 31;
+            // 
+            // attributesComboBox
+            // 
+            this.attributesComboBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            this.attributesComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.attributesComboBox.FormattingEnabled = true;
+            this.attributesComboBox.Items.AddRange(new object[] {
+            "Adventure | use the Adventure layout",
+            "Arena ID | have an Arena ID",
+            "Art Series | are part of Art Series",
+            "Artist | have artists",
+            "Artist Misprint | have a misprinted artist",
+            "Attraction Lights | have attraction lights",
+            "Atypical | aren\'t printed with standard frames and effects",
+            "Augment | are augment pieces",
+            "Back | have non-standard backs",
+            "Bear | are 2/2/2 bears",
+            "Beginner Box | part of a Beginner Box",
+            "Booster | included in standard contents of draft boosters",
+            "Borderless | are borderless",
+            "Brawl Commander | can be your Brawl commander",
+            "Buy-a-Box | Buy-a-Box promos",
+            "Cardmarket ID | have a Cardmarket ID",
+            "Class Layout | are Class-type",
+            "Color Indicator | have color indicators",
+            "Colorshifted | have a colorshifted frame",
+            "Commander | can be your commander",
+            "Companion | are Companions",
+            "Content Warning | have content warnings",
+            "Covered | are covered",
+            "Creature Land | are lands that become creatures",
+            "Datestamped | have a date stamp",
+            "Default | printed with standard frames and effects",
+            "Digital | are digital prints",
+            "Double Sided | are double-sided",
+            "Duel Commander | can be your Duel Commander",
+            "ETB | have an ETB effect",
+            "English Art | have art that has been printed in English",
+            "Etched | are available in etched foil",
+            "Extended Art | have extended art frames",
+            "Final Fantasy | from Final Fantasy",
+            "First Printing | is the first printing",
+            "Flavor Name | have flavor names",
+            "Flavor Text | have flavor text",
+            "Flip",
+            "Foil | are available in foil",
+            "Foreign Black Border | printed in black border in non-English editions of white-b" +
+                "order sets",
+            "Foreign White Border | foreign white border prints",
+            "French Vanilla | are French vanilla",
+            "Full Art | have full extended art",
+            "Funny | are funny",
+            "Future | have the future frame",
+            "Game Changer | on the Commander Game Changer list",
+            "Game Day | Game Day promos",
+            "Historic",
+            "Hybrid Mana | have hybrid mana",
+            "Illustration | have illustration IDs",
+            "Intro Pack | exclusive Intro Pack cards",
+            "Invitational Card",
+            "Leveler | have level up",
+            "Localized Name | have localized names",
+            "MTGO ID | have MTGO Ids",
+            "Masterpiece | are masterpieces",
+            "Meld",
+            "Modal | have modal effects",
+            "Modal Double Faced",
+            "Modern | have the 2003 frame",
+            "Multiverse ID | have a Multivierse ID",
+            "New | have a new frame",
+            "Nonfoil | are available in nonfoil",
+            "Oathbreaker | can be your oathbreaker",
+            "Old | have the 93/97 frame",
+            "Outlaw | are Assassins, Mercenaries, Pirates, Rogues, or Warlocks",
+            "Oversized | larger than standard card size",
+            "Paired Commander | have multi-commander effects",
+            "Paper Art | have art that has been printed in paper",
+            "Party | are Clerics, Rogues, Warriors, or Wizards",
+            "Permanent | become permanents",
+            "Phyrexian Mana | have Phyrexian mana",
+            "Planar | Planar deck cards",
+            "Planeswalker Deck | exclusive Planeswalker Deck cards",
+            "Prepare | have prepared spell parts",
+            "Prerelease Promo | set prerelease event promos",
+            "Printed Text | have their printed text listed",
+            "Promo | promotional prints",
+            "Related | have related cartds",
+            "Release Promo | set release event promos",
+            "Reprint",
+            "Reserved List | on the Reserved List",
+            "Reversible",
+            "Security Stamp | have a security stamp",
+            "Showcase",
+            "Spell",
+            "Spellbook | have spellbooks",
+            "Spikey | have ever been banned or restricted",
+            "Split Card",
+            "Stamped | have a non-date stamp",
+            "Starter Collection",
+            "Starter Deck | exclusive to a Starter Deck",
+            "Story Spotlight",
+            "TCGPlayer ID | have a TCGPlayer ID",
+            "Textless | printed without rules text",
+            "Token",
+            "Tombstone | have the Odyssey tombstone mark",
+            "Transform",
+            "Translucent | have a translucent card frame",
+            "Unique | have been printed exactly once",
+            "Universes Beyond | from a Universes Beyond edition",
+            "Vanilla",
+            "Variation | variations of standard printings",
+            "Watermark | have watermarks",
+            "Worthy | creatures are considered worthy"});
+            this.attributesComboBox.Location = new System.Drawing.Point(114, 351);
+            this.attributesComboBox.Name = "attributesComboBox";
+            this.attributesComboBox.Size = new System.Drawing.Size(489, 23);
+            this.attributesComboBox.TabIndex = 43;
+            this.attributesComboBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.attributesComboBox_DrawItem);
+            this.attributesComboBox.SelectedIndexChanged += new System.EventHandler(this.attributesComboBox_SelectedIndexChanged);
+            // 
+            // label9
+            // 
+            this.label9.AutoSize = true;
+            this.label9.Location = new System.Drawing.Point(12, 354);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(96, 16);
+            this.label9.TabIndex = 41;
+            this.label9.Text = "Misc Attributes:";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(12, 248);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(45, 16);
+            this.label8.TabIndex = 39;
+            this.label8.Text = "Rarity:";
+            // 
+            // magicOnlineCheckBox
+            // 
+            this.magicOnlineCheckBox.AutoSize = true;
+            this.magicOnlineCheckBox.Location = new System.Drawing.Point(238, 225);
+            this.magicOnlineCheckBox.Name = "magicOnlineCheckBox";
+            this.magicOnlineCheckBox.Size = new System.Drawing.Size(107, 20);
+            this.magicOnlineCheckBox.TabIndex = 38;
+            this.magicOnlineCheckBox.Text = "Magic Online";
+            this.magicOnlineCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // arenaCheckBox
+            // 
+            this.arenaCheckBox.AutoSize = true;
+            this.arenaCheckBox.Location = new System.Drawing.Point(167, 225);
+            this.arenaCheckBox.Name = "arenaCheckBox";
+            this.arenaCheckBox.Size = new System.Drawing.Size(65, 20);
+            this.arenaCheckBox.TabIndex = 37;
+            this.arenaCheckBox.Text = "Arena";
+            this.arenaCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // paperCheckBox
+            // 
+            this.paperCheckBox.AutoSize = true;
+            this.paperCheckBox.Location = new System.Drawing.Point(96, 225);
+            this.paperCheckBox.Name = "paperCheckBox";
+            this.paperCheckBox.Size = new System.Drawing.Size(66, 20);
+            this.paperCheckBox.TabIndex = 36;
+            this.paperCheckBox.Text = "Paper";
+            this.paperCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // loyaltyNumericUpDown
+            // 
+            this.loyaltyNumericUpDown.Location = new System.Drawing.Point(157, 197);
+            this.loyaltyNumericUpDown.Name = "loyaltyNumericUpDown";
+            this.loyaltyNumericUpDown.Size = new System.Drawing.Size(54, 22);
+            this.loyaltyNumericUpDown.TabIndex = 35;
+            // 
+            // loyaltyComboBox
+            // 
+            this.loyaltyComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.loyaltyComboBox.FormattingEnabled = true;
+            this.loyaltyComboBox.Items.AddRange(new object[] {
+            "=",
+            "<",
+            ">"});
+            this.loyaltyComboBox.Location = new System.Drawing.Point(96, 195);
+            this.loyaltyComboBox.Name = "loyaltyComboBox";
+            this.loyaltyComboBox.Size = new System.Drawing.Size(55, 24);
+            this.loyaltyComboBox.TabIndex = 34;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(12, 199);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(53, 16);
+            this.label7.TabIndex = 33;
+            this.label7.Text = "Loyalty:";
+            // 
+            // toughnessNumericUpDown
+            // 
+            this.toughnessNumericUpDown.Location = new System.Drawing.Point(157, 167);
+            this.toughnessNumericUpDown.Name = "toughnessNumericUpDown";
+            this.toughnessNumericUpDown.Size = new System.Drawing.Size(54, 22);
+            this.toughnessNumericUpDown.TabIndex = 32;
+            // 
+            // toughnessComboBox
+            // 
+            this.toughnessComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.toughnessComboBox.FormattingEnabled = true;
+            this.toughnessComboBox.Items.AddRange(new object[] {
+            "=",
+            "<",
+            ">"});
+            this.toughnessComboBox.Location = new System.Drawing.Point(96, 165);
+            this.toughnessComboBox.Name = "toughnessComboBox";
+            this.toughnessComboBox.Size = new System.Drawing.Size(55, 24);
+            this.toughnessComboBox.TabIndex = 31;
+            // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(12, 171);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(78, 16);
+            this.label6.TabIndex = 30;
+            this.label6.Text = "Toughness:";
+            // 
+            // powerNumericUpDown
+            // 
+            this.powerNumericUpDown.Location = new System.Drawing.Point(157, 136);
+            this.powerNumericUpDown.Name = "powerNumericUpDown";
+            this.powerNumericUpDown.Size = new System.Drawing.Size(54, 22);
+            this.powerNumericUpDown.TabIndex = 29;
+            // 
+            // powerComboBox
+            // 
+            this.powerComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.powerComboBox.FormattingEnabled = true;
+            this.powerComboBox.Items.AddRange(new object[] {
+            "=",
+            "<",
+            ">"});
+            this.powerComboBox.Location = new System.Drawing.Point(96, 134);
+            this.powerComboBox.Name = "powerComboBox";
+            this.powerComboBox.Size = new System.Drawing.Size(55, 24);
+            this.powerComboBox.TabIndex = 28;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(12, 142);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(48, 16);
+            this.label5.TabIndex = 27;
+            this.label5.Text = "Power:";
+            // 
+            // cmcNumericUpDown
+            // 
+            this.cmcNumericUpDown.Location = new System.Drawing.Point(157, 106);
+            this.cmcNumericUpDown.Name = "cmcNumericUpDown";
+            this.cmcNumericUpDown.Size = new System.Drawing.Size(54, 22);
+            this.cmcNumericUpDown.TabIndex = 26;
+            // 
+            // cmcOperatorComboBox
+            // 
+            this.cmcOperatorComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cmcOperatorComboBox.FormattingEnabled = true;
+            this.cmcOperatorComboBox.Items.AddRange(new object[] {
+            "=",
+            "<",
+            ">"});
+            this.cmcOperatorComboBox.Location = new System.Drawing.Point(96, 104);
+            this.cmcOperatorComboBox.Name = "cmcOperatorComboBox";
+            this.cmcOperatorComboBox.Size = new System.Drawing.Size(55, 24);
+            this.cmcOperatorComboBox.TabIndex = 24;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(12, 112);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(39, 16);
+            this.label4.TabIndex = 23;
+            this.label4.Text = "CMC:";
+            // 
+            // manaCostComboBox
+            // 
+            this.manaCostComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.manaCostComboBox.FormattingEnabled = true;
+            this.manaCostComboBox.Items.AddRange(new object[] {
+            "{W} | 1 white mana",
+            "{U} | 1 blue mana",
+            "{B} | 1 black mana",
+            "{R} | 1 red mana",
+            "{G} | 1 green mana",
+            "{C} | 1 colorless mana",
+            "{X} | X generic mana",
+            "{0} | 0 mana",
+            "{1} | 1 generic mana",
+            "{2} | 2 generic mana",
+            "{3} | 3 generic mana",
+            "{4} | 4 generic mana",
+            "{5} | 5 generic mana",
+            "{6} | 6 generic mana",
+            "{7} | 7 generic mana",
+            "{8} | 8 generic mana",
+            "{9} | 9 generic mana",
+            "{10} | 10 generic mana",
+            "{11} | 11 generic mana",
+            "{12} | 12 generic mana",
+            "{13} | 13 generic mana",
+            "{14} | 14 generic mana",
+            "{15} | 15 generic mana",
+            "{16} | 16 generic mana",
+            "{W/U} | 1 white or blue mana",
+            "{W/B} | 1 white or black mana",
+            "{B/R} | 1 black or red mana",
+            "{B/G} | 1 black or green mana",
+            "{U/B} | 1 blue or black mana",
+            "{U/R} | 1 blue or red mana",
+            "{R/G} | 1 red or green mana",
+            "{R/W} | 1 red or white mana",
+            "{G/W} | 1 green or white mana",
+            "{G/U} | 1 green or blue mana",
+            "{G/U/P} | 1 green or blue mana or 2 life",
+            "{G/W/P} | 1 green or white mana or 2 life",
+            "{C/W} | 1 colorless or white mana",
+            "{C/U} | 1 colorless or blue mana",
+            "{C/B} | 1 colorless or black mana",
+            "{C/R} | 1 colorless or red mana",
+            "{C/G} | 1 colorless or green mana",
+            "{2/W} | 2 generic or 1 white mana",
+            "{2/U} | 2 generic or 1 blue mana",
+            "{2/B} | 2 generic or 1 black mana",
+            "{2/R} | 2 generic or 1 red mana",
+            "{2/G} | 2 generic or 1 green mana",
+            "{W/P} | 1 white mana or 2 life",
+            "{U/P} | 1 blue mana or 2 life",
+            "{B/P} | 1 black mana or 2 life",
+            "{R/P} | 1 red mana or 2 life",
+            "{G/P} | 1 green mana or 2 life",
+            "{S} | 1 snow mana"});
+            this.manaCostComboBox.Location = new System.Drawing.Point(379, 75);
+            this.manaCostComboBox.Name = "manaCostComboBox";
+            this.manaCostComboBox.Size = new System.Drawing.Size(285, 24);
+            this.manaCostComboBox.TabIndex = 22;
+            this.manaCostComboBox.SelectedIndexChanged += new System.EventHandler(this.manaCostComboBox_SelectedIndexChanged);
+            // 
+            // manaCostTextBox
+            // 
+            this.manaCostTextBox.Location = new System.Drawing.Point(96, 77);
+            this.manaCostTextBox.Name = "manaCostTextBox";
+            this.manaCostTextBox.Size = new System.Drawing.Size(150, 22);
+            this.manaCostTextBox.TabIndex = 21;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 80);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(72, 16);
+            this.label3.TabIndex = 20;
+            this.label3.Text = "Mana cost:";
+            // 
+            // commanderWhiteButton
+            // 
+            this.commanderWhiteButton.Checked = false;
+            this.commanderWhiteButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.commanderWhiteButton.FlatAppearance.BorderSize = 0;
+            this.commanderWhiteButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.commanderWhiteButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.commanderWhiteButton.Location = new System.Drawing.Point(103, 39);
+            this.commanderWhiteButton.Margin = new System.Windows.Forms.Padding(4);
+            this.commanderWhiteButton.Name = "commanderWhiteButton";
+            this.commanderWhiteButton.Size = new System.Drawing.Size(33, 31);
+            this.commanderWhiteButton.TabIndex = 14;
+            this.commanderWhiteButton.UseVisualStyleBackColor = false;
+            // 
+            // commanderBlueButton
+            // 
+            this.commanderBlueButton.Checked = false;
+            this.commanderBlueButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.commanderBlueButton.FlatAppearance.BorderSize = 2;
+            this.commanderBlueButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.commanderBlueButton.Location = new System.Drawing.Point(138, 39);
+            this.commanderBlueButton.Margin = new System.Windows.Forms.Padding(4);
+            this.commanderBlueButton.Name = "commanderBlueButton";
+            this.commanderBlueButton.Size = new System.Drawing.Size(33, 31);
+            this.commanderBlueButton.TabIndex = 15;
+            this.commanderBlueButton.UseVisualStyleBackColor = false;
+            // 
+            // commanderBlackButton
+            // 
+            this.commanderBlackButton.Checked = false;
+            this.commanderBlackButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.commanderBlackButton.FlatAppearance.BorderSize = 2;
+            this.commanderBlackButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.commanderBlackButton.Location = new System.Drawing.Point(172, 39);
+            this.commanderBlackButton.Margin = new System.Windows.Forms.Padding(4);
+            this.commanderBlackButton.Name = "commanderBlackButton";
+            this.commanderBlackButton.Size = new System.Drawing.Size(33, 31);
+            this.commanderBlackButton.TabIndex = 16;
+            this.commanderBlackButton.Text = "B";
+            this.commanderBlackButton.UseVisualStyleBackColor = false;
+            // 
+            // commanderRedButton
+            // 
+            this.commanderRedButton.Checked = false;
+            this.commanderRedButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.commanderRedButton.FlatAppearance.BorderSize = 2;
+            this.commanderRedButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.commanderRedButton.Location = new System.Drawing.Point(207, 39);
+            this.commanderRedButton.Margin = new System.Windows.Forms.Padding(4);
+            this.commanderRedButton.Name = "commanderRedButton";
+            this.commanderRedButton.Size = new System.Drawing.Size(33, 31);
+            this.commanderRedButton.TabIndex = 17;
+            this.commanderRedButton.Text = "R";
+            this.commanderRedButton.UseVisualStyleBackColor = false;
+            // 
+            // commanderGreenButton
+            // 
+            this.commanderGreenButton.Checked = false;
+            this.commanderGreenButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.commanderGreenButton.FlatAppearance.BorderSize = 2;
+            this.commanderGreenButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.commanderGreenButton.Location = new System.Drawing.Point(239, 39);
+            this.commanderGreenButton.Margin = new System.Windows.Forms.Padding(4);
+            this.commanderGreenButton.Name = "commanderGreenButton";
+            this.commanderGreenButton.Size = new System.Drawing.Size(33, 31);
+            this.commanderGreenButton.TabIndex = 18;
+            this.commanderGreenButton.Text = "G";
+            this.commanderGreenButton.UseVisualStyleBackColor = false;
+            // 
+            // commanderColorlessButton
+            // 
+            this.commanderColorlessButton.Checked = false;
+            this.commanderColorlessButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.commanderColorlessButton.FlatAppearance.BorderSize = 0;
+            this.commanderColorlessButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.commanderColorlessButton.Location = new System.Drawing.Point(273, 39);
+            this.commanderColorlessButton.Margin = new System.Windows.Forms.Padding(4);
+            this.commanderColorlessButton.Name = "commanderColorlessButton";
+            this.commanderColorlessButton.Size = new System.Drawing.Size(33, 31);
+            this.commanderColorlessButton.TabIndex = 19;
+            this.commanderColorlessButton.Text = "flatButton1";
+            this.commanderColorlessButton.UseVisualStyleBackColor = false;
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(12, 48);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(84, 16);
+            this.label2.TabIndex = 13;
+            this.label2.Text = "Commander:";
+            // 
+            // colorsWhiteButton
+            // 
+            this.colorsWhiteButton.Checked = false;
+            this.colorsWhiteButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.colorsWhiteButton.FlatAppearance.BorderSize = 0;
+            this.colorsWhiteButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.colorsWhiteButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.colorsWhiteButton.Location = new System.Drawing.Point(204, 8);
+            this.colorsWhiteButton.Margin = new System.Windows.Forms.Padding(4);
+            this.colorsWhiteButton.Name = "colorsWhiteButton";
+            this.colorsWhiteButton.Size = new System.Drawing.Size(33, 31);
+            this.colorsWhiteButton.TabIndex = 7;
+            this.colorsWhiteButton.UseVisualStyleBackColor = false;
+            // 
+            // colorsBlueButton
+            // 
+            this.colorsBlueButton.Checked = false;
+            this.colorsBlueButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.colorsBlueButton.FlatAppearance.BorderSize = 2;
+            this.colorsBlueButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.colorsBlueButton.Location = new System.Drawing.Point(239, 8);
+            this.colorsBlueButton.Margin = new System.Windows.Forms.Padding(4);
+            this.colorsBlueButton.Name = "colorsBlueButton";
+            this.colorsBlueButton.Size = new System.Drawing.Size(33, 31);
+            this.colorsBlueButton.TabIndex = 8;
+            this.colorsBlueButton.UseVisualStyleBackColor = false;
+            // 
+            // colorsBlackButton
+            // 
+            this.colorsBlackButton.Checked = false;
+            this.colorsBlackButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.colorsBlackButton.FlatAppearance.BorderSize = 2;
+            this.colorsBlackButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.colorsBlackButton.Location = new System.Drawing.Point(273, 8);
+            this.colorsBlackButton.Margin = new System.Windows.Forms.Padding(4);
+            this.colorsBlackButton.Name = "colorsBlackButton";
+            this.colorsBlackButton.Size = new System.Drawing.Size(33, 31);
+            this.colorsBlackButton.TabIndex = 9;
+            this.colorsBlackButton.Text = "B";
+            this.colorsBlackButton.UseVisualStyleBackColor = false;
+            // 
+            // colorsRedButton
+            // 
+            this.colorsRedButton.Checked = false;
+            this.colorsRedButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.colorsRedButton.FlatAppearance.BorderSize = 2;
+            this.colorsRedButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.colorsRedButton.Location = new System.Drawing.Point(308, 8);
+            this.colorsRedButton.Margin = new System.Windows.Forms.Padding(4);
+            this.colorsRedButton.Name = "colorsRedButton";
+            this.colorsRedButton.Size = new System.Drawing.Size(33, 31);
+            this.colorsRedButton.TabIndex = 10;
+            this.colorsRedButton.Text = "R";
+            this.colorsRedButton.UseVisualStyleBackColor = false;
+            // 
+            // colorsGreenButton
+            // 
+            this.colorsGreenButton.Checked = false;
+            this.colorsGreenButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.colorsGreenButton.FlatAppearance.BorderSize = 2;
+            this.colorsGreenButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.colorsGreenButton.Location = new System.Drawing.Point(340, 8);
+            this.colorsGreenButton.Margin = new System.Windows.Forms.Padding(4);
+            this.colorsGreenButton.Name = "colorsGreenButton";
+            this.colorsGreenButton.Size = new System.Drawing.Size(33, 31);
+            this.colorsGreenButton.TabIndex = 11;
+            this.colorsGreenButton.Text = "G";
+            this.colorsGreenButton.UseVisualStyleBackColor = false;
+            // 
+            // colorsColorlessButton
+            // 
+            this.colorsColorlessButton.Checked = false;
+            this.colorsColorlessButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
+            this.colorsColorlessButton.FlatAppearance.BorderSize = 0;
+            this.colorsColorlessButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.colorsColorlessButton.Location = new System.Drawing.Point(374, 8);
+            this.colorsColorlessButton.Margin = new System.Windows.Forms.Padding(4);
+            this.colorsColorlessButton.Name = "colorsColorlessButton";
+            this.colorsColorlessButton.Size = new System.Drawing.Size(33, 31);
+            this.colorsColorlessButton.TabIndex = 12;
+            this.colorsColorlessButton.Text = "flatButton1";
+            this.colorsColorlessButton.UseVisualStyleBackColor = false;
             // 
             // cardListView
             // 
@@ -518,6 +1476,70 @@
             this.cardTextColumn.Text = "Text";
             this.cardTextColumn.Width = 200;
             // 
+            // tabPage1
+            // 
+            this.tabPage1.Location = new System.Drawing.Point(4, 25);
+            this.tabPage1.Name = "tabPage1";
+            this.tabPage1.Size = new System.Drawing.Size(192, 0);
+            this.tabPage1.TabIndex = 0;
+            this.tabPage1.Text = "tabPage1";
+            // 
+            // tabPage2
+            // 
+            this.tabPage2.Location = new System.Drawing.Point(4, 25);
+            this.tabPage2.Name = "tabPage2";
+            this.tabPage2.Size = new System.Drawing.Size(192, 0);
+            this.tabPage2.TabIndex = 0;
+            this.tabPage2.Text = "tabPage2";
+            // 
+            // tabPage3
+            // 
+            this.tabPage3.Location = new System.Drawing.Point(4, 25);
+            this.tabPage3.Name = "tabPage3";
+            this.tabPage3.Size = new System.Drawing.Size(384, 0);
+            this.tabPage3.TabIndex = 0;
+            this.tabPage3.Text = "Sets";
+            // 
+            // tabPage4
+            // 
+            this.tabPage4.Location = new System.Drawing.Point(4, 25);
+            this.tabPage4.Name = "tabPage4";
+            this.tabPage4.Size = new System.Drawing.Size(384, 0);
+            this.tabPage4.TabIndex = 1;
+            this.tabPage4.Text = "tabPage4";
+            // 
+            // tabPage5
+            // 
+            this.tabPage5.Location = new System.Drawing.Point(4, 25);
+            this.tabPage5.Name = "tabPage5";
+            this.tabPage5.Size = new System.Drawing.Size(383, 0);
+            this.tabPage5.TabIndex = 0;
+            this.tabPage5.Text = "tabPage5";
+            // 
+            // tabPage6
+            // 
+            this.tabPage6.Location = new System.Drawing.Point(0, 0);
+            this.tabPage6.Name = "tabPage6";
+            this.tabPage6.Size = new System.Drawing.Size(200, 100);
+            this.tabPage6.TabIndex = 0;
+            this.tabPage6.Text = "Sets";
+            // 
+            // tabPage7
+            // 
+            this.tabPage7.Location = new System.Drawing.Point(0, 0);
+            this.tabPage7.Name = "tabPage7";
+            this.tabPage7.Size = new System.Drawing.Size(200, 100);
+            this.tabPage7.TabIndex = 0;
+            this.tabPage7.Text = "Additional search parameters";
+            // 
+            // tabPage8
+            // 
+            this.tabPage8.Location = new System.Drawing.Point(0, 0);
+            this.tabPage8.Name = "tabPage8";
+            this.tabPage8.Size = new System.Drawing.Size(200, 100);
+            this.tabPage8.TabIndex = 0;
+            this.tabPage8.Text = "tabPage8";
+            // 
             // DBViewForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -537,8 +1559,18 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.setsPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.setListView)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
+            this.compatibleTabControl1.ResumeLayout(false);
+            this.searchParametersPanel.ResumeLayout(false);
+            this.searchParametersPanel.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pricesPriceNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.attributesObjectListView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.loyaltyNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.toughnessNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.powerNumericUpDown)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.cmcNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cardListView)).EndInit();
             this.ResumeLayout(false);
 
@@ -548,8 +1580,6 @@
 
         private System.Windows.Forms.SplitContainer splitContainer2;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        public BrightIdeasSoftware.TreeListView setListView;
-        private BrightIdeasSoftware.OLVColumn SetName;
         private EnhancedTextBox.EnhancedTextBox setFilterBox;
         private BrightIdeasSoftware.OLVColumn DisplayName;
         private BrightIdeasSoftware.OLVColumn olvColumn2;
@@ -565,8 +1595,6 @@
         private CustomControls.FlatButton genericManaButton;
         private BrightIdeasSoftware.OLVColumn ReleaseDate;
         private EnhancedTextBox.EnhancedTextBox cardNameFilterBox;
-        private BrightIdeasSoftware.OLVColumn completeColumn;
-        private BrightIdeasSoftware.OLVColumn complete4Column;
         private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
         private System.Windows.Forms.ToolStripMenuItem updateThisSetToolStripMenuItem;
         private BrightIdeasSoftware.OLVColumn copiesOwnedColumn;
@@ -579,5 +1607,76 @@
         private BrightIdeasSoftware.OLVColumn priceColumn;
         private System.Windows.Forms.CheckBox includeVariationsCheckBox;
         private System.Windows.Forms.ComboBox uniqueComboBox;
+        private System.Windows.Forms.Panel setsPanel;
+        private System.Windows.Forms.TabPage tabPage1;
+        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.TabPage tabPage3;
+        private System.Windows.Forms.TabPage tabPage4;
+        private CompatibleTabControl.CompatibleTabControl compatibleTabControl1;
+        private System.Windows.Forms.TabPage tabPage5;
+        private System.Windows.Forms.TabPage tabPage6;
+        private System.Windows.Forms.TabPage tabPage7;
+        private System.Windows.Forms.TabPage tabPage8;
+        private System.Windows.Forms.Panel searchParametersPanel;
+        private CustomControls.FlatButton colorsWhiteButton;
+        private CustomControls.FlatButton colorsBlueButton;
+        private CustomControls.FlatButton colorsBlackButton;
+        private CustomControls.FlatButton colorsRedButton;
+        private CustomControls.FlatButton colorsGreenButton;
+        private CustomControls.FlatButton colorsColorlessButton;
+        public BrightIdeasSoftware.TreeListView setListView;
+        private BrightIdeasSoftware.OLVColumn SetName;
+        private BrightIdeasSoftware.OLVColumn completeColumn;
+        private BrightIdeasSoftware.OLVColumn complete4Column;
+        private CustomControls.FlatButton commanderWhiteButton;
+        private CustomControls.FlatButton commanderBlueButton;
+        private CustomControls.FlatButton commanderBlackButton;
+        private CustomControls.FlatButton commanderRedButton;
+        private CustomControls.FlatButton commanderGreenButton;
+        private CustomControls.FlatButton commanderColorlessButton;
+        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.TextBox manaCostTextBox;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox manaCostComboBox;
+        private System.Windows.Forms.ComboBox cmcOperatorComboBox;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.NumericUpDown cmcNumericUpDown;
+        private System.Windows.Forms.NumericUpDown powerNumericUpDown;
+        private System.Windows.Forms.ComboBox powerComboBox;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.NumericUpDown toughnessNumericUpDown;
+        private System.Windows.Forms.ComboBox toughnessComboBox;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.NumericUpDown loyaltyNumericUpDown;
+        private System.Windows.Forms.ComboBox loyaltyComboBox;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.CheckBox arenaCheckBox;
+        private System.Windows.Forms.CheckBox paperCheckBox;
+        private System.Windows.Forms.CheckBox magicOnlineCheckBox;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.ComboBox attributesComboBox;
+        public BrightIdeasSoftware.FastObjectListView attributesObjectListView;
+        private BrightIdeasSoftware.OLVColumn notColumn;
+        private BrightIdeasSoftware.OLVColumn attributeColumn;
+        private BrightIdeasSoftware.OLVColumn descriptionColumn;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.ComboBox pricesCurrencyComboBox;
+        private System.Windows.Forms.ComboBox pricesOperatorComboBox;
+        private System.Windows.Forms.NumericUpDown pricesPriceNumericUpDown;
+        private System.Windows.Forms.TextBox artistTextBox;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.TextBox flavorTextTextBox;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.ComboBox languageComboBox;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.ComboBox colorsComboBox;
+        private System.Windows.Forms.ComboBox colorsOperatorComboBox;
+        private System.Windows.Forms.CheckBox rarityMythicCheckBox;
+        private System.Windows.Forms.CheckBox rarityRareCheckBox;
+        private System.Windows.Forms.CheckBox rarityUncommonCheckBox;
+        private System.Windows.Forms.CheckBox rarityCommonCheckBox;
+        private System.Windows.Forms.ComboBox manaCostTypeComboBox;
     }
 }

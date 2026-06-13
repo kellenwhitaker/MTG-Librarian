@@ -22,124 +22,19 @@ namespace MTG_Librarian
         {
             WorkerSupportsCancellation = true;
             Query = query;
-            Caption = $"Search: {Query.Replace("%3A", "=")}";
+            Caption = $"Search: {Query.Replace("%3A", ":")}";
             TotalWorkUnits = 5;
         }
         public override void Run()
         {
             base.Run();
         }
-        private string AbbreviateLanguage(string lang)
-        {
-            string abbr;
-            switch (lang)
-            {
-                case "English":
-                    {
-                        abbr = "EN";
-                        break;
-                    }
-                case "Spanish":
-                    {
-                        abbr = "ES";
-                        break;
-                    }
-                case "French":
-                    {
-                        abbr = "FR";
-                        break;
-                    }
-                case "German":
-                    {
-                        abbr = "DE";
-                        break;
-                    }
-                case "Italian":
-                    {
-                        abbr = "IT";
-                        break;
-                    }
-                case "Portuguese":
-                    {
-                        abbr = "PT";
-                        break;
-                    }
-                case "Japanese":
-                    {
-                        abbr = "JA";
-                        break;
-                    }
-                case "Korean":
-                    {
-                        abbr = "KO";
-                        break;
-                    }
-                case "Russian":
-                    {
-                        abbr = "RU";
-                        break;
-                    }
-                case "Simplified Chinese":
-                    {
-                        abbr = "ZHS";
-                        break;
-                    }
-                case "Traditional Chinese":
-                    {
-                        abbr = "ZHT";
-                        break;
-                    }
-                case "Hebrew":
-                    {
-                        abbr = "HE";
-                        break;
-                    }
-                case "Latin":
-                    {
-                        abbr = "LA";
-                        break;
-                    }
-                case "Ancient Greek":
-                    {
-                        abbr = "GRC";
-                        break;
-                    }
-                case "Arabic":
-                    {
-                        abbr = "AR";
-                        break;
-                    }
-                case "Sanskrit":
-                    {
-                        abbr = "SA";
-                        break;
-                    }
-                case "Phyrexian":
-                    {
-                        abbr = "PH";
-                        break;
-                    }
-                case "Quenya":
-                    {
-                        abbr = "QYA";
-                        break;
-                    }
-                default:
-                    {
-                        abbr = "";
-                        break;
-                    }
-            }
-            return abbr;
-        }
         protected override void OnDoWork(DoWorkEventArgs e)
         {
             try
             {
                 string scryfallBaseUrl = "https://api.scryfall.com";
-                string lang = SettingsManager.ApplicationSettings.DefaultSearchLanguage;
-                string abbr = AbbreviateLanguage(lang);
-                if (scryfallUrl == null) scryfallUrl = $"/cards/search?{Query}+lang%3A{abbr}";
+                if (scryfallUrl == null) scryfallUrl = $"/cards/search?{Query}";
                 Results.Clear();
                 var client = new RestClient(scryfallBaseUrl);
                 var request = new RestRequest(scryfallUrl, Method.Get);
