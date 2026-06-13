@@ -5,7 +5,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
-// TODO: fix bug where a search is performed again when set downloads are complete
+
 namespace MTG_Librarian
 {
     public static class EventManager

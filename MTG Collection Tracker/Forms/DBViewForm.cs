@@ -308,8 +308,6 @@ namespace MTG_Librarian
         {
             var existingSet = setListView.Objects.Cast<OLVSetItem>().FirstOrDefault(x => x.CardSet.code == SetCode);
             var selectedSet = setListView.SelectedObject as OLVSetItem;
-            if (existingSet != null)
-                setListView.RemoveObject(existingSet);
 
             try
             {
@@ -320,33 +318,41 @@ namespace MTG_Librarian
                                  select s).FirstOrDefault();
                     if (dbSet != null)
                     {
-                        var set = new OLVSetItem(dbSet);
-                        var cards = from c in context.Catalog
-                                    where c.set == SetCode
-                                    orderby new AlphaNumericString(c.collector_number), c.Name
-                                    select c;
-
-                        foreach (var card in cards)
+                        if (existingSet == null)
                         {
-                            var invItems = from i in context.LibraryView
-                                           where i.set == card.set && i.collector_number == card.collector_number
-                                           select i;
+                            var set = new OLVSetItem(dbSet);
+                            var cards = from c in context.Catalog
+                                        where c.set == SetCode
+                                        orderby new AlphaNumericString(c.collector_number), c.Name
+                                        select c;
 
-                            if (invItems.FirstOrDefault() != null)
+                            foreach (var card in cards)
                             {
-                                int count = 0;
-                                foreach (var item in invItems)
-                                    if (!item.Virtual && item.Count.HasValue)
-                                        count += item.Count.Value;
-                                card.CopiesOwned = count;
-                                set.AddCard(card);
-                            }
-                        }
+                                var invItems = from i in context.LibraryView
+                                               where i.set == card.set && i.collector_number == card.collector_number
+                                               select i;
 
-                        setListView.AddObject(set);
-                        if (setListView.Objects.Count() == 1) // first set added, must sort the tree
-                            setListView.Sort(setListView.AllColumns[1], SortOrder.Descending);
-                        SetItems.Add(set);
+                                if (invItems.FirstOrDefault() != null)
+                                {
+                                    int count = 0;
+                                    foreach (var item in invItems)
+                                        if (!item.Virtual && item.Count.HasValue)
+                                            count += item.Count.Value;
+                                    card.CopiesOwned = count;
+                                    set.AddCard(card);
+                                }
+                            }
+
+                            setListView.AddObject(set);
+                            if (setListView.Objects.Count() == 1) // first set added, must sort the tree
+                                setListView.Sort(setListView.AllColumns[1], SortOrder.Descending);
+                            SetItems.Add(set);
+                        }
+                        else
+                        {
+                            existingSet.CardSet = dbSet;
+                            setListView.RefreshObject(existingSet);
+                        }
                     }
                 }
             }
@@ -354,8 +360,6 @@ namespace MTG_Librarian
             {
                 DebugOutput.WriteLine(ex.ToString());
             }
-            if (selectedSet != null)
-                setListView.SelectedObject = setListView.Objects.Cast<OLVSetItem>().FirstOrDefault(x => x.CardSet.code == selectedSet.CardSet.code);
         }
         // TODO: refactor
         public delegate void LoadSetsDelegate();
