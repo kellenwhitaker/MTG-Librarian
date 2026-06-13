@@ -86,7 +86,7 @@ namespace MTG_Librarian
                 setsNeedingIcons = new List<ScryfallCardSet>(),
                 setsNeedingRefresh = new List<ScryfallCardSet>()
             };
-            var sets = GetScryfallSets();
+            var scryfallSets = GetScryfallSets();
             try
             {
                 using (var context = new ScryfallCardsDbContext())
@@ -94,7 +94,7 @@ namespace MTG_Librarian
                     var DBSets = from s in context.Sets
                                  select s;
 
-                    foreach (var set in sets)
+                    foreach (var set in scryfallSets)
                     {
                         var dbSet = from s in DBSets
                                     where s.code == set.code
@@ -113,17 +113,21 @@ namespace MTG_Librarian
                     }
                     foreach (var set in DBSets)
                     {
-                        if ((set.LastUpdated.HasValue && set.LastUpdated.Value < DateTime.Parse(set.released_at) &&
+                        if ((set.code == set.SymbolCode && set.LastUpdated.HasValue && set.LastUpdated.Value < DateTime.Parse(set.released_at) &&
                             (set.CommonIconBytes == null && set.UncommonIconBytes == null && set.RareIconBytes == null && set.MythicRareIconBytes == null)))
                         {
-                            result.setsNeedingIcons.Add(set);
+                            var match = from s in scryfallSets
+                                        where s.code == set.code
+                                        select s;
+                            if (match.FirstOrDefault() != null)
+                                result.setsNeedingIcons.Add(match.FirstOrDefault());
                         }
                     }
                   
                 }
                 using (var context = new ScryfallCardsDbContext())
                 {
-                    foreach (var set in sets)
+                    foreach (var set in scryfallSets)
                     {
                         set.LastUpdated = DateTime.Now;
                         context.Upsert(set);

@@ -7,7 +7,6 @@ using System.Windows.Forms;
 using KW.WinFormsUI.Docking;
 using BrightIdeasSoftware;
 using System.Collections;
-// TODO: fix bug where sets revert after set symbol update
 // TODO: add operators to mana cost field in search panel
 namespace MTG_Librarian
 {
