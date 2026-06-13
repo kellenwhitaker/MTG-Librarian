@@ -1,5 +1,6 @@
 ﻿using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
@@ -19,6 +20,13 @@ namespace MTG_Librarian
         [NotMapped]
         public ScryfallMagicCard PartB { get; set; }
     }
+
+    public class Metadata
+    {
+        [Key]
+        public string Name { get; set; }
+        public string Value { get; set; }
+    }
     public class CardCollectionItem
     {
         [Key]
@@ -35,6 +43,7 @@ namespace MTG_Librarian
     public class ScryfallCardsDbContext : DbContext
     {
         #region DbSet
+        public DbSet<Metadata> Metadata { get; set; }
         public DbSet<ScryfallMagicCard> Catalog { get; set; }
         public DbSet<InventoryCard> Library { get; set; }
         public DbSet<FullInventoryCard> LibraryView { get; set; }

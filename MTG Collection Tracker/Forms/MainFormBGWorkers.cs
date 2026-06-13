@@ -75,8 +75,20 @@ namespace MTG_Librarian
             Globals.Forms.NavigationForm.CollectionActivated += EventManager.NavigationFormCollectionActivated;
             Show();
             SettingsManager.LayoutMainForm();
-            CheckForNewSetsWorker.RunWorkerCompleted += CheckForNewSetsWorker_RunWorkerCompleted;
-            CheckForNewSetsWorker.RunWorkerAsync();
+            using (var context = new ScryfallCardsDbContext())
+            {
+                var match = (from m in context.Metadata
+                            where m.Name == "LastCatalogUpdate"
+                            select m).FirstOrDefault();
+                var lastUpdate = DateTime.MinValue;
+                if (match != null && match.Value != "")
+                    DateTime.TryParse(match.Value, out lastUpdate);
+                if (match == null || (DateTime.Now.Date - lastUpdate.Date).Days > 0)
+                {
+                    CheckForNewSetsWorker.RunWorkerCompleted += CheckForNewSetsWorker_RunWorkerCompleted;
+                    CheckForNewSetsWorker.RunWorkerAsync();
+                }
+            }
         }
 
         private void checkForNewSetsWorker_DoWork(object sender, DoWorkEventArgs e)
@@ -145,6 +157,17 @@ namespace MTG_Librarian
 
         private void CheckForNewSetsWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
+            using (var context = new ScryfallCardsDbContext())
+            {
+                var match = (from m in context.Metadata
+                             where m.Name == "LastCatalogUpdate"
+                             select m).FirstOrDefault();
+                if (match != null)
+                    match.Value = DateTime.Now.ToString();
+                else
+                    context.Metadata.Add(new Metadata { Name = "LastCatalogUpdate", Value = DateTime.Now.ToString() });
+                context.SaveChanges();
+            }
             var result = e.Result as UpdateSetsResult;
             if (result.setsNeedingRefresh.Count > 0)
             {
