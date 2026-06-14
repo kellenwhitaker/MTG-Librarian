@@ -14,7 +14,6 @@ namespace MTG_Librarian
     {
         #region Fields
 
-        private Dictionary<string, OLVSetItem> sets;
         public List<OLVSetItem> SetItems = new List<OLVSetItem>();
         public bool SearchHasMoreResults = false;
         object SetSelected = null;
@@ -375,7 +374,6 @@ namespace MTG_Librarian
             {
                 var renderer = setListView.TreeColumnRenderer;
                 renderer.IsShowLines = false;
-                sets = new Dictionary<string, OLVSetItem>();
                 try
                 {
                     using (var context = new ScryfallCardsDbContext())
@@ -409,10 +407,6 @@ namespace MTG_Librarian
                                     set.AddCard(card);
                                 }
                             }
-
-                            setListView.AddObject(set);
-                            //if (setListView.Objects.Count() == 1) // first set added, must sort the tree
-                                //setListView.Sort(setListView.AllColumns[1], SortOrder.Descending);
                             SetItems.Add(set);
                         }
                     }
@@ -421,15 +415,11 @@ namespace MTG_Librarian
                 {
                     DebugOutput.WriteLine(ex.ToString());
                 }
-
-                SetItems.AddRange(sets.Values);
             }
         }
         public void LoadTree()
         {
-            foreach (var set in sets.Values)
-                setListView.AddObject(set);
-
+            setListView.AddObjects(SetItems);
             setListView.Sort(setListView.AllColumns[1], SortOrder.Descending);
         }
         private void UpdateSetModelFilter()
