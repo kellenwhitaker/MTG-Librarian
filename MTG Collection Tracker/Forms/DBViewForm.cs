@@ -62,6 +62,10 @@ namespace MTG_Librarian
             uniqueComboBox.SelectedIndex = 2;
             languageComboBox.Text = SettingsManager.ApplicationSettings.DefaultSearchLanguage;
             pricesCurrencyComboBox.Text = SettingsManager.ApplicationSettings.DefaultCurrency;
+            var defaultPlatforms = SettingsManager.ApplicationSettings.DefaultPlatforms;
+            paperCheckBox.Checked = defaultPlatforms[0] == '1';
+            arenaCheckBox.Checked = defaultPlatforms[1] == '1';
+            magicOnlineCheckBox.Checked = defaultPlatforms[2] == '1';
             DockAreas = DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockBottom;
         }
 

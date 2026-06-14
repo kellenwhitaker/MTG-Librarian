@@ -1650,9 +1650,6 @@
         private System.Windows.Forms.NumericUpDown loyaltyNumericUpDown;
         private System.Windows.Forms.ComboBox loyaltyComboBox;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.CheckBox arenaCheckBox;
-        private System.Windows.Forms.CheckBox paperCheckBox;
-        private System.Windows.Forms.CheckBox magicOnlineCheckBox;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ComboBox attributesComboBox;
@@ -1678,5 +1675,8 @@
         private System.Windows.Forms.CheckBox rarityUncommonCheckBox;
         private System.Windows.Forms.CheckBox rarityCommonCheckBox;
         private System.Windows.Forms.ComboBox manaCostTypeComboBox;
+        public System.Windows.Forms.CheckBox arenaCheckBox;
+        public System.Windows.Forms.CheckBox paperCheckBox;
+        public System.Windows.Forms.CheckBox magicOnlineCheckBox;
     }
 }

@@ -54,6 +54,14 @@ namespace MTG_Librarian
         #region Settings Properties
 
         [UserScopedSetting()]
+        [DefaultSettingValue("100")]
+        public string DefaultPlatforms
+        {
+            get => (string)this["DefaultPlatforms"];
+            set => this["DefaultPlatforms"] = value;
+        }
+
+        [UserScopedSetting()]
         [DefaultSettingValue("English")]
         public string DefaultSearchLanguage
         {

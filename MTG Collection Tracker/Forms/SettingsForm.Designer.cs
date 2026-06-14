@@ -34,6 +34,10 @@
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.defaultSearchLanguageComboBox = new System.Windows.Forms.ComboBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.paperCheckBox = new System.Windows.Forms.CheckBox();
+            this.arenaCheckBox = new System.Windows.Forms.CheckBox();
+            this.magicOnlineCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label1
@@ -115,11 +119,54 @@
             this.defaultSearchLanguageComboBox.Size = new System.Drawing.Size(121, 24);
             this.defaultSearchLanguageComboBox.TabIndex = 5;
             // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(12, 67);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(110, 16);
+            this.label3.TabIndex = 6;
+            this.label3.Text = "Default platforms:";
+            // 
+            // paperCheckBox
+            // 
+            this.paperCheckBox.AutoSize = true;
+            this.paperCheckBox.Location = new System.Drawing.Point(174, 66);
+            this.paperCheckBox.Name = "paperCheckBox";
+            this.paperCheckBox.Size = new System.Drawing.Size(66, 20);
+            this.paperCheckBox.TabIndex = 7;
+            this.paperCheckBox.Text = "Paper";
+            this.paperCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // arenaCheckBox
+            // 
+            this.arenaCheckBox.AutoSize = true;
+            this.arenaCheckBox.Location = new System.Drawing.Point(246, 66);
+            this.arenaCheckBox.Name = "arenaCheckBox";
+            this.arenaCheckBox.Size = new System.Drawing.Size(65, 20);
+            this.arenaCheckBox.TabIndex = 8;
+            this.arenaCheckBox.Text = "Arena";
+            this.arenaCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // magicOnlineCheckBox
+            // 
+            this.magicOnlineCheckBox.AutoSize = true;
+            this.magicOnlineCheckBox.Location = new System.Drawing.Point(317, 66);
+            this.magicOnlineCheckBox.Name = "magicOnlineCheckBox";
+            this.magicOnlineCheckBox.Size = new System.Drawing.Size(107, 20);
+            this.magicOnlineCheckBox.TabIndex = 9;
+            this.magicOnlineCheckBox.Text = "Magic Online";
+            this.magicOnlineCheckBox.UseVisualStyleBackColor = true;
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.magicOnlineCheckBox);
+            this.Controls.Add(this.arenaCheckBox);
+            this.Controls.Add(this.paperCheckBox);
+            this.Controls.Add(this.label3);
             this.Controls.Add(this.defaultSearchLanguageComboBox);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
@@ -141,5 +188,9 @@
         private System.Windows.Forms.Button button2;
         public System.Windows.Forms.ComboBox defaultCurrencyComboBox;
         public System.Windows.Forms.ComboBox defaultSearchLanguageComboBox;
+        private System.Windows.Forms.Label label3;
+        public System.Windows.Forms.CheckBox paperCheckBox;
+        public System.Windows.Forms.CheckBox arenaCheckBox;
+        public System.Windows.Forms.CheckBox magicOnlineCheckBox;
     }
 }

@@ -271,12 +271,24 @@ namespace MTG_Librarian
             {
                 settingsForm.defaultCurrencyComboBox.Text = SettingsManager.ApplicationSettings.DefaultCurrency;
                 settingsForm.defaultSearchLanguageComboBox.Text = SettingsManager.ApplicationSettings.DefaultSearchLanguage;
+                var defaultPlatforms = SettingsManager.ApplicationSettings.DefaultPlatforms;
+                settingsForm.paperCheckBox.Checked = defaultPlatforms[0] == '1';
+                settingsForm.arenaCheckBox.Checked = defaultPlatforms[1] == '1';
+                settingsForm.magicOnlineCheckBox.Checked = defaultPlatforms[2] == '1';
                 if (settingsForm.ShowDialog() == DialogResult.OK)
                 {
                     string defaultCurrency = SettingsManager.ApplicationSettings.DefaultCurrency;
                     SettingsManager.ApplicationSettings.DefaultCurrency = settingsForm.defaultCurrencyComboBox.Text;
                     SettingsManager.ApplicationSettings.DefaultSearchLanguage = settingsForm.defaultSearchLanguageComboBox.Text;
+                    SettingsManager.ApplicationSettings.DefaultPlatforms = (settingsForm.paperCheckBox.Checked ? "1" : "0") + (settingsForm.arenaCheckBox.Checked ? "1" : "0")
+                                     + (settingsForm.magicOnlineCheckBox.Checked ? "1" : "0");
                     SettingsManager.ApplicationSettings.Save();
+                    if (defaultPlatforms != SettingsManager.ApplicationSettings.DefaultPlatforms)
+                    {
+                        Globals.Forms.DBViewForm.paperCheckBox.Checked = settingsForm.paperCheckBox.Checked;
+                        Globals.Forms.DBViewForm.arenaCheckBox.Checked = settingsForm.arenaCheckBox.Checked;
+                        Globals.Forms.DBViewForm.magicOnlineCheckBox.Checked = settingsForm.magicOnlineCheckBox.Checked;
+                    }
                     if (defaultCurrency != SettingsManager.ApplicationSettings.DefaultCurrency)
                         EventManager.OnDefaultCurrencyChanged();
                 }
