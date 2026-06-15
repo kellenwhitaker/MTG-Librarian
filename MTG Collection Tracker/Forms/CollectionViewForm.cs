@@ -205,7 +205,7 @@ namespace MTG_Librarian
                     {
                         string priceString;
                         string key = $"{DefaultCurrency.ToLower()}{(fullCard.Foil ? "_foil" : "")}";
-                        if (fullCard.prices.TryGetValue(key, out priceString) && priceString != null)
+                        if (fullCard.prices != null && fullCard.prices.TryGetValue(key, out priceString) && priceString != null)
                         {
                             fullCard.Price = Convert.ToDouble(priceString);
                         }
@@ -385,12 +385,13 @@ namespace MTG_Librarian
                     e.Handled = true;
                     if (cardListView.SelectedObjects.Count > 0)
                     {
-                        var cardsToPrice = new List<FullInventoryCard>();
+                        var cardsToPrice = new Dictionary<string, FullInventoryCard>();
                         foreach (var row in cardListView.SelectedObjects)
                             if (row is FullInventoryCard card && card.ScryfallId != null)
-                                cardsToPrice.Add(row as FullInventoryCard);
+                                if (!cardsToPrice.ContainsKey(card.ScryfallId))
+                                    cardsToPrice.Add(card.ScryfallId, row as FullInventoryCard);
                         if (cardsToPrice.Count > 0)
-                            CardManager.FetchPrices(cardsToPrice);
+                            CardManager.FetchPrices(cardsToPrice.Values.ToList());
                         else
                             MessageBox.Show("No valid product IDs were found. Please try updating the set(s)");
                     }
@@ -459,15 +460,6 @@ namespace MTG_Librarian
                         OnCardsUpdated(new CardsUpdatedEventArgs { Items = cardListView.SelectedObjects as ArrayList, CollectionViewForm = this });
                     }
                 }
-            }
-            if (e.KeyCode == Keys.Enter && e.Shift)
-            {
-                var cardsToPrice = new List<FullInventoryCard>();
-                foreach (var row in cardListView.Objects)
-                    if (row is FullInventoryCard card && card.ScryfallId != null)
-                        cardsToPrice.Add(row as FullInventoryCard);
-                if (cardsToPrice.Count > 0)
-                    CardManager.FetchPrices(cardsToPrice);
             }
         }
 

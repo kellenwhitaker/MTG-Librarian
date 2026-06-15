@@ -153,6 +153,27 @@ namespace MTG_Librarian
                     MessageBox.Show(ex.ToString());
             }
             e.Result = result;
+            UpdateCards();
+        }
+
+        private void UpdateCards()
+        {
+            using (var context = new ScryfallCardsDbContext())
+            {
+                var cardsToUpdate = (from c in context.Catalog
+                                    join s in context.Library 
+                                    on c.ScryfallId equals s.ScryfallId
+                                    select c);
+                var cardsToUpdateDictionary = new Dictionary<string, ScryfallMagicCardBase>();
+                foreach (var card in cardsToUpdate)
+                    if (!cardsToUpdateDictionary.ContainsKey(card.ScryfallId))
+                        cardsToUpdateDictionary.Add(card.ScryfallId, card);
+                if (cardsToUpdate.Any())
+                {
+                    var updateCardsTask = new UpdateCardsTask(cardsToUpdateDictionary.Values.Cast<ScryfallMagicCardBase>().ToList());
+                    Globals.Forms.TasksForm.TaskManager.AddTask(updateCardsTask);
+                }
+            }
         }
 
         private void CheckForNewSetsWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)

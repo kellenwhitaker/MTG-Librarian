@@ -107,7 +107,7 @@ namespace MTG_Librarian
         }
         public static void FetchPrices(List<FullInventoryCard> pricesToFetch)
         {
-            var fetchPricesTask = new UpdateCardsTask(pricesToFetch) { AddFirst = true };
+            var fetchPricesTask = new UpdateCardsTask(pricesToFetch.Cast<ScryfallMagicCardBase>().ToList()) { AddFirst = true };
             Globals.Forms.TasksForm.TaskManager.AddTask(fetchPricesTask);
         }
 

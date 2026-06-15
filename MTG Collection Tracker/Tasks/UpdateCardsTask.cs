@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
+using System.Linq;
 using System.Text;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
@@ -13,14 +14,14 @@ namespace MTG_Librarian
     {
         #region Fields
 
-        private List<FullInventoryCard> cardsToUpdate;
+        private List<ScryfallMagicCardBase> cardsToUpdate;
         public List<ScryfallMagicCard> CardsUpdated = new List<ScryfallMagicCard>();
 
         #endregion Fields
 
         #region Constructors
 
-        public UpdateCardsTask(List<FullInventoryCard> cards)
+        public UpdateCardsTask(List<ScryfallMagicCardBase> cards)
         {
             bool isPlural = cards.Count > 1;
             Caption = $"Getting update{(isPlural ? "s" : "")} for {cards.Count} card{(isPlural ? "s" : "")}";
@@ -43,23 +44,60 @@ namespace MTG_Librarian
             {
                 using (var context = new ScryfallCardsDbContext())
                 {
+                    const int batchSize = 75; // Scryfall /cards/collection is typically limited; 75 is safe
                     string scryfallBaseUrl = "https://api.scryfall.com";
-                    string scryfallUrl;
                     var client = new RestClient(scryfallBaseUrl);
-                    foreach (var card in cardsToUpdate)
+
+                    
+                    // Process in batches
+                    for (int start = 0; start < cardsToUpdate.Count; start += batchSize)
                     {
-                        scryfallUrl = $"/cards/{card.ScryfallId}";
-                        var request = new RestRequest(scryfallUrl, Method.Get);
-                        string responseContent = client.Execute(request).Content;
-                        var responseObject = JsonConvert.DeserializeObject<ScryfallCard>(responseContent);
-                        if (responseObject == null) throw new InvalidDataException("Invalid JSON encountered");
-                        DebugOutput.WriteLine(responseContent);
-                        var scryfallMagicCard = responseObject.ToScryfallMagicCard();
-                        context.Catalog.Update(scryfallMagicCard);
+                        var searchCollection = new ScryfallSearchCollection();
+                        var batchIds = cardsToUpdate
+                            .Skip(start)
+                            .Take(batchSize)
+                            .Select(c => c.ScryfallId)
+                            .Where(id => !string.IsNullOrWhiteSpace(id))
+                            .ToList();
+
+                        if (batchIds.Count == 0)
+                            continue;
+
+                        foreach (var id in batchIds)
+                            searchCollection.identifiers.Add(new ScryfallSearchCollectionIdentifier { id = id });
+
+                        var request = new RestRequest("/cards/collection", Method.Post);
+                        request.AddHeader("Content-Type", "application/json");
+                        request.AddJsonBody(JsonConvert.SerializeObject(searchCollection));
+                        var response = client.Execute(request);
+                        var scryfallCards = response.Content != null
+                            ? JsonConvert.DeserializeObject<ScryfallCardList>(response.Content)?.data
+                            : null;
+                        if (scryfallCards == null)
+                        {
+                            DebugOutput.WriteLine("ScryfallSearchCollection returned null for a batch.");
+                            continue;
+                        }
+
+                        foreach (var sfCard in scryfallCards)
+                        {
+                            try
+                            {
+                                if (sfCard == null) continue;
+                                var scryfallMagicCard = sfCard.ToScryfallMagicCard();
+                                context.Catalog.Update(scryfallMagicCard);
+                                CardsUpdated.Add(scryfallMagicCard);
+                                CompletedWorkUnits++;
+                            }
+                            catch (Exception innerEx)
+                            {
+                                // Log and continue with other cards
+                                DebugOutput.WriteLine(innerEx.ToString());
+                            }
+                        }
                         context.SaveChanges();
-                        CardsUpdated.Add(scryfallMagicCard);
-                        CompletedWorkUnits++;
                     }
+
                     RunState = RunState.Completed;
                 }
             }
