@@ -70,7 +70,12 @@ namespace CustomControls
 
             void DrawCheckState()
             {
-                if (Checked)
+                if (DesignMode && !Checked)
+                {
+                    g.FillRectangle(new SolidBrush(BackColor), pevent.ClipRectangle);
+                    DrawBorder();
+                }
+                else if (Checked)
                 {
                     g.FillRectangle(new SolidBrush(Color.FromArgb(255, 170, 224, 250)), pevent.ClipRectangle);
                     DrawBorder();
