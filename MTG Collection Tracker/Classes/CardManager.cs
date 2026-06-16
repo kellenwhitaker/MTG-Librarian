@@ -50,18 +50,18 @@ namespace MTG_Librarian
                 ScryfallId = magicCard.ScryfallId,
                 CollectionId = collection.Id,
                 InsertionIndex = insertionIndex,
-                Virtual = collection.Virtual
+                Virtual = collection.Virtual,
             };
 
-            //if (magicCard.foilOny)
-                //inventoryCard.Foil = true;
-            //else
-                //inventoryCard.Foil = false;
+            if (magicCard.finishes.Length == 1)
+                inventoryCard.Finish = magicCard.finishes[0];
+            else if (magicCard.finishes.Contains("nonfoil"))
+                inventoryCard.Finish = "nonfoil";
+
             if (magicCard.PartB != null)
                 inventoryCard.PartB_ScryfallId = magicCard.PartB.ScryfallId;
             context.Upsert(magicCard);
             context.Library.Add(inventoryCard);
-            //context.SaveChanges();
             return inventoryCard;
         }
 
