@@ -22,5 +22,6 @@ namespace MTG_Librarian
         public string       DisplayName { get; set; }
         public bool         Virtual { get; set; }
         public string       Condition { get; set; }
+        public string       Finish { get; set; }
     }
 }

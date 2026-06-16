@@ -34,6 +34,7 @@ namespace MTG_Librarian
         private int? _insertionIndex;
         public int? InsertionIndex { get => _insertionIndex; set { _insertionIndex = value; UpdateSortableTimeAdded(); } }
         public string Condition { get; set; }
+        public string Finish { get; set; }
         [NotMapped]
         public string SortableTimeAdded
         {
@@ -93,7 +94,8 @@ namespace MTG_Librarian
                     Foil = Foil,
                     DisplayName = DisplayName,
                     Virtual = Virtual,
-                    Condition = Condition
+                    Condition = Condition,
+                    Finish = Finish
                 };
             }
         }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.Json.Nodes;
 using System.Windows.Forms;
 using Newtonsoft.Json;
+using System.Web.UI.WebControls;
 
 namespace MTG_Librarian
 {
@@ -93,7 +94,8 @@ namespace MTG_Librarian
                         if (fullCard != null)
                         {
                             string priceString;
-                            if (fullCard.prices.TryGetValue($"{DefaultCurrency.ToLower()}{(fullCard.Foil ? "_foil" : "")}", out priceString))
+                            string finish = fullCard.Finish;
+                            if (fullCard.prices.TryGetValue($"{DefaultCurrency.ToLower()}{(finish != "nonfoil" ? $"_{finish}" : "")}", out priceString))
                                 fullCard.Price = Convert.ToDouble(priceString);
                             fullCardsAdded.Add(fullCard);
                         }

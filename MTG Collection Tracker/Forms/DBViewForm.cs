@@ -260,9 +260,8 @@ namespace MTG_Librarian
                 if (colorsOperatorComboBox != null && colorsOperatorComboBox.SelectedIndex > -1)
                 {
                     colorsOp = EncodeOperator(colorsOperatorComboBox.Text.Trim());
+                    queryClauses.Add($"{token}{colorsOp}{colorSymbols}");
                 }
-
-                queryClauses.Add($"{token}{colorsOp}{colorSymbols}");
             }
 
             // attributes (from attributesObjectListView). Each item stores the raw attribute text.
@@ -812,6 +811,12 @@ namespace MTG_Librarian
             {
                 manaCostComboBox.Items.AddRange(new string[] { "{W/P} | 1 white mana or 2 life", "{U/P} | 1 blue mana or 2 life", "{B/P} | 1 black mana or 2 life", "{R/P} | 1 red mana or 2 life", "{G/P} | 1 green mana or 2 life", "{G/U/P} | 1 green or blue mana or 2 life", "{G/W/P} | 1 green or white mana or 2 life" });
             }
+        }
+
+        private void DBViewForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.F2)
+                DoScryfallQuery();
         }
     }
 }

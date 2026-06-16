@@ -47,7 +47,6 @@ namespace MTG_Librarian
             cardListView.SetDoubleBuffered();
             cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "PaddedName").Renderer = new CardInstanceNameRenderer();
             cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "ManaCost").Renderer = new ManaCostRenderer();
-            cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "Foil").Renderer = new CheckBoxRenderer();
             cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "Delta").Renderer = new DeltaRenderer();
             cardListView.AllColumns.FirstOrDefault(y => y.AspectName == "X").Renderer = new XRenderer();
             cardListView.VirtualListDataSource = new MyCustomSortingDataSource(cardListView);
@@ -204,7 +203,8 @@ namespace MTG_Librarian
                     foreach (var fullCard in items)
                     {
                         string priceString;
-                        string key = $"{DefaultCurrency.ToLower()}{(fullCard.Foil ? "_foil" : "")}";
+                        string finish = fullCard.Finish;
+                        string key = $"{DefaultCurrency.ToLower()}{(finish != "nonfoil" ? $"_{finish}" : "")}";
                         if (fullCard.prices != null && fullCard.prices.TryGetValue(key, out priceString) && priceString != null)
                         {
                             fullCard.Price = Convert.ToDouble(priceString);
@@ -336,6 +336,8 @@ namespace MTG_Librarian
                                 card.Foil = editedCard.Foil;
                             else if (e.Column.AspectName == "Condition")
                                 card.Condition = editedCard.Condition;
+                            else if (e.Column.AspectName == "Finish")
+                                card.Finish = editedCard.Finish;
                             args.Items.Add(card);
                         }
                     }
@@ -469,6 +471,7 @@ namespace MTG_Librarian
             {
                 int costIndex = cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "Cost").DisplayIndex;
                 int condIndex = cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "Condition").DisplayIndex;
+                int finishIndex = cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "Finish").DisplayIndex;
                 if (e.SubItemIndex == costIndex)
                 {
                     var editor = new NumericUpDown
@@ -492,6 +495,18 @@ namespace MTG_Librarian
                         }
                     e.Control = EditorComboBox;
                 }
+                else if (e.SubItemIndex == finishIndex)
+                {
+                    EditorComboBox = new ComboBox { Bounds = e.CellBounds, DropDownStyle = ComboBoxStyle.DropDownList };
+                    EditorComboBox.Items.AddRange(card.finishes);
+                    foreach (var item in EditorComboBox.Items)
+                        if (item.ToString() == card.Finish)
+                        {
+                            EditorComboBox.SelectedItem = item;
+                            break;
+                        }
+                    e.Control = EditorComboBox;
+                }
             }
         }
 
@@ -501,6 +516,7 @@ namespace MTG_Librarian
             {
                 int costIndex = cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "Cost").DisplayIndex;
                 int condIndex = cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "Condition").DisplayIndex;
+                int finishIndex = cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "Finish").DisplayIndex;
                 if (e.SubItemIndex == costIndex)
                 {
                     if (double.TryParse(e.NewValue?.ToString(), out double cellValue))
@@ -514,6 +530,15 @@ namespace MTG_Librarian
                         card.Condition = null;
                     else
                         card.Condition = EditorComboBox.SelectedItem?.ToString();
+                    cardListView.RefreshObject(card);
+                    e.Cancel = true;
+                }
+                else if (e.SubItemIndex == finishIndex)
+                {
+                    card.Finish = EditorComboBox.SelectedItem?.ToString();
+                    card.Price = card.prices != null && card.prices.TryGetValue($"{DefaultCurrency.ToLower()}{(card.Finish != "nonfoil" ? $"_{card.Finish}" : "")}", out string priceString) && priceString != null
+                        ? Convert.ToDouble(priceString)
+                        : (double?)null;
                     cardListView.RefreshObject(card);
                     e.Cancel = true;
                 }

@@ -1546,9 +1546,11 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1903, 570);
             this.Controls.Add(this.splitContainer2);
+            this.KeyPreview = true;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "DBViewForm";
             this.Text = "Catalog";
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.DBViewForm_KeyDown);
             this.splitContainer2.Panel1.ResumeLayout(false);
             this.splitContainer2.Panel1.PerformLayout();
             this.splitContainer2.Panel2.ResumeLayout(false);

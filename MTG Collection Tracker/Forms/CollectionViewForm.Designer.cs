@@ -32,7 +32,7 @@
             this.cardListView = new BrightIdeasSoftware.FastObjectListView();
             this.CardName = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.rarityColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.FoilColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.FinishColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.ConditionColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn10 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn2 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -82,7 +82,7 @@
             // 
             this.cardListView.AllColumns.Add(this.CardName);
             this.cardListView.AllColumns.Add(this.rarityColumn);
-            this.cardListView.AllColumns.Add(this.FoilColumn);
+            this.cardListView.AllColumns.Add(this.FinishColumn);
             this.cardListView.AllColumns.Add(this.ConditionColumn);
             this.cardListView.AllColumns.Add(this.olvColumn10);
             this.cardListView.AllColumns.Add(this.olvColumn2);
@@ -106,7 +106,7 @@
             this.cardListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.CardName,
             this.rarityColumn,
-            this.FoilColumn,
+            this.FinishColumn,
             this.ConditionColumn,
             this.olvColumn2,
             this.ManaCost,
@@ -166,15 +166,13 @@
             // rarityColumn
             // 
             this.rarityColumn.AspectName = "rarity";
+            this.rarityColumn.IsEditable = false;
             this.rarityColumn.Text = "Rarity";
             // 
-            // FoilColumn
+            // FinishColumn
             // 
-            this.FoilColumn.AspectName = "Foil";
-            this.FoilColumn.CheckBoxes = true;
-            this.FoilColumn.Text = "Foil";
-            this.FoilColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.FoilColumn.Width = 30;
+            this.FinishColumn.AspectName = "Finish";
+            this.FinishColumn.Text = "Finish";
             // 
             // ConditionColumn
             // 
@@ -615,7 +613,6 @@
         private BrightIdeasSoftware.OLVColumn olvColumn10;
         private BrightIdeasSoftware.OLVColumn olvColumn1;
         private BrightIdeasSoftware.OLVColumn TimeAddedColumn;
-        private BrightIdeasSoftware.OLVColumn FoilColumn;
         private System.Windows.Forms.ContextMenuStrip cardListViewMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem deleteCardsToolStripMenuItem;
         private EnhancedTextBox.EnhancedTextBox cardNameFilterTextBox;
@@ -642,5 +639,6 @@
         private BrightIdeasSoftware.OLVColumn XColumn;
         private BrightIdeasSoftware.OLVColumn tcgPlayerMidPriceColumn;
         private BrightIdeasSoftware.OLVColumn rarityColumn;
+        private BrightIdeasSoftware.OLVColumn FinishColumn;
     }
 }

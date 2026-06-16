@@ -310,7 +310,8 @@ namespace MTG_Librarian
                     {
                         cardsToRefresh.Add(card);
                         string priceString;
-                        if (card.prices.TryGetValue($"{DefaultCurrency.ToLower()}{(card.Foil ? "_foil" : "")}", out priceString))
+                        string finish = card.Finish;
+                        if (card.prices.TryGetValue($"{DefaultCurrency.ToLower()}{(finish != "nonfoil" ? $"_{finish}" : "")}", out priceString))
                             card.Price = Convert.ToDouble(priceString);
                         else
                             card.Price = null;

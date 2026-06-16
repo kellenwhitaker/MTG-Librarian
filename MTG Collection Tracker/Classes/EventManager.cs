@@ -147,7 +147,8 @@ namespace MTG_Librarian
                             {
                                 match.CopyFromMagicCard(scryfallCard);
                                 string priceString;
-                                if (match.prices.TryGetValue($"{DefaultCurrency.ToLower()}{(match.Foil ? "_foil" : "")}", out priceString))
+                                string finish = match.Finish;
+                                if (match.prices.TryGetValue($"{DefaultCurrency.ToLower()}{(finish != "nonfoil" ? $"_{finish}" : "")}", out priceString))
                                     match.Price = Convert.ToDouble(priceString);
                                 cardsToRefresh.Add(match);
                             }
