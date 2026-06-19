@@ -16,29 +16,29 @@ namespace EnhancedTextBox
 
         protected override void OnTextChanged(EventArgs e)
         {
+            base.OnTextChanged(e);
             if (Text == Placeholder)
             {
                 if (UserText != "")
-                {
                     UserText = Text;
-                    base.OnTextChanged(e);
-                }
             }
             else if (Text == "")
             {
                 if (UserText != "")
-                {
                     UserText = "";
-                    base.OnTextChanged(e);
+
+                if (!Focused)
+                {
+                    Text = Placeholder;
+                    Font = new Font(Font, FontStyle.Italic);
+                    ForeColor = Color.FromArgb(64, 128, 128, 128);
+                    Refresh();
                 }
             }
             else
-            {
                 UserText = Text;
-                base.OnTextChanged(e);
-            }
         }
-
+       
         protected override void OnLostFocus(EventArgs e)
         {
             base.OnLostFocus(e);
