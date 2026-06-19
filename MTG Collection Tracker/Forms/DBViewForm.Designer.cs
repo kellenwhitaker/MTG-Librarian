@@ -30,8 +30,8 @@
         {
             this.components = new System.ComponentModel.Container();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.clearAllButton = new System.Windows.Forms.Button();
             this.uniqueComboBox = new System.Windows.Forms.ComboBox();
-            this.includeVariationsCheckBox = new System.Windows.Forms.CheckBox();
             this.cardTextFilterTextBox = new EnhancedTextBox.EnhancedTextBox();
             this.typeFilterTextBox = new EnhancedTextBox.EnhancedTextBox();
             this.manaButtonsPanel = new System.Windows.Forms.Panel();
@@ -56,6 +56,7 @@
             this.updateThisSetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.compatibleTabControl1 = new CompatibleTabControl.CompatibleTabControl();
             this.searchParametersPanel = new System.Windows.Forms.Panel();
+            this.includeVariationsCheckBox = new System.Windows.Forms.CheckBox();
             this.languageClearButton = new System.Windows.Forms.Button();
             this.flavorTextClearButton = new System.Windows.Forms.Button();
             this.artistClearButton = new System.Windows.Forms.Button();
@@ -178,8 +179,8 @@
             // 
             // splitContainer2.Panel1
             // 
+            this.splitContainer2.Panel1.Controls.Add(this.clearAllButton);
             this.splitContainer2.Panel1.Controls.Add(this.uniqueComboBox);
-            this.splitContainer2.Panel1.Controls.Add(this.includeVariationsCheckBox);
             this.splitContainer2.Panel1.Controls.Add(this.cardTextFilterTextBox);
             this.splitContainer2.Panel1.Controls.Add(this.typeFilterTextBox);
             this.splitContainer2.Panel1.Controls.Add(this.manaButtonsPanel);
@@ -195,6 +196,16 @@
             this.splitContainer2.SplitterWidth = 1;
             this.splitContainer2.TabIndex = 2;
             // 
+            // clearAllButton
+            // 
+            this.clearAllButton.Location = new System.Drawing.Point(1494, 4);
+            this.clearAllButton.Name = "clearAllButton";
+            this.clearAllButton.Size = new System.Drawing.Size(75, 28);
+            this.clearAllButton.TabIndex = 16;
+            this.clearAllButton.Text = "Clear all";
+            this.clearAllButton.UseVisualStyleBackColor = true;
+            this.clearAllButton.Click += new System.EventHandler(this.clearAllButton_Click);
+            // 
             // uniqueComboBox
             // 
             this.uniqueComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -203,22 +214,10 @@
             "Unique cards",
             "Unique art",
             "Unique prints"});
-            this.uniqueComboBox.Location = new System.Drawing.Point(1486, 4);
+            this.uniqueComboBox.Location = new System.Drawing.Point(1367, 5);
             this.uniqueComboBox.Name = "uniqueComboBox";
             this.uniqueComboBox.Size = new System.Drawing.Size(121, 24);
             this.uniqueComboBox.TabIndex = 15;
-            // 
-            // includeVariationsCheckBox
-            // 
-            this.includeVariationsCheckBox.AutoSize = true;
-            this.includeVariationsCheckBox.Checked = true;
-            this.includeVariationsCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.includeVariationsCheckBox.Location = new System.Drawing.Point(1367, 7);
-            this.includeVariationsCheckBox.Name = "includeVariationsCheckBox";
-            this.includeVariationsCheckBox.Size = new System.Drawing.Size(113, 20);
-            this.includeVariationsCheckBox.TabIndex = 14;
-            this.includeVariationsCheckBox.Text = "Incl. variations";
-            this.includeVariationsCheckBox.UseVisualStyleBackColor = true;
             // 
             // cardTextFilterTextBox
             // 
@@ -516,6 +515,7 @@
             this.searchParametersPanel.AutoScrollMargin = new System.Drawing.Size(0, 40);
             this.searchParametersPanel.BackColor = System.Drawing.Color.White;
             this.searchParametersPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.searchParametersPanel.Controls.Add(this.includeVariationsCheckBox);
             this.searchParametersPanel.Controls.Add(this.languageClearButton);
             this.searchParametersPanel.Controls.Add(this.flavorTextClearButton);
             this.searchParametersPanel.Controls.Add(this.artistClearButton);
@@ -587,6 +587,18 @@
             this.searchParametersPanel.Name = "searchParametersPanel";
             this.searchParametersPanel.Size = new System.Drawing.Size(607, 527);
             this.searchParametersPanel.TabIndex = 3;
+            // 
+            // includeVariationsCheckBox
+            // 
+            this.includeVariationsCheckBox.AutoSize = true;
+            this.includeVariationsCheckBox.Checked = true;
+            this.includeVariationsCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.includeVariationsCheckBox.Location = new System.Drawing.Point(15, 702);
+            this.includeVariationsCheckBox.Name = "includeVariationsCheckBox";
+            this.includeVariationsCheckBox.Size = new System.Drawing.Size(133, 20);
+            this.includeVariationsCheckBox.TabIndex = 86;
+            this.includeVariationsCheckBox.Text = "Include variations";
+            this.includeVariationsCheckBox.UseVisualStyleBackColor = true;
             // 
             // languageClearButton
             // 
@@ -1761,8 +1773,6 @@
         private EnhancedTextBox.EnhancedTextBox cardTextFilterTextBox;
         private BrightIdeasSoftware.OLVColumn cardTextColumn;
         private BrightIdeasSoftware.OLVColumn priceColumn;
-        private System.Windows.Forms.CheckBox includeVariationsCheckBox;
-        private System.Windows.Forms.ComboBox uniqueComboBox;
         private System.Windows.Forms.Panel setsPanel;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
@@ -1848,5 +1858,8 @@
         private System.Windows.Forms.Button artistClearButton;
         private System.Windows.Forms.Button flavorTextClearButton;
         private System.Windows.Forms.Button languageClearButton;
+        private System.Windows.Forms.CheckBox includeVariationsCheckBox;
+        private System.Windows.Forms.ComboBox uniqueComboBox;
+        private System.Windows.Forms.Button clearAllButton;
     }
 }

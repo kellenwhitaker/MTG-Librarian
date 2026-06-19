@@ -476,7 +476,8 @@ namespace MTG_Librarian
             {
                 SetSelected = setListView.SelectedObject;
                 cardListView.SelectedObject = null;
-                DoScryfallQuery();
+                if (SetSelected != null)
+                    DoScryfallQuery();
             }
         }
 
@@ -980,6 +981,33 @@ namespace MTG_Librarian
         {
             languageClearButton.Visible = !(languageComboBox.Text == SettingsManager.ApplicationSettings.DefaultSearchLanguage);
             languageClearButton.Top = languageComboBox.Top - 1;
+        }
+
+        private void clearAllButton_Click(object sender, EventArgs e)
+        {
+            artistClearButton_Click(sender, e);
+            colorsClearButton_Click(sender, e);
+            commanderClearButton_Click(sender, e);
+            cmcClearButton_Click(sender, e);
+            flavorTextClearButton_Click(sender, e);
+            gameClearbutton_Click(sender, e);
+            languageClearButton_Click(sender, e);
+            manaCostClearButton_Click(sender, e);
+            powerClearButton_Click(sender, e);
+            rarityClearButton_Click(sender, e);
+            toughnessClearButton_Click(sender, e);
+            loyaltyClearButton_Click(sender, e);
+            attributesClearButton_Click(sender, e);
+            pricesClearButton_Click(sender, e);
+            setFilterBox.Text = "";
+            formatFilterComboBox.SelectedIndex = 0;
+            cardNameFilterBox.Text = "";
+            typeFilterTextBox.Text = "";
+            whiteManaButton.Checked = blueManaButton.Checked = blackManaButton.Checked = redManaButton.Checked = greenManaButton.Checked = colorlessManaButton.Checked = false;
+            cardTextFilterTextBox.Text = "";
+            uniqueComboBox.SelectedIndex = 2;
+            setListView.SelectedIndex = -1;
+            includeVariationsCheckBox.Checked = true;
         }
     }
 }
