@@ -744,7 +744,8 @@ namespace MTG_Librarian
 
         private void manaCostComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            manaCostTextBox.AppendText(manaCostComboBox.Text.Substring(0, manaCostComboBox.Text.IndexOf(" |")));
+            if (manaCostComboBox.SelectedIndex > -1)
+                manaCostTextBox.AppendText(manaCostComboBox.Text.Substring(0, manaCostComboBox.Text.IndexOf(" |")));
         }
 
         private void attributesComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -801,6 +802,184 @@ namespace MTG_Librarian
         {
             if (e.KeyCode == Keys.F2)
                 DoScryfallQuery();
+        }
+
+        private void attributesObjectListView_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete || e.KeyCode == Keys.Back)
+            {
+                e.Handled = true;
+                attributesObjectListView.RemoveObjects(attributesObjectListView.SelectedObjects);
+            }
+        }
+
+        private void gameClearbutton_Click(object sender, EventArgs e)
+        {
+            var defaultPlatforms = SettingsManager.ApplicationSettings.DefaultPlatforms;
+            paperCheckBox.Checked = defaultPlatforms[0] == '1';
+            arenaCheckBox.Checked = defaultPlatforms[1] == '1';
+            magicOnlineCheckBox.Checked = defaultPlatforms[2] == '1';
+        }
+
+        private void rarityClearButton_Click(object sender, EventArgs e)
+        {
+            rarityCommonCheckBox.Checked = rarityUncommonCheckBox.Checked = rarityRareCheckBox.Checked = rarityMythicCheckBox.Checked = false;
+        }
+
+        private void colorsClearButton_Click(object sender, EventArgs e)
+        {
+            colorsComboBox.SelectedIndex = colorsOperatorComboBox.SelectedIndex = -1;
+            colorsWhiteButton.Checked = colorsBlueButton.Checked = colorsBlackButton.Checked = colorsRedButton.Checked = colorsGreenButton.Checked = colorsColorlessButton.Checked = false;
+            colorsClearButton.Visible = false;
+        }
+
+        private void commanderClearButton_Click(object sender, EventArgs e)
+        {
+            commanderWhiteButton.Checked = commanderBlueButton.Checked = commanderBlackButton.Checked = commanderRedButton.Checked = commanderGreenButton.Checked = commanderColorlessButton.Checked = false;
+            commanderClearButton.Visible = false;
+        }
+
+        private void manaCostClearButton_Click(object sender, EventArgs e)
+        {
+            manaCostTextBox.Text = "";
+            manaCostTypeComboBox.SelectedIndex = manaCostComboBox.SelectedIndex = -1;
+        }
+
+        private void cmcClearButton_Click(object sender, EventArgs e)
+        {
+            cmcOperatorComboBox.SelectedIndex = -1;
+            cmcNumericUpDown.Value = cmcNumericUpDown.Minimum;
+        }
+
+        private void powerClearButton_Click(object sender, EventArgs e)
+        {
+            powerComboBox.SelectedIndex = -1;
+            powerNumericUpDown.Value = powerNumericUpDown.Minimum;
+        }
+
+        private void toughnessClearButton_Click(object sender, EventArgs e)
+        {
+            toughnessComboBox.SelectedIndex = -1;
+            toughnessNumericUpDown.Value = toughnessNumericUpDown.Minimum;
+        }
+
+        private void loyaltyClearButton_Click(object sender, EventArgs e)
+        {
+            loyaltyComboBox.SelectedIndex = -1;
+            loyaltyNumericUpDown.Value = loyaltyNumericUpDown.Minimum;
+        }
+
+        private void attributesClearButton_Click(object sender, EventArgs e)
+        {
+            attributesComboBox.SelectedIndex = -1;
+            attributesObjectListView.ClearObjects();
+        }
+
+        private void pricesClearButton_Click(object sender, EventArgs e)
+        {
+            pricesCurrencyComboBox.Text = SettingsManager.ApplicationSettings.DefaultCurrency;
+            pricesOperatorComboBox.SelectedIndex = -1;
+            pricesPriceNumericUpDown.Value = pricesPriceNumericUpDown.Minimum;
+        }
+
+        private void artistClearButton_Click(object sender, EventArgs e)
+        {
+            artistTextBox.Text = "";
+        }
+
+        private void flavorTextClearButton_Click(object sender, EventArgs e)
+        {
+            flavorTextTextBox.Text = "";
+        }
+
+        private void languageClearButton_Click(object sender, EventArgs e)
+        {
+            languageComboBox.Text = SettingsManager.ApplicationSettings.DefaultSearchLanguage;
+        }
+
+        private void paperCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            var defaultPlatforms = SettingsManager.ApplicationSettings.DefaultPlatforms;
+            gameClearButton.Visible = !(paperCheckBox.Checked == (defaultPlatforms[0] == '1') && arenaCheckBox.Checked == (defaultPlatforms[1] == '1') && magicOnlineCheckBox.Checked == (defaultPlatforms[2] == '1'));
+            gameClearButton.Top = paperCheckBox.Top - 5;
+        }
+
+        private void rarityCommonCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            rarityClearButton.Visible = !(rarityCommonCheckBox.Checked == false && rarityUncommonCheckBox.Checked == false && rarityRareCheckBox.Checked == false && rarityMythicCheckBox.Checked == false);
+            rarityClearButton.Top = rarityCommonCheckBox.Top - 5;
+        }
+
+        private void colorsComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            colorsClearButton.Visible = !(colorsComboBox.SelectedIndex == -1 && colorsOperatorComboBox.SelectedIndex == -1 && colorsWhiteButton.Checked == false && colorsBlueButton.Checked == false && colorsBlackButton.Checked == false && colorsRedButton.Checked == false && colorsGreenButton.Checked == false && colorsColorlessButton.Checked == false);
+            colorsClearButton.Top = colorsComboBox.Top - 2;
+        }
+
+        private void commanderWhiteButton_Click(object sender, EventArgs e)
+        {
+            commanderClearButton.Visible = !(commanderWhiteButton.Checked == false && commanderBlueButton.Checked == false && commanderBlackButton.Checked == false && commanderRedButton.Checked == false && commanderGreenButton.Checked == false && commanderColorlessButton.Checked == false);
+            commanderClearButton.Top = commanderWhiteButton.Top + 1;
+        }
+
+        private void manaCostTextBox_TextChanged(object sender, EventArgs e)
+        {
+            manaCostClearButton.Visible = manaCostTextBox.Text != "";
+            manaCostClearButton.Top = manaCostTextBox.Top - 2;
+        }
+
+        private void cmcOperatorComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            cmcClearButton.Visible = !(cmcOperatorComboBox.SelectedIndex == -1 && cmcNumericUpDown.Value == cmcNumericUpDown.Minimum);
+            cmcClearButton.Top = cmcOperatorComboBox.Top;
+        }
+
+        private void powerComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            powerClearButton.Visible = !(powerComboBox.SelectedIndex == -1 && powerNumericUpDown.Value == powerNumericUpDown.Minimum);
+            powerClearButton.Top = powerComboBox.Top;
+        }
+
+        private void toughnessComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            toughnessClearButton.Visible = !(toughnessComboBox.SelectedIndex == -1 && toughnessNumericUpDown.Value == toughnessNumericUpDown.Minimum);
+            toughnessClearButton.Top = toughnessComboBox.Top;
+        }
+
+        private void loyaltyComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            loyaltyClearButton.Visible = !(loyaltyComboBox.SelectedIndex == -1 && loyaltyNumericUpDown.Value == loyaltyNumericUpDown.Minimum);
+            loyaltyClearButton.Top = loyaltyComboBox.Top;
+        }
+
+        private void attributesObjectListView_ItemsChanged(object sender, ItemsChangedEventArgs e)
+        {
+            attributesClearButton.Visible = !(attributesObjectListView.Objects != null && attributesObjectListView.Objects.Count() == 0);
+            attributesClearButton.Top = attributesComboBox.Top - 2;
+        }
+
+        private void pricesCurrencyComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            pricesClearButton.Visible = !(pricesCurrencyComboBox.Text == SettingsManager.ApplicationSettings.DefaultCurrency && pricesOperatorComboBox.SelectedIndex == -1 && pricesPriceNumericUpDown.Value == pricesPriceNumericUpDown.Minimum);
+            pricesClearButton.Top = pricesCurrencyComboBox.Top - 1;
+        }
+
+        private void artistTextBox_TextChanged(object sender, EventArgs e)
+        {
+            artistClearButton.Visible = artistTextBox.Text != "";
+            artistClearButton.Top = artistTextBox.Top - 2;
+        }
+
+        private void flavorTextTextBox_TextChanged(object sender, EventArgs e)
+        {
+            flavorTextClearButton.Visible = flavorTextTextBox.Text != "";
+            flavorTextClearButton.Top = flavorTextTextBox.Top - 2;
+        }
+
+        private void languageComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            languageClearButton.Visible = !(languageComboBox.Text == SettingsManager.ApplicationSettings.DefaultSearchLanguage);
+            languageClearButton.Top = languageComboBox.Top - 1;
         }
     }
 }

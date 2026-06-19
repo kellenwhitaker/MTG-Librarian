@@ -56,6 +56,20 @@
             this.updateThisSetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.compatibleTabControl1 = new CompatibleTabControl.CompatibleTabControl();
             this.searchParametersPanel = new System.Windows.Forms.Panel();
+            this.languageClearButton = new System.Windows.Forms.Button();
+            this.flavorTextClearButton = new System.Windows.Forms.Button();
+            this.artistClearButton = new System.Windows.Forms.Button();
+            this.pricesClearButton = new System.Windows.Forms.Button();
+            this.attributesClearButton = new System.Windows.Forms.Button();
+            this.loyaltyClearButton = new System.Windows.Forms.Button();
+            this.toughnessClearButton = new System.Windows.Forms.Button();
+            this.powerClearButton = new System.Windows.Forms.Button();
+            this.cmcClearButton = new System.Windows.Forms.Button();
+            this.manaCostClearButton = new System.Windows.Forms.Button();
+            this.commanderClearButton = new System.Windows.Forms.Button();
+            this.colorsClearButton = new System.Windows.Forms.Button();
+            this.rarityClearButton = new System.Windows.Forms.Button();
+            this.gameClearButton = new System.Windows.Forms.Button();
             this.rarityMythicCheckBox = new System.Windows.Forms.CheckBox();
             this.rarityRareCheckBox = new System.Windows.Forms.CheckBox();
             this.rarityUncommonCheckBox = new System.Windows.Forms.CheckBox();
@@ -502,6 +516,20 @@
             this.searchParametersPanel.AutoScrollMargin = new System.Drawing.Size(0, 40);
             this.searchParametersPanel.BackColor = System.Drawing.Color.White;
             this.searchParametersPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.searchParametersPanel.Controls.Add(this.languageClearButton);
+            this.searchParametersPanel.Controls.Add(this.flavorTextClearButton);
+            this.searchParametersPanel.Controls.Add(this.artistClearButton);
+            this.searchParametersPanel.Controls.Add(this.pricesClearButton);
+            this.searchParametersPanel.Controls.Add(this.attributesClearButton);
+            this.searchParametersPanel.Controls.Add(this.loyaltyClearButton);
+            this.searchParametersPanel.Controls.Add(this.toughnessClearButton);
+            this.searchParametersPanel.Controls.Add(this.powerClearButton);
+            this.searchParametersPanel.Controls.Add(this.cmcClearButton);
+            this.searchParametersPanel.Controls.Add(this.manaCostClearButton);
+            this.searchParametersPanel.Controls.Add(this.commanderClearButton);
+            this.searchParametersPanel.Controls.Add(this.colorsClearButton);
+            this.searchParametersPanel.Controls.Add(this.rarityClearButton);
+            this.searchParametersPanel.Controls.Add(this.gameClearButton);
             this.searchParametersPanel.Controls.Add(this.rarityMythicCheckBox);
             this.searchParametersPanel.Controls.Add(this.rarityRareCheckBox);
             this.searchParametersPanel.Controls.Add(this.rarityUncommonCheckBox);
@@ -557,8 +585,162 @@
             this.searchParametersPanel.Controls.Add(this.colorsColorlessButton);
             this.searchParametersPanel.Location = new System.Drawing.Point(99, 0);
             this.searchParametersPanel.Name = "searchParametersPanel";
-            this.searchParametersPanel.Size = new System.Drawing.Size(434, 527);
+            this.searchParametersPanel.Size = new System.Drawing.Size(607, 527);
             this.searchParametersPanel.TabIndex = 3;
+            // 
+            // languageClearButton
+            // 
+            this.languageClearButton.Image = global::MTG_Librarian.Properties.Resources.clear_16;
+            this.languageClearButton.Location = new System.Drawing.Point(337, 672);
+            this.languageClearButton.Name = "languageClearButton";
+            this.languageClearButton.Size = new System.Drawing.Size(30, 30);
+            this.languageClearButton.TabIndex = 85;
+            this.languageClearButton.UseVisualStyleBackColor = true;
+            this.languageClearButton.Visible = false;
+            this.languageClearButton.Click += new System.EventHandler(this.languageClearButton_Click);
+            // 
+            // flavorTextClearButton
+            // 
+            this.flavorTextClearButton.Image = global::MTG_Librarian.Properties.Resources.clear_16;
+            this.flavorTextClearButton.Location = new System.Drawing.Point(413, 639);
+            this.flavorTextClearButton.Name = "flavorTextClearButton";
+            this.flavorTextClearButton.Size = new System.Drawing.Size(30, 30);
+            this.flavorTextClearButton.TabIndex = 84;
+            this.flavorTextClearButton.UseVisualStyleBackColor = true;
+            this.flavorTextClearButton.Visible = false;
+            this.flavorTextClearButton.Click += new System.EventHandler(this.flavorTextClearButton_Click);
+            // 
+            // artistClearButton
+            // 
+            this.artistClearButton.Image = global::MTG_Librarian.Properties.Resources.clear_16;
+            this.artistClearButton.Location = new System.Drawing.Point(368, 603);
+            this.artistClearButton.Name = "artistClearButton";
+            this.artistClearButton.Size = new System.Drawing.Size(30, 30);
+            this.artistClearButton.TabIndex = 83;
+            this.artistClearButton.UseVisualStyleBackColor = true;
+            this.artistClearButton.Visible = false;
+            this.artistClearButton.Click += new System.EventHandler(this.artistClearButton_Click);
+            // 
+            // pricesClearButton
+            // 
+            this.pricesClearButton.Image = global::MTG_Librarian.Properties.Resources.clear_16;
+            this.pricesClearButton.Location = new System.Drawing.Point(427, 570);
+            this.pricesClearButton.Name = "pricesClearButton";
+            this.pricesClearButton.Size = new System.Drawing.Size(30, 30);
+            this.pricesClearButton.TabIndex = 82;
+            this.pricesClearButton.UseVisualStyleBackColor = true;
+            this.pricesClearButton.Visible = false;
+            this.pricesClearButton.Click += new System.EventHandler(this.pricesClearButton_Click);
+            // 
+            // attributesClearButton
+            // 
+            this.attributesClearButton.Image = global::MTG_Librarian.Properties.Resources.clear_16;
+            this.attributesClearButton.Location = new System.Drawing.Point(609, 329);
+            this.attributesClearButton.Name = "attributesClearButton";
+            this.attributesClearButton.Size = new System.Drawing.Size(30, 30);
+            this.attributesClearButton.TabIndex = 81;
+            this.attributesClearButton.UseVisualStyleBackColor = true;
+            this.attributesClearButton.Visible = false;
+            this.attributesClearButton.Click += new System.EventHandler(this.attributesClearButton_Click);
+            // 
+            // loyaltyClearButton
+            // 
+            this.loyaltyClearButton.Image = global::MTG_Librarian.Properties.Resources.clear_16;
+            this.loyaltyClearButton.Location = new System.Drawing.Point(216, 294);
+            this.loyaltyClearButton.Name = "loyaltyClearButton";
+            this.loyaltyClearButton.Size = new System.Drawing.Size(30, 30);
+            this.loyaltyClearButton.TabIndex = 80;
+            this.loyaltyClearButton.UseVisualStyleBackColor = true;
+            this.loyaltyClearButton.Visible = false;
+            this.loyaltyClearButton.Click += new System.EventHandler(this.loyaltyClearButton_Click);
+            // 
+            // toughnessClearButton
+            // 
+            this.toughnessClearButton.Image = global::MTG_Librarian.Properties.Resources.clear_16;
+            this.toughnessClearButton.Location = new System.Drawing.Point(216, 263);
+            this.toughnessClearButton.Name = "toughnessClearButton";
+            this.toughnessClearButton.Size = new System.Drawing.Size(30, 30);
+            this.toughnessClearButton.TabIndex = 79;
+            this.toughnessClearButton.UseVisualStyleBackColor = true;
+            this.toughnessClearButton.Visible = false;
+            this.toughnessClearButton.Click += new System.EventHandler(this.toughnessClearButton_Click);
+            // 
+            // powerClearButton
+            // 
+            this.powerClearButton.Image = global::MTG_Librarian.Properties.Resources.clear_16;
+            this.powerClearButton.Location = new System.Drawing.Point(216, 232);
+            this.powerClearButton.Name = "powerClearButton";
+            this.powerClearButton.Size = new System.Drawing.Size(30, 30);
+            this.powerClearButton.TabIndex = 78;
+            this.powerClearButton.UseVisualStyleBackColor = true;
+            this.powerClearButton.Visible = false;
+            this.powerClearButton.Click += new System.EventHandler(this.powerClearButton_Click);
+            // 
+            // cmcClearButton
+            // 
+            this.cmcClearButton.Image = global::MTG_Librarian.Properties.Resources.clear_16;
+            this.cmcClearButton.Location = new System.Drawing.Point(216, 202);
+            this.cmcClearButton.Name = "cmcClearButton";
+            this.cmcClearButton.Size = new System.Drawing.Size(30, 30);
+            this.cmcClearButton.TabIndex = 77;
+            this.cmcClearButton.UseVisualStyleBackColor = true;
+            this.cmcClearButton.Visible = false;
+            this.cmcClearButton.Click += new System.EventHandler(this.cmcClearButton_Click);
+            // 
+            // manaCostClearButton
+            // 
+            this.manaCostClearButton.Image = global::MTG_Librarian.Properties.Resources.clear_16;
+            this.manaCostClearButton.Location = new System.Drawing.Point(670, 165);
+            this.manaCostClearButton.Name = "manaCostClearButton";
+            this.manaCostClearButton.Size = new System.Drawing.Size(30, 30);
+            this.manaCostClearButton.TabIndex = 76;
+            this.manaCostClearButton.UseVisualStyleBackColor = true;
+            this.manaCostClearButton.Visible = false;
+            this.manaCostClearButton.Click += new System.EventHandler(this.manaCostClearButton_Click);
+            // 
+            // commanderClearButton
+            // 
+            this.commanderClearButton.Image = global::MTG_Librarian.Properties.Resources.clear_16;
+            this.commanderClearButton.Location = new System.Drawing.Point(313, 130);
+            this.commanderClearButton.Name = "commanderClearButton";
+            this.commanderClearButton.Size = new System.Drawing.Size(30, 30);
+            this.commanderClearButton.TabIndex = 75;
+            this.commanderClearButton.UseVisualStyleBackColor = true;
+            this.commanderClearButton.Visible = false;
+            this.commanderClearButton.Click += new System.EventHandler(this.commanderClearButton_Click);
+            // 
+            // colorsClearButton
+            // 
+            this.colorsClearButton.Image = global::MTG_Librarian.Properties.Resources.clear_16;
+            this.colorsClearButton.Location = new System.Drawing.Point(414, 90);
+            this.colorsClearButton.Name = "colorsClearButton";
+            this.colorsClearButton.Size = new System.Drawing.Size(30, 30);
+            this.colorsClearButton.TabIndex = 74;
+            this.colorsClearButton.UseVisualStyleBackColor = true;
+            this.colorsClearButton.Visible = false;
+            this.colorsClearButton.Click += new System.EventHandler(this.colorsClearButton_Click);
+            // 
+            // rarityClearButton
+            // 
+            this.rarityClearButton.Image = global::MTG_Librarian.Properties.Resources.clear_16;
+            this.rarityClearButton.Location = new System.Drawing.Point(289, 34);
+            this.rarityClearButton.Name = "rarityClearButton";
+            this.rarityClearButton.Size = new System.Drawing.Size(30, 30);
+            this.rarityClearButton.TabIndex = 73;
+            this.rarityClearButton.UseVisualStyleBackColor = true;
+            this.rarityClearButton.Visible = false;
+            this.rarityClearButton.Click += new System.EventHandler(this.rarityClearButton_Click);
+            // 
+            // gameClearButton
+            // 
+            this.gameClearButton.Image = global::MTG_Librarian.Properties.Resources.clear_16;
+            this.gameClearButton.Location = new System.Drawing.Point(351, 8);
+            this.gameClearButton.Name = "gameClearButton";
+            this.gameClearButton.Size = new System.Drawing.Size(30, 30);
+            this.gameClearButton.TabIndex = 72;
+            this.gameClearButton.UseVisualStyleBackColor = true;
+            this.gameClearButton.Visible = false;
+            this.gameClearButton.Click += new System.EventHandler(this.gameClearbutton_Click);
             // 
             // rarityMythicCheckBox
             // 
@@ -569,6 +751,7 @@
             this.rarityMythicCheckBox.TabIndex = 71;
             this.rarityMythicCheckBox.Text = "Mythic rare";
             this.rarityMythicCheckBox.UseVisualStyleBackColor = true;
+            this.rarityMythicCheckBox.CheckedChanged += new System.EventHandler(this.rarityCommonCheckBox_CheckedChanged);
             // 
             // rarityRareCheckBox
             // 
@@ -579,6 +762,7 @@
             this.rarityRareCheckBox.TabIndex = 70;
             this.rarityRareCheckBox.Text = "Rare";
             this.rarityRareCheckBox.UseVisualStyleBackColor = true;
+            this.rarityRareCheckBox.CheckedChanged += new System.EventHandler(this.rarityCommonCheckBox_CheckedChanged);
             // 
             // rarityUncommonCheckBox
             // 
@@ -589,6 +773,7 @@
             this.rarityUncommonCheckBox.TabIndex = 69;
             this.rarityUncommonCheckBox.Text = "Uncommon";
             this.rarityUncommonCheckBox.UseVisualStyleBackColor = true;
+            this.rarityUncommonCheckBox.CheckedChanged += new System.EventHandler(this.rarityCommonCheckBox_CheckedChanged);
             // 
             // rarityCommonCheckBox
             // 
@@ -599,6 +784,7 @@
             this.rarityCommonCheckBox.TabIndex = 68;
             this.rarityCommonCheckBox.Text = "Common";
             this.rarityCommonCheckBox.UseVisualStyleBackColor = true;
+            this.rarityCommonCheckBox.CheckedChanged += new System.EventHandler(this.rarityCommonCheckBox_CheckedChanged);
             // 
             // label14
             // 
@@ -627,6 +813,7 @@
             this.magicOnlineCheckBox.TabIndex = 65;
             this.magicOnlineCheckBox.Text = "Magic Online";
             this.magicOnlineCheckBox.UseVisualStyleBackColor = true;
+            this.magicOnlineCheckBox.CheckedChanged += new System.EventHandler(this.paperCheckBox_CheckedChanged);
             // 
             // arenaCheckBox
             // 
@@ -637,6 +824,7 @@
             this.arenaCheckBox.TabIndex = 64;
             this.arenaCheckBox.Text = "Arena";
             this.arenaCheckBox.UseVisualStyleBackColor = true;
+            this.arenaCheckBox.CheckedChanged += new System.EventHandler(this.paperCheckBox_CheckedChanged);
             // 
             // paperCheckBox
             // 
@@ -647,6 +835,7 @@
             this.paperCheckBox.TabIndex = 63;
             this.paperCheckBox.Text = "Paper";
             this.paperCheckBox.UseVisualStyleBackColor = true;
+            this.paperCheckBox.CheckedChanged += new System.EventHandler(this.paperCheckBox_CheckedChanged);
             // 
             // manaCostTypeComboBox
             // 
@@ -675,6 +864,7 @@
             this.colorsOperatorComboBox.Name = "colorsOperatorComboBox";
             this.colorsOperatorComboBox.Size = new System.Drawing.Size(55, 24);
             this.colorsOperatorComboBox.TabIndex = 57;
+            this.colorsOperatorComboBox.SelectedIndexChanged += new System.EventHandler(this.colorsComboBox_SelectedIndexChanged);
             // 
             // colorsComboBox
             // 
@@ -687,6 +877,7 @@
             this.colorsComboBox.Name = "colorsComboBox";
             this.colorsComboBox.Size = new System.Drawing.Size(121, 24);
             this.colorsComboBox.TabIndex = 56;
+            this.colorsComboBox.SelectedIndexChanged += new System.EventHandler(this.colorsComboBox_SelectedIndexChanged);
             // 
             // languageComboBox
             // 
@@ -715,6 +906,7 @@
             this.languageComboBox.Name = "languageComboBox";
             this.languageComboBox.Size = new System.Drawing.Size(232, 24);
             this.languageComboBox.TabIndex = 54;
+            this.languageComboBox.SelectedIndexChanged += new System.EventHandler(this.languageComboBox_SelectedIndexChanged);
             // 
             // label13
             // 
@@ -731,6 +923,7 @@
             this.flavorTextTextBox.Name = "flavorTextTextBox";
             this.flavorTextTextBox.Size = new System.Drawing.Size(309, 22);
             this.flavorTextTextBox.TabIndex = 52;
+            this.flavorTextTextBox.TextChanged += new System.EventHandler(this.flavorTextTextBox_TextChanged);
             // 
             // label12
             // 
@@ -747,6 +940,7 @@
             this.artistTextBox.Name = "artistTextBox";
             this.artistTextBox.Size = new System.Drawing.Size(294, 22);
             this.artistTextBox.TabIndex = 50;
+            this.artistTextBox.TextChanged += new System.EventHandler(this.artistTextBox_TextChanged);
             // 
             // label11
             // 
@@ -774,6 +968,7 @@
             this.pricesPriceNumericUpDown.Name = "pricesPriceNumericUpDown";
             this.pricesPriceNumericUpDown.Size = new System.Drawing.Size(176, 22);
             this.pricesPriceNumericUpDown.TabIndex = 48;
+            this.pricesPriceNumericUpDown.ValueChanged += new System.EventHandler(this.pricesCurrencyComboBox_SelectedIndexChanged);
             // 
             // pricesOperatorComboBox
             // 
@@ -788,6 +983,7 @@
             this.pricesOperatorComboBox.Name = "pricesOperatorComboBox";
             this.pricesOperatorComboBox.Size = new System.Drawing.Size(75, 24);
             this.pricesOperatorComboBox.TabIndex = 47;
+            this.pricesOperatorComboBox.SelectedIndexChanged += new System.EventHandler(this.pricesCurrencyComboBox_SelectedIndexChanged);
             // 
             // pricesCurrencyComboBox
             // 
@@ -801,6 +997,7 @@
             this.pricesCurrencyComboBox.Name = "pricesCurrencyComboBox";
             this.pricesCurrencyComboBox.Size = new System.Drawing.Size(91, 24);
             this.pricesCurrencyComboBox.TabIndex = 46;
+            this.pricesCurrencyComboBox.SelectedIndexChanged += new System.EventHandler(this.pricesCurrencyComboBox_SelectedIndexChanged);
             // 
             // label10
             // 
@@ -842,6 +1039,8 @@
             this.attributesObjectListView.UseCompatibleStateImageBehavior = false;
             this.attributesObjectListView.View = System.Windows.Forms.View.Details;
             this.attributesObjectListView.VirtualMode = true;
+            this.attributesObjectListView.ItemsChanged += new System.EventHandler<BrightIdeasSoftware.ItemsChangedEventArgs>(this.attributesObjectListView_ItemsChanged);
+            this.attributesObjectListView.KeyDown += new System.Windows.Forms.KeyEventHandler(this.attributesObjectListView_KeyDown);
             // 
             // notColumn
             // 
@@ -871,7 +1070,7 @@
             this.attributesComboBox.Items.AddRange(new object[] {
             "Adventure | use the Adventure layout",
             "Arena ID | have an Arena ID",
-            "Art Series | are part of Art Series",
+            "Art Series",
             "Artist | have artists",
             "Artist Misprint | have a misprinted artist",
             "Attraction Lights | have attraction lights",
@@ -879,9 +1078,9 @@
             "Augment | are augment pieces",
             "Back | have non-standard backs",
             "Bear | are 2/2/2 bears",
-            "Beginner Box | part of a Beginner Box",
+            "Beginner Box",
             "Booster | included in standard contents of draft boosters",
-            "Borderless | are borderless",
+            "Borderless",
             "Brawl Commander | can be your Brawl commander",
             "Buy-a-Box | Buy-a-Box promos",
             "Cardmarket ID | have a Cardmarket ID",
@@ -889,21 +1088,21 @@
             "Color Indicator | have color indicators",
             "Colorshifted | have a colorshifted frame",
             "Commander | can be your commander",
-            "Companion | are Companions",
+            "Companion",
             "Content Warning | have content warnings",
-            "Covered | are covered",
+            "Covered",
             "Creature Land | are lands that become creatures",
-            "Datestamped | have a date stamp",
+            "Datestamped",
             "Default | printed with standard frames and effects",
             "Digital | are digital prints",
-            "Double Sided | are double-sided",
+            "Double Sided",
             "Duel Commander | can be your Duel Commander",
             "ETB | have an ETB effect",
             "English Art | have art that has been printed in English",
             "Etched | are available in etched foil",
             "Extended Art | have extended art frames",
             "Final Fantasy | from Final Fantasy",
-            "First Printing | is the first printing",
+            "First Printing",
             "Flavor Name | have flavor names",
             "Flavor Text | have flavor text",
             "Flip",
@@ -913,7 +1112,7 @@
             "Foreign White Border | foreign white border prints",
             "French Vanilla | are French vanilla",
             "Full Art | have full extended art",
-            "Funny | are funny",
+            "Funny",
             "Future | have the future frame",
             "Game Changer | on the Commander Game Changer list",
             "Game Day | Game Day promos",
@@ -925,7 +1124,7 @@
             "Leveler | have level up",
             "Localized Name | have localized names",
             "MTGO ID | have MTGO Ids",
-            "Masterpiece | are masterpieces",
+            "Masterpiece",
             "Meld",
             "Modal | have modal effects",
             "Modal Double Faced",
@@ -948,10 +1147,10 @@
             "Prerelease Promo | set prerelease event promos",
             "Printed Text | have their printed text listed",
             "Promo | promotional prints",
-            "Related | have related cartds",
+            "Related | have related cards",
             "Release Promo | set release event promos",
             "Reprint",
-            "Reserved List | on the Reserved List",
+            "Reserved List",
             "Reversible",
             "Security Stamp | have a security stamp",
             "Showcase",
@@ -997,6 +1196,7 @@
             this.loyaltyNumericUpDown.Name = "loyaltyNumericUpDown";
             this.loyaltyNumericUpDown.Size = new System.Drawing.Size(54, 22);
             this.loyaltyNumericUpDown.TabIndex = 35;
+            this.loyaltyNumericUpDown.ValueChanged += new System.EventHandler(this.loyaltyComboBox_SelectedIndexChanged);
             // 
             // loyaltyComboBox
             // 
@@ -1010,6 +1210,7 @@
             this.loyaltyComboBox.Name = "loyaltyComboBox";
             this.loyaltyComboBox.Size = new System.Drawing.Size(55, 24);
             this.loyaltyComboBox.TabIndex = 34;
+            this.loyaltyComboBox.SelectedIndexChanged += new System.EventHandler(this.loyaltyComboBox_SelectedIndexChanged);
             // 
             // label7
             // 
@@ -1026,6 +1227,7 @@
             this.toughnessNumericUpDown.Name = "toughnessNumericUpDown";
             this.toughnessNumericUpDown.Size = new System.Drawing.Size(54, 22);
             this.toughnessNumericUpDown.TabIndex = 32;
+            this.toughnessNumericUpDown.ValueChanged += new System.EventHandler(this.toughnessComboBox_SelectedIndexChanged);
             // 
             // toughnessComboBox
             // 
@@ -1039,6 +1241,7 @@
             this.toughnessComboBox.Name = "toughnessComboBox";
             this.toughnessComboBox.Size = new System.Drawing.Size(55, 24);
             this.toughnessComboBox.TabIndex = 31;
+            this.toughnessComboBox.SelectedIndexChanged += new System.EventHandler(this.toughnessComboBox_SelectedIndexChanged);
             // 
             // label6
             // 
@@ -1055,6 +1258,7 @@
             this.powerNumericUpDown.Name = "powerNumericUpDown";
             this.powerNumericUpDown.Size = new System.Drawing.Size(54, 22);
             this.powerNumericUpDown.TabIndex = 29;
+            this.powerNumericUpDown.ValueChanged += new System.EventHandler(this.powerComboBox_SelectedIndexChanged);
             // 
             // powerComboBox
             // 
@@ -1068,6 +1272,7 @@
             this.powerComboBox.Name = "powerComboBox";
             this.powerComboBox.Size = new System.Drawing.Size(55, 24);
             this.powerComboBox.TabIndex = 28;
+            this.powerComboBox.SelectedIndexChanged += new System.EventHandler(this.powerComboBox_SelectedIndexChanged);
             // 
             // label5
             // 
@@ -1084,6 +1289,7 @@
             this.cmcNumericUpDown.Name = "cmcNumericUpDown";
             this.cmcNumericUpDown.Size = new System.Drawing.Size(54, 22);
             this.cmcNumericUpDown.TabIndex = 26;
+            this.cmcNumericUpDown.ValueChanged += new System.EventHandler(this.cmcOperatorComboBox_SelectedIndexChanged);
             // 
             // cmcOperatorComboBox
             // 
@@ -1097,6 +1303,7 @@
             this.cmcOperatorComboBox.Name = "cmcOperatorComboBox";
             this.cmcOperatorComboBox.Size = new System.Drawing.Size(55, 24);
             this.cmcOperatorComboBox.TabIndex = 24;
+            this.cmcOperatorComboBox.SelectedIndexChanged += new System.EventHandler(this.cmcOperatorComboBox_SelectedIndexChanged);
             // 
             // label4
             // 
@@ -1123,6 +1330,7 @@
             this.manaCostTextBox.Name = "manaCostTextBox";
             this.manaCostTextBox.Size = new System.Drawing.Size(150, 22);
             this.manaCostTextBox.TabIndex = 21;
+            this.manaCostTextBox.TextChanged += new System.EventHandler(this.manaCostTextBox_TextChanged);
             // 
             // label3
             // 
@@ -1146,6 +1354,7 @@
             this.commanderWhiteButton.Size = new System.Drawing.Size(33, 31);
             this.commanderWhiteButton.TabIndex = 14;
             this.commanderWhiteButton.UseVisualStyleBackColor = false;
+            this.commanderWhiteButton.Click += new System.EventHandler(this.commanderWhiteButton_Click);
             // 
             // commanderBlueButton
             // 
@@ -1159,6 +1368,7 @@
             this.commanderBlueButton.Size = new System.Drawing.Size(33, 31);
             this.commanderBlueButton.TabIndex = 15;
             this.commanderBlueButton.UseVisualStyleBackColor = false;
+            this.commanderBlueButton.Click += new System.EventHandler(this.commanderWhiteButton_Click);
             // 
             // commanderBlackButton
             // 
@@ -1173,6 +1383,7 @@
             this.commanderBlackButton.TabIndex = 16;
             this.commanderBlackButton.Text = "B";
             this.commanderBlackButton.UseVisualStyleBackColor = false;
+            this.commanderBlackButton.Click += new System.EventHandler(this.commanderWhiteButton_Click);
             // 
             // commanderRedButton
             // 
@@ -1187,6 +1398,7 @@
             this.commanderRedButton.TabIndex = 17;
             this.commanderRedButton.Text = "R";
             this.commanderRedButton.UseVisualStyleBackColor = false;
+            this.commanderRedButton.Click += new System.EventHandler(this.commanderWhiteButton_Click);
             // 
             // commanderGreenButton
             // 
@@ -1201,6 +1413,7 @@
             this.commanderGreenButton.TabIndex = 18;
             this.commanderGreenButton.Text = "G";
             this.commanderGreenButton.UseVisualStyleBackColor = false;
+            this.commanderGreenButton.Click += new System.EventHandler(this.commanderWhiteButton_Click);
             // 
             // commanderColorlessButton
             // 
@@ -1215,6 +1428,7 @@
             this.commanderColorlessButton.TabIndex = 19;
             this.commanderColorlessButton.Text = "flatButton1";
             this.commanderColorlessButton.UseVisualStyleBackColor = false;
+            this.commanderColorlessButton.Click += new System.EventHandler(this.commanderWhiteButton_Click);
             // 
             // label2
             // 
@@ -1238,6 +1452,7 @@
             this.colorsWhiteButton.Size = new System.Drawing.Size(33, 31);
             this.colorsWhiteButton.TabIndex = 7;
             this.colorsWhiteButton.UseVisualStyleBackColor = false;
+            this.colorsWhiteButton.Click += new System.EventHandler(this.colorsComboBox_SelectedIndexChanged);
             // 
             // colorsBlueButton
             // 
@@ -1251,6 +1466,7 @@
             this.colorsBlueButton.Size = new System.Drawing.Size(33, 31);
             this.colorsBlueButton.TabIndex = 8;
             this.colorsBlueButton.UseVisualStyleBackColor = false;
+            this.colorsBlueButton.Click += new System.EventHandler(this.colorsComboBox_SelectedIndexChanged);
             // 
             // colorsBlackButton
             // 
@@ -1265,6 +1481,7 @@
             this.colorsBlackButton.TabIndex = 9;
             this.colorsBlackButton.Text = "B";
             this.colorsBlackButton.UseVisualStyleBackColor = false;
+            this.colorsBlackButton.Click += new System.EventHandler(this.colorsComboBox_SelectedIndexChanged);
             // 
             // colorsRedButton
             // 
@@ -1279,6 +1496,7 @@
             this.colorsRedButton.TabIndex = 10;
             this.colorsRedButton.Text = "R";
             this.colorsRedButton.UseVisualStyleBackColor = false;
+            this.colorsRedButton.Click += new System.EventHandler(this.colorsComboBox_SelectedIndexChanged);
             // 
             // colorsGreenButton
             // 
@@ -1293,6 +1511,7 @@
             this.colorsGreenButton.TabIndex = 11;
             this.colorsGreenButton.Text = "G";
             this.colorsGreenButton.UseVisualStyleBackColor = false;
+            this.colorsGreenButton.Click += new System.EventHandler(this.colorsComboBox_SelectedIndexChanged);
             // 
             // colorsColorlessButton
             // 
@@ -1307,6 +1526,7 @@
             this.colorsColorlessButton.TabIndex = 12;
             this.colorsColorlessButton.Text = "flatButton1";
             this.colorsColorlessButton.UseVisualStyleBackColor = false;
+            this.colorsColorlessButton.Click += new System.EventHandler(this.colorsComboBox_SelectedIndexChanged);
             // 
             // cardListView
             // 
@@ -1614,5 +1834,19 @@
         public System.Windows.Forms.CheckBox magicOnlineCheckBox;
         public System.Windows.Forms.CheckBox arenaCheckBox;
         public System.Windows.Forms.CheckBox paperCheckBox;
+        private System.Windows.Forms.Button gameClearButton;
+        private System.Windows.Forms.Button rarityClearButton;
+        private System.Windows.Forms.Button colorsClearButton;
+        private System.Windows.Forms.Button commanderClearButton;
+        private System.Windows.Forms.Button manaCostClearButton;
+        private System.Windows.Forms.Button cmcClearButton;
+        private System.Windows.Forms.Button powerClearButton;
+        private System.Windows.Forms.Button toughnessClearButton;
+        private System.Windows.Forms.Button loyaltyClearButton;
+        private System.Windows.Forms.Button attributesClearButton;
+        private System.Windows.Forms.Button pricesClearButton;
+        private System.Windows.Forms.Button artistClearButton;
+        private System.Windows.Forms.Button flavorTextClearButton;
+        private System.Windows.Forms.Button languageClearButton;
     }
 }

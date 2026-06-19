@@ -754,6 +754,8 @@
     <Content Include="Icons\X_20.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\clear_16.png" />
+    <Content Include="Resources\clear_20.png" />
     <None Include="Resources\WP 16.png" />
     <None Include="Resources\UP 16.png" />
     <None Include="Resources\T 16.png" />
