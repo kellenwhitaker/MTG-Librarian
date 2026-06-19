@@ -56,14 +56,18 @@
             this.updateThisSetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.compatibleTabControl1 = new CompatibleTabControl.CompatibleTabControl();
             this.searchParametersPanel = new System.Windows.Forms.Panel();
-            this.manaCostTypeComboBox = new System.Windows.Forms.ComboBox();
             this.rarityMythicCheckBox = new System.Windows.Forms.CheckBox();
             this.rarityRareCheckBox = new System.Windows.Forms.CheckBox();
             this.rarityUncommonCheckBox = new System.Windows.Forms.CheckBox();
             this.rarityCommonCheckBox = new System.Windows.Forms.CheckBox();
+            this.label14 = new System.Windows.Forms.Label();
+            this.label8 = new System.Windows.Forms.Label();
+            this.magicOnlineCheckBox = new System.Windows.Forms.CheckBox();
+            this.arenaCheckBox = new System.Windows.Forms.CheckBox();
+            this.paperCheckBox = new System.Windows.Forms.CheckBox();
+            this.manaCostTypeComboBox = new System.Windows.Forms.ComboBox();
             this.colorsOperatorComboBox = new System.Windows.Forms.ComboBox();
             this.colorsComboBox = new System.Windows.Forms.ComboBox();
-            this.label14 = new System.Windows.Forms.Label();
             this.languageComboBox = new System.Windows.Forms.ComboBox();
             this.label13 = new System.Windows.Forms.Label();
             this.flavorTextTextBox = new System.Windows.Forms.TextBox();
@@ -80,10 +84,6 @@
             this.descriptionColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.attributesComboBox = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
-            this.label8 = new System.Windows.Forms.Label();
-            this.magicOnlineCheckBox = new System.Windows.Forms.CheckBox();
-            this.arenaCheckBox = new System.Windows.Forms.CheckBox();
-            this.paperCheckBox = new System.Windows.Forms.CheckBox();
             this.loyaltyNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.loyaltyComboBox = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
@@ -502,14 +502,18 @@
             this.searchParametersPanel.AutoScrollMargin = new System.Drawing.Size(0, 40);
             this.searchParametersPanel.BackColor = System.Drawing.Color.White;
             this.searchParametersPanel.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.searchParametersPanel.Controls.Add(this.manaCostTypeComboBox);
             this.searchParametersPanel.Controls.Add(this.rarityMythicCheckBox);
             this.searchParametersPanel.Controls.Add(this.rarityRareCheckBox);
             this.searchParametersPanel.Controls.Add(this.rarityUncommonCheckBox);
             this.searchParametersPanel.Controls.Add(this.rarityCommonCheckBox);
+            this.searchParametersPanel.Controls.Add(this.label14);
+            this.searchParametersPanel.Controls.Add(this.label8);
+            this.searchParametersPanel.Controls.Add(this.magicOnlineCheckBox);
+            this.searchParametersPanel.Controls.Add(this.arenaCheckBox);
+            this.searchParametersPanel.Controls.Add(this.paperCheckBox);
+            this.searchParametersPanel.Controls.Add(this.manaCostTypeComboBox);
             this.searchParametersPanel.Controls.Add(this.colorsOperatorComboBox);
             this.searchParametersPanel.Controls.Add(this.colorsComboBox);
-            this.searchParametersPanel.Controls.Add(this.label14);
             this.searchParametersPanel.Controls.Add(this.languageComboBox);
             this.searchParametersPanel.Controls.Add(this.label13);
             this.searchParametersPanel.Controls.Add(this.flavorTextTextBox);
@@ -523,10 +527,6 @@
             this.searchParametersPanel.Controls.Add(this.attributesObjectListView);
             this.searchParametersPanel.Controls.Add(this.attributesComboBox);
             this.searchParametersPanel.Controls.Add(this.label9);
-            this.searchParametersPanel.Controls.Add(this.label8);
-            this.searchParametersPanel.Controls.Add(this.magicOnlineCheckBox);
-            this.searchParametersPanel.Controls.Add(this.arenaCheckBox);
-            this.searchParametersPanel.Controls.Add(this.paperCheckBox);
             this.searchParametersPanel.Controls.Add(this.loyaltyNumericUpDown);
             this.searchParametersPanel.Controls.Add(this.loyaltyComboBox);
             this.searchParametersPanel.Controls.Add(this.label7);
@@ -560,6 +560,94 @@
             this.searchParametersPanel.Size = new System.Drawing.Size(434, 527);
             this.searchParametersPanel.TabIndex = 3;
             // 
+            // rarityMythicCheckBox
+            // 
+            this.rarityMythicCheckBox.AutoSize = true;
+            this.rarityMythicCheckBox.Location = new System.Drawing.Point(185, 66);
+            this.rarityMythicCheckBox.Name = "rarityMythicCheckBox";
+            this.rarityMythicCheckBox.Size = new System.Drawing.Size(94, 20);
+            this.rarityMythicCheckBox.TabIndex = 71;
+            this.rarityMythicCheckBox.Text = "Mythic rare";
+            this.rarityMythicCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // rarityRareCheckBox
+            // 
+            this.rarityRareCheckBox.AutoSize = true;
+            this.rarityRareCheckBox.Location = new System.Drawing.Point(96, 66);
+            this.rarityRareCheckBox.Name = "rarityRareCheckBox";
+            this.rarityRareCheckBox.Size = new System.Drawing.Size(59, 20);
+            this.rarityRareCheckBox.TabIndex = 70;
+            this.rarityRareCheckBox.Text = "Rare";
+            this.rarityRareCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // rarityUncommonCheckBox
+            // 
+            this.rarityUncommonCheckBox.AutoSize = true;
+            this.rarityUncommonCheckBox.Location = new System.Drawing.Point(185, 40);
+            this.rarityUncommonCheckBox.Name = "rarityUncommonCheckBox";
+            this.rarityUncommonCheckBox.Size = new System.Drawing.Size(98, 20);
+            this.rarityUncommonCheckBox.TabIndex = 69;
+            this.rarityUncommonCheckBox.Text = "Uncommon";
+            this.rarityUncommonCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // rarityCommonCheckBox
+            // 
+            this.rarityCommonCheckBox.AutoSize = true;
+            this.rarityCommonCheckBox.Location = new System.Drawing.Point(96, 40);
+            this.rarityCommonCheckBox.Name = "rarityCommonCheckBox";
+            this.rarityCommonCheckBox.Size = new System.Drawing.Size(83, 20);
+            this.rarityCommonCheckBox.TabIndex = 68;
+            this.rarityCommonCheckBox.Text = "Common";
+            this.rarityCommonCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(12, 15);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(47, 16);
+            this.label14.TabIndex = 67;
+            this.label14.Text = "Game:";
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(12, 37);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(45, 16);
+            this.label8.TabIndex = 66;
+            this.label8.Text = "Rarity:";
+            // 
+            // magicOnlineCheckBox
+            // 
+            this.magicOnlineCheckBox.AutoSize = true;
+            this.magicOnlineCheckBox.Location = new System.Drawing.Point(238, 14);
+            this.magicOnlineCheckBox.Name = "magicOnlineCheckBox";
+            this.magicOnlineCheckBox.Size = new System.Drawing.Size(107, 20);
+            this.magicOnlineCheckBox.TabIndex = 65;
+            this.magicOnlineCheckBox.Text = "Magic Online";
+            this.magicOnlineCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // arenaCheckBox
+            // 
+            this.arenaCheckBox.AutoSize = true;
+            this.arenaCheckBox.Location = new System.Drawing.Point(167, 14);
+            this.arenaCheckBox.Name = "arenaCheckBox";
+            this.arenaCheckBox.Size = new System.Drawing.Size(65, 20);
+            this.arenaCheckBox.TabIndex = 64;
+            this.arenaCheckBox.Text = "Arena";
+            this.arenaCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // paperCheckBox
+            // 
+            this.paperCheckBox.AutoSize = true;
+            this.paperCheckBox.Location = new System.Drawing.Point(96, 14);
+            this.paperCheckBox.Name = "paperCheckBox";
+            this.paperCheckBox.Size = new System.Drawing.Size(66, 20);
+            this.paperCheckBox.TabIndex = 63;
+            this.paperCheckBox.Text = "Paper";
+            this.paperCheckBox.UseVisualStyleBackColor = true;
+            // 
             // manaCostTypeComboBox
             // 
             this.manaCostTypeComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -569,51 +657,11 @@
             "Generic",
             "Hybrid",
             "Phyrexian"});
-            this.manaCostTypeComboBox.Location = new System.Drawing.Point(252, 75);
+            this.manaCostTypeComboBox.Location = new System.Drawing.Point(252, 167);
             this.manaCostTypeComboBox.Name = "manaCostTypeComboBox";
             this.manaCostTypeComboBox.Size = new System.Drawing.Size(121, 24);
             this.manaCostTypeComboBox.TabIndex = 62;
             this.manaCostTypeComboBox.SelectedIndexChanged += new System.EventHandler(this.manaCostTypeComboBox_SelectedIndexChanged);
-            // 
-            // rarityMythicCheckBox
-            // 
-            this.rarityMythicCheckBox.AutoSize = true;
-            this.rarityMythicCheckBox.Location = new System.Drawing.Point(185, 277);
-            this.rarityMythicCheckBox.Name = "rarityMythicCheckBox";
-            this.rarityMythicCheckBox.Size = new System.Drawing.Size(94, 20);
-            this.rarityMythicCheckBox.TabIndex = 61;
-            this.rarityMythicCheckBox.Text = "Mythic rare";
-            this.rarityMythicCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // rarityRareCheckBox
-            // 
-            this.rarityRareCheckBox.AutoSize = true;
-            this.rarityRareCheckBox.Location = new System.Drawing.Point(96, 277);
-            this.rarityRareCheckBox.Name = "rarityRareCheckBox";
-            this.rarityRareCheckBox.Size = new System.Drawing.Size(59, 20);
-            this.rarityRareCheckBox.TabIndex = 60;
-            this.rarityRareCheckBox.Text = "Rare";
-            this.rarityRareCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // rarityUncommonCheckBox
-            // 
-            this.rarityUncommonCheckBox.AutoSize = true;
-            this.rarityUncommonCheckBox.Location = new System.Drawing.Point(185, 251);
-            this.rarityUncommonCheckBox.Name = "rarityUncommonCheckBox";
-            this.rarityUncommonCheckBox.Size = new System.Drawing.Size(98, 20);
-            this.rarityUncommonCheckBox.TabIndex = 59;
-            this.rarityUncommonCheckBox.Text = "Uncommon";
-            this.rarityUncommonCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // rarityCommonCheckBox
-            // 
-            this.rarityCommonCheckBox.AutoSize = true;
-            this.rarityCommonCheckBox.Location = new System.Drawing.Point(96, 251);
-            this.rarityCommonCheckBox.Name = "rarityCommonCheckBox";
-            this.rarityCommonCheckBox.Size = new System.Drawing.Size(83, 20);
-            this.rarityCommonCheckBox.TabIndex = 58;
-            this.rarityCommonCheckBox.Text = "Common";
-            this.rarityCommonCheckBox.UseVisualStyleBackColor = true;
             // 
             // colorsOperatorComboBox
             // 
@@ -623,7 +671,7 @@
             "=",
             "<=",
             ">="});
-            this.colorsOperatorComboBox.Location = new System.Drawing.Point(142, 13);
+            this.colorsOperatorComboBox.Location = new System.Drawing.Point(142, 92);
             this.colorsOperatorComboBox.Name = "colorsOperatorComboBox";
             this.colorsOperatorComboBox.Size = new System.Drawing.Size(55, 24);
             this.colorsOperatorComboBox.TabIndex = 57;
@@ -635,19 +683,10 @@
             this.colorsComboBox.Items.AddRange(new object[] {
             "Colors",
             "Color identity"});
-            this.colorsComboBox.Location = new System.Drawing.Point(15, 12);
+            this.colorsComboBox.Location = new System.Drawing.Point(15, 92);
             this.colorsComboBox.Name = "colorsComboBox";
             this.colorsComboBox.Size = new System.Drawing.Size(121, 24);
             this.colorsComboBox.TabIndex = 56;
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(12, 226);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(47, 16);
-            this.label14.TabIndex = 55;
-            this.label14.Text = "Game:";
             // 
             // languageComboBox
             // 
@@ -672,7 +711,7 @@
             "Sanskrit",
             "Phyrexian",
             "Quenya"});
-            this.languageComboBox.Location = new System.Drawing.Point(94, 695);
+            this.languageComboBox.Location = new System.Drawing.Point(94, 672);
             this.languageComboBox.Name = "languageComboBox";
             this.languageComboBox.Size = new System.Drawing.Size(232, 24);
             this.languageComboBox.TabIndex = 54;
@@ -680,7 +719,7 @@
             // label13
             // 
             this.label13.AutoSize = true;
-            this.label13.Location = new System.Drawing.Point(11, 698);
+            this.label13.Location = new System.Drawing.Point(11, 675);
             this.label13.Name = "label13";
             this.label13.Size = new System.Drawing.Size(71, 16);
             this.label13.TabIndex = 53;
@@ -688,7 +727,7 @@
             // 
             // flavorTextTextBox
             // 
-            this.flavorTextTextBox.Location = new System.Drawing.Point(94, 659);
+            this.flavorTextTextBox.Location = new System.Drawing.Point(94, 639);
             this.flavorTextTextBox.Name = "flavorTextTextBox";
             this.flavorTextTextBox.Size = new System.Drawing.Size(309, 22);
             this.flavorTextTextBox.TabIndex = 52;
@@ -696,7 +735,7 @@
             // label12
             // 
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(11, 662);
+            this.label12.Location = new System.Drawing.Point(11, 642);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(77, 16);
             this.label12.TabIndex = 51;
@@ -704,7 +743,7 @@
             // 
             // artistTextBox
             // 
-            this.artistTextBox.Location = new System.Drawing.Point(63, 627);
+            this.artistTextBox.Location = new System.Drawing.Point(63, 607);
             this.artistTextBox.Name = "artistTextBox";
             this.artistTextBox.Size = new System.Drawing.Size(294, 22);
             this.artistTextBox.TabIndex = 50;
@@ -712,7 +751,7 @@
             // label11
             // 
             this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(11, 630);
+            this.label11.Location = new System.Drawing.Point(11, 610);
             this.label11.Name = "label11";
             this.label11.Size = new System.Drawing.Size(39, 16);
             this.label11.TabIndex = 49;
@@ -726,7 +765,7 @@
             0,
             0,
             65536});
-            this.pricesPriceNumericUpDown.Location = new System.Drawing.Point(241, 592);
+            this.pricesPriceNumericUpDown.Location = new System.Drawing.Point(241, 572);
             this.pricesPriceNumericUpDown.Maximum = new decimal(new int[] {
             10000000,
             0,
@@ -745,7 +784,7 @@
             "<=",
             ">",
             ">="});
-            this.pricesOperatorComboBox.Location = new System.Drawing.Point(160, 591);
+            this.pricesOperatorComboBox.Location = new System.Drawing.Point(160, 571);
             this.pricesOperatorComboBox.Name = "pricesOperatorComboBox";
             this.pricesOperatorComboBox.Size = new System.Drawing.Size(75, 24);
             this.pricesOperatorComboBox.TabIndex = 47;
@@ -758,7 +797,7 @@
             "USD",
             "EUR",
             "TIX"});
-            this.pricesCurrencyComboBox.Location = new System.Drawing.Point(63, 591);
+            this.pricesCurrencyComboBox.Location = new System.Drawing.Point(63, 571);
             this.pricesCurrencyComboBox.Name = "pricesCurrencyComboBox";
             this.pricesCurrencyComboBox.Size = new System.Drawing.Size(91, 24);
             this.pricesCurrencyComboBox.TabIndex = 46;
@@ -766,7 +805,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(9, 594);
+            this.label10.Location = new System.Drawing.Point(9, 574);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(48, 16);
             this.label10.TabIndex = 45;
@@ -790,7 +829,7 @@
             this.attributesObjectListView.HeaderWordWrap = true;
             this.attributesObjectListView.HideSelection = false;
             this.attributesObjectListView.IsSimpleDragSource = true;
-            this.attributesObjectListView.Location = new System.Drawing.Point(114, 381);
+            this.attributesObjectListView.Location = new System.Drawing.Point(114, 361);
             this.attributesObjectListView.Margin = new System.Windows.Forms.Padding(4);
             this.attributesObjectListView.Name = "attributesObjectListView";
             this.attributesObjectListView.SelectedBackColor = System.Drawing.Color.SteelBlue;
@@ -936,7 +975,7 @@
             "Variation | variations of standard printings",
             "Watermark | have watermarks",
             "Worthy | creatures are considered worthy"});
-            this.attributesComboBox.Location = new System.Drawing.Point(114, 351);
+            this.attributesComboBox.Location = new System.Drawing.Point(114, 331);
             this.attributesComboBox.Name = "attributesComboBox";
             this.attributesComboBox.Size = new System.Drawing.Size(489, 23);
             this.attributesComboBox.TabIndex = 43;
@@ -946,54 +985,15 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(12, 354);
+            this.label9.Location = new System.Drawing.Point(12, 334);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(96, 16);
             this.label9.TabIndex = 41;
             this.label9.Text = "Misc Attributes:";
             // 
-            // label8
-            // 
-            this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(12, 248);
-            this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(45, 16);
-            this.label8.TabIndex = 39;
-            this.label8.Text = "Rarity:";
-            // 
-            // magicOnlineCheckBox
-            // 
-            this.magicOnlineCheckBox.AutoSize = true;
-            this.magicOnlineCheckBox.Location = new System.Drawing.Point(238, 225);
-            this.magicOnlineCheckBox.Name = "magicOnlineCheckBox";
-            this.magicOnlineCheckBox.Size = new System.Drawing.Size(107, 20);
-            this.magicOnlineCheckBox.TabIndex = 38;
-            this.magicOnlineCheckBox.Text = "Magic Online";
-            this.magicOnlineCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // arenaCheckBox
-            // 
-            this.arenaCheckBox.AutoSize = true;
-            this.arenaCheckBox.Location = new System.Drawing.Point(167, 225);
-            this.arenaCheckBox.Name = "arenaCheckBox";
-            this.arenaCheckBox.Size = new System.Drawing.Size(65, 20);
-            this.arenaCheckBox.TabIndex = 37;
-            this.arenaCheckBox.Text = "Arena";
-            this.arenaCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // paperCheckBox
-            // 
-            this.paperCheckBox.AutoSize = true;
-            this.paperCheckBox.Location = new System.Drawing.Point(96, 225);
-            this.paperCheckBox.Name = "paperCheckBox";
-            this.paperCheckBox.Size = new System.Drawing.Size(66, 20);
-            this.paperCheckBox.TabIndex = 36;
-            this.paperCheckBox.Text = "Paper";
-            this.paperCheckBox.UseVisualStyleBackColor = true;
-            // 
             // loyaltyNumericUpDown
             // 
-            this.loyaltyNumericUpDown.Location = new System.Drawing.Point(157, 197);
+            this.loyaltyNumericUpDown.Location = new System.Drawing.Point(157, 295);
             this.loyaltyNumericUpDown.Name = "loyaltyNumericUpDown";
             this.loyaltyNumericUpDown.Size = new System.Drawing.Size(54, 22);
             this.loyaltyNumericUpDown.TabIndex = 35;
@@ -1006,7 +1006,7 @@
             "=",
             "<",
             ">"});
-            this.loyaltyComboBox.Location = new System.Drawing.Point(96, 195);
+            this.loyaltyComboBox.Location = new System.Drawing.Point(96, 293);
             this.loyaltyComboBox.Name = "loyaltyComboBox";
             this.loyaltyComboBox.Size = new System.Drawing.Size(55, 24);
             this.loyaltyComboBox.TabIndex = 34;
@@ -1014,7 +1014,7 @@
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(12, 199);
+            this.label7.Location = new System.Drawing.Point(12, 297);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(53, 16);
             this.label7.TabIndex = 33;
@@ -1022,7 +1022,7 @@
             // 
             // toughnessNumericUpDown
             // 
-            this.toughnessNumericUpDown.Location = new System.Drawing.Point(157, 167);
+            this.toughnessNumericUpDown.Location = new System.Drawing.Point(157, 265);
             this.toughnessNumericUpDown.Name = "toughnessNumericUpDown";
             this.toughnessNumericUpDown.Size = new System.Drawing.Size(54, 22);
             this.toughnessNumericUpDown.TabIndex = 32;
@@ -1035,7 +1035,7 @@
             "=",
             "<",
             ">"});
-            this.toughnessComboBox.Location = new System.Drawing.Point(96, 165);
+            this.toughnessComboBox.Location = new System.Drawing.Point(96, 263);
             this.toughnessComboBox.Name = "toughnessComboBox";
             this.toughnessComboBox.Size = new System.Drawing.Size(55, 24);
             this.toughnessComboBox.TabIndex = 31;
@@ -1043,7 +1043,7 @@
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(12, 171);
+            this.label6.Location = new System.Drawing.Point(12, 269);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(78, 16);
             this.label6.TabIndex = 30;
@@ -1051,7 +1051,7 @@
             // 
             // powerNumericUpDown
             // 
-            this.powerNumericUpDown.Location = new System.Drawing.Point(157, 136);
+            this.powerNumericUpDown.Location = new System.Drawing.Point(157, 234);
             this.powerNumericUpDown.Name = "powerNumericUpDown";
             this.powerNumericUpDown.Size = new System.Drawing.Size(54, 22);
             this.powerNumericUpDown.TabIndex = 29;
@@ -1064,7 +1064,7 @@
             "=",
             "<",
             ">"});
-            this.powerComboBox.Location = new System.Drawing.Point(96, 134);
+            this.powerComboBox.Location = new System.Drawing.Point(96, 232);
             this.powerComboBox.Name = "powerComboBox";
             this.powerComboBox.Size = new System.Drawing.Size(55, 24);
             this.powerComboBox.TabIndex = 28;
@@ -1072,7 +1072,7 @@
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(12, 142);
+            this.label5.Location = new System.Drawing.Point(12, 240);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(48, 16);
             this.label5.TabIndex = 27;
@@ -1080,7 +1080,7 @@
             // 
             // cmcNumericUpDown
             // 
-            this.cmcNumericUpDown.Location = new System.Drawing.Point(157, 106);
+            this.cmcNumericUpDown.Location = new System.Drawing.Point(157, 204);
             this.cmcNumericUpDown.Name = "cmcNumericUpDown";
             this.cmcNumericUpDown.Size = new System.Drawing.Size(54, 22);
             this.cmcNumericUpDown.TabIndex = 26;
@@ -1093,7 +1093,7 @@
             "=",
             "<",
             ">"});
-            this.cmcOperatorComboBox.Location = new System.Drawing.Point(96, 104);
+            this.cmcOperatorComboBox.Location = new System.Drawing.Point(96, 202);
             this.cmcOperatorComboBox.Name = "cmcOperatorComboBox";
             this.cmcOperatorComboBox.Size = new System.Drawing.Size(55, 24);
             this.cmcOperatorComboBox.TabIndex = 24;
@@ -1101,7 +1101,7 @@
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(12, 112);
+            this.label4.Location = new System.Drawing.Point(12, 210);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(39, 16);
             this.label4.TabIndex = 23;
@@ -1111,60 +1111,7 @@
             // 
             this.manaCostComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.manaCostComboBox.FormattingEnabled = true;
-            this.manaCostComboBox.Items.AddRange(new object[] {
-            "{W} | 1 white mana",
-            "{U} | 1 blue mana",
-            "{B} | 1 black mana",
-            "{R} | 1 red mana",
-            "{G} | 1 green mana",
-            "{C} | 1 colorless mana",
-            "{X} | X generic mana",
-            "{0} | 0 mana",
-            "{1} | 1 generic mana",
-            "{2} | 2 generic mana",
-            "{3} | 3 generic mana",
-            "{4} | 4 generic mana",
-            "{5} | 5 generic mana",
-            "{6} | 6 generic mana",
-            "{7} | 7 generic mana",
-            "{8} | 8 generic mana",
-            "{9} | 9 generic mana",
-            "{10} | 10 generic mana",
-            "{11} | 11 generic mana",
-            "{12} | 12 generic mana",
-            "{13} | 13 generic mana",
-            "{14} | 14 generic mana",
-            "{15} | 15 generic mana",
-            "{16} | 16 generic mana",
-            "{W/U} | 1 white or blue mana",
-            "{W/B} | 1 white or black mana",
-            "{B/R} | 1 black or red mana",
-            "{B/G} | 1 black or green mana",
-            "{U/B} | 1 blue or black mana",
-            "{U/R} | 1 blue or red mana",
-            "{R/G} | 1 red or green mana",
-            "{R/W} | 1 red or white mana",
-            "{G/W} | 1 green or white mana",
-            "{G/U} | 1 green or blue mana",
-            "{G/U/P} | 1 green or blue mana or 2 life",
-            "{G/W/P} | 1 green or white mana or 2 life",
-            "{C/W} | 1 colorless or white mana",
-            "{C/U} | 1 colorless or blue mana",
-            "{C/B} | 1 colorless or black mana",
-            "{C/R} | 1 colorless or red mana",
-            "{C/G} | 1 colorless or green mana",
-            "{2/W} | 2 generic or 1 white mana",
-            "{2/U} | 2 generic or 1 blue mana",
-            "{2/B} | 2 generic or 1 black mana",
-            "{2/R} | 2 generic or 1 red mana",
-            "{2/G} | 2 generic or 1 green mana",
-            "{W/P} | 1 white mana or 2 life",
-            "{U/P} | 1 blue mana or 2 life",
-            "{B/P} | 1 black mana or 2 life",
-            "{R/P} | 1 red mana or 2 life",
-            "{G/P} | 1 green mana or 2 life",
-            "{S} | 1 snow mana"});
-            this.manaCostComboBox.Location = new System.Drawing.Point(379, 75);
+            this.manaCostComboBox.Location = new System.Drawing.Point(379, 167);
             this.manaCostComboBox.Name = "manaCostComboBox";
             this.manaCostComboBox.Size = new System.Drawing.Size(285, 24);
             this.manaCostComboBox.TabIndex = 22;
@@ -1172,7 +1119,7 @@
             // 
             // manaCostTextBox
             // 
-            this.manaCostTextBox.Location = new System.Drawing.Point(96, 77);
+            this.manaCostTextBox.Location = new System.Drawing.Point(96, 169);
             this.manaCostTextBox.Name = "manaCostTextBox";
             this.manaCostTextBox.Size = new System.Drawing.Size(150, 22);
             this.manaCostTextBox.TabIndex = 21;
@@ -1180,7 +1127,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 80);
+            this.label3.Location = new System.Drawing.Point(12, 172);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(72, 16);
             this.label3.TabIndex = 20;
@@ -1193,7 +1140,7 @@
             this.commanderWhiteButton.FlatAppearance.BorderSize = 0;
             this.commanderWhiteButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.commanderWhiteButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.commanderWhiteButton.Location = new System.Drawing.Point(103, 39);
+            this.commanderWhiteButton.Location = new System.Drawing.Point(103, 128);
             this.commanderWhiteButton.Margin = new System.Windows.Forms.Padding(4);
             this.commanderWhiteButton.Name = "commanderWhiteButton";
             this.commanderWhiteButton.Size = new System.Drawing.Size(33, 31);
@@ -1206,7 +1153,7 @@
             this.commanderBlueButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.commanderBlueButton.FlatAppearance.BorderSize = 2;
             this.commanderBlueButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.commanderBlueButton.Location = new System.Drawing.Point(138, 39);
+            this.commanderBlueButton.Location = new System.Drawing.Point(138, 128);
             this.commanderBlueButton.Margin = new System.Windows.Forms.Padding(4);
             this.commanderBlueButton.Name = "commanderBlueButton";
             this.commanderBlueButton.Size = new System.Drawing.Size(33, 31);
@@ -1219,7 +1166,7 @@
             this.commanderBlackButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.commanderBlackButton.FlatAppearance.BorderSize = 2;
             this.commanderBlackButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.commanderBlackButton.Location = new System.Drawing.Point(172, 39);
+            this.commanderBlackButton.Location = new System.Drawing.Point(172, 128);
             this.commanderBlackButton.Margin = new System.Windows.Forms.Padding(4);
             this.commanderBlackButton.Name = "commanderBlackButton";
             this.commanderBlackButton.Size = new System.Drawing.Size(33, 31);
@@ -1233,7 +1180,7 @@
             this.commanderRedButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.commanderRedButton.FlatAppearance.BorderSize = 2;
             this.commanderRedButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.commanderRedButton.Location = new System.Drawing.Point(207, 39);
+            this.commanderRedButton.Location = new System.Drawing.Point(207, 128);
             this.commanderRedButton.Margin = new System.Windows.Forms.Padding(4);
             this.commanderRedButton.Name = "commanderRedButton";
             this.commanderRedButton.Size = new System.Drawing.Size(33, 31);
@@ -1247,7 +1194,7 @@
             this.commanderGreenButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.commanderGreenButton.FlatAppearance.BorderSize = 2;
             this.commanderGreenButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.commanderGreenButton.Location = new System.Drawing.Point(239, 39);
+            this.commanderGreenButton.Location = new System.Drawing.Point(239, 128);
             this.commanderGreenButton.Margin = new System.Windows.Forms.Padding(4);
             this.commanderGreenButton.Name = "commanderGreenButton";
             this.commanderGreenButton.Size = new System.Drawing.Size(33, 31);
@@ -1261,7 +1208,7 @@
             this.commanderColorlessButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.commanderColorlessButton.FlatAppearance.BorderSize = 0;
             this.commanderColorlessButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.commanderColorlessButton.Location = new System.Drawing.Point(273, 39);
+            this.commanderColorlessButton.Location = new System.Drawing.Point(273, 128);
             this.commanderColorlessButton.Margin = new System.Windows.Forms.Padding(4);
             this.commanderColorlessButton.Name = "commanderColorlessButton";
             this.commanderColorlessButton.Size = new System.Drawing.Size(33, 31);
@@ -1272,7 +1219,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 48);
+            this.label2.Location = new System.Drawing.Point(12, 137);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(84, 16);
             this.label2.TabIndex = 13;
@@ -1285,7 +1232,7 @@
             this.colorsWhiteButton.FlatAppearance.BorderSize = 0;
             this.colorsWhiteButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.colorsWhiteButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.colorsWhiteButton.Location = new System.Drawing.Point(204, 8);
+            this.colorsWhiteButton.Location = new System.Drawing.Point(204, 88);
             this.colorsWhiteButton.Margin = new System.Windows.Forms.Padding(4);
             this.colorsWhiteButton.Name = "colorsWhiteButton";
             this.colorsWhiteButton.Size = new System.Drawing.Size(33, 31);
@@ -1298,7 +1245,7 @@
             this.colorsBlueButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.colorsBlueButton.FlatAppearance.BorderSize = 2;
             this.colorsBlueButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.colorsBlueButton.Location = new System.Drawing.Point(239, 8);
+            this.colorsBlueButton.Location = new System.Drawing.Point(239, 88);
             this.colorsBlueButton.Margin = new System.Windows.Forms.Padding(4);
             this.colorsBlueButton.Name = "colorsBlueButton";
             this.colorsBlueButton.Size = new System.Drawing.Size(33, 31);
@@ -1311,7 +1258,7 @@
             this.colorsBlackButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.colorsBlackButton.FlatAppearance.BorderSize = 2;
             this.colorsBlackButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.colorsBlackButton.Location = new System.Drawing.Point(273, 8);
+            this.colorsBlackButton.Location = new System.Drawing.Point(273, 88);
             this.colorsBlackButton.Margin = new System.Windows.Forms.Padding(4);
             this.colorsBlackButton.Name = "colorsBlackButton";
             this.colorsBlackButton.Size = new System.Drawing.Size(33, 31);
@@ -1325,7 +1272,7 @@
             this.colorsRedButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.colorsRedButton.FlatAppearance.BorderSize = 2;
             this.colorsRedButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.colorsRedButton.Location = new System.Drawing.Point(308, 8);
+            this.colorsRedButton.Location = new System.Drawing.Point(308, 88);
             this.colorsRedButton.Margin = new System.Windows.Forms.Padding(4);
             this.colorsRedButton.Name = "colorsRedButton";
             this.colorsRedButton.Size = new System.Drawing.Size(33, 31);
@@ -1339,7 +1286,7 @@
             this.colorsGreenButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.colorsGreenButton.FlatAppearance.BorderSize = 2;
             this.colorsGreenButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.colorsGreenButton.Location = new System.Drawing.Point(340, 8);
+            this.colorsGreenButton.Location = new System.Drawing.Point(340, 88);
             this.colorsGreenButton.Margin = new System.Windows.Forms.Padding(4);
             this.colorsGreenButton.Name = "colorsGreenButton";
             this.colorsGreenButton.Size = new System.Drawing.Size(33, 31);
@@ -1353,7 +1300,7 @@
             this.colorsColorlessButton.FlatAppearance.BorderColor = System.Drawing.SystemColors.Control;
             this.colorsColorlessButton.FlatAppearance.BorderSize = 0;
             this.colorsColorlessButton.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.colorsColorlessButton.Location = new System.Drawing.Point(374, 8);
+            this.colorsColorlessButton.Location = new System.Drawing.Point(374, 88);
             this.colorsColorlessButton.Margin = new System.Windows.Forms.Padding(4);
             this.colorsColorlessButton.Name = "colorsColorlessButton";
             this.colorsColorlessButton.Size = new System.Drawing.Size(33, 31);
@@ -1639,7 +1586,6 @@
         private System.Windows.Forms.NumericUpDown loyaltyNumericUpDown;
         private System.Windows.Forms.ComboBox loyaltyComboBox;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ComboBox attributesComboBox;
         public BrightIdeasSoftware.FastObjectListView attributesObjectListView;
@@ -1656,16 +1602,17 @@
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label13;
         private System.Windows.Forms.ComboBox languageComboBox;
-        private System.Windows.Forms.Label label14;
         private System.Windows.Forms.ComboBox colorsComboBox;
         private System.Windows.Forms.ComboBox colorsOperatorComboBox;
+        private System.Windows.Forms.ComboBox manaCostTypeComboBox;
         private System.Windows.Forms.CheckBox rarityMythicCheckBox;
         private System.Windows.Forms.CheckBox rarityRareCheckBox;
         private System.Windows.Forms.CheckBox rarityUncommonCheckBox;
         private System.Windows.Forms.CheckBox rarityCommonCheckBox;
-        private System.Windows.Forms.ComboBox manaCostTypeComboBox;
+        private System.Windows.Forms.Label label14;
+        private System.Windows.Forms.Label label8;
+        public System.Windows.Forms.CheckBox magicOnlineCheckBox;
         public System.Windows.Forms.CheckBox arenaCheckBox;
         public System.Windows.Forms.CheckBox paperCheckBox;
-        public System.Windows.Forms.CheckBox magicOnlineCheckBox;
     }
 }
