@@ -543,22 +543,6 @@ namespace MTG_Librarian
             UpdateSetModelFilter();
         }
 
-        private void whiteManaButton_Click(object sender, EventArgs e)
-        {
-            DoScryfallQuery();
-        }
-        private void cardNameFilterBox_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
-            {
-                e.Handled = true;
-                DoScryfallQuery();
-            }
-        }
-        private void formatFilterComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            DoScryfallQuery();
-        }
         public void InventoryChanged(object sender, InventoryChangedEventArgs e)
         {
             using (var context = new ScryfallCardsDbContext())

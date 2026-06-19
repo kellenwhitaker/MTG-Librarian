@@ -193,7 +193,6 @@
             this.uniqueComboBox.Name = "uniqueComboBox";
             this.uniqueComboBox.Size = new System.Drawing.Size(121, 24);
             this.uniqueComboBox.TabIndex = 15;
-            this.uniqueComboBox.SelectedIndexChanged += new System.EventHandler(this.formatFilterComboBox_SelectedIndexChanged);
             // 
             // includeVariationsCheckBox
             // 
@@ -206,7 +205,6 @@
             this.includeVariationsCheckBox.TabIndex = 14;
             this.includeVariationsCheckBox.Text = "Incl. variations";
             this.includeVariationsCheckBox.UseVisualStyleBackColor = true;
-            this.includeVariationsCheckBox.CheckedChanged += new System.EventHandler(this.formatFilterComboBox_SelectedIndexChanged);
             // 
             // cardTextFilterTextBox
             // 
@@ -219,7 +217,6 @@
             this.cardTextFilterTextBox.Size = new System.Drawing.Size(239, 23);
             this.cardTextFilterTextBox.TabIndex = 13;
             this.cardTextFilterTextBox.Text = "Card Text Filter";
-            this.cardTextFilterTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cardNameFilterBox_KeyDown);
             // 
             // typeFilterTextBox
             // 
@@ -232,7 +229,6 @@
             this.typeFilterTextBox.Size = new System.Drawing.Size(199, 23);
             this.typeFilterTextBox.TabIndex = 12;
             this.typeFilterTextBox.Text = "Type Filter";
-            this.typeFilterTextBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cardNameFilterBox_KeyDown);
             // 
             // manaButtonsPanel
             // 
@@ -262,7 +258,6 @@
             this.whiteManaButton.Size = new System.Drawing.Size(33, 31);
             this.whiteManaButton.TabIndex = 1;
             this.whiteManaButton.UseVisualStyleBackColor = false;
-            this.whiteManaButton.Click += new System.EventHandler(this.whiteManaButton_Click);
             // 
             // blueManaButton
             // 
@@ -276,7 +271,6 @@
             this.blueManaButton.Size = new System.Drawing.Size(33, 31);
             this.blueManaButton.TabIndex = 2;
             this.blueManaButton.UseVisualStyleBackColor = false;
-            this.blueManaButton.Click += new System.EventHandler(this.whiteManaButton_Click);
             // 
             // blackManaButton
             // 
@@ -291,7 +285,6 @@
             this.blackManaButton.TabIndex = 3;
             this.blackManaButton.Text = "B";
             this.blackManaButton.UseVisualStyleBackColor = false;
-            this.blackManaButton.Click += new System.EventHandler(this.whiteManaButton_Click);
             // 
             // redManaButton
             // 
@@ -306,7 +299,6 @@
             this.redManaButton.TabIndex = 4;
             this.redManaButton.Text = "R";
             this.redManaButton.UseVisualStyleBackColor = false;
-            this.redManaButton.Click += new System.EventHandler(this.whiteManaButton_Click);
             // 
             // genericManaButton
             // 
@@ -322,7 +314,6 @@
             this.genericManaButton.Text = "flatButton1";
             this.genericManaButton.UseVisualStyleBackColor = false;
             this.genericManaButton.Visible = false;
-            this.genericManaButton.Click += new System.EventHandler(this.whiteManaButton_Click);
             // 
             // greenManaButton
             // 
@@ -337,7 +328,6 @@
             this.greenManaButton.TabIndex = 5;
             this.greenManaButton.Text = "G";
             this.greenManaButton.UseVisualStyleBackColor = false;
-            this.greenManaButton.Click += new System.EventHandler(this.whiteManaButton_Click);
             // 
             // colorlessManaButton
             // 
@@ -352,7 +342,6 @@
             this.colorlessManaButton.TabIndex = 6;
             this.colorlessManaButton.Text = "flatButton1";
             this.colorlessManaButton.UseVisualStyleBackColor = false;
-            this.colorlessManaButton.Click += new System.EventHandler(this.whiteManaButton_Click);
             // 
             // formatFilterComboBox
             // 
@@ -371,7 +360,6 @@
             this.formatFilterComboBox.Name = "formatFilterComboBox";
             this.formatFilterComboBox.Size = new System.Drawing.Size(160, 24);
             this.formatFilterComboBox.TabIndex = 10;
-            this.formatFilterComboBox.SelectedIndexChanged += new System.EventHandler(this.formatFilterComboBox_SelectedIndexChanged);
             // 
             // cardNameFilterBox
             // 
@@ -384,7 +372,6 @@
             this.cardNameFilterBox.Size = new System.Drawing.Size(221, 23);
             this.cardNameFilterBox.TabIndex = 8;
             this.cardNameFilterBox.Text = "Card Name Filter";
-            this.cardNameFilterBox.KeyDown += new System.Windows.Forms.KeyEventHandler(this.cardNameFilterBox_KeyDown);
             // 
             // setFilterBox
             // 
@@ -1396,7 +1383,7 @@
             this.cardTextColumn});
             this.cardListView.Cursor = System.Windows.Forms.Cursors.Default;
             this.cardListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.cardListView.EmptyListMsg = "No cards";
+            this.cardListView.EmptyListMsg = "F2 to search";
             this.cardListView.FullRowSelect = true;
             this.cardListView.HeaderWordWrap = true;
             this.cardListView.HideSelection = false;
