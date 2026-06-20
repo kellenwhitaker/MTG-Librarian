@@ -138,6 +138,16 @@ namespace MTG_Librarian
 
             html += GetHTMLFooter(card) + "</table>";
             cardTextHtmlPanel.Text = html;
+
+            legalitiesListView.ClearObjects();
+            foreach (var legality in card.legalities)
+            {
+                var Format = char.ToUpper(legality.Key[0]) + legality.Key.Substring(1);
+                var Legality = (char.ToUpper(legality.Value[0]) + legality.Value.Substring(1)).Replace("_", " ");
+                var item = new FormatLegalitiesRow { Format = Format, Legality = Legality };                
+                legalitiesListView.AddObject(item);
+            }
+            legalitiesListView.AutoResizeColumns();
         }
 
         #endregion Methods
@@ -174,6 +184,20 @@ namespace MTG_Librarian
         private void CardInfoForm_Resize(object sender, System.EventArgs e)
         {
             cardTextHtmlPanel.Width = Width - 20;
+        }
+
+        private void legalitiesListView_FormatRow(object sender, BrightIdeasSoftware.FormatRowEventArgs e)
+        {
+            if ((e.Model as FormatLegalitiesRow).Legality == "Legal" || (e.Model as FormatLegalitiesRow).Legality == "Restricted")
+            {
+                e.Item.BackColor = System.Drawing.Color.LightSteelBlue;
+                e.Item.Font = new System.Drawing.Font(e.Item.Font, System.Drawing.FontStyle.Bold);
+            }
+        }
+        private class FormatLegalitiesRow
+        {
+            public string Format { get; set; }
+            public string Legality { get; set; }
         }
     }
 }
