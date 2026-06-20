@@ -60,12 +60,12 @@ namespace MTG_Librarian
             } 
         }
         [NotMapped]
-        public double? X 
+        public double? Percent 
         { 
             get
             {
                 if (Price.HasValue && Cost.HasValue && Cost.Value != 0.0)
-                    return Price.Value / Cost.Value;
+                    return 100 * (Price.Value - Cost.Value) / Cost.Value;
                 else
                     return null;
             }

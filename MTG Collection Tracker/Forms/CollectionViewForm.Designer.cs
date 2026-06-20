@@ -44,7 +44,7 @@
             this.tcgplayerMarketPriceColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.tcgPlayerMidPriceColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.DeltaColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.XColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.percentColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.cardTextColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.TagsColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.SortableTimeAdded = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -94,7 +94,7 @@
             this.cardListView.AllColumns.Add(this.tcgplayerMarketPriceColumn);
             this.cardListView.AllColumns.Add(this.tcgPlayerMidPriceColumn);
             this.cardListView.AllColumns.Add(this.DeltaColumn);
-            this.cardListView.AllColumns.Add(this.XColumn);
+            this.cardListView.AllColumns.Add(this.percentColumn);
             this.cardListView.AllColumns.Add(this.cardTextColumn);
             this.cardListView.AllColumns.Add(this.TagsColumn);
             this.cardListView.AllColumns.Add(this.SortableTimeAdded);
@@ -116,7 +116,7 @@
             this.CostColumn,
             this.tcgplayerMarketPriceColumn,
             this.DeltaColumn,
-            this.XColumn,
+            this.percentColumn,
             this.cardTextColumn,
             this.TagsColumn,
             this.TimeAddedColumn});
@@ -265,13 +265,13 @@
             this.DeltaColumn.Text = "Δ";
             this.DeltaColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // XColumn
+            // percentColumn
             // 
-            this.XColumn.AspectName = "X";
-            this.XColumn.AspectToStringFormat = "{0:0.00}";
-            this.XColumn.IsEditable = false;
-            this.XColumn.Text = "X";
-            this.XColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this.percentColumn.AspectName = "Percent";
+            this.percentColumn.AspectToStringFormat = "{0:0.00}";
+            this.percentColumn.IsEditable = false;
+            this.percentColumn.Text = "%";
+            this.percentColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // cardTextColumn
             // 
@@ -631,7 +631,7 @@
         private System.Windows.Forms.ToolStripMenuItem combineToolStripMenuItem;
         private BrightIdeasSoftware.OLVColumn ConditionColumn;
         private BrightIdeasSoftware.OLVColumn DeltaColumn;
-        private BrightIdeasSoftware.OLVColumn XColumn;
+        private BrightIdeasSoftware.OLVColumn percentColumn;
         private BrightIdeasSoftware.OLVColumn tcgPlayerMidPriceColumn;
         private BrightIdeasSoftware.OLVColumn rarityColumn;
         private BrightIdeasSoftware.OLVColumn FinishColumn;

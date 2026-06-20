@@ -48,7 +48,7 @@ namespace MTG_Librarian
             cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "PaddedName").Renderer = new CardInstanceNameRenderer();
             cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "ManaCost").Renderer = new ManaCostRenderer();
             cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "Delta").Renderer = new DeltaRenderer();
-            cardListView.AllColumns.FirstOrDefault(y => y.AspectName == "X").Renderer = new XRenderer();
+            cardListView.AllColumns.FirstOrDefault(y => y.AspectName == "Percent").Renderer = new DeltaRenderer();
             cardListView.VirtualListDataSource = new MyCustomSortingDataSource(cardListView);
             cardListView.AddDecoration(new EditingCellBorderDecoration { UseLightbox = false, BorderPen = new Pen(Brushes.DodgerBlue, 3), BoundsPadding = new Size(1, 0) });
             cardListView.UseFiltering = true;
@@ -803,7 +803,7 @@ namespace MTG_Librarian
                         else if (AspectName == "Delta")
                             result = CompareNullableDoubles((x as FullInventoryCard).Delta, (y as FullInventoryCard).Delta);
                         else if (AspectName == "X")
-                            result = CompareNullableDoubles((x as FullInventoryCard).X, (y as FullInventoryCard).X);
+                            result = CompareNullableDoubles((x as FullInventoryCard).Percent, (y as FullInventoryCard).Percent);
                         return SortOrder == SortOrder.Ascending ? result : -1 * result;
                     }
                 }
