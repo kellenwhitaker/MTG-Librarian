@@ -109,12 +109,12 @@ namespace MTG_Librarian
             if (colorlessManaButton.Checked) manaSymbols += "C";
             if (!string.IsNullOrWhiteSpace(manaSymbols))
                 queryClauses.Add($"(m%3A{manaSymbols})");
-            if (!string.IsNullOrWhiteSpace(cardNameFilterBox.UserText))
-                queryClauses.Add($"name%3A{cardNameFilterBox.UserText}");
-            if (!string.IsNullOrWhiteSpace(cardTextFilterTextBox.UserText))
-                queryClauses.Add($"oracle%3A{cardTextFilterTextBox.UserText}");
-            if (!string.IsNullOrWhiteSpace(typeFilterTextBox.UserText))
-                queryClauses.Add($"type%3A{typeFilterTextBox.UserText}");
+            if (!string.IsNullOrWhiteSpace(cardNameFilterBox.Text))
+                queryClauses.Add($"name%3A{cardNameFilterBox.Text}");
+            if (!string.IsNullOrWhiteSpace(cardTextFilterTextBox.Text))
+                queryClauses.Add($"oracle%3A{cardTextFilterTextBox.Text}");
+            if (!string.IsNullOrWhiteSpace(typeFilterTextBox.Text))
+                queryClauses.Add($"type%3A{typeFilterTextBox.Text}");
             if (setListView.SelectedObject != null)
             {
                 string setCode = (setListView.SelectedObject as OLVSetItem).CardSet.code;
@@ -290,7 +290,7 @@ namespace MTG_Librarian
         }
         private Predicate<object> GetSetNameTreeFilter()
         {
-            string boxText = setFilterBox.UserText.ToUpper();
+            string boxText = setFilterBox.Text.ToUpper();
             return x => boxText == ""
                 ? true
                 : (x is OLVRarityItem rarityItem && (rarityItem.Parent as OLVSetItem).Name.ToUpper().Contains(boxText))

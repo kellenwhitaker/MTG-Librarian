@@ -112,23 +112,23 @@ namespace MTG_Librarian
 
         private Predicate<object> GetCommentsFilter()
         {
-            return x => commentsFilterTextBox.UserText == ""
+            return x => commentsFilterTextBox.Text == ""
                 ? true
-                : (x as FullInventoryCard).Tags?.ToUpper().Contains(commentsFilterTextBox.UserText.ToUpper()) ?? false;
+                : (x as FullInventoryCard).Tags?.ToUpper().Contains(commentsFilterTextBox.Text.ToUpper()) ?? false;
         }
 
         private Predicate<object> GetCardNameFilter()
         {
-            return x => cardNameFilterTextBox.UserText == ""
+            return x => cardNameFilterTextBox.Text == ""
                 ? true
-                : (x as FullInventoryCard).Name?.ToUpper().Contains(cardNameFilterTextBox.UserText.ToUpper()) ?? false;
+                : (x as FullInventoryCard).Name?.ToUpper().Contains(cardNameFilterTextBox.Text.ToUpper()) ?? false;
         }
 
         private Predicate<object> GetCardTextFilter()
         {
-            return x => cardTextFilterTextBox.UserText == ""
+            return x => cardTextFilterTextBox.Text == ""
                 ? true
-                : (x as FullInventoryCard).text?.ToUpper().Contains(cardTextFilterTextBox.UserText.ToUpper()) ?? false;
+                : (x as FullInventoryCard).text?.ToUpper().Contains(cardTextFilterTextBox.Text.ToUpper()) ?? false;
         }
 
         private Predicate<object> GetManaCostFilter()
@@ -156,16 +156,16 @@ namespace MTG_Librarian
 
         private Predicate<object> GetTypeFilter()
         {
-            return x => typeFilterTextBox.UserText == ""
+            return x => typeFilterTextBox.Text == ""
                 ? true
-                : (x as FullInventoryCard).type_line?.ToUpper().Contains(typeFilterTextBox.UserText.ToUpper()) ?? false;
+                : (x as FullInventoryCard).type_line?.ToUpper().Contains(typeFilterTextBox.Text.ToUpper()) ?? false;
         }
 
         private Predicate<object> GetSetFilter()
         {
-            return x => setFilterTextBox.UserText == ""
+            return x => setFilterTextBox.Text == ""
                 ? true
-                : (x as FullInventoryCard).set_name?.ToUpper().Contains(setFilterTextBox.UserText.ToUpper()) ?? false;
+                : (x as FullInventoryCard).set_name?.ToUpper().Contains(setFilterTextBox.Text.ToUpper()) ?? false;
         }
 
         #endregion Filters

@@ -222,26 +222,24 @@
             // cardTextFilterTextBox
             // 
             this.cardTextFilterTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic);
-            this.cardTextFilterTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.cardTextFilterTextBox.ForeColor = System.Drawing.Color.Black;
             this.cardTextFilterTextBox.Location = new System.Drawing.Point(1121, 5);
             this.cardTextFilterTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.cardTextFilterTextBox.Name = "cardTextFilterTextBox";
             this.cardTextFilterTextBox.Placeholder = "Card Text Filter";
             this.cardTextFilterTextBox.Size = new System.Drawing.Size(239, 23);
             this.cardTextFilterTextBox.TabIndex = 13;
-            this.cardTextFilterTextBox.Text = "Card Text Filter";
             // 
             // typeFilterTextBox
             // 
             this.typeFilterTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic);
-            this.typeFilterTextBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.typeFilterTextBox.ForeColor = System.Drawing.Color.Black;
             this.typeFilterTextBox.Location = new System.Drawing.Point(690, 5);
             this.typeFilterTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.typeFilterTextBox.Name = "typeFilterTextBox";
             this.typeFilterTextBox.Placeholder = "Type Filter";
             this.typeFilterTextBox.Size = new System.Drawing.Size(199, 23);
             this.typeFilterTextBox.TabIndex = 12;
-            this.typeFilterTextBox.Text = "Type Filter";
             // 
             // manaButtonsPanel
             // 
@@ -377,26 +375,24 @@
             // cardNameFilterBox
             // 
             this.cardNameFilterBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic);
-            this.cardNameFilterBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.cardNameFilterBox.ForeColor = System.Drawing.Color.Black;
             this.cardNameFilterBox.Location = new System.Drawing.Point(459, 5);
             this.cardNameFilterBox.Margin = new System.Windows.Forms.Padding(4);
             this.cardNameFilterBox.Name = "cardNameFilterBox";
             this.cardNameFilterBox.Placeholder = "Card Name Filter";
             this.cardNameFilterBox.Size = new System.Drawing.Size(221, 23);
             this.cardNameFilterBox.TabIndex = 8;
-            this.cardNameFilterBox.Text = "Card Name Filter";
             // 
             // setFilterBox
             // 
             this.setFilterBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic);
-            this.setFilterBox.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))), ((int)(((byte)(128)))));
+            this.setFilterBox.ForeColor = System.Drawing.Color.Black;
             this.setFilterBox.Location = new System.Drawing.Point(4, 6);
             this.setFilterBox.Margin = new System.Windows.Forms.Padding(4);
             this.setFilterBox.Name = "setFilterBox";
             this.setFilterBox.Placeholder = "Set Filter";
             this.setFilterBox.Size = new System.Drawing.Size(280, 23);
             this.setFilterBox.TabIndex = 0;
-            this.setFilterBox.Text = "Set Filter";
             this.setFilterBox.TextChanged += new System.EventHandler(this.setFilterBox_TextChanged);
             // 
             // splitContainer1
