@@ -195,13 +195,15 @@ namespace MTG_Librarian
                     {
                         var DefaultCurrency = SettingsManager.ApplicationSettings.DefaultCurrency;
                         string priceString;
+                        double? price = null;
                         string finish = "nonfoil";
                         if (card.finishes.Count() == 1)
                             finish = card.finishes[0];
-                        card.prices.TryGetValue($"{DefaultCurrency.ToLower()}{((finish != "nonfoil") ? $"_{finish}" : "")}", out priceString);
+                        if (card.prices.TryGetValue($"{DefaultCurrency.ToLower()}{((finish != "nonfoil") ? $"_{finish}" : "")}", out priceString))
+                            price = Convert.ToDouble(priceString);
                         string SymbolCode = card.set != null && card.set.Length == 4 && (card.set_type == "token" || card.set_type == "promo" || card.set_type == "memorabilia") ? card.set.Substring(1) : card.set;
                         var ImageKey = $"{SymbolCode}: {card.rarity}";
-                        printingsListView.AddObject(new { ImageKey, card.set_name, card.collector_number, Price = priceString });
+                        printingsListView.AddObject(new { ImageKey, card.set_name, card.collector_number, Price = price });
                     }
                     printingsListView.AutoResizeColumns();
                 }
