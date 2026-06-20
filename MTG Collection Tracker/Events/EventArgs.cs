@@ -83,8 +83,11 @@ namespace MTG_Librarian
         public int MultiverseId { get; set; }
         public string Edition { get; set; }
     }
-
     public class RulingsDownloadedEventArgs : EventArgs
+    {
+        public ScryfallMagicCardBase Card { get; set; }
+    }
+    public class PrintingsDownloadedEventArgs : EventArgs
     {
         public ScryfallMagicCardBase Card { get; set; }
     }

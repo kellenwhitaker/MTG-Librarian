@@ -22,6 +22,8 @@ namespace MTG_Librarian
         public ScryfallMagicCard PartB { get; set; }
         [NotMapped]
         public List<ScryfallCardRuling> rulings { get; set; }
+        [NotMapped]
+        public List<ScryfallCard> printings { get; set; }
     }
 
     public class Metadata

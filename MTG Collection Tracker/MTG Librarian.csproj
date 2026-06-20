@@ -400,6 +400,7 @@
     <Compile Include="Forms\DBViewForm.Designer.cs">
       <DependentUpon>DBViewForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Tasks\DownloadPrintingsTask.cs" />
     <Compile Include="Tasks\DownloadResourceTask.cs" />
     <Compile Include="Tasks\DownloadRulingsTask.cs" />
     <Compile Include="Tasks\DownloadSetTask.cs" />

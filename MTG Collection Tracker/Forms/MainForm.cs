@@ -47,6 +47,7 @@ namespace MTG_Librarian
             SetupImageLists();
             EventManager.DefaultCurrencyChanged += DefaultCurrencyChanged;
             Globals.Forms.CardInfoForm = new CardInfoForm();
+            EventManager.DefaultCurrencyChanged += Globals.Forms.CardInfoForm.DefaultCurrencyChanged;
             EventManager.CardImageRetrieved += Globals.Forms.CardInfoForm.cardImageRetrieved;
             Globals.Forms.NavigationForm = new CollectionNavigatorForm();
             Globals.Forms.NavigationForm.CardsDropped += EventManager.NavigationFormCardsDropped;
@@ -64,10 +65,10 @@ namespace MTG_Librarian
             Globals.Forms.TasksForm.TaskManager.ScryfallSearchEnded += EventManager.ScryfallSearchEnded;
             Globals.Forms.TasksForm.TaskManager.CardsUpdatedFromScryfall += EventManager.CardsUpdatedFromScryfall;
             Globals.Forms.TasksForm.TaskManager.RulingsDownloaded += EventManager.RulingsDownloaded;
+            Globals.Forms.TasksForm.TaskManager.PrintingsDownloaded += EventManager.PrintingsDownloaded;
             splitContainer1.SplitterDistance = Height;
             InitUIWorker.RunWorkerAsync();
         }
-
         public void UpdateStatusBarTotals(IList cards)
         {
             int cardCount = 0;

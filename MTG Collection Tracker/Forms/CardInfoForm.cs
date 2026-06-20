@@ -1,6 +1,7 @@
-﻿using System.Text.RegularExpressions;
+﻿using KW.WinFormsUI.Docking;
+using System;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
-using KW.WinFormsUI.Docking;
 // TODO: Cleanup
 namespace MTG_Librarian
 {
@@ -19,6 +20,8 @@ namespace MTG_Librarian
         public CardInfoForm()
         {
             InitializeComponent();
+            printingsListView.SmallImageList = Globals.ImageLists.SmallIconList;
+            setColumn.ImageGetter = delegate (object row) { return (row as dynamic).ImageKey; };
             DockAreas = DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockBottom;
         }
 
@@ -123,6 +126,12 @@ namespace MTG_Librarian
             if (card == MagicCard)
                 FillRulingsPanel();
         }
+
+        public void PrintingsDownloaded(ScryfallMagicCardBase card)
+        {
+            if (card == MagicCard)
+                FillPrintingsPanel();
+        }
         public void CardSelected(ScryfallMagicCardBase card)
         {
             MagicCard = DisplayedCard = card;
@@ -149,11 +158,11 @@ namespace MTG_Librarian
             {
                 var Format = char.ToUpper(legality.Key[0]) + legality.Key.Substring(1);
                 var Legality = (char.ToUpper(legality.Value[0]) + legality.Value.Substring(1)).Replace("_", " ");
-                var item = new FormatLegalitiesRow { Format = Format, Legality = Legality };                
+                var item = new FormatLegalitiesRow { Format = Format, Legality = Legality };
                 legalitiesListView.AddObject(item);
             }
             legalitiesListView.AutoResizeColumns();
-            
+
             if (tabControl.SelectedTab == rulingsTabPage)
             {
                 FillRulingsPanel();
@@ -163,9 +172,49 @@ namespace MTG_Librarian
                     task.AddFirst = true;
                     Globals.Forms.TasksForm.TaskManager.AddTask(task);
                 }
-            }    
+            }
+            else if (tabControl.SelectedTab == printingsTabPage)
+            {
+                FillPrintingsPanel();
+                if (card.printings == null)
+                {
+                    var task = new DownloadPrintingsTask(card);
+                    task.AddFirst = true;
+                    Globals.Forms.TasksForm.TaskManager.AddTask(task);
+                }
+            }
         }
-
+        private void FillPrintingsPanel()
+        {
+            printingsListView.ClearObjects();
+            if (MagicCard.printings != null)
+            {
+                if (MagicCard.printings.Count > 0)
+                {
+                    foreach (var card in MagicCard.printings)
+                    {
+                        var DefaultCurrency = SettingsManager.ApplicationSettings.DefaultCurrency;
+                        string priceString;
+                        string finish = "nonfoil";
+                        if (card.finishes.Count() == 1)
+                            finish = card.finishes[0];
+                        card.prices.TryGetValue($"{DefaultCurrency.ToLower()}{((finish != "nonfoil") ? $"_{finish}" : "")}", out priceString);
+                        string SymbolCode = card.set != null && card.set.Length == 4 && (card.set_type == "token" || card.set_type == "promo" || card.set_type == "memorabilia") ? card.set.Substring(1) : card.set;
+                        var ImageKey = $"{SymbolCode}: {card.rarity}";
+                        printingsListView.AddObject(new { ImageKey, card.set_name, card.collector_number, Price = priceString });
+                    }
+                    printingsListView.AutoResizeColumns();
+                }
+                else
+                {
+                    printingsListView.EmptyListMsg = "No printings found for this card.";
+                }
+            }
+            else
+            {
+                printingsListView.EmptyListMsg = "Printings not downloaded yet.";
+            }
+        }
         private void FillRulingsPanel()
         {
             if (MagicCard.rulings != null)
@@ -255,6 +304,22 @@ namespace MTG_Librarian
                     Globals.Forms.TasksForm.TaskManager.AddTask(task);
                 }
             }
+            else if (tabControl.SelectedTab == printingsTabPage && MagicCard != null)
+            {
+                FillPrintingsPanel();
+                if (MagicCard.printings == null)
+                {
+                    var task = new DownloadPrintingsTask(MagicCard);
+                    task.AddFirst = true;
+                    Globals.Forms.TasksForm.TaskManager.AddTask(task);
+                }
+            }
+        }
+
+        public void DefaultCurrencyChanged(object sender, EventArgs e)
+        {
+            if (MagicCard != null)
+                FillPrintingsPanel();
         }
     }
 }

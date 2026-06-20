@@ -39,12 +39,19 @@
             this.legalityColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.rulingsTabPage = new System.Windows.Forms.TabPage();
             this.rulingsHtmlPanel = new TheArtOfDev.HtmlRenderer.WinForms.HtmlPanel();
+            this.printingsTabPage = new System.Windows.Forms.TabPage();
+            this.printingsListView = new BrightIdeasSoftware.FastObjectListView();
+            this.setColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.numberColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.priceColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.tabControl.SuspendLayout();
             this.mainTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cardPictureBox)).BeginInit();
             this.legalitiesTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.legalitiesListView)).BeginInit();
             this.rulingsTabPage.SuspendLayout();
+            this.printingsTabPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.printingsListView)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl
@@ -53,6 +60,7 @@
             this.tabControl.Controls.Add(this.mainTabPage);
             this.tabControl.Controls.Add(this.legalitiesTabPage);
             this.tabControl.Controls.Add(this.rulingsTabPage);
+            this.tabControl.Controls.Add(this.printingsTabPage);
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Name = "tabControl";
@@ -170,6 +178,53 @@
             this.rulingsHtmlPanel.TabIndex = 0;
             this.rulingsHtmlPanel.Text = null;
             // 
+            // printingsTabPage
+            // 
+            this.printingsTabPage.Controls.Add(this.printingsListView);
+            this.printingsTabPage.Location = new System.Drawing.Point(4, 4);
+            this.printingsTabPage.Name = "printingsTabPage";
+            this.printingsTabPage.Size = new System.Drawing.Size(371, 941);
+            this.printingsTabPage.TabIndex = 3;
+            this.printingsTabPage.Text = "Printings";
+            this.printingsTabPage.UseVisualStyleBackColor = true;
+            // 
+            // printingsListView
+            // 
+            this.printingsListView.AllColumns.Add(this.setColumn);
+            this.printingsListView.AllColumns.Add(this.numberColumn);
+            this.printingsListView.AllColumns.Add(this.priceColumn);
+            this.printingsListView.CellEditUseWholeCell = false;
+            this.printingsListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.setColumn,
+            this.numberColumn,
+            this.priceColumn});
+            this.printingsListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.printingsListView.FullRowSelect = true;
+            this.printingsListView.HideSelection = false;
+            this.printingsListView.Location = new System.Drawing.Point(0, 0);
+            this.printingsListView.Name = "printingsListView";
+            this.printingsListView.ShowGroups = false;
+            this.printingsListView.Size = new System.Drawing.Size(371, 941);
+            this.printingsListView.TabIndex = 0;
+            this.printingsListView.UseCompatibleStateImageBehavior = false;
+            this.printingsListView.View = System.Windows.Forms.View.Details;
+            this.printingsListView.VirtualMode = true;
+            // 
+            // setColumn
+            // 
+            this.setColumn.AspectName = "set_name";
+            this.setColumn.Text = "Set";
+            // 
+            // numberColumn
+            // 
+            this.numberColumn.AspectName = "collector_number";
+            this.numberColumn.Text = "#";
+            // 
+            // priceColumn
+            // 
+            this.priceColumn.AspectName = "Price";
+            this.priceColumn.Text = "Price";
+            // 
             // CardInfoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -186,6 +241,8 @@
             this.legalitiesTabPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.legalitiesListView)).EndInit();
             this.rulingsTabPage.ResumeLayout(false);
+            this.printingsTabPage.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.printingsListView)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -202,5 +259,10 @@
         private BrightIdeasSoftware.OLVColumn legalityColumn;
         private System.Windows.Forms.TabPage rulingsTabPage;
         private TheArtOfDev.HtmlRenderer.WinForms.HtmlPanel rulingsHtmlPanel;
+        private System.Windows.Forms.TabPage printingsTabPage;
+        private BrightIdeasSoftware.FastObjectListView printingsListView;
+        private BrightIdeasSoftware.OLVColumn setColumn;
+        private BrightIdeasSoftware.OLVColumn numberColumn;
+        private BrightIdeasSoftware.OLVColumn priceColumn;
     }
 }

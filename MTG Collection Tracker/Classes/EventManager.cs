@@ -163,6 +163,18 @@ namespace MTG_Librarian
             }
         }
 
+        private delegate void PrintingsDownloadedDelegate(object sender, PrintingsDownloadedEventArgs e);
+
+        public static void PrintingsDownloaded(object sender, PrintingsDownloadedEventArgs e)
+        {
+            if (Globals.Forms.MainForm.InvokeRequired)
+                Globals.Forms.MainForm.BeginInvoke(new PrintingsDownloadedDelegate(PrintingsDownloaded), sender, e);
+            else
+            {
+                Globals.Forms.CardInfoForm.PrintingsDownloaded(e.Card);
+            }
+        }
+
         private delegate void RulingsDownloadedDelegate(object sender, RulingsDownloadedEventArgs e);
         public static void RulingsDownloaded(object sender, RulingsDownloadedEventArgs e)
         {
