@@ -1596,7 +1596,7 @@
             // priceColumn
             // 
             this.priceColumn.AspectName = "Price";
-            this.priceColumn.AspectToStringFormat = "{0:0.00}";
+            this.priceColumn.AspectToStringFormat = "";
             this.priceColumn.Text = "Price";
             // 
             // DisplayName

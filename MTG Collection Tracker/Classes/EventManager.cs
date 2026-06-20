@@ -104,7 +104,7 @@ namespace MTG_Librarian
                             string finish = "nonfoil";
                             if (card.finishes.Count() == 1)
                                 finish = card.finishes[0];
-                            if (card.prices.TryGetValue($"{DefaultCurrency.ToLower()}{((finish != "nonfoil") ? $"_{finish}" : "")}", out priceString))
+                            if (card.prices.TryGetValue($"{DefaultCurrency.ToLower()}{((finish != "nonfoil") ? $"_{finish}" : "")}", out priceString) && priceString != null)
                                 card.Price = Convert.ToDouble(priceString);
                             cardItems.Add(new OLVCardItem(card));
                         }
