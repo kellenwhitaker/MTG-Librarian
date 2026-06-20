@@ -115,7 +115,7 @@ namespace MTG_Librarian
                         var match = dbSet.FirstOrDefault();
                         if (match == null && set.code == set.SymbolCode)
                             result.setsNeedingIcons.Add(set);
-                        else
+                        else if (match != null)
                         {
                             (set.CommonIconBytes, set.UncommonIconBytes, set.RareIconBytes, set.MythicRareIconBytes) =
                                 (match.CommonIconBytes, match.UncommonIconBytes, match.RareIconBytes, match.MythicRareIconBytes);

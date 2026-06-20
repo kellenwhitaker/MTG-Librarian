@@ -118,6 +118,11 @@ namespace MTG_Librarian
                 $"</tr>";
         }
 
+        public void RulingsDownloaded(ScryfallMagicCardBase card)
+        {
+            if (card == MagicCard)
+                FillRulingsPanel();
+        }
         public void CardSelected(ScryfallMagicCardBase card)
         {
             MagicCard = DisplayedCard = card;
@@ -148,6 +153,44 @@ namespace MTG_Librarian
                 legalitiesListView.AddObject(item);
             }
             legalitiesListView.AutoResizeColumns();
+            
+            if (tabControl.SelectedTab == rulingsTabPage)
+            {
+                FillRulingsPanel();
+                if (card.rulings == null)
+                {
+                    var task = new DownloadRulingsTask(card);
+                    task.AddFirst = true;
+                    Globals.Forms.TasksForm.TaskManager.AddTask(task);
+                }
+            }    
+        }
+
+        private void FillRulingsPanel()
+        {
+            if (MagicCard.rulings != null)
+            {
+                if (MagicCard.rulings.Count > 0)
+                {
+                    var html = "<table width='100%'>";
+                    foreach (var ruling in MagicCard.rulings)
+                    {
+                        html += $"<tr>" +
+                            $"<td valign='top'><b>{ruling.published_at}</b></td><td valign='top'>{ruling.comment}<br><br></td>" +
+                            $"</tr>";
+                    }
+                    html += "</table>";
+                    rulingsHtmlPanel.Text = html;
+                }
+                else
+                {
+                    rulingsHtmlPanel.Text = "No rulings found for this card.";
+                }
+            }
+            else
+            {
+                rulingsHtmlPanel.Text = "Rulings not downloaded yet.";
+            }
         }
 
         #endregion Methods
@@ -198,6 +241,20 @@ namespace MTG_Librarian
         {
             public string Format { get; set; }
             public string Legality { get; set; }
+        }
+
+        private void tabControl_SelectedIndexChanged(object sender, System.EventArgs e)
+        {
+            if (tabControl.SelectedTab == rulingsTabPage && MagicCard != null)
+            {
+                FillRulingsPanel();
+                if (MagicCard.rulings == null)
+                {
+                    var task = new DownloadRulingsTask(MagicCard);
+                    task.AddFirst = true;
+                    Globals.Forms.TasksForm.TaskManager.AddTask(task);
+                }
+            }
         }
     }
 }

@@ -199,6 +199,8 @@ namespace MTG_Librarian
                     OnSetDownloaded(new SetDownloadedEventArgs { SetCode = downloadTask.CardSet.code });
                 else if (task is UpdateCardsTask updateCardsTask && task.RunState == RunState.Completed)
                     OnCardsUpdatedFromScryfall(new CardsUpdatedFromScryfallEventArgs { Cards = updateCardsTask.CardsUpdated });
+                else if (task is DownloadRulingsTask rulingsTask && task.RunState == RunState.Completed)
+                    OnRulingsDownloaded(new RulingsDownloadedEventArgs { Card = rulingsTask.Card });
             }
             if (completedOrFailed.Count() > 0)
                 MoveLVObjects(completedOrFailed);
@@ -261,6 +263,13 @@ namespace MTG_Librarian
         {
             ScryfallSearchEnded?.Invoke(this, args);
         }
+
+        public event EventHandler<RulingsDownloadedEventArgs> RulingsDownloaded;
+        private void OnRulingsDownloaded(RulingsDownloadedEventArgs args)
+        {
+            RulingsDownloaded?.Invoke(this, args);
+        }
+
         #endregion Events
     }
 }

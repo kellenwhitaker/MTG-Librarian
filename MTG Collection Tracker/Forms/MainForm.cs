@@ -63,6 +63,7 @@ namespace MTG_Librarian
             Globals.Forms.TasksForm.TaskManager.SetDownloaded += EventManager.SetDownloaded;
             Globals.Forms.TasksForm.TaskManager.ScryfallSearchEnded += EventManager.ScryfallSearchEnded;
             Globals.Forms.TasksForm.TaskManager.CardsUpdatedFromScryfall += EventManager.CardsUpdatedFromScryfall;
+            Globals.Forms.TasksForm.TaskManager.RulingsDownloaded += EventManager.RulingsDownloaded;
             splitContainer1.SplitterDistance = Height;
             InitUIWorker.RunWorkerAsync();
         }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.Sqlite;
 using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.IO;
@@ -19,6 +20,8 @@ namespace MTG_Librarian
         public string SymbolCode => set != null && set.Length == 4 && (set_type == "token" || set_type == "promo" || set_type == "memorabilia") ? set.Substring(1) : set;
         [NotMapped]
         public ScryfallMagicCard PartB { get; set; }
+        [NotMapped]
+        public List<ScryfallCardRuling> rulings { get; set; }
     }
 
     public class Metadata

@@ -37,11 +37,14 @@
             this.legalitiesListView = new BrightIdeasSoftware.FastObjectListView();
             this.formatColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.legalityColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.rulingsTabPage = new System.Windows.Forms.TabPage();
+            this.rulingsHtmlPanel = new TheArtOfDev.HtmlRenderer.WinForms.HtmlPanel();
             this.tabControl.SuspendLayout();
             this.mainTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cardPictureBox)).BeginInit();
             this.legalitiesTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.legalitiesListView)).BeginInit();
+            this.rulingsTabPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // tabControl
@@ -49,12 +52,14 @@
             this.tabControl.Alignment = System.Windows.Forms.TabAlignment.Bottom;
             this.tabControl.Controls.Add(this.mainTabPage);
             this.tabControl.Controls.Add(this.legalitiesTabPage);
+            this.tabControl.Controls.Add(this.rulingsTabPage);
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
             this.tabControl.Size = new System.Drawing.Size(379, 970);
             this.tabControl.TabIndex = 3;
+            this.tabControl.SelectedIndexChanged += new System.EventHandler(this.tabControl_SelectedIndexChanged);
             // 
             // mainTabPage
             // 
@@ -142,6 +147,29 @@
             this.legalityColumn.AspectName = "Legality";
             this.legalityColumn.Text = "Legality";
             // 
+            // rulingsTabPage
+            // 
+            this.rulingsTabPage.Controls.Add(this.rulingsHtmlPanel);
+            this.rulingsTabPage.Location = new System.Drawing.Point(4, 4);
+            this.rulingsTabPage.Name = "rulingsTabPage";
+            this.rulingsTabPage.Size = new System.Drawing.Size(371, 941);
+            this.rulingsTabPage.TabIndex = 2;
+            this.rulingsTabPage.Text = "Rulings";
+            this.rulingsTabPage.UseVisualStyleBackColor = true;
+            // 
+            // rulingsHtmlPanel
+            // 
+            this.rulingsHtmlPanel.AutoScroll = true;
+            this.rulingsHtmlPanel.BackColor = System.Drawing.SystemColors.Window;
+            this.rulingsHtmlPanel.BaseStylesheet = null;
+            this.rulingsHtmlPanel.Cursor = System.Windows.Forms.Cursors.Default;
+            this.rulingsHtmlPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.rulingsHtmlPanel.Location = new System.Drawing.Point(0, 0);
+            this.rulingsHtmlPanel.Name = "rulingsHtmlPanel";
+            this.rulingsHtmlPanel.Size = new System.Drawing.Size(371, 941);
+            this.rulingsHtmlPanel.TabIndex = 0;
+            this.rulingsHtmlPanel.Text = null;
+            // 
             // CardInfoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -157,6 +185,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.cardPictureBox)).EndInit();
             this.legalitiesTabPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.legalitiesListView)).EndInit();
+            this.rulingsTabPage.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -171,5 +200,7 @@
         private BrightIdeasSoftware.FastObjectListView legalitiesListView;
         private BrightIdeasSoftware.OLVColumn formatColumn;
         private BrightIdeasSoftware.OLVColumn legalityColumn;
+        private System.Windows.Forms.TabPage rulingsTabPage;
+        private TheArtOfDev.HtmlRenderer.WinForms.HtmlPanel rulingsHtmlPanel;
     }
 }
