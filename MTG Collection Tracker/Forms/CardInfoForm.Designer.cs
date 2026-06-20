@@ -248,7 +248,6 @@
         }
 
         #endregion
-        private System.Windows.Forms.TabControl tabControl;
         private System.Windows.Forms.TabPage mainTabPage;
         private System.Windows.Forms.TabPage legalitiesTabPage;
         private System.Windows.Forms.Button flipButton;
@@ -264,5 +263,6 @@
         private BrightIdeasSoftware.OLVColumn setColumn;
         private BrightIdeasSoftware.OLVColumn numberColumn;
         private BrightIdeasSoftware.OLVColumn priceColumn;
+        public System.Windows.Forms.TabControl tabControl;
     }
 }

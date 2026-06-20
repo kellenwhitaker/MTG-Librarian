@@ -29,6 +29,7 @@ namespace MTG_Librarian
             ApplicationSettings.InInitialState = false;
             FillMainFormSettings();
             FillDockSettings();
+            ApplicationSettings.CardInfoTabIndex = Globals.Forms.CardInfoForm.tabControl.SelectedIndex;
         }
 
         private static void FillMainFormSettings()
@@ -121,6 +122,7 @@ namespace MTG_Librarian
             Globals.Forms.DockPanel.DockLeftPortion = ApplicationSettings.DockLeftPortion;
             Globals.Forms.DockPanel.DockRightPortion = ApplicationSettings.DockRightPortion;
             Globals.Forms.DockPanel.DockBottomPortion = ApplicationSettings.DockBottomPortion;
+            Globals.Forms.CardInfoForm.tabControl.SelectedIndex = ApplicationSettings.CardInfoTabIndex;
             Globals.Forms.DockPanel.ResumeLayout();
             Globals.Forms.DBViewForm.ResumeLayout();
             Globals.Forms.CardInfoForm.ResumeLayout();

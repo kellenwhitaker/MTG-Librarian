@@ -54,6 +54,14 @@ namespace MTG_Librarian
         #region Settings Properties
 
         [UserScopedSetting()]
+        [DefaultSettingValue("0")]
+        public int CardInfoTabIndex
+        {
+            get => (int)this["CardInfoTabIndex"];
+            set => this["CardInfoTabIndex"] = value;
+        }
+
+        [UserScopedSetting()]
         [DefaultSettingValue("100")]
         public string DefaultPlatforms
         {
