@@ -304,6 +304,7 @@ namespace MTG_Librarian
 
         private void fastObjectListView1_CellEditFinished(object sender, CellEditEventArgs e)
         {
+            cardListView.Focus();
             if (e.RowObject is FullInventoryCard editedCard)
             {
                 var args = new CardsUpdatedEventArgs { Items = new ArrayList { editedCard }, CollectionViewForm = this };
