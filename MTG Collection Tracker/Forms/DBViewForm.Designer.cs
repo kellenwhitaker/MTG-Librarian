@@ -892,6 +892,7 @@
             this.languageComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.languageComboBox.FormattingEnabled = true;
             this.languageComboBox.Items.AddRange(new object[] {
+            "Any",
             "English",
             "Spanish",
             "French",

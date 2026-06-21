@@ -98,6 +98,7 @@
             this.defaultSearchLanguageComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.defaultSearchLanguageComboBox.FormattingEnabled = true;
             this.defaultSearchLanguageComboBox.Items.AddRange(new object[] {
+            "Any",
             "English",
             "Spanish",
             "French",

@@ -188,7 +188,7 @@ namespace MTG_Librarian
                 queryClauses.Add($"flavor%3A{flavorTextTextBox.Text}");
 
             // language filter
-            if (languageComboBox.SelectedIndex > -1 && !string.IsNullOrWhiteSpace(languageComboBox.Text))
+            if (languageComboBox.SelectedIndex > 0 && !string.IsNullOrWhiteSpace(languageComboBox.Text))
                 queryClauses.Add($"lang%3A{Globals.Methods.AbbreviateLanguage(languageComboBox.Text)}");
 
             // rarity filter (converted from checked list to four checkboxes)
