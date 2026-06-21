@@ -46,6 +46,8 @@
             this.cardNameFilterBox = new EnhancedTextBox.EnhancedTextBox();
             this.setFilterBox = new EnhancedTextBox.EnhancedTextBox();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.tabControl = new System.Windows.Forms.TabControl();
+            this.tabPage9 = new System.Windows.Forms.TabPage();
             this.setsPanel = new System.Windows.Forms.Panel();
             this.setListView = new BrightIdeasSoftware.TreeListView();
             this.SetName = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -54,7 +56,7 @@
             this.complete4Column = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.updateThisSetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.compatibleTabControl1 = new CompatibleTabControl.CompatibleTabControl();
+            this.tabPage10 = new System.Windows.Forms.TabPage();
             this.searchParametersPanel = new System.Windows.Forms.Panel();
             this.includeVariationsCheckBox = new System.Windows.Forms.CheckBox();
             this.languageClearButton = new System.Windows.Forms.Button();
@@ -153,10 +155,12 @@
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this.tabControl.SuspendLayout();
+            this.tabPage9.SuspendLayout();
             this.setsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.setListView)).BeginInit();
             this.contextMenuStrip1.SuspendLayout();
-            this.compatibleTabControl1.SuspendLayout();
+            this.tabPage10.SuspendLayout();
             this.searchParametersPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pricesPriceNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.attributesObjectListView)).BeginInit();
@@ -404,8 +408,7 @@
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.setsPanel);
-            this.splitContainer1.Panel1.Controls.Add(this.compatibleTabControl1);
+            this.splitContainer1.Panel1.Controls.Add(this.tabControl);
             // 
             // splitContainer1.Panel2
             // 
@@ -415,14 +418,36 @@
             this.splitContainer1.SplitterWidth = 5;
             this.splitContainer1.TabIndex = 2;
             // 
+            // tabControl
+            // 
+            this.tabControl.Controls.Add(this.tabPage9);
+            this.tabControl.Controls.Add(this.tabPage10);
+            this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl.Location = new System.Drawing.Point(0, 0);
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedIndex = 0;
+            this.tabControl.Size = new System.Drawing.Size(741, 539);
+            this.tabControl.TabIndex = 4;
+            // 
+            // tabPage9
+            // 
+            this.tabPage9.BackColor = System.Drawing.Color.White;
+            this.tabPage9.Controls.Add(this.setsPanel);
+            this.tabPage9.Location = new System.Drawing.Point(4, 25);
+            this.tabPage9.Name = "tabPage9";
+            this.tabPage9.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage9.Size = new System.Drawing.Size(733, 510);
+            this.tabPage9.TabIndex = 0;
+            this.tabPage9.Text = "Sets";
+            // 
             // setsPanel
             // 
             this.setsPanel.Controls.Add(this.setListView);
-            this.setsPanel.Dock = System.Windows.Forms.DockStyle.Left;
-            this.setsPanel.Location = new System.Drawing.Point(0, 0);
+            this.setsPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.setsPanel.Location = new System.Drawing.Point(3, 3);
             this.setsPanel.Name = "setsPanel";
-            this.setsPanel.Size = new System.Drawing.Size(93, 539);
-            this.setsPanel.TabIndex = 1;
+            this.setsPanel.Size = new System.Drawing.Size(727, 504);
+            this.setsPanel.TabIndex = 2;
             // 
             // setListView
             // 
@@ -448,14 +473,13 @@
             this.setListView.SelectedBackColor = System.Drawing.Color.SteelBlue;
             this.setListView.SelectedForeColor = System.Drawing.Color.White;
             this.setListView.ShowGroups = false;
-            this.setListView.Size = new System.Drawing.Size(93, 539);
+            this.setListView.Size = new System.Drawing.Size(727, 504);
             this.setListView.TabIndex = 5;
             this.setListView.UnfocusedSelectedBackColor = System.Drawing.Color.LightGray;
             this.setListView.UseCellFormatEvents = true;
             this.setListView.UseCompatibleStateImageBehavior = false;
             this.setListView.View = System.Windows.Forms.View.Details;
             this.setListView.VirtualMode = true;
-            this.setListView.SelectionChanged += new System.EventHandler(this.setListView_SelectionChanged);
             // 
             // SetName
             // 
@@ -496,14 +520,16 @@
             this.updateThisSetToolStripMenuItem.Text = "Update this set";
             this.updateThisSetToolStripMenuItem.Click += new System.EventHandler(this.updateThisSetToolStripMenuItem_Click);
             // 
-            // compatibleTabControl1
+            // tabPage10
             // 
-            this.compatibleTabControl1.Controls.Add(this.searchParametersPanel);
-            this.compatibleTabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.compatibleTabControl1.Location = new System.Drawing.Point(0, 0);
-            this.compatibleTabControl1.Name = "compatibleTabControl1";
-            this.compatibleTabControl1.Size = new System.Drawing.Size(741, 539);
-            this.compatibleTabControl1.TabIndex = 2;
+            this.tabPage10.BackColor = System.Drawing.Color.White;
+            this.tabPage10.Controls.Add(this.searchParametersPanel);
+            this.tabPage10.Location = new System.Drawing.Point(4, 25);
+            this.tabPage10.Name = "tabPage10";
+            this.tabPage10.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPage10.Size = new System.Drawing.Size(733, 510);
+            this.tabPage10.TabIndex = 1;
+            this.tabPage10.Text = "Additional search parameters";
             // 
             // searchParametersPanel
             // 
@@ -579,10 +605,12 @@
             this.searchParametersPanel.Controls.Add(this.colorsRedButton);
             this.searchParametersPanel.Controls.Add(this.colorsGreenButton);
             this.searchParametersPanel.Controls.Add(this.colorsColorlessButton);
-            this.searchParametersPanel.Location = new System.Drawing.Point(99, 0);
+            this.searchParametersPanel.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.searchParametersPanel.Location = new System.Drawing.Point(3, 3);
             this.searchParametersPanel.Name = "searchParametersPanel";
-            this.searchParametersPanel.Size = new System.Drawing.Size(607, 527);
-            this.searchParametersPanel.TabIndex = 3;
+            this.searchParametersPanel.Size = new System.Drawing.Size(727, 504);
+            this.searchParametersPanel.TabIndex = 4;
+            this.searchParametersPanel.Scroll += new System.Windows.Forms.ScrollEventHandler(this.searchParametersPanel_Scroll);
             // 
             // includeVariationsCheckBox
             // 
@@ -1724,10 +1752,12 @@
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this.tabControl.ResumeLayout(false);
+            this.tabPage9.ResumeLayout(false);
             this.setsPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.setListView)).EndInit();
             this.contextMenuStrip1.ResumeLayout(false);
-            this.compatibleTabControl1.ResumeLayout(false);
+            this.tabPage10.ResumeLayout(false);
             this.searchParametersPanel.ResumeLayout(false);
             this.searchParametersPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pricesPriceNumericUpDown)).EndInit();
@@ -1770,66 +1800,40 @@
         private EnhancedTextBox.EnhancedTextBox cardTextFilterTextBox;
         private BrightIdeasSoftware.OLVColumn cardTextColumn;
         private BrightIdeasSoftware.OLVColumn priceColumn;
-        private System.Windows.Forms.Panel setsPanel;
         private System.Windows.Forms.TabPage tabPage1;
         private System.Windows.Forms.TabPage tabPage2;
         private System.Windows.Forms.TabPage tabPage3;
         private System.Windows.Forms.TabPage tabPage4;
-        private CompatibleTabControl.CompatibleTabControl compatibleTabControl1;
         private System.Windows.Forms.TabPage tabPage5;
         private System.Windows.Forms.TabPage tabPage6;
         private System.Windows.Forms.TabPage tabPage7;
         private System.Windows.Forms.TabPage tabPage8;
-        private System.Windows.Forms.Panel searchParametersPanel;
-        private CustomControls.FlatButton colorsWhiteButton;
-        private CustomControls.FlatButton colorsBlueButton;
-        private CustomControls.FlatButton colorsBlackButton;
-        private CustomControls.FlatButton colorsRedButton;
-        private CustomControls.FlatButton colorsGreenButton;
-        private CustomControls.FlatButton colorsColorlessButton;
+        private System.Windows.Forms.ComboBox uniqueComboBox;
+        private System.Windows.Forms.Button clearAllButton;
+        private System.Windows.Forms.TabControl tabControl;
+        private System.Windows.Forms.TabPage tabPage9;
+        private System.Windows.Forms.Panel setsPanel;
         public BrightIdeasSoftware.TreeListView setListView;
         private BrightIdeasSoftware.OLVColumn SetName;
         private BrightIdeasSoftware.OLVColumn completeColumn;
         private BrightIdeasSoftware.OLVColumn complete4Column;
-        private CustomControls.FlatButton commanderWhiteButton;
-        private CustomControls.FlatButton commanderBlueButton;
-        private CustomControls.FlatButton commanderBlackButton;
-        private CustomControls.FlatButton commanderRedButton;
-        private CustomControls.FlatButton commanderGreenButton;
-        private CustomControls.FlatButton commanderColorlessButton;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox manaCostTextBox;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.ComboBox manaCostComboBox;
-        private System.Windows.Forms.ComboBox cmcOperatorComboBox;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.NumericUpDown cmcNumericUpDown;
-        private System.Windows.Forms.NumericUpDown powerNumericUpDown;
-        private System.Windows.Forms.ComboBox powerComboBox;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.NumericUpDown toughnessNumericUpDown;
-        private System.Windows.Forms.ComboBox toughnessComboBox;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.NumericUpDown loyaltyNumericUpDown;
-        private System.Windows.Forms.ComboBox loyaltyComboBox;
-        private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.Label label9;
-        private System.Windows.Forms.ComboBox attributesComboBox;
-        public BrightIdeasSoftware.FastObjectListView attributesObjectListView;
-        private BrightIdeasSoftware.OLVColumn notColumn;
-        private BrightIdeasSoftware.OLVColumn attributeColumn;
-        private BrightIdeasSoftware.OLVColumn descriptionColumn;
-        private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.ComboBox pricesOperatorComboBox;
-        private System.Windows.Forms.NumericUpDown pricesPriceNumericUpDown;
-        private System.Windows.Forms.TextBox artistTextBox;
-        private System.Windows.Forms.Label label11;
-        private System.Windows.Forms.TextBox flavorTextTextBox;
-        private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.ComboBox colorsComboBox;
-        private System.Windows.Forms.ComboBox colorsOperatorComboBox;
-        private System.Windows.Forms.ComboBox manaCostTypeComboBox;
+        private System.Windows.Forms.TabPage tabPage10;
+        private System.Windows.Forms.Panel searchParametersPanel;
+        private System.Windows.Forms.CheckBox includeVariationsCheckBox;
+        private System.Windows.Forms.Button languageClearButton;
+        private System.Windows.Forms.Button flavorTextClearButton;
+        private System.Windows.Forms.Button artistClearButton;
+        private System.Windows.Forms.Button pricesClearButton;
+        private System.Windows.Forms.Button attributesClearButton;
+        private System.Windows.Forms.Button loyaltyClearButton;
+        private System.Windows.Forms.Button toughnessClearButton;
+        private System.Windows.Forms.Button powerClearButton;
+        private System.Windows.Forms.Button cmcClearButton;
+        private System.Windows.Forms.Button manaCostClearButton;
+        private System.Windows.Forms.Button commanderClearButton;
+        private System.Windows.Forms.Button colorsClearButton;
+        private System.Windows.Forms.Button rarityClearButton;
+        private System.Windows.Forms.Button gameClearButton;
         private System.Windows.Forms.CheckBox rarityMythicCheckBox;
         private System.Windows.Forms.CheckBox rarityRareCheckBox;
         private System.Windows.Forms.CheckBox rarityUncommonCheckBox;
@@ -1839,24 +1843,52 @@
         public System.Windows.Forms.CheckBox magicOnlineCheckBox;
         public System.Windows.Forms.CheckBox arenaCheckBox;
         public System.Windows.Forms.CheckBox paperCheckBox;
-        private System.Windows.Forms.Button gameClearButton;
-        private System.Windows.Forms.Button rarityClearButton;
-        private System.Windows.Forms.Button colorsClearButton;
-        private System.Windows.Forms.Button commanderClearButton;
-        private System.Windows.Forms.Button manaCostClearButton;
-        private System.Windows.Forms.Button cmcClearButton;
-        private System.Windows.Forms.Button powerClearButton;
-        private System.Windows.Forms.Button toughnessClearButton;
-        private System.Windows.Forms.Button loyaltyClearButton;
-        private System.Windows.Forms.Button attributesClearButton;
-        private System.Windows.Forms.Button pricesClearButton;
-        private System.Windows.Forms.Button artistClearButton;
-        private System.Windows.Forms.Button flavorTextClearButton;
-        private System.Windows.Forms.Button languageClearButton;
-        private System.Windows.Forms.CheckBox includeVariationsCheckBox;
-        private System.Windows.Forms.ComboBox uniqueComboBox;
-        private System.Windows.Forms.Button clearAllButton;
+        private System.Windows.Forms.ComboBox manaCostTypeComboBox;
+        private System.Windows.Forms.ComboBox colorsOperatorComboBox;
+        private System.Windows.Forms.ComboBox colorsComboBox;
         public System.Windows.Forms.ComboBox languageComboBox;
+        private System.Windows.Forms.Label label13;
+        private System.Windows.Forms.TextBox flavorTextTextBox;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox artistTextBox;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.NumericUpDown pricesPriceNumericUpDown;
+        private System.Windows.Forms.ComboBox pricesOperatorComboBox;
         public System.Windows.Forms.ComboBox pricesCurrencyComboBox;
+        private System.Windows.Forms.Label label10;
+        public BrightIdeasSoftware.FastObjectListView attributesObjectListView;
+        private BrightIdeasSoftware.OLVColumn notColumn;
+        private BrightIdeasSoftware.OLVColumn attributeColumn;
+        private BrightIdeasSoftware.OLVColumn descriptionColumn;
+        private System.Windows.Forms.ComboBox attributesComboBox;
+        private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.NumericUpDown loyaltyNumericUpDown;
+        private System.Windows.Forms.ComboBox loyaltyComboBox;
+        private System.Windows.Forms.Label label7;
+        private System.Windows.Forms.NumericUpDown toughnessNumericUpDown;
+        private System.Windows.Forms.ComboBox toughnessComboBox;
+        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.NumericUpDown powerNumericUpDown;
+        private System.Windows.Forms.ComboBox powerComboBox;
+        private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.NumericUpDown cmcNumericUpDown;
+        private System.Windows.Forms.ComboBox cmcOperatorComboBox;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.ComboBox manaCostComboBox;
+        private System.Windows.Forms.TextBox manaCostTextBox;
+        private System.Windows.Forms.Label label3;
+        private CustomControls.FlatButton commanderWhiteButton;
+        private CustomControls.FlatButton commanderBlueButton;
+        private CustomControls.FlatButton commanderBlackButton;
+        private CustomControls.FlatButton commanderRedButton;
+        private CustomControls.FlatButton commanderGreenButton;
+        private CustomControls.FlatButton commanderColorlessButton;
+        private System.Windows.Forms.Label label2;
+        private CustomControls.FlatButton colorsWhiteButton;
+        private CustomControls.FlatButton colorsBlueButton;
+        private CustomControls.FlatButton colorsBlackButton;
+        private CustomControls.FlatButton colorsRedButton;
+        private CustomControls.FlatButton colorsGreenButton;
+        private CustomControls.FlatButton colorsColorlessButton;
     }
 }

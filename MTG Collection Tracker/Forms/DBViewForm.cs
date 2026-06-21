@@ -32,15 +32,6 @@ namespace MTG_Librarian
             setListView.UseFiltering = true;
             cardListView.SmallImageList = Globals.ImageLists.SmallIconList;
             cardListView.VirtualListDataSource = new MyCustomSortingDataSource(cardListView);
-            var setsPage = new TabPage("Sets");
-            setsPage.Controls.Add(setsPanel);
-            setsPanel.Dock = DockStyle.Fill;
-            compatibleTabControl1.TabPages.Add(setsPage);
-            var paramsPage = new TabPage("Additional search parameters");
-            paramsPage.Controls.Add(searchParametersPanel);
-            searchParametersPanel.Dock = DockStyle.Fill;
-            compatibleTabControl1.TabPages.Add(paramsPage);
-            compatibleTabControl1.Dock = DockStyle.Fill;
             whiteManaButton.ImageList = blueManaButton.ImageList = blackManaButton.ImageList = redManaButton.ImageList = greenManaButton.ImageList
                                       = colorlessManaButton.ImageList = genericManaButton.ImageList = Globals.ImageLists.ManaIcons;
             (whiteManaButton.ImageKey, blueManaButton.ImageKey) = ("{W}", "{U}");
@@ -820,11 +811,13 @@ namespace MTG_Librarian
             paperCheckBox.Checked = defaultPlatforms[0] == '1';
             arenaCheckBox.Checked = defaultPlatforms[1] == '1';
             magicOnlineCheckBox.Checked = defaultPlatforms[2] == '1';
+            paperCheckBox.Focus();
         }
 
         private void rarityClearButton_Click(object sender, EventArgs e)
         {
-            rarityCommonCheckBox.Checked = rarityUncommonCheckBox.Checked = rarityRareCheckBox.Checked = rarityMythicCheckBox.Checked = false;
+            rarityCommonCheckBox.Checked = rarityUncommonCheckBox.Checked = rarityRareCheckBox.Checked = rarityMythicCheckBox.Checked = false;            
+            rarityCommonCheckBox.Focus();
         }
 
         private void colorsClearButton_Click(object sender, EventArgs e)
@@ -832,48 +825,56 @@ namespace MTG_Librarian
             colorsComboBox.SelectedIndex = colorsOperatorComboBox.SelectedIndex = -1;
             colorsWhiteButton.Checked = colorsBlueButton.Checked = colorsBlackButton.Checked = colorsRedButton.Checked = colorsGreenButton.Checked = colorsColorlessButton.Checked = false;
             colorsClearButton.Visible = false;
+            colorsComboBox.Focus();
         }
 
         private void commanderClearButton_Click(object sender, EventArgs e)
         {
             commanderWhiteButton.Checked = commanderBlueButton.Checked = commanderBlackButton.Checked = commanderRedButton.Checked = commanderGreenButton.Checked = commanderColorlessButton.Checked = false;
             commanderClearButton.Visible = false;
+            commanderWhiteButton.Focus();
         }
 
         private void manaCostClearButton_Click(object sender, EventArgs e)
         {
             manaCostTextBox.Text = "";
             manaCostTypeComboBox.SelectedIndex = manaCostComboBox.SelectedIndex = -1;
+            manaCostComboBox.Focus();
         }
 
         private void cmcClearButton_Click(object sender, EventArgs e)
         {
             cmcOperatorComboBox.SelectedIndex = -1;
             cmcNumericUpDown.Value = cmcNumericUpDown.Minimum;
+            cmcOperatorComboBox.Focus();
         }
 
         private void powerClearButton_Click(object sender, EventArgs e)
         {
             powerComboBox.SelectedIndex = -1;
             powerNumericUpDown.Value = powerNumericUpDown.Minimum;
+            powerComboBox.Focus();
         }
 
         private void toughnessClearButton_Click(object sender, EventArgs e)
         {
             toughnessComboBox.SelectedIndex = -1;
             toughnessNumericUpDown.Value = toughnessNumericUpDown.Minimum;
+            toughnessComboBox.Focus();
         }
 
         private void loyaltyClearButton_Click(object sender, EventArgs e)
         {
             loyaltyComboBox.SelectedIndex = -1;
             loyaltyNumericUpDown.Value = loyaltyNumericUpDown.Minimum;
+            loyaltyComboBox.Focus();
         }
 
         private void attributesClearButton_Click(object sender, EventArgs e)
         {
             attributesComboBox.SelectedIndex = -1;
             attributesObjectListView.ClearObjects();
+            attributesComboBox.Focus();
         }
 
         private void pricesClearButton_Click(object sender, EventArgs e)
@@ -881,21 +882,25 @@ namespace MTG_Librarian
             pricesCurrencyComboBox.Text = SettingsManager.ApplicationSettings.DefaultCurrency;
             pricesOperatorComboBox.SelectedIndex = -1;
             pricesPriceNumericUpDown.Value = pricesPriceNumericUpDown.Minimum;
+            pricesCurrencyComboBox.Focus();
         }
 
         private void artistClearButton_Click(object sender, EventArgs e)
         {
             artistTextBox.Text = "";
+            artistTextBox.Focus();
         }
 
         private void flavorTextClearButton_Click(object sender, EventArgs e)
         {
             flavorTextTextBox.Text = "";
+            flavorTextTextBox.Focus();
         }
 
         private void languageClearButton_Click(object sender, EventArgs e)
         {
             languageComboBox.Text = SettingsManager.ApplicationSettings.DefaultSearchLanguage;
+            languageComboBox.Focus();
         }
 
         private void paperCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -1008,6 +1013,21 @@ namespace MTG_Librarian
             uniqueComboBox.SelectedIndex = 2;
             setListView.SelectedIndex = -1;
             includeVariationsCheckBox.Checked = true;
+        }
+
+        private void searchParametersPanel_Scroll(object sender, ScrollEventArgs e)
+        {
+            commanderWhiteButton.Refresh();
+            commanderBlueButton.Refresh();
+            commanderBlackButton.Refresh();
+            commanderRedButton.Refresh();
+            commanderGreenButton.Refresh();
+            commanderColorlessButton.Refresh();
+            colorsWhiteButton.Refresh();
+            colorsBlueButton.Refresh();
+            colorsBlackButton.Refresh();
+            colorsRedButton.Refresh();
+            colorsGreenButton.Refresh();
         }
     }
 }
