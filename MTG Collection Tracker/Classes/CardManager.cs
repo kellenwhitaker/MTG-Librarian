@@ -72,13 +72,17 @@ namespace MTG_Librarian
             var setItems = new Dictionary<string, OLVSetItem>();
             using (ScryfallCardsDbContext context = new ScryfallCardsDbContext())
             {
+                int failedCards = 0;
                 var cardsAdded = new List<InventoryCard>();
                 int insertionIndex = 0;
                 foreach (OLVCardItem cardItem in cards)
                 {
                     var card = cardItem.MagicCard;
                     if (!card.games.Contains(collection.Platform.ToLower()))
+                    {
+                        failedCards++;
                         continue;
+                    }
                     var inventoryCard = AddMagicCardToCollection(context, card, collection, insertionIndex);
                     cardsAdded.Add(inventoryCard);
                     insertionIndex++;
@@ -110,6 +114,8 @@ namespace MTG_Librarian
                     }
                 }
                 context.SaveChanges();
+                if (failedCards > 0)
+                    MessageBox.Show($"{failedCards} card(s) were not added because they are not available on the collection's platform.");
                 if (cvForm != null)
                     cvForm.AddFullInventoryCards(fullCardsAdded);
                 EventManager.OnInventoryChanged(new InventoryChangedEventArgs { Cards = fullCardsAdded });
