@@ -16,6 +16,13 @@ namespace CustomControls
             UseVisualStyleBackColor = false;
             FlatAppearance.BorderSize = 0;
             FlatAppearance.BorderColor = BackColor;
+            SetDouubleBuffered();
+        }
+
+        private void SetDouubleBuffered()
+        {
+            typeof(Control).GetProperty("DoubleBuffered", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance)
+                .SetValue(this, true, null);
         }
 
         public bool Checked
