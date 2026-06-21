@@ -282,6 +282,7 @@ namespace MTG_Librarian
                 {
                     string defaultCurrency = SettingsManager.ApplicationSettings.DefaultCurrency;
                     string defaultPaperCurrency = SettingsManager.ApplicationSettings.DefaultPaperCurrency;
+                    string defaultSearchLanguage = SettingsManager.ApplicationSettings.DefaultSearchLanguage;
                     SettingsManager.ApplicationSettings.DefaultCurrency = settingsForm.defaultCurrencyComboBox.Text;
                     SettingsManager.ApplicationSettings.DefaultPaperCurrency = settingsForm.defaultPaperCurrencyComboBox.Text;
                     SettingsManager.ApplicationSettings.DefaultSearchLanguage = settingsForm.defaultSearchLanguageComboBox.Text;
@@ -296,6 +297,10 @@ namespace MTG_Librarian
                     }
                     if (defaultCurrency != SettingsManager.ApplicationSettings.DefaultCurrency || defaultPaperCurrency != SettingsManager.ApplicationSettings.DefaultPaperCurrency)
                         EventManager.OnDefaultCurrencyChanged();
+                    if (defaultCurrency != SettingsManager.ApplicationSettings.DefaultCurrency)
+                        Globals.Forms.DBViewForm.pricesCurrencyComboBox.Text = SettingsManager.ApplicationSettings.DefaultCurrency;
+                    if (defaultSearchLanguage != SettingsManager.ApplicationSettings.DefaultSearchLanguage)
+                        Globals.Forms.DBViewForm.languageComboBox.Text = SettingsManager.ApplicationSettings.DefaultSearchLanguage;
                 }
             }
         }

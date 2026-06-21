@@ -1820,7 +1820,6 @@
         private BrightIdeasSoftware.OLVColumn attributeColumn;
         private BrightIdeasSoftware.OLVColumn descriptionColumn;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.ComboBox pricesCurrencyComboBox;
         private System.Windows.Forms.ComboBox pricesOperatorComboBox;
         private System.Windows.Forms.NumericUpDown pricesPriceNumericUpDown;
         private System.Windows.Forms.TextBox artistTextBox;
@@ -1828,7 +1827,6 @@
         private System.Windows.Forms.TextBox flavorTextTextBox;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label13;
-        private System.Windows.Forms.ComboBox languageComboBox;
         private System.Windows.Forms.ComboBox colorsComboBox;
         private System.Windows.Forms.ComboBox colorsOperatorComboBox;
         private System.Windows.Forms.ComboBox manaCostTypeComboBox;
@@ -1858,5 +1856,7 @@
         private System.Windows.Forms.CheckBox includeVariationsCheckBox;
         private System.Windows.Forms.ComboBox uniqueComboBox;
         private System.Windows.Forms.Button clearAllButton;
+        public System.Windows.Forms.ComboBox languageComboBox;
+        public System.Windows.Forms.ComboBox pricesCurrencyComboBox;
     }
 }
