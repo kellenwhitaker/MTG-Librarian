@@ -22,7 +22,7 @@ namespace MTG_Librarian
 
         public override string Text
         {
-            get => Collection?.CollectionName;
+            get => Collection?.CollectionName + " - " + Collection?.Platform;
             set
             {
                 if (Collection != null)

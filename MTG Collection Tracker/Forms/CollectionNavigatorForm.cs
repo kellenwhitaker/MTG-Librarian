@@ -26,9 +26,7 @@ namespace MTG_Librarian
             InitializeComponent();
             navigatorListView.CanExpandGetter = x => (x as NavigatorItem).CanExpand;
             navigatorListView.ChildrenGetter = x => (x as NavigatorGroup).Collections;
-            var renderer = navigatorListView.TreeColumnRenderer;
-            renderer.IsShowLines = false;
-            renderer.UseTriangles = true;
+            navigatorListView.TreeColumnRenderer = new CollectionNameRenderer();
             var dropSink = navigatorListView.DropSink as SimpleDropSink;
             dropSink.CanDropOnItem = false;
             dropSink.Billboard.BackColor = Color.DodgerBlue;

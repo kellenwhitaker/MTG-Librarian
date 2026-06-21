@@ -354,6 +354,9 @@
     <Compile Include="OLVRenderers\CheckBoxRenderer.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="OLVRenderers\CollectionNameRenderer.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="OLVRenderers\DeltaRenderer.cs">
       <SubType>Component</SubType>
     </Compile>
