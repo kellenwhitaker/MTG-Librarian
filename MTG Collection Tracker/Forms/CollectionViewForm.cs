@@ -45,6 +45,16 @@ namespace MTG_Librarian
         {
             InitializeComponent();
             cardListView.SetDoubleBuffered();
+            
+            cardListView.FormatRow += (sender, e) =>
+            {
+                if (e.Model is InventoryTotalsItem)
+                {
+                    e.Item.BackColor = Color.DodgerBlue;
+                    e.Item.ForeColor = Color.White;
+                }
+            };
+
             cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "PaddedName").Renderer = new CardInstanceNameRenderer();
             cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "ManaCost").Renderer = new ManaCostRenderer();
             cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "Delta").Renderer = new DeltaRenderer();
@@ -69,6 +79,11 @@ namespace MTG_Librarian
                 TextChangedWaitTimer.Stop();
                 UpdateModelFilter();
             };
+        }
+
+        private void CardListView_FormatRow(object sender, FormatRowEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion Constructors
@@ -438,6 +453,11 @@ namespace MTG_Librarian
             if (ignoreNextCardListViewSelectionChanged)
             {
                 ignoreNextCardListViewSelectionChanged = false;
+                return;
+            }
+            if (cardListView.SelectedObject is InventoryTotalsItem)
+            {
+                cardListView.SelectedObject = null;
                 return;
             }
             if (cardListView.SelectedObjects != null && cardListView.SelectedObjects.Count > 0 && cardListView.SelectedObjects[0] is ScryfallMagicCardBase)

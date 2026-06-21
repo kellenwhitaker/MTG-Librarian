@@ -7,6 +7,14 @@ namespace MTG_Librarian
     {
         private void FillBackground(Graphics g, Rectangle backgroundRect)
         {
+            if (RowObject is InventoryTotalsItem)
+            {
+                using (var solidBrush = new SolidBrush(ListItem.BackColor))
+                {
+                    g.FillRectangle(solidBrush, backgroundRect);
+                }
+                return;
+            }
             if (IsItemSelected)
             {
                 if (ListView.Focused)
@@ -47,10 +55,21 @@ namespace MTG_Librarian
                 var textRect = new Rectangle(r.Left, r.Top + 5, r.Width, r.Height - 5);
                 g.DrawString(isPositive ? "+" + GetText() : GetText(), Font, fontColor, textRect, new StringFormat() { Alignment = StringAlignment.Far });
             }
-            else if (ListItem.RowObject is InventoryTotalsItem)
+            else if (ListItem.RowObject is InventoryTotalsItem item)
             {
                 var backgroundRect = new Rectangle(r.Left - 1, r.Top - 1, r.Width + 1, r.Height + 1);
                 FillBackground(g, backgroundRect);
+                double value = 0;
+                var isPositive = false;
+                Brush fontColor = Brushes.White;
+                if (Column.AspectName == "Delta")
+                    value = item.Delta;
+                else if (Column.AspectName == "Percent")
+                    value = item.Percent;
+                if (value > 0)
+                    isPositive = true;
+                var textRect = new Rectangle(r.Left, r.Top + 5, r.Width, r.Height - 5);
+                g.DrawString(isPositive ? "+" + GetText() : GetText(), Font, fontColor, textRect, new StringFormat() { Alignment = StringAlignment.Far });
             }
         }
     }
