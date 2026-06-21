@@ -123,6 +123,11 @@ namespace MTG_Librarian
 
         public static void MoveFullInventoryCardsToCollection(ArrayList fullInventoryCards, CollectionViewForm sourceCVForm, CardCollection collection)
         {
+            if (sourceCVForm.Collection.Platform != collection.Platform)
+            {
+                MessageBox.Show("Cannot move cards between collections of different platforms.");
+                return;
+            }
             var cardsList = new List<FullInventoryCard>();
             try
             {
