@@ -151,7 +151,13 @@ namespace MTG_Librarian
                     context.SaveChanges();
                 }
                 sourceCVForm.RemoveFullInventoryCards(cardsList);
-                Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.Collection.Id == collection.Id)?.AddFullInventoryCards(cardsList);
+                var destinationCVForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.Collection.Id == collection.Id);
+                if (destinationCVForm != null)
+                {
+                    destinationCVForm.AddFullInventoryCards(cardsList);
+                    destinationCVForm.cardListView.SelectedObjects = cardsList;
+                    destinationCVForm.cardListView.Focus();
+                }
             }
             catch (Exception ex)
             {
