@@ -86,6 +86,14 @@ namespace MTG_Librarian
         }
 
         [UserScopedSetting()]
+        [DefaultSettingValue("USD")]
+        public string DefaultPaperCurrency
+        {
+            get => (string)this["DefaultPaperCurrency"];
+            set => this["DefaultPaperCurrency"] = value;
+        }
+
+        [UserScopedSetting()]
         [DefaultSettingValue("true")]
         public bool InInitialState
         {

@@ -51,6 +51,7 @@ namespace MTG_Librarian
                 CollectionId = collection.Id,
                 InsertionIndex = insertionIndex,
                 Virtual = collection.Virtual,
+                Platform = collection.Platform
             };
 
             if (magicCard.finishes.Length == 1)
@@ -76,6 +77,8 @@ namespace MTG_Librarian
                 foreach (OLVCardItem cardItem in cards)
                 {
                     var card = cardItem.MagicCard;
+                    if (!card.games.Contains(collection.Platform.ToLower()))
+                        continue;
                     var inventoryCard = AddMagicCardToCollection(context, card, collection, insertionIndex);
                     cardsAdded.Add(inventoryCard);
                     insertionIndex++;
@@ -86,6 +89,7 @@ namespace MTG_Librarian
                 context.SaveChanges();
                 var cvForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.Collection.Id == collection.Id);
                 var fullCardsAdded = new List<FullInventoryCard>();
+                var DefaultPaperCurrency = SettingsManager.ApplicationSettings.DefaultPaperCurrency;
                 foreach (InventoryCard card in cardsAdded)
                 {
                     if (cvForm != null)
@@ -93,9 +97,13 @@ namespace MTG_Librarian
                         var fullCard = card.ToFullCard(context);
                         if (fullCard != null)
                         {
-                            string priceString;
+                            string priceString = "";
                             string finish = fullCard.Finish;
-                            if (fullCard.prices.TryGetValue($"{DefaultCurrency.ToLower()}{(finish != "nonfoil" ? $"_{finish}" : "")}", out priceString))
+                            if (fullCard.Platform == "MTGO")
+                                fullCard.prices.TryGetValue($"tix", out priceString);
+                            else if (fullCard.Platform == "Paper")
+                                fullCard.prices.TryGetValue($"{DefaultPaperCurrency.ToLower()}{(finish != "nonfoil" ? $"_{finish}" : "")}", out priceString);
+                            if (!string.IsNullOrEmpty(priceString))
                                 fullCard.Price = Convert.ToDouble(priceString);
                             fullCardsAdded.Add(fullCard);
                         }

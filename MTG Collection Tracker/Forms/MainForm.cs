@@ -272,6 +272,7 @@ namespace MTG_Librarian
             using (var settingsForm = new SettingsForm())
             {
                 settingsForm.defaultCurrencyComboBox.Text = SettingsManager.ApplicationSettings.DefaultCurrency;
+                settingsForm.defaultPaperCurrencyComboBox.Text = SettingsManager.ApplicationSettings.DefaultPaperCurrency;
                 settingsForm.defaultSearchLanguageComboBox.Text = SettingsManager.ApplicationSettings.DefaultSearchLanguage;
                 var defaultPlatforms = SettingsManager.ApplicationSettings.DefaultPlatforms;
                 settingsForm.paperCheckBox.Checked = defaultPlatforms[0] == '1';
@@ -280,7 +281,9 @@ namespace MTG_Librarian
                 if (settingsForm.ShowDialog() == DialogResult.OK)
                 {
                     string defaultCurrency = SettingsManager.ApplicationSettings.DefaultCurrency;
+                    string defaultPaperCurrency = SettingsManager.ApplicationSettings.DefaultPaperCurrency;
                     SettingsManager.ApplicationSettings.DefaultCurrency = settingsForm.defaultCurrencyComboBox.Text;
+                    SettingsManager.ApplicationSettings.DefaultPaperCurrency = settingsForm.defaultPaperCurrencyComboBox.Text;
                     SettingsManager.ApplicationSettings.DefaultSearchLanguage = settingsForm.defaultSearchLanguageComboBox.Text;
                     SettingsManager.ApplicationSettings.DefaultPlatforms = (settingsForm.paperCheckBox.Checked ? "1" : "0") + (settingsForm.arenaCheckBox.Checked ? "1" : "0")
                                      + (settingsForm.magicOnlineCheckBox.Checked ? "1" : "0");
@@ -291,7 +294,7 @@ namespace MTG_Librarian
                         Globals.Forms.DBViewForm.arenaCheckBox.Checked = settingsForm.arenaCheckBox.Checked;
                         Globals.Forms.DBViewForm.magicOnlineCheckBox.Checked = settingsForm.magicOnlineCheckBox.Checked;
                     }
-                    if (defaultCurrency != SettingsManager.ApplicationSettings.DefaultCurrency)
+                    if (defaultCurrency != SettingsManager.ApplicationSettings.DefaultCurrency || defaultPaperCurrency != SettingsManager.ApplicationSettings.DefaultPaperCurrency)
                         EventManager.OnDefaultCurrencyChanged();
                 }
             }
@@ -302,7 +305,7 @@ namespace MTG_Librarian
 
         private void DefaultCurrencyChanged(object sender, EventArgs e)
         {
-            string DefaultCurrency = SettingsManager.ApplicationSettings.DefaultCurrency;
+            string DefaultPaperCurrency = SettingsManager.ApplicationSettings.DefaultPaperCurrency;
             foreach (var form in Globals.Forms.OpenCollectionForms)
             {
                 var cardsToRefresh = new List<FullInventoryCard>();
@@ -311,9 +314,13 @@ namespace MTG_Librarian
                     if (item is FullInventoryCard card)
                     {
                         cardsToRefresh.Add(card);
-                        string priceString;
+                        string priceString = "";
                         string finish = card.Finish;
-                        if (card.prices.TryGetValue($"{DefaultCurrency.ToLower()}{(finish != "nonfoil" ? $"_{finish}" : "")}", out priceString))
+                        if (card.Platform == "MTGO")
+                            card.prices.TryGetValue("tix", out priceString);
+                        else if (card.Platform == "Paper")
+                            card.prices.TryGetValue($"{DefaultPaperCurrency.ToLower()}{(finish != "nonfoil" ? $"_{finish}" : "")}", out priceString);
+                        if (!string.IsNullOrEmpty(priceString))
                             card.Price = Convert.ToDouble(priceString);
                         else
                             card.Price = null;

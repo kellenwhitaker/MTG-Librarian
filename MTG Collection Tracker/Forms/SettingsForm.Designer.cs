@@ -38,6 +38,8 @@
             this.paperCheckBox = new System.Windows.Forms.CheckBox();
             this.arenaCheckBox = new System.Windows.Forms.CheckBox();
             this.magicOnlineCheckBox = new System.Windows.Forms.CheckBox();
+            this.label4 = new System.Windows.Forms.Label();
+            this.defaultPaperCurrencyComboBox = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // label1
@@ -122,7 +124,7 @@
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(12, 67);
+            this.label3.Location = new System.Drawing.Point(12, 104);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(110, 16);
             this.label3.TabIndex = 6;
@@ -131,7 +133,7 @@
             // paperCheckBox
             // 
             this.paperCheckBox.AutoSize = true;
-            this.paperCheckBox.Location = new System.Drawing.Point(174, 66);
+            this.paperCheckBox.Location = new System.Drawing.Point(174, 103);
             this.paperCheckBox.Name = "paperCheckBox";
             this.paperCheckBox.Size = new System.Drawing.Size(66, 20);
             this.paperCheckBox.TabIndex = 7;
@@ -141,7 +143,7 @@
             // arenaCheckBox
             // 
             this.arenaCheckBox.AutoSize = true;
-            this.arenaCheckBox.Location = new System.Drawing.Point(246, 66);
+            this.arenaCheckBox.Location = new System.Drawing.Point(246, 103);
             this.arenaCheckBox.Name = "arenaCheckBox";
             this.arenaCheckBox.Size = new System.Drawing.Size(65, 20);
             this.arenaCheckBox.TabIndex = 8;
@@ -151,18 +153,41 @@
             // magicOnlineCheckBox
             // 
             this.magicOnlineCheckBox.AutoSize = true;
-            this.magicOnlineCheckBox.Location = new System.Drawing.Point(317, 66);
+            this.magicOnlineCheckBox.Location = new System.Drawing.Point(317, 103);
             this.magicOnlineCheckBox.Name = "magicOnlineCheckBox";
             this.magicOnlineCheckBox.Size = new System.Drawing.Size(107, 20);
             this.magicOnlineCheckBox.TabIndex = 9;
             this.magicOnlineCheckBox.Text = "Magic Online";
             this.magicOnlineCheckBox.UseVisualStyleBackColor = true;
             // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(12, 69);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(145, 16);
+            this.label4.TabIndex = 10;
+            this.label4.Text = "Default paper currency:";
+            // 
+            // defaultPaperCurrencyComboBox
+            // 
+            this.defaultPaperCurrencyComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.defaultPaperCurrencyComboBox.FormattingEnabled = true;
+            this.defaultPaperCurrencyComboBox.Items.AddRange(new object[] {
+            "USD",
+            "EUR"});
+            this.defaultPaperCurrencyComboBox.Location = new System.Drawing.Point(174, 69);
+            this.defaultPaperCurrencyComboBox.Name = "defaultPaperCurrencyComboBox";
+            this.defaultPaperCurrencyComboBox.Size = new System.Drawing.Size(121, 24);
+            this.defaultPaperCurrencyComboBox.TabIndex = 11;
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.defaultPaperCurrencyComboBox);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.magicOnlineCheckBox);
             this.Controls.Add(this.arenaCheckBox);
             this.Controls.Add(this.paperCheckBox);
@@ -192,5 +217,7 @@
         public System.Windows.Forms.CheckBox paperCheckBox;
         public System.Windows.Forms.CheckBox arenaCheckBox;
         public System.Windows.Forms.CheckBox magicOnlineCheckBox;
+        private System.Windows.Forms.Label label4;
+        public System.Windows.Forms.ComboBox defaultPaperCurrencyComboBox;
     }
 }

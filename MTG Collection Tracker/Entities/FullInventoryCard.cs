@@ -35,6 +35,7 @@ namespace MTG_Librarian
         public int? InsertionIndex { get => _insertionIndex; set { _insertionIndex = value; UpdateSortableTimeAdded(); } }
         public string Condition { get; set; }
         public string Finish { get; set; }
+        public string Platform { get; set; }
         [NotMapped]
         public string SortableTimeAdded
         {

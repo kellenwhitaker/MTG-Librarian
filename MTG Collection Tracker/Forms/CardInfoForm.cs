@@ -199,7 +199,7 @@ namespace MTG_Librarian
                         string finish = "nonfoil";
                         if (card.finishes.Count() == 1)
                             finish = card.finishes[0];
-                        if (card.prices.TryGetValue($"{DefaultCurrency.ToLower()}{((finish != "nonfoil") ? $"_{finish}" : "")}", out priceString) && priceString != null)
+                        if (card.prices.TryGetValue($"{DefaultCurrency.ToLower()}{((finish != "nonfoil") ? $"_{finish}" : "")}", out priceString) && !string.IsNullOrEmpty(priceString))
                             price = Convert.ToDouble(priceString);
                         string SymbolCode = card.set != null && card.set.Length == 4 && (card.set_type == "token" || card.set_type == "promo" || card.set_type == "memorabilia") ? card.set.Substring(1) : card.set;
                         var ImageKey = $"{SymbolCode}: {card.rarity}";

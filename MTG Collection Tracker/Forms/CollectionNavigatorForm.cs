@@ -7,6 +7,7 @@ using System.Linq;
 using System.Windows.Forms;
 using BrightIdeasSoftware;
 using KW.WinFormsUI.Docking;
+using MTG_Librarian.Forms;
 
 namespace MTG_Librarian
 {
@@ -262,12 +263,54 @@ namespace MTG_Librarian
                 group = (navigatorListView.SelectedObject as NavigatorCollection).Parent;
             if (group != null)
             {
-                var newCollection = new NavigatorCollection { Name = "New Collection", Parent = group };
-                group.AddCollection(newCollection);
-                navigatorListView.RebuildAll(true);
-                navigatorListView.Expand(group);
-                navigatorListView.SelectedObject = newCollection;
-                navigatorListView.StartCellEdit(navigatorListView.SelectedItem, 0);
+                var form = new NewCollectionForm();
+                form.collectionNameTextBox.Text = "New Collection";
+                var defaultPlatforms = SettingsManager.ApplicationSettings.DefaultPlatforms;
+                if (defaultPlatforms[0] == '1')
+                    form.platformComboBox.Text = "Paper";
+                else if (defaultPlatforms[1] == '1')
+                    form.platformComboBox.Text = "Arena";
+                else if (defaultPlatforms[2] == '1')
+                    form.platformComboBox.Text = "Magic Online";
+                else
+                    form.platformComboBox.Text = "Paper";
+                if (form.ShowDialog() == DialogResult.OK)
+                {
+                    using (var context = new ScryfallCardsDbContext())
+                    {
+                        if (form.collectionNameTextBox.Text == "Main")
+                        {
+                            MessageBox.Show("Collection name conflicts with an existing permanent collection");
+                            return;
+                        }
+                        try
+                        {
+                            var collection = new CardCollection
+                            {
+                                GroupId = group.CollectionGroup.Id,
+                                CollectionName = form.collectionNameTextBox.Text,
+                                Permanent = false,
+                                Type = "collection",
+                                Virtual = group.Virtual,
+                                Platform = form.platformComboBox.Text
+                            };
+                            if (collection.Platform == "Magic Online")
+                                collection.Platform = "MTGO";
+                            context.Collections.Add(collection);
+                            context.SaveChanges();
+                            var newCollection = new NavigatorCollection { CardCollection = collection, Name = collection.CollectionName, Parent = group };
+                            group.AddCollection(newCollection);
+                            navigatorListView.RebuildAll(true);
+                            navigatorListView.Expand(group);
+                            navigatorListView.SelectedObject = newCollection;
+                        }
+                        catch (Exception ex)
+                        {
+                            DebugOutput.WriteLine(ex.ToString());
+                            MessageBox.Show("Could not add collection");
+                        }
+                    }
+                }                
             }
         }
 

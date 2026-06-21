@@ -104,7 +104,7 @@ namespace MTG_Librarian
                             string finish = "nonfoil";
                             if (card.finishes.Count() == 1)
                                 finish = card.finishes[0];
-                            if (card.prices.TryGetValue($"{DefaultCurrency.ToLower()}{((finish != "nonfoil") ? $"_{finish}" : "")}", out priceString) && priceString != null)
+                            if (card.prices.TryGetValue($"{DefaultCurrency.ToLower()}{((finish != "nonfoil") ? $"_{finish}" : "")}", out priceString) && !string.IsNullOrEmpty(priceString))
                                 card.Price = Convert.ToDouble(priceString);
                             cardItems.Add(new OLVCardItem(card));
                         }
@@ -132,6 +132,7 @@ namespace MTG_Librarian
                 Globals.Forms.MainForm.BeginInvoke(new CardsUpdatedFromScryfallDelegate(CardsUpdatedFromScryfall), sender, e);
             else
             {
+                var DefaultPaperCurrency = SettingsManager.ApplicationSettings.DefaultPaperCurrency;
                 foreach (var form in Globals.Forms.OpenCollectionForms)
                 {
                     var cardsToRefresh = new List<FullInventoryCard>();
@@ -146,9 +147,13 @@ namespace MTG_Librarian
                             foreach (var match in matches)
                             {
                                 match.CopyFromMagicCard(scryfallCard);
-                                string priceString;
+                                string priceString = "";
                                 string finish = match.Finish;
-                                if (match.prices.TryGetValue($"{DefaultCurrency.ToLower()}{(finish != "nonfoil" ? $"_{finish}" : "")}", out priceString))
+                                if (match.Platform == "MTGO")
+                                    match.prices.TryGetValue("tix", out priceString);
+                                else if (match.Platform == "Paper")
+                                    match.prices.TryGetValue($"{DefaultPaperCurrency.ToLower()}{(finish != "nonfoil" ? $"_{finish}" : "")}", out priceString);
+                                if (!string.IsNullOrEmpty(priceString))
                                     match.Price = Convert.ToDouble(priceString);
                                 cardsToRefresh.Add(match);
                             }

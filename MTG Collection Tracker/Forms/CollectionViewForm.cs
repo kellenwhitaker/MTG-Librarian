@@ -194,6 +194,7 @@ namespace MTG_Librarian
         {
             if (Collection != null)
             {
+                var DefaultPaperCurrency = SettingsManager.ApplicationSettings.DefaultPaperCurrency;
                 using (ScryfallCardsDbContext context = new ScryfallCardsDbContext())
                 {
                     var items = from c in context.LibraryView
@@ -202,10 +203,14 @@ namespace MTG_Librarian
 
                     foreach (var fullCard in items)
                     {
-                        string priceString;
+                        string priceString = "";
                         string finish = fullCard.Finish;
-                        string key = $"{DefaultCurrency.ToLower()}{(finish != "nonfoil" ? $"_{finish}" : "")}";
-                        if (fullCard.prices != null && fullCard.prices.TryGetValue(key, out priceString) && priceString != null)
+                        string key = "";
+                        if (fullCard.Platform == "MTGO")
+                            key = "tix";
+                        else if (fullCard.Platform == "Paper")
+                            key = $"{DefaultPaperCurrency.ToLower()}{(finish != "nonfoil" ? $"_{finish}" : "")}";
+                        if (fullCard.prices != null && fullCard.prices.TryGetValue(key, out priceString) && !string.IsNullOrEmpty(priceString))
                         {
                             fullCard.Price = Convert.ToDouble(priceString);
                         }
@@ -536,10 +541,16 @@ namespace MTG_Librarian
                 }
                 else if (e.SubItemIndex == finishIndex)
                 {
+                    string priceString = "";
+                    var DefaultPaperCurrency = SettingsManager.ApplicationSettings.DefaultPaperCurrency;
                     card.Finish = EditorComboBox.SelectedItem?.ToString();
-                    card.Price = card.prices != null && card.prices.TryGetValue($"{DefaultCurrency.ToLower()}{(card.Finish != "nonfoil" ? $"_{card.Finish}" : "")}", out string priceString) && priceString != null
-                        ? Convert.ToDouble(priceString)
-                        : (double?)null;
+                    if (card.Platform == "MTGO")
+                        card.prices.TryGetValue("tix", out priceString);
+                    else if (card.Platform == "Paper")
+                        card.prices.TryGetValue($"{DefaultPaperCurrency.ToLower()}{(card.Finish != "nonfoil" ? $"_{card.Finish}" : "")}", out priceString);
+                    if (!string.IsNullOrEmpty(priceString))
+                        card.Price = Convert.ToDouble(priceString);
+
                     cardListView.RefreshObject(card);
                     e.Cancel = true;
                 }
