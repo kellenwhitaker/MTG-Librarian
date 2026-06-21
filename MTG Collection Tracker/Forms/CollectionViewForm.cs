@@ -1,4 +1,5 @@
 ﻿using BrightIdeasSoftware;
+using KW.WinFormsUI.Docking;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -6,8 +7,8 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Web.UI.WebControls;
 using System.Windows.Forms;
-using KW.WinFormsUI.Docking;
 
 namespace MTG_Librarian
 {
@@ -209,6 +210,16 @@ namespace MTG_Librarian
         {
             if (Collection != null)
             {
+                
+                if (Collection.Type == "collection")
+                {
+                    tabControl.Appearance = TabAppearance.FlatButtons;
+                    tabControl.Alignment = TabAlignment.Top;
+                    tabControl.ItemSize = new Size(0, 1);
+                    tabControl.SizeMode = TabSizeMode.Fixed;
+                    
+                }
+                
                 var DefaultPaperCurrency = SettingsManager.ApplicationSettings.DefaultPaperCurrency;
                 using (ScryfallCardsDbContext context = new ScryfallCardsDbContext())
                 {

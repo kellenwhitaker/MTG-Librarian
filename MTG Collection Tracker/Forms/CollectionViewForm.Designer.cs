@@ -55,12 +55,9 @@
             this.splitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.combineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cardNameFilterTextBox = new EnhancedTextBox.EnhancedTextBox();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.commentsFilterTextBox = new EnhancedTextBox.EnhancedTextBox();
-            this.cardTextFilterTextBox = new EnhancedTextBox.EnhancedTextBox();
-            this.typeFilterTextBox = new EnhancedTextBox.EnhancedTextBox();
-            this.rarityFilterComboBox = new System.Windows.Forms.ComboBox();
-            this.setFilterTextBox = new EnhancedTextBox.EnhancedTextBox();
+            this.tabControl = new System.Windows.Forms.TabControl();
+            this.mainTabPage = new System.Windows.Forms.TabPage();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
             this.manaButtonsPanel = new System.Windows.Forms.Panel();
             this.whiteManaButton = new CustomControls.FlatButton();
             this.blueManaButton = new CustomControls.FlatButton();
@@ -69,12 +66,19 @@
             this.blackManaButton = new CustomControls.FlatButton();
             this.colorlessManaButton = new CustomControls.FlatButton();
             this.genericManaButton = new CustomControls.FlatButton();
+            this.commentsFilterTextBox = new EnhancedTextBox.EnhancedTextBox();
+            this.cardTextFilterTextBox = new EnhancedTextBox.EnhancedTextBox();
+            this.setFilterTextBox = new EnhancedTextBox.EnhancedTextBox();
+            this.typeFilterTextBox = new EnhancedTextBox.EnhancedTextBox();
+            this.rarityFilterComboBox = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.cardListView)).BeginInit();
             this.cardListViewMenuStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
+            this.tabControl.SuspendLayout();
+            this.mainTabPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel1.SuspendLayout();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
             this.manaButtonsPanel.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -135,7 +139,7 @@
             this.cardListView.SelectedBackColor = System.Drawing.Color.SteelBlue;
             this.cardListView.SelectedForeColor = System.Drawing.Color.White;
             this.cardListView.ShowGroups = false;
-            this.cardListView.Size = new System.Drawing.Size(1880, 500);
+            this.cardListView.Size = new System.Drawing.Size(1866, 456);
             this.cardListView.TabIndex = 0;
             this.cardListView.UnfocusedSelectedBackColor = System.Drawing.Color.LightGray;
             this.cardListView.UseCellFormatEvents = true;
@@ -349,7 +353,7 @@
             // 
             this.cardNameFilterTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic);
             this.cardNameFilterTextBox.ForeColor = System.Drawing.Color.Black;
-            this.cardNameFilterTextBox.Location = new System.Drawing.Point(4, 10);
+            this.cardNameFilterTextBox.Location = new System.Drawing.Point(4, 3);
             this.cardNameFilterTextBox.Margin = new System.Windows.Forms.Padding(4);
             this.cardNameFilterTextBox.Name = "cardNameFilterTextBox";
             this.cardNameFilterTextBox.Placeholder = "Card Name Filter";
@@ -357,102 +361,60 @@
             this.cardNameFilterTextBox.TabIndex = 1;
             this.cardNameFilterTextBox.TextChanged += new System.EventHandler(this.cardNameFilterTextBox_TextChanged);
             // 
-            // splitContainer1
+            // tabControl
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
-            this.splitContainer1.IsSplitterFixed = true;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
-            this.splitContainer1.Margin = new System.Windows.Forms.Padding(4);
-            this.splitContainer1.Name = "splitContainer1";
-            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.tabControl.Alignment = System.Windows.Forms.TabAlignment.Bottom;
+            this.tabControl.Controls.Add(this.mainTabPage);
+            this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControl.Location = new System.Drawing.Point(0, 0);
+            this.tabControl.Name = "tabControl";
+            this.tabControl.SelectedIndex = 0;
+            this.tabControl.Size = new System.Drawing.Size(1880, 535);
+            this.tabControl.TabIndex = 1;
             // 
-            // splitContainer1.Panel1
+            // mainTabPage
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.commentsFilterTextBox);
-            this.splitContainer1.Panel1.Controls.Add(this.cardTextFilterTextBox);
-            this.splitContainer1.Panel1.Controls.Add(this.typeFilterTextBox);
-            this.splitContainer1.Panel1.Controls.Add(this.rarityFilterComboBox);
-            this.splitContainer1.Panel1.Controls.Add(this.setFilterTextBox);
-            this.splitContainer1.Panel1.Controls.Add(this.cardNameFilterTextBox);
-            this.splitContainer1.Panel1.Controls.Add(this.manaButtonsPanel);
+            this.mainTabPage.AutoScroll = true;
+            this.mainTabPage.BackColor = System.Drawing.Color.White;
+            this.mainTabPage.Controls.Add(this.splitContainer2);
+            this.mainTabPage.Location = new System.Drawing.Point(4, 4);
+            this.mainTabPage.Name = "mainTabPage";
+            this.mainTabPage.Padding = new System.Windows.Forms.Padding(3);
+            this.mainTabPage.Size = new System.Drawing.Size(1872, 506);
+            this.mainTabPage.TabIndex = 0;
+            this.mainTabPage.Text = "Main";
             // 
-            // splitContainer1.Panel2
+            // splitContainer2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.cardListView);
-            this.splitContainer1.Size = new System.Drawing.Size(1880, 535);
-            this.splitContainer1.SplitterDistance = 30;
-            this.splitContainer1.SplitterWidth = 5;
-            this.splitContainer1.TabIndex = 2;
+            this.splitContainer2.BackColor = System.Drawing.SystemColors.Control;
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
+            this.splitContainer2.IsSplitterFixed = true;
+            this.splitContainer2.Location = new System.Drawing.Point(3, 3);
+            this.splitContainer2.Name = "splitContainer2";
+            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
-            // commentsFilterTextBox
+            // splitContainer2.Panel1
             // 
-            this.commentsFilterTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic);
-            this.commentsFilterTextBox.ForeColor = System.Drawing.Color.Black;
-            this.commentsFilterTextBox.Location = new System.Drawing.Point(1304, 10);
-            this.commentsFilterTextBox.Margin = new System.Windows.Forms.Padding(4);
-            this.commentsFilterTextBox.Name = "commentsFilterTextBox";
-            this.commentsFilterTextBox.Placeholder = "Comments Filter";
-            this.commentsFilterTextBox.Size = new System.Drawing.Size(256, 23);
-            this.commentsFilterTextBox.TabIndex = 19;
-            this.commentsFilterTextBox.TextChanged += new System.EventHandler(this.cardNameFilterTextBox_TextChanged);
+            this.splitContainer2.Panel1.AutoScroll = true;
+            this.splitContainer2.Panel1.Controls.Add(this.typeFilterTextBox);
+            this.splitContainer2.Panel1.Controls.Add(this.manaButtonsPanel);
+            this.splitContainer2.Panel1.Controls.Add(this.commentsFilterTextBox);
+            this.splitContainer2.Panel1.Controls.Add(this.cardNameFilterTextBox);
+            this.splitContainer2.Panel1.Controls.Add(this.cardTextFilterTextBox);
+            this.splitContainer2.Panel1.Controls.Add(this.setFilterTextBox);
+            this.splitContainer2.Panel1.Controls.Add(this.rarityFilterComboBox);
             // 
-            // cardTextFilterTextBox
+            // splitContainer2.Panel2
             // 
-            this.cardTextFilterTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic);
-            this.cardTextFilterTextBox.ForeColor = System.Drawing.Color.Black;
-            this.cardTextFilterTextBox.Location = new System.Drawing.Point(1080, 10);
-            this.cardTextFilterTextBox.Margin = new System.Windows.Forms.Padding(4);
-            this.cardTextFilterTextBox.Name = "cardTextFilterTextBox";
-            this.cardTextFilterTextBox.Placeholder = "Card Text Filter";
-            this.cardTextFilterTextBox.Size = new System.Drawing.Size(215, 23);
-            this.cardTextFilterTextBox.TabIndex = 18;
-            this.cardTextFilterTextBox.TextChanged += new System.EventHandler(this.cardNameFilterTextBox_TextChanged);
-            // 
-            // typeFilterTextBox
-            // 
-            this.typeFilterTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic);
-            this.typeFilterTextBox.ForeColor = System.Drawing.Color.Black;
-            this.typeFilterTextBox.Location = new System.Drawing.Point(645, 10);
-            this.typeFilterTextBox.Margin = new System.Windows.Forms.Padding(4);
-            this.typeFilterTextBox.Name = "typeFilterTextBox";
-            this.typeFilterTextBox.Placeholder = "Type Filter";
-            this.typeFilterTextBox.Size = new System.Drawing.Size(211, 23);
-            this.typeFilterTextBox.TabIndex = 17;
-            this.typeFilterTextBox.TextChanged += new System.EventHandler(this.cardNameFilterTextBox_TextChanged);
-            // 
-            // rarityFilterComboBox
-            // 
-            this.rarityFilterComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.rarityFilterComboBox.FormattingEnabled = true;
-            this.rarityFilterComboBox.Items.AddRange(new object[] {
-            "All Rarities",
-            "Basic Land",
-            "Common",
-            "Uncommon",
-            "Rare",
-            "Mythic"});
-            this.rarityFilterComboBox.Location = new System.Drawing.Point(264, 10);
-            this.rarityFilterComboBox.Margin = new System.Windows.Forms.Padding(4);
-            this.rarityFilterComboBox.Name = "rarityFilterComboBox";
-            this.rarityFilterComboBox.Size = new System.Drawing.Size(160, 24);
-            this.rarityFilterComboBox.TabIndex = 16;
-            this.rarityFilterComboBox.SelectedIndexChanged += new System.EventHandler(this.rarityFilterComboBox_SelectedIndexChanged);
-            // 
-            // setFilterTextBox
-            // 
-            this.setFilterTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic);
-            this.setFilterTextBox.ForeColor = System.Drawing.Color.Black;
-            this.setFilterTextBox.Location = new System.Drawing.Point(865, 10);
-            this.setFilterTextBox.Margin = new System.Windows.Forms.Padding(4);
-            this.setFilterTextBox.Name = "setFilterTextBox";
-            this.setFilterTextBox.Placeholder = "Set Filter";
-            this.setFilterTextBox.Size = new System.Drawing.Size(205, 23);
-            this.setFilterTextBox.TabIndex = 2;
-            this.setFilterTextBox.TextChanged += new System.EventHandler(this.cardNameFilterTextBox_TextChanged);
+            this.splitContainer2.Panel2.Controls.Add(this.cardListView);
+            this.splitContainer2.Size = new System.Drawing.Size(1866, 500);
+            this.splitContainer2.SplitterDistance = 40;
+            this.splitContainer2.TabIndex = 0;
             // 
             // manaButtonsPanel
             // 
+            this.manaButtonsPanel.BackColor = System.Drawing.SystemColors.Control;
             this.manaButtonsPanel.Controls.Add(this.whiteManaButton);
             this.manaButtonsPanel.Controls.Add(this.blueManaButton);
             this.manaButtonsPanel.Controls.Add(this.redManaButton);
@@ -460,7 +422,7 @@
             this.manaButtonsPanel.Controls.Add(this.blackManaButton);
             this.manaButtonsPanel.Controls.Add(this.colorlessManaButton);
             this.manaButtonsPanel.Controls.Add(this.genericManaButton);
-            this.manaButtonsPanel.Location = new System.Drawing.Point(427, 6);
+            this.manaButtonsPanel.Location = new System.Drawing.Point(423, 1);
             this.manaButtonsPanel.Margin = new System.Windows.Forms.Padding(4);
             this.manaButtonsPanel.Name = "manaButtonsPanel";
             this.manaButtonsPanel.Size = new System.Drawing.Size(253, 33);
@@ -571,12 +533,78 @@
             this.genericManaButton.Visible = false;
             this.genericManaButton.Click += new System.EventHandler(this.whiteManaButton_Click);
             // 
+            // commentsFilterTextBox
+            // 
+            this.commentsFilterTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic);
+            this.commentsFilterTextBox.ForeColor = System.Drawing.Color.Black;
+            this.commentsFilterTextBox.Location = new System.Drawing.Point(1304, 3);
+            this.commentsFilterTextBox.Margin = new System.Windows.Forms.Padding(4);
+            this.commentsFilterTextBox.Name = "commentsFilterTextBox";
+            this.commentsFilterTextBox.Placeholder = "Comments Filter";
+            this.commentsFilterTextBox.Size = new System.Drawing.Size(256, 23);
+            this.commentsFilterTextBox.TabIndex = 19;
+            this.commentsFilterTextBox.TextChanged += new System.EventHandler(this.cardNameFilterTextBox_TextChanged);
+            // 
+            // cardTextFilterTextBox
+            // 
+            this.cardTextFilterTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic);
+            this.cardTextFilterTextBox.ForeColor = System.Drawing.Color.Black;
+            this.cardTextFilterTextBox.Location = new System.Drawing.Point(1080, 3);
+            this.cardTextFilterTextBox.Margin = new System.Windows.Forms.Padding(4);
+            this.cardTextFilterTextBox.Name = "cardTextFilterTextBox";
+            this.cardTextFilterTextBox.Placeholder = "Card Text Filter";
+            this.cardTextFilterTextBox.Size = new System.Drawing.Size(215, 23);
+            this.cardTextFilterTextBox.TabIndex = 18;
+            this.cardTextFilterTextBox.TextChanged += new System.EventHandler(this.cardNameFilterTextBox_TextChanged);
+            // 
+            // setFilterTextBox
+            // 
+            this.setFilterTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic);
+            this.setFilterTextBox.ForeColor = System.Drawing.Color.Black;
+            this.setFilterTextBox.Location = new System.Drawing.Point(865, 3);
+            this.setFilterTextBox.Margin = new System.Windows.Forms.Padding(4);
+            this.setFilterTextBox.Name = "setFilterTextBox";
+            this.setFilterTextBox.Placeholder = "Set Filter";
+            this.setFilterTextBox.Size = new System.Drawing.Size(205, 23);
+            this.setFilterTextBox.TabIndex = 2;
+            this.setFilterTextBox.TextChanged += new System.EventHandler(this.cardNameFilterTextBox_TextChanged);
+            // 
+            // typeFilterTextBox
+            // 
+            this.typeFilterTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic);
+            this.typeFilterTextBox.ForeColor = System.Drawing.Color.Black;
+            this.typeFilterTextBox.Location = new System.Drawing.Point(645, 3);
+            this.typeFilterTextBox.Margin = new System.Windows.Forms.Padding(4);
+            this.typeFilterTextBox.Name = "typeFilterTextBox";
+            this.typeFilterTextBox.Placeholder = "Type Filter";
+            this.typeFilterTextBox.Size = new System.Drawing.Size(211, 23);
+            this.typeFilterTextBox.TabIndex = 17;
+            this.typeFilterTextBox.TextChanged += new System.EventHandler(this.cardNameFilterTextBox_TextChanged);
+            // 
+            // rarityFilterComboBox
+            // 
+            this.rarityFilterComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.rarityFilterComboBox.FormattingEnabled = true;
+            this.rarityFilterComboBox.Items.AddRange(new object[] {
+            "All Rarities",
+            "Basic Land",
+            "Common",
+            "Uncommon",
+            "Rare",
+            "Mythic"});
+            this.rarityFilterComboBox.Location = new System.Drawing.Point(264, 3);
+            this.rarityFilterComboBox.Margin = new System.Windows.Forms.Padding(4);
+            this.rarityFilterComboBox.Name = "rarityFilterComboBox";
+            this.rarityFilterComboBox.Size = new System.Drawing.Size(160, 24);
+            this.rarityFilterComboBox.TabIndex = 16;
+            this.rarityFilterComboBox.SelectedIndexChanged += new System.EventHandler(this.rarityFilterComboBox_SelectedIndexChanged);
+            // 
             // CollectionViewForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1880, 535);
-            this.Controls.Add(this.splitContainer1);
+            this.Controls.Add(this.tabControl);
             this.DoubleBuffered = true;
             this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "CollectionViewForm";
@@ -584,11 +612,13 @@
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.CollectionViewForm_FormClosed);
             ((System.ComponentModel.ISupportInitialize)(this.cardListView)).EndInit();
             this.cardListViewMenuStrip.ResumeLayout(false);
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel1.PerformLayout();
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
+            this.tabControl.ResumeLayout(false);
+            this.mainTabPage.ResumeLayout(false);
+            this.splitContainer2.Panel1.ResumeLayout(false);
+            this.splitContainer2.Panel1.PerformLayout();
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
             this.manaButtonsPanel.ResumeLayout(false);
             this.ResumeLayout(false);
 
@@ -611,7 +641,6 @@
         private System.Windows.Forms.ContextMenuStrip cardListViewMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem deleteCardsToolStripMenuItem;
         private EnhancedTextBox.EnhancedTextBox cardNameFilterTextBox;
-        private System.Windows.Forms.SplitContainer splitContainer1;
         private EnhancedTextBox.EnhancedTextBox setFilterTextBox;
         private CustomControls.FlatButton genericManaButton;
         private CustomControls.FlatButton colorlessManaButton;
@@ -635,5 +664,8 @@
         private BrightIdeasSoftware.OLVColumn tcgPlayerMidPriceColumn;
         private BrightIdeasSoftware.OLVColumn rarityColumn;
         private BrightIdeasSoftware.OLVColumn FinishColumn;
+        private System.Windows.Forms.TabControl tabControl;
+        private System.Windows.Forms.TabPage mainTabPage;
+        private System.Windows.Forms.SplitContainer splitContainer2;
     }
 }
