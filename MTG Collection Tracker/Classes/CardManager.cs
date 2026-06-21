@@ -150,6 +150,7 @@ namespace MTG_Librarian
                     }
                     context.SaveChanges();
                 }
+
                 sourceCVForm.RemoveFullInventoryCards(cardsList);
                 var destinationCVForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.Collection.Id == collection.Id);
                 if (destinationCVForm != null)

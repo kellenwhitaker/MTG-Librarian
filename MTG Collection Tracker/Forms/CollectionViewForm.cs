@@ -14,7 +14,7 @@ namespace MTG_Librarian
     public partial class CollectionViewForm : DockContent
     {
         private string DefaultCurrency = SettingsManager.ApplicationSettings.DefaultCurrency;
-
+        private bool ignoreNextCardListViewSelectionChanged = false;
         #region Properties
 
         public string DocumentName => Collection?.CollectionName;
@@ -247,6 +247,7 @@ namespace MTG_Librarian
         {
             if (cardsToRemove.Count > 0)
             {
+                ignoreNextCardListViewSelectionChanged = true;
                 var inventoryCardsStillSelected = cardListView.SelectedObjects.Cast<object>().Where(x => x is FullInventoryCard).Cast<FullInventoryCard>().ToList();
                 foreach (var card in cardsToRemove)
                     if (inventoryCardsStillSelected.Contains(card))
@@ -434,6 +435,11 @@ namespace MTG_Librarian
 
         private void fastObjectListView1_SelectionChanged(object sender, EventArgs e)
         {
+            if (ignoreNextCardListViewSelectionChanged)
+            {
+                ignoreNextCardListViewSelectionChanged = false;
+                return;
+            }
             if (cardListView.SelectedObjects != null && cardListView.SelectedObjects.Count > 0 && cardListView.SelectedObjects[0] is ScryfallMagicCardBase)
                 OnCardSelected(new CardSelectedEventArgs { MagicCards = cardListView.SelectedObjects });
         }

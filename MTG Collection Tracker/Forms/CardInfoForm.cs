@@ -134,6 +134,7 @@ namespace MTG_Librarian
         }
         public void CardSelected(ScryfallMagicCardBase card)
         {
+            var oldCard = MagicCard;
             MagicCard = DisplayedCard = card;
             DisplayedSide = "A";
             string html = "<table width='100%'>";
@@ -163,24 +164,27 @@ namespace MTG_Librarian
             }
             legalitiesListView.AutoResizeColumns();
 
-            if (tabControl.SelectedTab == rulingsTabPage)
+            if (oldCard == null || oldCard.ScryfallId != MagicCard.ScryfallId)
             {
-                FillRulingsPanel();
-                if (card.rulings == null)
+                if (tabControl.SelectedTab == rulingsTabPage)
                 {
-                    var task = new DownloadRulingsTask(card);
-                    task.AddFirst = true;
-                    Globals.Forms.TasksForm.TaskManager.AddTask(task);
+                    FillRulingsPanel();
+                    if (card.rulings == null)
+                    {
+                        var task = new DownloadRulingsTask(card);
+                        task.AddFirst = true;
+                        Globals.Forms.TasksForm.TaskManager.AddTask(task);
+                    }
                 }
-            }
-            else if (tabControl.SelectedTab == printingsTabPage)
-            {
-                FillPrintingsPanel();
-                if (card.printings == null)
+                else if (tabControl.SelectedTab == printingsTabPage)
                 {
-                    var task = new DownloadPrintingsTask(card);
-                    task.AddFirst = true;
-                    Globals.Forms.TasksForm.TaskManager.AddTask(task);
+                    FillPrintingsPanel();
+                    if (card.printings == null)
+                    {
+                        var task = new DownloadPrintingsTask(card);
+                        task.AddFirst = true;
+                        Globals.Forms.TasksForm.TaskManager.AddTask(task);
+                    }
                 }
             }
         }
