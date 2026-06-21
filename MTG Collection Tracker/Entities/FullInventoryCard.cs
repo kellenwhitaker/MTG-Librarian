@@ -96,7 +96,8 @@ namespace MTG_Librarian
                     DisplayName = DisplayName,
                     Virtual = Virtual,
                     Condition = Condition,
-                    Finish = Finish
+                    Finish = Finish,
+                    Platform = Platform
                 };
             }
         }
