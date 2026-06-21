@@ -1,4 +1,6 @@
-﻿namespace MTG_Librarian
+﻿using BetterPanel;
+
+namespace MTG_Librarian
 {
     partial class DBViewForm
     {
@@ -57,7 +59,7 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.updateThisSetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabPage10 = new System.Windows.Forms.TabPage();
-            this.searchParametersPanel = new System.Windows.Forms.Panel();
+            this.searchParametersPanel = new BetterPanel.BetterPanel();
             this.includeVariationsCheckBox = new System.Windows.Forms.CheckBox();
             this.languageClearButton = new System.Windows.Forms.Button();
             this.flavorTextClearButton = new System.Windows.Forms.Button();
@@ -1818,7 +1820,7 @@
         private BrightIdeasSoftware.OLVColumn completeColumn;
         private BrightIdeasSoftware.OLVColumn complete4Column;
         private System.Windows.Forms.TabPage tabPage10;
-        private System.Windows.Forms.Panel searchParametersPanel;
+        private BetterPanel.BetterPanel searchParametersPanel;
         private System.Windows.Forms.CheckBox includeVariationsCheckBox;
         private System.Windows.Forms.Button languageClearButton;
         private System.Windows.Forms.Button flavorTextClearButton;

@@ -551,6 +551,10 @@
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\BetterPanel\BetterPanel.csproj">
+      <Project>{D8F9B6B6-C70A-4368-92CD-434561A0DF89}</Project>
+      <Name>BetterPanel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\BlockProgressBar\BlockProgressBar.csproj">
       <Project>{341BF109-563F-4D39-8641-67165526A6BF}</Project>
       <Name>BlockProgressBar</Name>
