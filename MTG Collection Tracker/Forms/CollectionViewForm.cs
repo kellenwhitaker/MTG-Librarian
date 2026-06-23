@@ -9,13 +9,14 @@ using System.Drawing;
 using System.Linq;
 using System.Web.UI.WebControls;
 using System.Windows.Forms;
-
+// TODO: when dragging over a cardListView, system drawn cells are drawn with a white background
 namespace MTG_Librarian
 {
     public partial class CollectionViewForm : DockContent
     {
         private string DefaultCurrency = SettingsManager.ApplicationSettings.DefaultCurrency;
         private bool ignoreNextCardListViewSelectionChanged = false;
+        private bool ignoreNextSideboardListViewSelectionChanged = false;
         #region Properties
 
         public string DocumentName => Collection?.CollectionName;
@@ -56,14 +57,37 @@ namespace MTG_Librarian
                 }
             };
 
+            sideboardListView.FormatRow += (sender, e) =>
+            {
+                if (e.Model is InventoryTotalsItem)
+                {
+                    e.Item.BackColor = Color.DodgerBlue;
+                    e.Item.ForeColor = Color.White;
+                }
+            };
+
             cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "PaddedName").Renderer = new CardInstanceNameRenderer();
             cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "ManaCost").Renderer = new ManaCostRenderer();
             cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "Delta").Renderer = new DeltaRenderer();
             cardListView.AllColumns.FirstOrDefault(y => y.AspectName == "Percent").Renderer = new DeltaRenderer();
+            sideboardListView.AllColumns.FirstOrDefault(x => x.AspectName == "PaddedName").Renderer = new CardInstanceNameRenderer();
+            sideboardListView.AllColumns.FirstOrDefault(x => x.AspectName == "ManaCost").Renderer = new ManaCostRenderer();
+            sideboardListView.AllColumns.FirstOrDefault(x => x.AspectName == "Delta").Renderer = new DeltaRenderer();
+            sideboardListView.AllColumns.FirstOrDefault(y => y.AspectName == "Percent").Renderer = new DeltaRenderer();
+            sideboardListView.SmallImageList = Globals.ImageLists.SmallIconList;
             cardListView.VirtualListDataSource = new MyCustomSortingDataSource(cardListView);
-            cardListView.AddDecoration(new EditingCellBorderDecoration { UseLightbox = false, BorderPen = new Pen(Brushes.DodgerBlue, 3), BoundsPadding = new Size(1, 0) });
+            sideboardListView.VirtualListDataSource = new MyCustomSortingDataSource(sideboardListView);
+            var decoration = new EditingCellBorderDecoration { UseLightbox = false, BorderPen = new Pen(Brushes.DodgerBlue, 3), BoundsPadding = new Size(1, 0) };
+            cardListView.AddDecoration(decoration);
+            sideboardListView.AddDecoration(decoration);
             cardListView.UseFiltering = true;
+            sideboardListView.UseFiltering = true;
             var dropSink = cardListView.DropSink as SimpleDropSink;
+            dropSink.CanDropOnItem = false;
+            dropSink.Billboard.BackColor = Color.DodgerBlue;
+            dropSink.Billboard.TextColor = Color.White;
+
+            dropSink = sideboardListView.DropSink as SimpleDropSink;
             dropSink.CanDropOnItem = false;
             dropSink.Billboard.BackColor = Color.DodgerBlue;
             dropSink.Billboard.TextColor = Color.White;
@@ -82,11 +106,6 @@ namespace MTG_Librarian
             };
         }
 
-        private void CardListView_FormatRow(object sender, FormatRowEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
         #endregion Constructors
 
         #region Methods
@@ -94,20 +113,29 @@ namespace MTG_Librarian
         #region Filters
 
         private delegate void UpdateModelFilterDelegate();
-
         private void UpdateModelFilter()
         {
             if (InvokeRequired)
                 BeginInvoke(new UpdateModelFilterDelegate(UpdateModelFilter));
             else
             {
+                var filter = GetCardFilter();
                 var selectedObjects = new List<object>();
                 foreach (object o in cardListView.SelectedObjects)
                     selectedObjects.Add(o);
 
-                cardListView.ModelFilter = new ModelFilter(GetCardFilter());
+                cardListView.ModelFilter = new ModelFilter(filter);
                 cardListView.SelectedObjects = selectedObjects;
                 cardListView.RefreshSelectedObjects();
+
+                selectedObjects = new List<object>();
+                foreach (object o in sideboardListView.SelectedObjects)
+                    selectedObjects.Add(o);
+
+                sideboardListView.ModelFilter = new ModelFilter(filter);
+                sideboardListView.SelectedObjects = selectedObjects;
+                sideboardListView.RefreshSelectedObjects();
+
                 UpdateTotals();
             }
         }
@@ -185,13 +213,14 @@ namespace MTG_Librarian
         }
 
         #endregion Filters
-        public void UpdateTotals()
-        {            
-            var totalsRow = (cardListView.Objects as ArrayList)[0] as InventoryTotalsItem;
+        
+        private void UpdateTotals(FastObjectListView listView)
+        {
+            var totalsRow = (listView.Objects as ArrayList)[0] as InventoryTotalsItem;
             totalsRow.Price = 0;
             totalsRow.Cost = 0;
             totalsRow.Count = 0;
-            foreach (var row in cardListView.FilteredObjects)
+            foreach (var row in listView.FilteredObjects)
             {
                 if (row is FullInventoryCard card)
                 {
@@ -203,23 +232,79 @@ namespace MTG_Librarian
                         totalsRow.Cost += card.Cost.Value * cardCount;
                 }
             }
-            cardListView.RefreshObject(totalsRow);
+            listView.RefreshObject(totalsRow);
         }
+        public void UpdateTotals()
+        {            
+            UpdateTotals(cardListView);
+
+            if (Collection.Type == "deck")
+                UpdateTotals(sideboardListView);
+       }         
 
         public void LoadCollection()
         {
             if (Collection != null)
             {
-                
+
                 if (Collection.Type == "collection")
                 {
                     tabControl.Appearance = TabAppearance.FlatButtons;
                     tabControl.Alignment = TabAlignment.Top;
                     tabControl.ItemSize = new Size(0, 1);
                     tabControl.SizeMode = TabSizeMode.Fixed;
-                    
+                    sideboardListView.Visible = false;
+                    cardListView.Dock = DockStyle.Fill;
                 }
-                
+                else if (Collection.Type == "deck")
+                {
+                    CountColumn.DisplayIndex = sideboardCountColumn.DisplayIndex = 1;
+                    tcgplayerMarketPriceColumn.DisplayIndex = sideboardPriceColumn.DisplayIndex = 2;
+                    ManaCost.DisplayIndex = sideboardManaCostColumn.DisplayIndex =  3;
+                    cardListView.ShowGroups = sideboardListView.ShowGroups = true;
+                    cardListView.AlwaysGroupByColumn = CardName;
+                    sideboardListView.AlwaysGroupByColumn = sideboardCardNameColumn;
+                    CardName.GroupKeyGetter = sideboardCardNameColumn.GroupKeyGetter = delegate (object rowObject) {
+                        if (rowObject is FullInventoryCard card)
+                        {
+                            return card.ListViewGroupKey;
+                        }
+                        else if (rowObject is InventoryTotalsItem)
+                            return "";
+                        return null;
+                    };
+
+                    CardName.GroupKeyToTitleConverter = delegate (object groupKey) {
+                        if (groupKey.ToString() == "")
+                            return "";
+                        else
+                        {              
+                            var count = 0;
+                            foreach (var item in cardListView.Objects)
+                            {
+                                if (item is FullInventoryCard card && card.ListViewGroupKey == groupKey.ToString())
+                                    count += card.Count.Value;
+                            }
+                            return $"{groupKey.ToString()} ({count})";
+                        }
+                    };
+
+                    sideboardCardNameColumn.GroupKeyToTitleConverter = delegate (object groupKey) {
+                        if (groupKey.ToString() == "")
+                            return "";
+                        else
+                        {
+                            var count = 0;
+                            foreach (var item in sideboardListView.Objects)
+                            {
+                                if (item is FullInventoryCard card && card.ListViewGroupKey == groupKey.ToString())
+                                    count += card.Count.Value;
+                            }
+                            return $"{groupKey.ToString()} ({count})";
+                        }
+                    };
+                }
+
                 var DefaultPaperCurrency = SettingsManager.ApplicationSettings.DefaultPaperCurrency;
                 using (ScryfallCardsDbContext context = new ScryfallCardsDbContext())
                 {
@@ -242,7 +327,19 @@ namespace MTG_Librarian
                         }
                     }
                     cardListView.AddObject(new InventoryTotalsItem { DisplayName = "        Totals:" });
-                    cardListView.AddObjects(items.ToList());
+                    if (Collection.Type == "deck")
+                    {
+                        sideboardListView.AddObject(new InventoryTotalsItem { DisplayName = "        Totals:" });
+                        foreach (var card in items)
+                        {
+                            if (card.Board == "sideboard")
+                                sideboardListView.AddObject(card);
+                            else
+                                cardListView.AddObject(card);
+                        }
+                    }
+                    else
+                        cardListView.AddObjects(items.ToList());
                 }
                 if (cardListView.PrimarySortColumn == null) // not yet sorted
                     cardListView.Sort(cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "TimeAdded"), SortOrder.Ascending);
@@ -250,7 +347,7 @@ namespace MTG_Librarian
                 UpdateTotals();
             }
         }
-
+        // TODO: handle for sideboardListView as well
         public void AddFullInventoryCard(FullInventoryCard cardInstance)
         {
             cardListView.AddObject(cardInstance);
@@ -258,43 +355,64 @@ namespace MTG_Librarian
             UpdateTotals();
         }
 
-        public void AddFullInventoryCards(List<FullInventoryCard> cards)
+        public void AddFullInventoryCards(List<FullInventoryCard> cards, string board)
         {
             DefaultCurrency = SettingsManager.ApplicationSettings.DefaultCurrency;
             if (cards.Count > 0)
             {
-                cardListView.AddObjects(cards);
-                cardListView.EnsureModelVisible(cards[cards.Count - 1]);
+                if (board == "sideboard")
+                {
+                    sideboardListView.AddObjects(cards);
+                    sideboardListView.EnsureModelVisible(cards[cards.Count - 1]);
+                }
+                else
+                {
+                    cardListView.AddObjects(cards);
+                    cardListView.EnsureModelVisible(cards[cards.Count - 1]);
+                }
                 UpdateTotals();
             }
         }
 
-        public void RemoveFullInventoryCards(List<FullInventoryCard> cardsToRemove)
+        private void RemoveFullInventoryCards(List<FullInventoryCard> cardsToRemove, FastObjectListView listView)
+        {
+            var inventoryCardsStillSelected = listView.SelectedObjects.Cast<object>().Where(x => x is FullInventoryCard).Cast<FullInventoryCard>().ToList();
+            foreach (var card in cardsToRemove)
+                if (inventoryCardsStillSelected.Contains(card))
+                    inventoryCardsStillSelected.Remove(card);
+            int indexAfterLast = cardsToRemove.Max(x => listView.IndexOf(x)) + 1;
+            object objectAfterLast = null;
+            if (indexAfterLast > -1 && indexAfterLast < listView.Objects.Count())
+                objectAfterLast = listView.GetModelObject(indexAfterLast);
+            listView.RemoveObjects(cardsToRemove);
+            listView.SelectedObjects = inventoryCardsStillSelected;
+            if (listView.SelectedObject == null)
+            {
+                if (objectAfterLast != null)
+                    listView.SelectedObject = objectAfterLast;
+                else
+                {
+                    if (listView.Objects.Count() > -1)
+                        listView.SelectedIndex = listView.Objects.Count() - 1;
+                }
+            }
+            UpdateTotals();
+        }
+
+        public void RemoveFullInventoryCards(List<FullInventoryCard> cardsToRemove, string board)
         {
             if (cardsToRemove.Count > 0)
             {
-                ignoreNextCardListViewSelectionChanged = true;
-                var inventoryCardsStillSelected = cardListView.SelectedObjects.Cast<object>().Where(x => x is FullInventoryCard).Cast<FullInventoryCard>().ToList();
-                foreach (var card in cardsToRemove)
-                    if (inventoryCardsStillSelected.Contains(card))
-                        inventoryCardsStillSelected.Remove(card);
-                int indexAfterLast = cardsToRemove.Max(x => cardListView.IndexOf(x)) + 1;
-                object objectAfterLast = null;
-                if (indexAfterLast > -1 && indexAfterLast < cardListView.Objects.Count())
-                    objectAfterLast = cardListView.GetModelObject(indexAfterLast);
-                cardListView.RemoveObjects(cardsToRemove);
-                cardListView.SelectedObjects = inventoryCardsStillSelected;
-                if (cardListView.SelectedObject == null)
+                if (board == "mainboard")
                 {
-                    if (objectAfterLast != null)
-                        cardListView.SelectedObject = objectAfterLast;
-                    else
-                    {
-                        if (cardListView.Objects.Count() > -1)
-                            cardListView.SelectedIndex = cardListView.Objects.Count() - 1;
-                    }
+                    ignoreNextCardListViewSelectionChanged = true;
+                    RemoveFullInventoryCards(cardsToRemove, cardListView);
                 }
-                UpdateTotals();
+                else
+                {
+                    ignoreNextSideboardListViewSelectionChanged = true;
+                    RemoveFullInventoryCards(cardsToRemove, sideboardListView);
+                }
             }
         }
 
@@ -308,39 +426,46 @@ namespace MTG_Librarian
         #region Events
 
         #region OLV Events
-
         private void fastObjectListView1_ModelCanDrop(object sender, ModelDropEventArgs e)
         {
             e.Effect = DragDropEffects.Move;
             if (e.SourceModels[0] is OLVCardItem)
                 e.InfoMessage = $"Add {e.SourceModels.Count} card{(e.SourceModels.Count == 1 ? "" : "s")} to {DocumentName}";
-            else if (e.SourceModels[0] is OLVSetItem setItem)
-                e.InfoMessage = $"Add set [{setItem.Name}] to {DocumentName}";
-            else if (e.SourceModels[0] is OLVRarityItem rarityItem)
-                e.InfoMessage = $"Add {rarityItem.Rarity}s from [{(rarityItem.Parent as OLVSetItem).Name}] to {DocumentName}";
-            else if (e.SourceModels[0] is FullInventoryCard fullInventoryCard && e.SourceListView != cardListView)
-                e.InfoMessage = $"Add {e.SourceModels.Count} card{(e.SourceModels.Count == 1 ? "" : "s")} to {DocumentName}";
+            else if (e.SourceModels[0] is FullInventoryCard fullInventoryCard)
+            {
+                if (e.ListView != e.SourceListView)
+                {
+                    var destination = DocumentName;
+                    if (Collection.Type == "deck")
+                        destination += e.ListView == cardListView ? "- mainboard" : "- sideboard";
+                    e.InfoMessage = $"Add {e.SourceModels.Count} card{(e.SourceModels.Count == 1 ? "" : "s")} to {destination}";
+                }
+            }
             else
                 e.Effect = DragDropEffects.None;
         }
-
         private void fastObjectListView1_ModelDropped(object sender, ModelDropEventArgs e)
         {
-            OnCardsDropped(new CardsDroppedEventArgs
+            var sourceForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.cardListView == e.SourceListView || x.sideboardListView == e.SourceListView);
+            var args = new CardsDroppedEventArgs
             {
                 Items = e.SourceModels as ArrayList,
                 TargetCollection = Collection,
-                SourceForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.cardListView == e.SourceListView)
-            });
+                SourceForm = sourceForm,
+                TargetBoard = e.ListView == cardListView ? "mainboard" : "sideboard"
+            };
+            if (sourceForm != null)
+                args.SourceBoard = e.SourceListView == sourceForm.cardListView ? "mainboard" : "sideboard";
+            OnCardsDropped(args);
         }
-
         private void fastObjectListView1_CellEditFinished(object sender, CellEditEventArgs e)
         {
-            cardListView.Focus();
+            var listView = sender as FastObjectListView;
+            listView.Focus();
             if (e.RowObject is FullInventoryCard editedCard)
             {
-                var args = new CardsUpdatedEventArgs { Items = new ArrayList { editedCard }, CollectionViewForm = this };
-                var rowItem = cardListView.ModelToItem(editedCard);
+                var args = new CardsUpdatedEventArgs { Items = new ArrayList { editedCard }, CollectionViewForm = this, Board = listView == cardListView ? "mainboard" : "sideboard" };
+                var rowItem = listView.ModelToItem(editedCard);
                 if (e.Column.AspectName == "Count" && editedCard.Count < 1)
                 {
                     if (ConfirmCardDeletion() != DialogResult.Yes)
@@ -353,9 +478,9 @@ namespace MTG_Librarian
                     }
                 }
 
-                if (cardListView.SelectedObjects != null && 
-                    !(!cardListView.SelectedObjects.Contains(editedCard) && e.Column.CheckBoxes))
-                    foreach (FullInventoryCard card in cardListView.SelectedObjects)
+                if (listView.SelectedObjects != null && 
+                    !(!listView.SelectedObjects.Contains(editedCard) && e.Column.CheckBoxes))
+                    foreach (FullInventoryCard card in listView.SelectedObjects)
                     {
                         if (card != editedCard)
                         {
@@ -377,24 +502,24 @@ namespace MTG_Librarian
                 OnCardsUpdated(args);
             }
         }
-
         private void fastObjectListView1_KeyPress(object sender, KeyPressEventArgs e)
         {
-            if (cardListView.SelectedObjects?.Count > 0 && !(cardListView.SelectedObjects?.Count == 1 && cardListView.SelectedObject is InventoryTotalsItem))
+            var listView = sender as FastObjectListView;
+            if (listView.SelectedObjects?.Count > 0 && !(listView.SelectedObjects?.Count == 1 && listView.SelectedObject is InventoryTotalsItem))
             {
                 if (e.KeyChar == '=' || e.KeyChar == '+')
                 {
                     e.Handled = true;
-                    foreach (var item in cardListView.SelectedObjects)
+                    foreach (var item in listView.SelectedObjects)
                         if (item is FullInventoryCard card)
                             card.Count++;
-                    OnCardsUpdated(new CardsUpdatedEventArgs { Items = cardListView.SelectedObjects as ArrayList, CollectionViewForm = this });
+                    OnCardsUpdated(new CardsUpdatedEventArgs { Items = listView.SelectedObjects as ArrayList, CollectionViewForm = this, Board = listView == cardListView ? "mainboard" : "sideboard" });
                 }
                 else if (e.KeyChar == '-' || e.KeyChar == '_')
                 {
                     e.Handled = true;
                     bool pendingDeletion = false;
-                    foreach (var item in cardListView.SelectedObjects)
+                    foreach (var item in listView.SelectedObjects)
                     {
                         if (item is FullInventoryCard card)
                         {
@@ -407,21 +532,21 @@ namespace MTG_Librarian
                     {
                         if (ConfirmCardDeletion("Some of the highlighted cards will be deleted. Are you sure you wish to continue?") != DialogResult.Yes)
                         {
-                            foreach (var item in cardListView.SelectedObjects)
+                            foreach (var item in listView.SelectedObjects)
                                 if (item is FullInventoryCard card)
                                     card.Count++;
                             return;
                         }
                     }
-                    OnCardsUpdated(new CardsUpdatedEventArgs { Items = cardListView.SelectedObjects as ArrayList, CollectionViewForm = this });
+                    OnCardsUpdated(new CardsUpdatedEventArgs { Items = listView.SelectedObjects as ArrayList, CollectionViewForm = this, Board = listView == cardListView ? "mainboard" : "sideboard" });
                 }
                 else if (e.KeyChar == '\r')
                 {
                     e.Handled = true;
-                    if (cardListView.SelectedObjects.Count > 0)
+                    if (listView.SelectedObjects.Count > 0)
                     {
                         var cardsToPrice = new Dictionary<string, FullInventoryCard>();
-                        foreach (var row in cardListView.SelectedObjects)
+                        foreach (var row in listView.SelectedObjects)
                             if (row is FullInventoryCard card && card.ScryfallId != null)
                                 if (!cardsToPrice.ContainsKey(card.ScryfallId))
                                     cardsToPrice.Add(card.ScryfallId, row as FullInventoryCard);
@@ -453,7 +578,7 @@ namespace MTG_Librarian
                     if (e.Location.X > boxLeft && e.Location.X < boxLeft + boxWidth     // checkbox clicked
                         && e.Location.Y > boxTop && e.Location.Y < boxTop + boxHeight)
                     {
-                        cardListView.ToggleSubItemCheckBox(card, e.Column);
+                        e.ListView.ToggleSubItemCheckBox(card, e.Column);
                     }
                 }
             }
@@ -461,18 +586,24 @@ namespace MTG_Librarian
 
         private void fastObjectListView1_SelectionChanged(object sender, EventArgs e)
         {
-            if (ignoreNextCardListViewSelectionChanged)
+            var listView = sender as FastObjectListView;
+            if (listView == cardListView && ignoreNextCardListViewSelectionChanged)
             {
                 ignoreNextCardListViewSelectionChanged = false;
                 return;
             }
-            if (cardListView.SelectedObject is InventoryTotalsItem)
+            else if (listView == sideboardListView && ignoreNextSideboardListViewSelectionChanged)
             {
-                cardListView.SelectedObject = null;
+                ignoreNextSideboardListViewSelectionChanged = false;
                 return;
             }
-            if (cardListView.SelectedObjects != null && cardListView.SelectedObjects.Count > 0 && cardListView.SelectedObjects[0] is ScryfallMagicCardBase)
-                OnCardSelected(new CardSelectedEventArgs { MagicCards = cardListView.SelectedObjects });
+            if (listView.SelectedObject is InventoryTotalsItem)
+            {
+                listView.SelectedObject = null;
+                return;
+            }
+            if (listView.SelectedObjects != null && listView.SelectedObjects.Count > 0 && listView.SelectedObjects[0] is ScryfallMagicCardBase)
+                OnCardSelected(new CardSelectedEventArgs { MagicCards = listView.SelectedObjects });
         }
 
         private void cardListView_SubItemChecking(object sender, SubItemCheckingEventArgs e)
@@ -491,18 +622,18 @@ namespace MTG_Librarian
                 }
             }
         }
-
         private void cardListView_KeyUp(object sender, KeyEventArgs e)
         {
-            if (cardListView.SelectedObjects?.Count > 0)
+            var listView = sender as FastObjectListView;
+            if (listView.SelectedObjects?.Count > 0)
             {
                 if (e.KeyCode == Keys.Delete)
                 {
                     if (ConfirmCardDeletion() == DialogResult.Yes)
                     {
-                        foreach (FullInventoryCard cardItem in cardListView.SelectedObjects)
+                        foreach (FullInventoryCard cardItem in listView.SelectedObjects)
                             cardItem.Count = 0;
-                        OnCardsUpdated(new CardsUpdatedEventArgs { Items = cardListView.SelectedObjects as ArrayList, CollectionViewForm = this });
+                        OnCardsUpdated(new CardsUpdatedEventArgs { Items = listView.SelectedObjects as ArrayList, CollectionViewForm = this, Board = listView == cardListView ? "mainboard" : "sideboard" });
                     }
                 }
             }
@@ -512,9 +643,10 @@ namespace MTG_Librarian
         {
             if (e.RowObject is FullInventoryCard card)
             {
-                int costIndex = cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "Cost").DisplayIndex;
-                int condIndex = cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "Condition").DisplayIndex;
-                int finishIndex = cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "Finish").DisplayIndex;
+                var listView = sender as FastObjectListView;
+                int costIndex = listView.AllColumns.FirstOrDefault(x => x.AspectName == "Cost").Index;
+                int condIndex = listView.AllColumns.FirstOrDefault(x => x.AspectName == "Condition").Index;
+                int finishIndex = listView.AllColumns.FirstOrDefault(x => x.AspectName == "Finish").Index;
                 if (e.SubItemIndex == costIndex)
                 {
                     var editor = new NumericUpDown
@@ -557,14 +689,15 @@ namespace MTG_Librarian
         {
             if (e.RowObject is FullInventoryCard card)
             {
-                int costIndex = cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "Cost").DisplayIndex;
-                int condIndex = cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "Condition").DisplayIndex;
-                int finishIndex = cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "Finish").DisplayIndex;
+                var listView = sender as FastObjectListView;
+                int costIndex = listView.AllColumns.FirstOrDefault(x => x.AspectName == "Cost").Index;
+                int condIndex = listView.AllColumns.FirstOrDefault(x => x.AspectName == "Condition").Index;
+                int finishIndex = listView.AllColumns.FirstOrDefault(x => x.AspectName == "Finish").Index;
                 if (e.SubItemIndex == costIndex)
                 {
                     if (double.TryParse(e.NewValue?.ToString(), out double cellValue))
                         card.Cost = cellValue;
-                    cardListView.RefreshObject(card);
+                    listView.RefreshObject(card);
                     e.Cancel = true;
                 }
                 else if (e.SubItemIndex == condIndex)
@@ -573,7 +706,7 @@ namespace MTG_Librarian
                         card.Condition = null;
                     else
                         card.Condition = EditorComboBox.SelectedItem?.ToString();
-                    cardListView.RefreshObject(card);
+                    listView.RefreshObject(card);
                     e.Cancel = true;
                 }
                 else if (e.SubItemIndex == finishIndex)
@@ -588,7 +721,7 @@ namespace MTG_Librarian
                     if (!string.IsNullOrEmpty(priceString))
                         card.Price = Convert.ToDouble(priceString);
 
-                    cardListView.RefreshObject(card);
+                    listView.RefreshObject(card);
                     e.Cancel = true;
                 }
             }

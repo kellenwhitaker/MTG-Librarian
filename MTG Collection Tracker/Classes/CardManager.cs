@@ -42,7 +42,7 @@ namespace MTG_Librarian
             return document;
         }
 
-        public static InventoryCard AddMagicCardToCollection(ScryfallCardsDbContext context, ScryfallMagicCard magicCard, CardCollection collection, int insertionIndex = 0)
+        public static InventoryCard AddMagicCardToCollection(ScryfallCardsDbContext context, ScryfallMagicCard magicCard, CardCollection collection, string board, int insertionIndex = 0)
         {
             var inventoryCard = new InventoryCard
             {
@@ -51,7 +51,8 @@ namespace MTG_Librarian
                 CollectionId = collection.Id,
                 InsertionIndex = insertionIndex,
                 Virtual = collection.Virtual,
-                Platform = collection.Platform
+                Platform = collection.Platform,
+                Board = board
             };
 
             if (magicCard.finishes.Length == 1)
@@ -66,7 +67,7 @@ namespace MTG_Librarian
             return inventoryCard;
         }
 
-        public static void AddMagicCardsToCollection(List<OLVCardItem> cards, CardCollection collection)
+        public static void AddMagicCardsToCollection(List<OLVCardItem> cards, CardCollection collection, string board)
         {
             DefaultCurrency = SettingsManager.ApplicationSettings.DefaultCurrency;
             var setItems = new Dictionary<string, OLVSetItem>();
@@ -83,7 +84,7 @@ namespace MTG_Librarian
                         failedCards++;
                         continue;
                     }
-                    var inventoryCard = AddMagicCardToCollection(context, card, collection, insertionIndex);
+                    var inventoryCard = AddMagicCardToCollection(context, card, collection, board, insertionIndex);
                     cardsAdded.Add(inventoryCard);
                     insertionIndex++;
                     if (!setItems.TryGetValue(card.set_name, out OLVSetItem setItem))
@@ -117,7 +118,7 @@ namespace MTG_Librarian
                 if (failedCards > 0)
                     MessageBox.Show($"{failedCards} card(s) were not added because they are not available on the collection's platform.");
                 if (cvForm != null)
-                    cvForm.AddFullInventoryCards(fullCardsAdded);
+                    cvForm.AddFullInventoryCards(fullCardsAdded, board);
                 EventManager.OnInventoryChanged(new InventoryChangedEventArgs { Cards = fullCardsAdded });
             }
         }
@@ -127,7 +128,7 @@ namespace MTG_Librarian
             Globals.Forms.TasksForm.TaskManager.AddTask(fetchPricesTask);
         }
 
-        public static void MoveFullInventoryCardsToCollection(ArrayList fullInventoryCards, CollectionViewForm sourceCVForm, CardCollection collection)
+        public static void MoveFullInventoryCardsToCollection(ArrayList fullInventoryCards, CollectionViewForm sourceCVForm, CardCollection collection, string sourceBoard, string destinationBoard)
         {
             if (sourceCVForm.Collection.Platform != collection.Platform)
             {
@@ -145,19 +146,21 @@ namespace MTG_Librarian
                         if (fullInventoryCard.Virtual != collection.Virtual)
                             fullInventoryCard.TimeAdded = DateTime.Now;
                         fullInventoryCard.Virtual = collection.Virtual;
+                        fullInventoryCard.Board = destinationBoard;
                         context.Update(fullInventoryCard.InventoryCard);
                         cardsList.Add(fullInventoryCard);
                     }
                     context.SaveChanges();
                 }
 
-                sourceCVForm.RemoveFullInventoryCards(cardsList);
+                sourceCVForm.RemoveFullInventoryCards(cardsList, sourceBoard);
                 var destinationCVForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.Collection.Id == collection.Id);
                 if (destinationCVForm != null)
                 {
-                    destinationCVForm.AddFullInventoryCards(cardsList);
-                    destinationCVForm.cardListView.SelectedObjects = cardsList;
-                    destinationCVForm.cardListView.Focus();
+                    destinationCVForm.AddFullInventoryCards(cardsList, destinationBoard);
+                    var destinationListView = destinationBoard == "sideboard" ? destinationCVForm.sideboardListView : destinationCVForm.cardListView;
+                    destinationListView.SelectedObjects = cardsList;
+                    destinationListView.Focus();
                 }
             }
             catch (Exception ex)
@@ -286,7 +289,7 @@ namespace MTG_Librarian
                             inventoryCardsToRemove.Add(card);
                     }
                     if (inventoryCardsToRemove.Count > 0)
-                        e.CollectionViewForm.RemoveFullInventoryCards(inventoryCardsToRemove);
+                        e.CollectionViewForm.RemoveFullInventoryCards(inventoryCardsToRemove, e.Board);
                     else
                         e.CollectionViewForm.UpdateTotals();
                     Globals.Forms.DBViewForm.cardListView.RefreshObjects(magicCardsCopiesUpdated);
@@ -303,6 +306,11 @@ namespace MTG_Librarian
                 }
                 finally
                 {
+                    if (e.CollectionViewForm.Collection.Type == "deck")
+                    {
+                        e.CollectionViewForm.cardListView.BuildGroups();
+                        e.CollectionViewForm.sideboardListView.BuildGroups();
+                    }
                     e.CollectionViewForm.cardListView.Refresh();
                 }
             }

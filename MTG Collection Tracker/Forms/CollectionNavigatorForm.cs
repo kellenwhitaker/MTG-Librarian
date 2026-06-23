@@ -292,6 +292,9 @@ namespace MTG_Librarian
                                 Virtual = group.Virtual,
                                 Platform = form.platformComboBox.Text
                             };
+
+                            if (group.Name == "Decks")
+                                collection.Type = "deck";
                             if (collection.Platform == "Magic Online")
                                 collection.Platform = "MTGO";
                             context.Collections.Add(collection);

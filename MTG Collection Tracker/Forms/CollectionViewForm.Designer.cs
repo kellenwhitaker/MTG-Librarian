@@ -58,6 +58,7 @@
             this.tabControl = new System.Windows.Forms.TabControl();
             this.mainTabPage = new System.Windows.Forms.TabPage();
             this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.typeFilterTextBox = new EnhancedTextBox.EnhancedTextBox();
             this.manaButtonsPanel = new System.Windows.Forms.Panel();
             this.whiteManaButton = new CustomControls.FlatButton();
             this.blueManaButton = new CustomControls.FlatButton();
@@ -69,8 +70,24 @@
             this.commentsFilterTextBox = new EnhancedTextBox.EnhancedTextBox();
             this.cardTextFilterTextBox = new EnhancedTextBox.EnhancedTextBox();
             this.setFilterTextBox = new EnhancedTextBox.EnhancedTextBox();
-            this.typeFilterTextBox = new EnhancedTextBox.EnhancedTextBox();
             this.rarityFilterComboBox = new System.Windows.Forms.ComboBox();
+            this.sideboardListView = new BrightIdeasSoftware.FastObjectListView();
+            this.sideboardCardNameColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn6 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn7 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn8 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn9 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.sideboardManaCostColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn12 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn13 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.sideboardCountColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn15 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.sideboardPriceColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn17 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn18 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn19 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn20 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn21 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             ((System.ComponentModel.ISupportInitialize)(this.cardListView)).BeginInit();
             this.cardListViewMenuStrip.SuspendLayout();
             this.tabControl.SuspendLayout();
@@ -80,6 +97,7 @@
             this.splitContainer2.Panel2.SuspendLayout();
             this.splitContainer2.SuspendLayout();
             this.manaButtonsPanel.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.sideboardListView)).BeginInit();
             this.SuspendLayout();
             // 
             // cardListView
@@ -126,7 +144,7 @@
             this.TimeAddedColumn});
             this.cardListView.ContextMenuStrip = this.cardListViewMenuStrip;
             this.cardListView.Cursor = System.Windows.Forms.Cursors.Default;
-            this.cardListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.cardListView.Dock = System.Windows.Forms.DockStyle.Left;
             this.cardListView.FullRowSelect = true;
             this.cardListView.GridLines = true;
             this.cardListView.HeaderWordWrap = true;
@@ -139,7 +157,7 @@
             this.cardListView.SelectedBackColor = System.Drawing.Color.SteelBlue;
             this.cardListView.SelectedForeColor = System.Drawing.Color.White;
             this.cardListView.ShowGroups = false;
-            this.cardListView.Size = new System.Drawing.Size(1866, 456);
+            this.cardListView.Size = new System.Drawing.Size(742, 456);
             this.cardListView.TabIndex = 0;
             this.cardListView.UnfocusedSelectedBackColor = System.Drawing.Color.LightGray;
             this.cardListView.UseCellFormatEvents = true;
@@ -407,10 +425,23 @@
             // 
             // splitContainer2.Panel2
             // 
+            this.splitContainer2.Panel2.Controls.Add(this.sideboardListView);
             this.splitContainer2.Panel2.Controls.Add(this.cardListView);
             this.splitContainer2.Size = new System.Drawing.Size(1866, 500);
             this.splitContainer2.SplitterDistance = 40;
             this.splitContainer2.TabIndex = 0;
+            // 
+            // typeFilterTextBox
+            // 
+            this.typeFilterTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic);
+            this.typeFilterTextBox.ForeColor = System.Drawing.Color.Black;
+            this.typeFilterTextBox.Location = new System.Drawing.Point(645, 3);
+            this.typeFilterTextBox.Margin = new System.Windows.Forms.Padding(4);
+            this.typeFilterTextBox.Name = "typeFilterTextBox";
+            this.typeFilterTextBox.Placeholder = "Type Filter";
+            this.typeFilterTextBox.Size = new System.Drawing.Size(211, 23);
+            this.typeFilterTextBox.TabIndex = 17;
+            this.typeFilterTextBox.TextChanged += new System.EventHandler(this.cardNameFilterTextBox_TextChanged);
             // 
             // manaButtonsPanel
             // 
@@ -569,18 +600,6 @@
             this.setFilterTextBox.TabIndex = 2;
             this.setFilterTextBox.TextChanged += new System.EventHandler(this.cardNameFilterTextBox_TextChanged);
             // 
-            // typeFilterTextBox
-            // 
-            this.typeFilterTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Italic);
-            this.typeFilterTextBox.ForeColor = System.Drawing.Color.Black;
-            this.typeFilterTextBox.Location = new System.Drawing.Point(645, 3);
-            this.typeFilterTextBox.Margin = new System.Windows.Forms.Padding(4);
-            this.typeFilterTextBox.Name = "typeFilterTextBox";
-            this.typeFilterTextBox.Placeholder = "Type Filter";
-            this.typeFilterTextBox.Size = new System.Drawing.Size(211, 23);
-            this.typeFilterTextBox.TabIndex = 17;
-            this.typeFilterTextBox.TextChanged += new System.EventHandler(this.cardNameFilterTextBox_TextChanged);
-            // 
             // rarityFilterComboBox
             // 
             this.rarityFilterComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -598,6 +617,203 @@
             this.rarityFilterComboBox.Size = new System.Drawing.Size(160, 24);
             this.rarityFilterComboBox.TabIndex = 16;
             this.rarityFilterComboBox.SelectedIndexChanged += new System.EventHandler(this.rarityFilterComboBox_SelectedIndexChanged);
+            // 
+            // sideboardListView
+            // 
+            this.sideboardListView.AllColumns.Add(this.sideboardCardNameColumn);
+            this.sideboardListView.AllColumns.Add(this.olvColumn6);
+            this.sideboardListView.AllColumns.Add(this.olvColumn7);
+            this.sideboardListView.AllColumns.Add(this.olvColumn8);
+            this.sideboardListView.AllColumns.Add(this.olvColumn10);
+            this.sideboardListView.AllColumns.Add(this.olvColumn9);
+            this.sideboardListView.AllColumns.Add(this.sideboardManaCostColumn);
+            this.sideboardListView.AllColumns.Add(this.olvColumn12);
+            this.sideboardListView.AllColumns.Add(this.olvColumn13);
+            this.sideboardListView.AllColumns.Add(this.sideboardCountColumn);
+            this.sideboardListView.AllColumns.Add(this.olvColumn15);
+            this.sideboardListView.AllColumns.Add(this.sideboardPriceColumn);
+            this.sideboardListView.AllColumns.Add(this.tcgPlayerMidPriceColumn);
+            this.sideboardListView.AllColumns.Add(this.olvColumn17);
+            this.sideboardListView.AllColumns.Add(this.olvColumn18);
+            this.sideboardListView.AllColumns.Add(this.olvColumn19);
+            this.sideboardListView.AllColumns.Add(this.olvColumn20);
+            this.sideboardListView.AllColumns.Add(this.SortableTimeAdded);
+            this.sideboardListView.AllColumns.Add(this.olvColumn1);
+            this.sideboardListView.AllColumns.Add(this.olvColumn21);
+            this.sideboardListView.AllowDrop = true;
+            this.sideboardListView.BackColor = System.Drawing.Color.White;
+            this.sideboardListView.CellEditUseWholeCell = false;
+            this.sideboardListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.sideboardCardNameColumn,
+            this.olvColumn6,
+            this.olvColumn7,
+            this.olvColumn8,
+            this.olvColumn9,
+            this.sideboardManaCostColumn,
+            this.olvColumn12,
+            this.olvColumn13,
+            this.sideboardCountColumn,
+            this.olvColumn15,
+            this.sideboardPriceColumn,
+            this.olvColumn17,
+            this.olvColumn18,
+            this.olvColumn19,
+            this.olvColumn20,
+            this.olvColumn21});
+            this.sideboardListView.ContextMenuStrip = this.cardListViewMenuStrip;
+            this.sideboardListView.Cursor = System.Windows.Forms.Cursors.Default;
+            this.sideboardListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sideboardListView.FullRowSelect = true;
+            this.sideboardListView.GridLines = true;
+            this.sideboardListView.HeaderWordWrap = true;
+            this.sideboardListView.HideSelection = false;
+            this.sideboardListView.IsSimpleDragSource = true;
+            this.sideboardListView.IsSimpleDropSink = true;
+            this.sideboardListView.Location = new System.Drawing.Point(742, 0);
+            this.sideboardListView.Margin = new System.Windows.Forms.Padding(4);
+            this.sideboardListView.Name = "sideboardListView";
+            this.sideboardListView.SelectedBackColor = System.Drawing.Color.SteelBlue;
+            this.sideboardListView.SelectedForeColor = System.Drawing.Color.White;
+            this.sideboardListView.ShowGroups = false;
+            this.sideboardListView.Size = new System.Drawing.Size(1124, 456);
+            this.sideboardListView.TabIndex = 1;
+            this.sideboardListView.UnfocusedSelectedBackColor = System.Drawing.Color.LightGray;
+            this.sideboardListView.UseCellFormatEvents = true;
+            this.sideboardListView.UseCompatibleStateImageBehavior = false;
+            this.sideboardListView.View = System.Windows.Forms.View.Details;
+            this.sideboardListView.VirtualMode = true;
+            this.sideboardListView.CellEditFinished += new BrightIdeasSoftware.CellEditEventHandler(this.fastObjectListView1_CellEditFinished);
+            this.sideboardListView.CellClick += new System.EventHandler<BrightIdeasSoftware.CellClickEventArgs>(this.fastObjectListView1_CellClick);
+            this.sideboardListView.ModelCanDrop += new System.EventHandler<BrightIdeasSoftware.ModelDropEventArgs>(this.fastObjectListView1_ModelCanDrop);
+            this.sideboardListView.ModelDropped += new System.EventHandler<BrightIdeasSoftware.ModelDropEventArgs>(this.fastObjectListView1_ModelDropped);
+            this.sideboardListView.SelectionChanged += new System.EventHandler(this.fastObjectListView1_SelectionChanged);
+            this.sideboardListView.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.fastObjectListView1_KeyPress);
+            this.sideboardListView.KeyUp += new System.Windows.Forms.KeyEventHandler(this.cardListView_KeyUp);
+            // 
+            // sideboardCardNameColumn
+            // 
+            this.sideboardCardNameColumn.AspectName = "PaddedName";
+            this.sideboardCardNameColumn.ImageAspectName = "ImageKey";
+            this.sideboardCardNameColumn.IsEditable = false;
+            this.sideboardCardNameColumn.MinimumWidth = 200;
+            this.sideboardCardNameColumn.Searchable = false;
+            this.sideboardCardNameColumn.Text = "Card";
+            this.sideboardCardNameColumn.Width = 200;
+            // 
+            // olvColumn6
+            // 
+            this.olvColumn6.AspectName = "rarity";
+            this.olvColumn6.IsEditable = false;
+            this.olvColumn6.Text = "Rarity";
+            // 
+            // olvColumn7
+            // 
+            this.olvColumn7.AspectName = "Finish";
+            this.olvColumn7.Text = "Finish";
+            // 
+            // olvColumn8
+            // 
+            this.olvColumn8.AspectName = "Condition";
+            this.olvColumn8.Text = "Cond";
+            // 
+            // olvColumn9
+            // 
+            this.olvColumn9.AspectName = "DisplayTypeLine";
+            this.olvColumn9.IsEditable = false;
+            this.olvColumn9.MinimumWidth = 100;
+            this.olvColumn9.Text = "Type";
+            this.olvColumn9.Width = 100;
+            // 
+            // sideboardManaCostColumn
+            // 
+            this.sideboardManaCostColumn.AspectName = "ManaCost";
+            this.sideboardManaCostColumn.IsEditable = false;
+            this.sideboardManaCostColumn.MinimumWidth = 100;
+            this.sideboardManaCostColumn.Text = "Mana Cost";
+            this.sideboardManaCostColumn.Width = 100;
+            // 
+            // olvColumn12
+            // 
+            this.olvColumn12.AspectName = "set_name";
+            this.olvColumn12.IsEditable = false;
+            this.olvColumn12.MinimumWidth = 100;
+            this.olvColumn12.Text = "Set";
+            this.olvColumn12.Width = 100;
+            // 
+            // olvColumn13
+            // 
+            this.olvColumn13.AspectName = "collector_number";
+            this.olvColumn13.IsEditable = false;
+            this.olvColumn13.MinimumWidth = 50;
+            this.olvColumn13.Text = "#";
+            this.olvColumn13.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // sideboardCountColumn
+            // 
+            this.sideboardCountColumn.AspectName = "Count";
+            this.sideboardCountColumn.AutoCompleteEditor = false;
+            this.sideboardCountColumn.AutoCompleteEditorMode = System.Windows.Forms.AutoCompleteMode.None;
+            this.sideboardCountColumn.CellEditUseWholeCell = true;
+            this.sideboardCountColumn.MinimumWidth = 50;
+            this.sideboardCountColumn.Text = "Count";
+            this.sideboardCountColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // olvColumn15
+            // 
+            this.olvColumn15.AspectName = "Cost";
+            this.olvColumn15.AspectToStringFormat = "{0:0.00}";
+            this.olvColumn15.AutoCompleteEditor = false;
+            this.olvColumn15.AutoCompleteEditorMode = System.Windows.Forms.AutoCompleteMode.None;
+            this.olvColumn15.CellEditUseWholeCell = true;
+            this.olvColumn15.MinimumWidth = 50;
+            this.olvColumn15.Text = "Cost";
+            this.olvColumn15.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // sideboardPriceColumn
+            // 
+            this.sideboardPriceColumn.AspectName = "Price";
+            this.sideboardPriceColumn.AspectToStringFormat = "{0:0.00}";
+            this.sideboardPriceColumn.IsEditable = false;
+            this.sideboardPriceColumn.Text = "Price";
+            this.sideboardPriceColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // olvColumn17
+            // 
+            this.olvColumn17.AspectName = "Delta";
+            this.olvColumn17.AspectToStringFormat = "{0:0.00}";
+            this.olvColumn17.IsEditable = false;
+            this.olvColumn17.Text = "Δ";
+            this.olvColumn17.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // olvColumn18
+            // 
+            this.olvColumn18.AspectName = "Percent";
+            this.olvColumn18.AspectToStringFormat = "{0:0.00}";
+            this.olvColumn18.IsEditable = false;
+            this.olvColumn18.Text = "%";
+            this.olvColumn18.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // olvColumn19
+            // 
+            this.olvColumn19.AspectName = "DisplayText";
+            this.olvColumn19.Text = "Text";
+            this.olvColumn19.Width = 200;
+            // 
+            // olvColumn20
+            // 
+            this.olvColumn20.AspectName = "Tags";
+            this.olvColumn20.AutoCompleteEditorMode = System.Windows.Forms.AutoCompleteMode.Suggest;
+            this.olvColumn20.CellEditUseWholeCell = true;
+            this.olvColumn20.MinimumWidth = 200;
+            this.olvColumn20.Text = "Comments";
+            this.olvColumn20.Width = 200;
+            // 
+            // olvColumn21
+            // 
+            this.olvColumn21.AspectName = "TimeAdded";
+            this.olvColumn21.IsEditable = false;
+            this.olvColumn21.Text = "Added";
+            this.olvColumn21.Width = 200;
             // 
             // CollectionViewForm
             // 
@@ -620,6 +836,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
             this.splitContainer2.ResumeLayout(false);
             this.manaButtonsPanel.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.sideboardListView)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -667,5 +884,22 @@
         private System.Windows.Forms.TabControl tabControl;
         private System.Windows.Forms.TabPage mainTabPage;
         private System.Windows.Forms.SplitContainer splitContainer2;
+        public BrightIdeasSoftware.FastObjectListView sideboardListView;
+        private BrightIdeasSoftware.OLVColumn sideboardCardNameColumn;
+        private BrightIdeasSoftware.OLVColumn olvColumn6;
+        private BrightIdeasSoftware.OLVColumn olvColumn7;
+        private BrightIdeasSoftware.OLVColumn olvColumn8;
+        private BrightIdeasSoftware.OLVColumn olvColumn9;
+        private BrightIdeasSoftware.OLVColumn sideboardManaCostColumn;
+        private BrightIdeasSoftware.OLVColumn olvColumn12;
+        private BrightIdeasSoftware.OLVColumn olvColumn13;
+        private BrightIdeasSoftware.OLVColumn sideboardCountColumn;
+        private BrightIdeasSoftware.OLVColumn olvColumn15;
+        private BrightIdeasSoftware.OLVColumn sideboardPriceColumn;
+        private BrightIdeasSoftware.OLVColumn olvColumn17;
+        private BrightIdeasSoftware.OLVColumn olvColumn18;
+        private BrightIdeasSoftware.OLVColumn olvColumn19;
+        private BrightIdeasSoftware.OLVColumn olvColumn20;
+        private BrightIdeasSoftware.OLVColumn olvColumn21;
     }
 }

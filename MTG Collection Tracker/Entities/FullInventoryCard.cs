@@ -36,6 +36,8 @@ namespace MTG_Librarian
         public string Condition { get; set; }
         public string Finish { get; set; }
         public string Platform { get; set; }
+        public string Board { get; set; }
+        public bool? IsCommander { get; set; }
         [NotMapped]
         public string SortableTimeAdded
         {
@@ -78,6 +80,31 @@ namespace MTG_Librarian
         public string PaddedName => DisplayName != null ? DisplayName?.PadRight(500) : Name.PadRight(500);
 
         [NotMapped]
+        public string ListViewGroupKey
+        {
+            get
+            {
+                if (type_line.Contains("Land"))
+                    return "Lands";
+                else if (type_line.Contains("Battle"))
+                    return "Battles";
+                else if (type_line.Contains("Creature"))
+                    return "Creatures";
+                else if (type_line.Contains("Sorcery"))
+                    return "Sorceries";
+                else if (type_line.Contains("Instant"))
+                    return "Instants";
+                else if (type_line.Contains("Enchantment"))
+                    return "Enchantments";
+                else if (type_line.Contains("Artifact"))
+                    return "Artifacts";
+                else if (type_line.Contains("Planeswalker"))
+                    return "Planeswalkers";                
+                else
+                    return "Other";
+            }
+        }
+        [NotMapped]
         public InventoryCard InventoryCard
         {
             get
@@ -97,7 +124,9 @@ namespace MTG_Librarian
                     Virtual = Virtual,
                     Condition = Condition,
                     Finish = Finish,
-                    Platform = Platform
+                    Platform = Platform,
+                    Board = Board,
+                    IsCommander = IsCommander
                 };
             }
         }

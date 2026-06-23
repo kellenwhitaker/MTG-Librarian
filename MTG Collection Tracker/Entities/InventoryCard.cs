@@ -24,5 +24,7 @@ namespace MTG_Librarian
         public string       Condition { get; set; }
         public string       Finish { get; set; }
         public string       Platform { get; set; }
+        public string       Board { get; set; }
+        public bool?        IsCommander { get; set; }
     }
 }

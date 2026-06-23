@@ -227,14 +227,10 @@ namespace MTG_Librarian
                 var cardItems = new List<OLVCardItem>();
                 foreach (OLVCardItem cardItem in e.Items)
                     cardItems.Add(cardItem);
-                CardManager.AddMagicCardsToCollection(cardItems, e.TargetCollection);
+                CardManager.AddMagicCardsToCollection(cardItems, e.TargetCollection, e.TargetBoard);
             }
-            //else if (e.Items[0] is OLVSetItem setItem) // TODO: must be redone
-                //CardManager.AddMagicCardsToCollection(setItem.Cards, e.TargetCollection);
-            //else if (e.Items[0] is OLVRarityItem rarityItem)
-                //CardManager.AddMagicCardsToCollection(rarityItem.Cards, e.TargetCollection);
             else if (e.Items[0] is FullInventoryCard)
-                CardManager.MoveFullInventoryCardsToCollection(e.Items, e.SourceForm as CollectionViewForm, e.TargetCollection);
+                CardManager.MoveFullInventoryCardsToCollection(e.Items, e.SourceForm as CollectionViewForm, e.TargetCollection, e.SourceBoard, e.TargetBoard);
         }
 
         public static void NavigationFormCardsDropped(object sender, CardsDroppedEventArgs e)
