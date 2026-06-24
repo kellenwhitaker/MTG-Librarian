@@ -329,10 +329,11 @@ namespace MTG_Librarian
                         e.Effect = DragDropEffects.Copy;
                         e.InfoMessage = $"Move {collection.Name} to {group.Name} group";
                     }
-                    else
+                    else if (rowObjectUnderMouse is NavigatorCollection col && col != collection)
                     {
-                        navigatorListView.SelectedObject = null;
-                        e.Effect = DragDropEffects.None;
+                        navigatorListView.SelectedObject = col;
+                        e.Effect = DragDropEffects.Move;
+                        e.InfoMessage = $"Move {collection.Name} to {col.Name} collection";
                     }
                 }
             }
@@ -348,7 +349,7 @@ namespace MTG_Librarian
                     e.InfoMessage = $"Add {rarityItem.Rarity}s from [{(rarityItem.Parent as OLVSetItem).Name}] to {DocumentName}";
                 else if (e.SourceModels[0] is FullInventoryCard fullInventoryCard)
                 {
-                    var parentForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.cardListView == e.SourceListView);
+                    var parentForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.cardListView == e.SourceListView || x.sideboardListView == e.SourceListView);
                     if (parentForm != null && parentForm.Collection.Id != navigatorCollection.Id)
                         e.InfoMessage = $"Move {e.SourceModels.Count} card{(e.SourceModels.Count == 1 ? "" : "s")} to {DocumentName}";
                 }
@@ -382,15 +383,61 @@ namespace MTG_Librarian
                         }
                     }
                 }
+                else if (rowObjectUnderMouse is NavigatorCollection targetCollection && targetCollection != collection)
+                {
+                    var items = e.SourceModels as ArrayList;
+                    var sourceForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.Collection.Id == collection.Id);
+                    var cards = new List<FullInventoryCard>();
+                    using (var context = new ScryfallCardsDbContext())
+                    {
+                        try
+                        {
+                            cards = (from s in context.LibraryView
+                                     where s.CollectionId == collection.Id
+                                     select s).ToList();
+                        }
+                        catch (Exception ex)
+                        {
+                            DebugOutput.WriteLine(ex.ToString());
+                        }
+                    }
+
+                    if (cards != null)
+                    {
+                        var args = new CardsDroppedEventArgs
+                        {
+                            Items = new ArrayList(cards),
+                            SourceForm = sourceForm,
+                            TargetCollection = targetCollection.CardCollection
+                        };
+
+                        OnCardsDropped(args);
+                    }
+                }
             }
             else if (rowObjectUnderMouse is NavigatorCollection navigatorCollection)
             {
-                OnCardsDropped(new CardsDroppedEventArgs
+                var items = e.SourceModels as ArrayList;
+                CollectionViewForm sourceForm = null;
+                if (e.SourceModels[0] is FullInventoryCard)
+                    sourceForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.cardListView == e.SourceListView || x.sideboardListView == e.SourceListView);
+                
+                var args = new CardsDroppedEventArgs
                 {
-                    Items = e.SourceModels as ArrayList,
-                    SourceForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.cardListView == e.SourceListView),
+                    Items = items,
+                    SourceForm = sourceForm,
                     TargetCollection = navigatorCollection.CardCollection
-                });
+                };
+
+                if (sourceForm != null)
+                {
+                    if (e.SourceListView == sourceForm.cardListView)
+                        args.SourceBoard = "mainboard";
+                    else if (e.SourceListView == sourceForm.sideboardListView)
+                        args.SourceBoard = "sideboard";
+                }
+
+                OnCardsDropped(args);
             }
         }
 

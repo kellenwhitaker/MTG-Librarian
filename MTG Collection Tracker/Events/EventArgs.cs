@@ -16,7 +16,7 @@ namespace MTG_Librarian
         public ArrayList Items { get; set; }
         public CardCollection TargetCollection { get; set; }
         public DockContent SourceForm { get; set; }
-        public string SourceBoard { get; set; }
+        public string SourceBoard { get; set; } = string.Empty;
         public string TargetBoard { get; set; } = "mainboard";
     }
 

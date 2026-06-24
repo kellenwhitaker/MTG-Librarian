@@ -153,6 +153,15 @@ namespace MTG_Librarian
                     context.SaveChanges();
                 }
 
+                if (string.IsNullOrEmpty(sourceBoard))
+                {
+                    var ids = new List<int>();
+                    foreach (FullInventoryCard card in cardsList)
+                        ids.Add(card.InventoryId);
+                    sourceCVForm.RemoveFullInventoryCards(ids, "mainboard");
+                    sourceCVForm.RemoveFullInventoryCards(ids, "sideboard");
+                }
+
                 sourceCVForm.RemoveFullInventoryCards(cardsList, sourceBoard);
                 var destinationCVForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.Collection.Id == collection.Id);
                 if (destinationCVForm != null)

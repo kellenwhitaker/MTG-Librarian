@@ -276,7 +276,7 @@ namespace MTG_Librarian
 
                     CardName.GroupKeyToTitleConverter = delegate (object groupKey) {
                         if (groupKey.ToString() == "")
-                            return "";
+                            return "Mainboard";
                         else
                         {              
                             var count = 0;
@@ -291,7 +291,7 @@ namespace MTG_Librarian
 
                     sideboardCardNameColumn.GroupKeyToTitleConverter = delegate (object groupKey) {
                         if (groupKey.ToString() == "")
-                            return "";
+                            return "Sideboard";
                         else
                         {
                             var count = 0;
@@ -374,6 +374,13 @@ namespace MTG_Librarian
             }
         }
 
+        private void RemoveFullInventoryCards(List<int> cardIds, FastObjectListView listView)
+        {
+            var cardsToRemove = listView.Objects.Cast<object>().Where(x => x is FullInventoryCard).Cast<FullInventoryCard>().Where(x => cardIds.Contains(x.InventoryId)).ToList();
+            if (cardsToRemove.Count > 0)
+                RemoveFullInventoryCards(cardsToRemove, listView);
+        }
+
         private void RemoveFullInventoryCards(List<FullInventoryCard> cardsToRemove, FastObjectListView listView)
         {
             var inventoryCardsStillSelected = listView.SelectedObjects.Cast<object>().Where(x => x is FullInventoryCard).Cast<FullInventoryCard>().ToList();
@@ -399,6 +406,23 @@ namespace MTG_Librarian
             UpdateTotals();
         }
 
+        public void RemoveFullInventoryCards(List<int> cardIds, string board)
+        {
+            if (cardIds.Count > 0)
+            {
+                if (board == "mainboard")
+                {
+                    ignoreNextCardListViewSelectionChanged = true;
+                    RemoveFullInventoryCards(cardIds, cardListView);
+                }
+                else
+                {
+                    ignoreNextSideboardListViewSelectionChanged = true;
+                    RemoveFullInventoryCards(cardIds, sideboardListView);
+                }
+            }
+
+        }
         public void RemoveFullInventoryCards(List<FullInventoryCard> cardsToRemove, string board)
         {
             if (cardsToRemove.Count > 0)
@@ -993,5 +1017,10 @@ namespace MTG_Librarian
         }
 
         #endregion Classes
+
+        private void CollectionViewForm_SizeChanged(object sender, EventArgs e)
+        {
+            cardListView.Width = Width / 2;
+        }
     }
 }

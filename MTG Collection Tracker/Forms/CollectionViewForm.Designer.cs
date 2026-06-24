@@ -826,6 +826,7 @@
             this.Name = "CollectionViewForm";
             this.Text = "Collection View";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.CollectionViewForm_FormClosed);
+            this.SizeChanged += new System.EventHandler(this.CollectionViewForm_SizeChanged);
             ((System.ComponentModel.ISupportInitialize)(this.cardListView)).EndInit();
             this.cardListViewMenuStrip.ResumeLayout(false);
             this.tabControl.ResumeLayout(false);
