@@ -92,6 +92,7 @@
             this.flipButton.Text = "Flip";
             this.flipButton.UseVisualStyleBackColor = true;
             this.flipButton.Visible = false;
+            this.flipButton.Click += new System.EventHandler(this.flipButton_Click);
             // 
             // cardTextHtmlPanel
             // 
