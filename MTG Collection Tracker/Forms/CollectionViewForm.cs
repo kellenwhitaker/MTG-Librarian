@@ -806,11 +806,13 @@ namespace MTG_Librarian
                 e.Cancel = true;
             else
             {
+                splitToolStripMenuItem.Visible = false;
+                combineToolStripMenuItem.Visible = false;
+                makeCommanderToolStripMenuItem.Visible = false;
                 if (listView.SelectedObject is FullInventoryCard card)
                 {
                     if (card.Count > 1)
                     {
-                        makeCommanderToolStripMenuItem.Visible = false;
                         splitToolStripMenuItem.Visible = true;
                     }
                     else
@@ -826,25 +828,19 @@ namespace MTG_Librarian
                             {
                                 makeCommanderToolStripMenuItem.Text = "Make Commander";
                             }
-                        }
-                        else
-                        {
-                            makeCommanderToolStripMenuItem.Visible = false;
-                        }
-                        splitToolStripMenuItem.Visible = false;
-                        combineToolStripMenuItem.Visible = false;
-                        if (listView.SelectedObjects != null && listView.SelectedObjects.Count > 1)
-                        {
-                            makeCommanderToolStripMenuItem.Visible = false;
-                            var selectedCards = listView.SelectedObjects.Cast<object>().Where(x => x is FullInventoryCard).Cast<FullInventoryCard>();
-                            var firstCard = selectedCards.First();
-                            foreach (var selectedCard in selectedCards)
-                                if (selectedCard.ScryfallId != firstCard.ScryfallId)
-                                    return;
-
-                            combineToolStripMenuItem.Visible = true;
-                        }
+                        }                        
                     }
+                }
+
+                if (listView.SelectedObjects != null && listView.SelectedObjects.Count > 1)
+                {
+                    var selectedCards = listView.SelectedObjects.Cast<object>().Where(x => x is FullInventoryCard).Cast<FullInventoryCard>();
+                    var firstCard = selectedCards.First();
+                    foreach (var selectedCard in selectedCards)
+                        if (selectedCard.ScryfallId != firstCard.ScryfallId)
+                            return;
+
+                    combineToolStripMenuItem.Visible = true;
                 }
             }
         }
