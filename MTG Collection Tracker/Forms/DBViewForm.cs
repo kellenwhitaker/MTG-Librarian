@@ -105,7 +105,13 @@ namespace MTG_Librarian
             if (!string.IsNullOrWhiteSpace(cardTextFilterTextBox.Text))
                 queryClauses.Add($"oracle%3A{cardTextFilterTextBox.Text}");
             if (!string.IsNullOrWhiteSpace(typeFilterTextBox.Text))
-                queryClauses.Add($"type%3A{typeFilterTextBox.Text}");
+            {
+                var types = typeFilterTextBox.Text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var type in types)
+                {
+                    queryClauses.Add($"type%3A{type}");
+                }
+            }
             if (setListView.SelectedObject != null)
             {
                 string setCode = (setListView.SelectedObject as OLVSetItem).CardSet.code;
