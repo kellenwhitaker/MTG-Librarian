@@ -54,6 +54,7 @@
             this.deleteCardsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.splitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.combineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.makeCommanderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cardNameFilterTextBox = new EnhancedTextBox.EnhancedTextBox();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.mainTabPage = new System.Windows.Forms.TabPage();
@@ -341,31 +342,40 @@
             this.cardListViewMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.deleteCardsToolStripMenuItem,
             this.splitToolStripMenuItem,
-            this.combineToolStripMenuItem});
+            this.combineToolStripMenuItem,
+            this.makeCommanderToolStripMenuItem});
             this.cardListViewMenuStrip.Name = "cardListViewMenuStrip";
-            this.cardListViewMenuStrip.Size = new System.Drawing.Size(172, 76);
+            this.cardListViewMenuStrip.Size = new System.Drawing.Size(211, 128);
             this.cardListViewMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.cardListViewMenuStrip_Opening);
             // 
             // deleteCardsToolStripMenuItem
             // 
             this.deleteCardsToolStripMenuItem.Name = "deleteCardsToolStripMenuItem";
-            this.deleteCardsToolStripMenuItem.Size = new System.Drawing.Size(171, 24);
+            this.deleteCardsToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
             this.deleteCardsToolStripMenuItem.Text = "Delete card(s)";
             this.deleteCardsToolStripMenuItem.Click += new System.EventHandler(this.deleteCardsToolStripMenuItem_Click);
             // 
             // splitToolStripMenuItem
             // 
             this.splitToolStripMenuItem.Name = "splitToolStripMenuItem";
-            this.splitToolStripMenuItem.Size = new System.Drawing.Size(171, 24);
+            this.splitToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
             this.splitToolStripMenuItem.Text = "Split";
             this.splitToolStripMenuItem.Click += new System.EventHandler(this.splitToolStripMenuItem_Click);
             // 
             // combineToolStripMenuItem
             // 
             this.combineToolStripMenuItem.Name = "combineToolStripMenuItem";
-            this.combineToolStripMenuItem.Size = new System.Drawing.Size(171, 24);
+            this.combineToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
             this.combineToolStripMenuItem.Text = "Combine";
             this.combineToolStripMenuItem.Click += new System.EventHandler(this.combineToolStripMenuItem_Click);
+            // 
+            // makeCommanderToolStripMenuItem
+            // 
+            this.makeCommanderToolStripMenuItem.Name = "makeCommanderToolStripMenuItem";
+            this.makeCommanderToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.makeCommanderToolStripMenuItem.Text = "Make Commander";
+            this.makeCommanderToolStripMenuItem.Visible = false;
+            this.makeCommanderToolStripMenuItem.Click += new System.EventHandler(this.makeCommanderToolStripMenuItem_Click);
             // 
             // cardNameFilterTextBox
             // 
@@ -902,5 +912,6 @@
         private BrightIdeasSoftware.OLVColumn olvColumn19;
         private BrightIdeasSoftware.OLVColumn olvColumn20;
         private BrightIdeasSoftware.OLVColumn olvColumn21;
+        private System.Windows.Forms.ToolStripMenuItem makeCommanderToolStripMenuItem;
     }
 }

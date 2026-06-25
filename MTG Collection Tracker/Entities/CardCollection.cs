@@ -15,5 +15,6 @@ namespace MTG_Librarian
         public bool     Virtual { get; set; }
         public bool     Permanent { get; set; }
         public string   Platform { get; set; }
+        public int?     Commander { get; set; }
     }
 }

@@ -267,7 +267,10 @@ namespace MTG_Librarian
                     CardName.GroupKeyGetter = sideboardCardNameColumn.GroupKeyGetter = delegate (object rowObject) {
                         if (rowObject is FullInventoryCard card)
                         {
-                            return card.ListViewGroupKey;
+                            if (card.Board == "mainboard" && Collection.Commander.HasValue && card.InventoryId == Collection.Commander.Value)
+                                return "0Commander";
+                            else
+                                return card.ListViewGroupKey;
                         }
                         else if (rowObject is InventoryTotalsItem)
                             return "";
@@ -278,7 +281,10 @@ namespace MTG_Librarian
                         if (groupKey.ToString() == "")
                             return "Mainboard";
                         else
-                        {              
+                        { 
+                            if (Collection.Commander.HasValue && groupKey.ToString() == "0Commander")
+                                return "Commander";
+
                             var count = 0;
                             foreach (var item in cardListView.Objects)
                             {
@@ -795,25 +801,49 @@ namespace MTG_Librarian
 
         private void cardListViewMenuStrip_Opening(object sender, CancelEventArgs e)
         {
-            if (cardListView.SelectedObjects?.Count < 1 || cardListView.SelectedObject is InventoryTotalsItem)
+            var listView = cardListViewMenuStrip.SourceControl as FastObjectListView;
+            if (listView.SelectedObjects?.Count < 1 || listView.SelectedObject is InventoryTotalsItem)
                 e.Cancel = true;
             else
             {
-                if (cardListView.SelectedObject is FullInventoryCard card && card.Count > 1)
-                    splitToolStripMenuItem.Visible = true;
-                else
+                if (listView.SelectedObject is FullInventoryCard card)
                 {
-                    splitToolStripMenuItem.Visible = false;
-                    combineToolStripMenuItem.Visible = false;
-                    if (cardListView.SelectedObjects != null && cardListView.SelectedObjects.Count > 1)
+                    if (card.Count > 1)
                     {
-                        var selectedCards = cardListView.SelectedObjects.Cast<object>().Where(x => x is FullInventoryCard).Cast<FullInventoryCard>();
-                        var firstCard = selectedCards.First();
-                        foreach (var selectedCard in selectedCards)
-                            if (selectedCard.ScryfallId != firstCard.ScryfallId)
-                                return;
+                        makeCommanderToolStripMenuItem.Visible = false;
+                        splitToolStripMenuItem.Visible = true;
+                    }
+                    else
+                    {
+                        if (Collection.Type == "deck" && card.Board == "mainboard" && card.type_line.Contains("Legendary") && card.type_line.Contains("Creature"))
+                        {
+                            makeCommanderToolStripMenuItem.Visible = true;
+                            if (Collection.Commander.HasValue && card.InventoryId == Collection.Commander.Value)
+                            {
+                                makeCommanderToolStripMenuItem.Text = "Remove as Commander";
+                            }
+                            else
+                            {
+                                makeCommanderToolStripMenuItem.Text = "Make Commander";
+                            }
+                        }
+                        else
+                        {
+                            makeCommanderToolStripMenuItem.Visible = false;
+                        }
+                        splitToolStripMenuItem.Visible = false;
+                        combineToolStripMenuItem.Visible = false;
+                        if (listView.SelectedObjects != null && listView.SelectedObjects.Count > 1)
+                        {
+                            makeCommanderToolStripMenuItem.Visible = false;
+                            var selectedCards = listView.SelectedObjects.Cast<object>().Where(x => x is FullInventoryCard).Cast<FullInventoryCard>();
+                            var firstCard = selectedCards.First();
+                            foreach (var selectedCard in selectedCards)
+                                if (selectedCard.ScryfallId != firstCard.ScryfallId)
+                                    return;
 
-                        combineToolStripMenuItem.Visible = true;
+                            combineToolStripMenuItem.Visible = true;
+                        }
                     }
                 }
             }
@@ -1021,6 +1051,25 @@ namespace MTG_Librarian
         private void CollectionViewForm_SizeChanged(object sender, EventArgs e)
         {
             cardListView.Width = Width / 2;
+        }
+        private void makeCommanderToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var listView = cardListViewMenuStrip.SourceControl as FastObjectListView;
+            if (listView == cardListView && listView.SelectedObject is FullInventoryCard card)
+            {
+                if (Collection.Commander.HasValue && card.InventoryId == Collection.Commander.Value)
+                    Collection.Commander = null;
+                else
+                    Collection.Commander = card.InventoryId;
+                
+                using (var context = new ScryfallCardsDbContext())
+                {
+                    context.Update(Collection);
+                    context.SaveChanges();
+                }
+
+                listView.BuildGroups();
+            }
         }
     }
 }
