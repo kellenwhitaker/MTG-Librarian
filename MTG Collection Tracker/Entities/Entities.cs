@@ -50,8 +50,8 @@ namespace MTG_Librarian
         #region DbSet
         public DbSet<Metadata> Metadata { get; set; }
         public DbSet<ScryfallMagicCard> Catalog { get; set; }
-        public DbSet<InventoryCard> Library { get; set; }
-        public DbSet<FullInventoryCard> LibraryView { get; set; }
+        public DbSet<InventoryCardBase> Library { get; set; }
+        public DbSet<InventoryCard> LibraryView { get; set; }
         public DbSet<ScryfallCardSet> Sets { get; set; }
         public DbSet<CardCollection> Collections { get; set; }
         public DbSet<CollectionGroup> CollectionGroups { get; set; }
@@ -61,7 +61,7 @@ namespace MTG_Librarian
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Ignore<ScryfallMagicCardBase>();
-            modelBuilder.Entity<InventoryCard>().Property(b => b.TimeAdded).HasDefaultValueSql("datetime('now','localtime')");
+            modelBuilder.Entity<InventoryCardBase>().Property(b => b.TimeAdded).HasDefaultValueSql("datetime('now','localtime')");
             modelBuilder.Entity<ScryfallMagicCard>().HasKey(x => x.ScryfallId);
         }
 

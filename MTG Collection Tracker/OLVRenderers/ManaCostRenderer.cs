@@ -19,7 +19,7 @@ namespace MTG_Librarian
                 g.FillRectangle(solidBrush, backgroundRect);
             }
             string manaCost = "";
-            if (ListItem.RowObject is FullInventoryCard card)
+            if (ListItem.RowObject is InventoryCard card)
             {
                 if (card.mana_cost != null)
                     manaCost = card.mana_cost;

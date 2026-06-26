@@ -76,7 +76,7 @@ namespace MTG_Librarian
             double priceTotal = 0;
             foreach (var card in cards)
             {
-                if (card is FullInventoryCard inventoryCard)
+                if (card is InventoryCard inventoryCard)
                 {
                     if (inventoryCard.Count.HasValue)
                     {
@@ -313,10 +313,10 @@ namespace MTG_Librarian
             string DefaultPaperCurrency = SettingsManager.ApplicationSettings.DefaultPaperCurrency;
             foreach (var form in Globals.Forms.OpenCollectionForms)
             {
-                var cardsToRefresh = new List<FullInventoryCard>();
+                var cardsToRefresh = new List<InventoryCard>();
                 foreach (var item in form.cardListView.Objects)
                 {
-                    if (item is FullInventoryCard card)
+                    if (item is InventoryCard card)
                     {
                         cardsToRefresh.Add(card);
                         string priceString = "";
@@ -360,7 +360,7 @@ namespace MTG_Librarian
                     file.WriteLine("Quantity,Name,Code,PurchasePrice,Foil,Condition,Language,PurchaseDate");
                     foreach (var row in targetLV.Objects)
                     {
-                        if (row is FullInventoryCard card)
+                        if (row is InventoryCard card)
                             file.WriteLine($"{card.Count},\"{card.DisplayName}\",{card.set_id},{(card.Cost.HasValue ? card.Cost : 0)},{(card.Foil ? 1 : 0)},0,0,{card.TimeAdded}");                       
                     }
                     

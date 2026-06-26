@@ -29,7 +29,7 @@ namespace MTG_Librarian
 
         public override void Render(Graphics g, Rectangle r)
         {
-            if (ListItem.RowObject is FullInventoryCard cardInstance)
+            if (ListItem.RowObject is InventoryCard cardInstance)
             {
                 var backgroundRect = new Rectangle(r.Left - 1, r.Top - 1, r.Width + 1, r.Height + 1);
                 FillBackground(g, backgroundRect);

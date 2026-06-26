@@ -37,7 +37,7 @@ namespace MTG_Librarian
 
         public override void Render(Graphics g, Rectangle r)
         {
-            if (ListItem.RowObject is FullInventoryCard cardInstance)
+            if (ListItem.RowObject is InventoryCard cardInstance)
             {
                 int? imgIndex = ListView.SmallImageList?.Images?.IndexOfKey(cardInstance.ImageKey);
                 int imgWidth = ListView.SmallImageList?.ImageSize.Width ?? 0;

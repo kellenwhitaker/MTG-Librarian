@@ -20,19 +20,19 @@ namespace MTG_Librarian
             if (e.MagicCards.Count == 1)
             {
                 ScryfallMagicCardBase card = null;
-                if (e.MagicCards[0] is FullInventoryCard)
+                if (e.MagicCards[0] is InventoryCard)
                     card = e.MagicCards[0] as ScryfallMagicCardBase;
                 else if (e.MagicCards[0] is OLVCardItem cardItem)
                     card = cardItem.MagicCard;
                 Globals.Forms.CardInfoForm.CardSelected(card);
                 CardFocused(sender, new CardFocusedEventArgs { ScryfallId = card.ScryfallId });
                 CardManager.RetrieveImage(card, "A");
-                if (card is FullInventoryCard)
+                if (card is InventoryCard)
                     Globals.Forms.MainForm.UpdateStatusBarTotals(e.MagicCards);
             }
             else if (e.MagicCards.Count > 1)
             {
-                if (e.MagicCards[0] is FullInventoryCard)
+                if (e.MagicCards[0] is InventoryCard)
                 {
                     Globals.Forms.MainForm.UpdateStatusBarTotals(e.MagicCards);
                 }
@@ -135,13 +135,13 @@ namespace MTG_Librarian
                 var DefaultPaperCurrency = SettingsManager.ApplicationSettings.DefaultPaperCurrency;
                 foreach (var form in Globals.Forms.OpenCollectionForms)
                 {
-                    var cardsToRefresh = new List<FullInventoryCard>();
+                    var cardsToRefresh = new List<InventoryCard>();
                     foreach (var scryfallCard in e.Cards)
                     {
-                        var matches = new List<FullInventoryCard>();
+                        var matches = new List<InventoryCard>();
                         foreach (var row in form.cardListView.Objects)
-                            if (row is FullInventoryCard card && card.ScryfallId == scryfallCard.ScryfallId)
-                                matches.Add(row as FullInventoryCard);
+                            if (row is InventoryCard card && card.ScryfallId == scryfallCard.ScryfallId)
+                                matches.Add(row as InventoryCard);
                         if (matches.Count() > 0)
                         {
                             foreach (var match in matches)
@@ -210,10 +210,10 @@ namespace MTG_Librarian
 
                 foreach (var form in Globals.Forms.OpenCollectionForms)
                 {
-                    var matches = new List<FullInventoryCard>();
+                    var matches = new List<InventoryCard>();
                     foreach (var row in form.cardListView.Objects)
-                        if (row is FullInventoryCard card && card.set == e.SetCode)
-                            matches.Add(row as FullInventoryCard);
+                        if (row is InventoryCard card && card.set == e.SetCode)
+                            matches.Add(row as InventoryCard);
                     if (matches.Count > 0)
                         form.cardListView.RefreshObjects(matches);
                 }
@@ -229,7 +229,7 @@ namespace MTG_Librarian
                     cardItems.Add(cardItem);
                 CardManager.AddMagicCardsToCollection(cardItems, e.TargetCollection, e.TargetBoard);
             }
-            else if (e.Items[0] is FullInventoryCard)
+            else if (e.Items[0] is InventoryCard)
                 CardManager.MoveFullInventoryCardsToCollection(e.Items, e.SourceForm as CollectionViewForm, e.TargetCollection, e.SourceBoard, e.TargetBoard);
         }
 

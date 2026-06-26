@@ -158,35 +158,35 @@ namespace MTG_Librarian
         {
             return x => commentsFilterTextBox.Text == ""
                 ? true
-                : (x as FullInventoryCard).Tags?.ToUpper().Contains(commentsFilterTextBox.Text.ToUpper()) ?? false;
+                : (x as InventoryCard).Tags?.ToUpper().Contains(commentsFilterTextBox.Text.ToUpper()) ?? false;
         }
 
         private Predicate<object> GetCardNameFilter()
         {
             return x => cardNameFilterTextBox.Text == ""
                 ? true
-                : (x as FullInventoryCard).Name?.ToUpper().Contains(cardNameFilterTextBox.Text.ToUpper()) ?? false;
+                : (x as InventoryCard).Name?.ToUpper().Contains(cardNameFilterTextBox.Text.ToUpper()) ?? false;
         }
 
         private Predicate<object> GetCardTextFilter()
         {
             return x => cardTextFilterTextBox.Text == ""
                 ? true
-                : (x as FullInventoryCard).text?.ToUpper().Contains(cardTextFilterTextBox.Text.ToUpper()) ?? false;
+                : (x as InventoryCard).text?.ToUpper().Contains(cardTextFilterTextBox.Text.ToUpper()) ?? false;
         }
 
         private Predicate<object> GetManaCostFilter()
         {
             Predicate<object> combinedFilter = x => true;
 
-            if (whiteManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as FullInventoryCard).mana_cost?.Contains("W") ?? false);
-            if (blueManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as FullInventoryCard).mana_cost?.Contains("U") ?? false);
-            if (blackManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as FullInventoryCard).mana_cost?.Contains("B") ?? false);
-            if (redManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as FullInventoryCard).mana_cost?.Contains("R") ?? false);
-            if (greenManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as FullInventoryCard).mana_cost?.Contains("G") ?? false);
-            if (colorlessManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as FullInventoryCard).mana_cost?.Contains("C") ?? false);
-            if (genericManaButton.Checked) combinedFilter = combinedFilter.And(x => ((x as FullInventoryCard).mana_cost?.Contains("X") ?? false)
-                || ((x as FullInventoryCard).mana_cost?.Any(c => char.IsDigit(c)) ?? false));
+            if (whiteManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as InventoryCard).mana_cost?.Contains("W") ?? false);
+            if (blueManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as InventoryCard).mana_cost?.Contains("U") ?? false);
+            if (blackManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as InventoryCard).mana_cost?.Contains("B") ?? false);
+            if (redManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as InventoryCard).mana_cost?.Contains("R") ?? false);
+            if (greenManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as InventoryCard).mana_cost?.Contains("G") ?? false);
+            if (colorlessManaButton.Checked) combinedFilter = combinedFilter.And(x => (x as InventoryCard).mana_cost?.Contains("C") ?? false);
+            if (genericManaButton.Checked) combinedFilter = combinedFilter.And(x => ((x as InventoryCard).mana_cost?.Contains("X") ?? false)
+                || ((x as InventoryCard).mana_cost?.Any(c => char.IsDigit(c)) ?? false));
             return combinedFilter;
         }
 
@@ -195,21 +195,21 @@ namespace MTG_Librarian
             string rarityFilterText = rarityFilterComboBox.Text.ToUpper();
             return x => rarityFilterText == "ALL RARITIES" || rarityFilterText == ""
                 ? true
-                : (x as FullInventoryCard).rarity?.ToUpper() == rarityFilterText;
+                : (x as InventoryCard).rarity?.ToUpper() == rarityFilterText;
         }
 
         private Predicate<object> GetTypeFilter()
         {
             return x => typeFilterTextBox.Text == ""
                 ? true
-                : (x as FullInventoryCard).type_line?.ToUpper().Contains(typeFilterTextBox.Text.ToUpper()) ?? false;
+                : (x as InventoryCard).type_line?.ToUpper().Contains(typeFilterTextBox.Text.ToUpper()) ?? false;
         }
 
         private Predicate<object> GetSetFilter()
         {
             return x => setFilterTextBox.Text == ""
                 ? true
-                : (x as FullInventoryCard).set_name?.ToUpper().Contains(setFilterTextBox.Text.ToUpper()) ?? false;
+                : (x as InventoryCard).set_name?.ToUpper().Contains(setFilterTextBox.Text.ToUpper()) ?? false;
         }
 
         #endregion Filters
@@ -222,7 +222,7 @@ namespace MTG_Librarian
             totalsRow.Count = 0;
             foreach (var row in listView.FilteredObjects)
             {
-                if (row is FullInventoryCard card)
+                if (row is InventoryCard card)
                 {
                     int cardCount = card.Count.HasValue ? card.Count.Value : 1;
                     totalsRow.Count += cardCount;
@@ -265,7 +265,7 @@ namespace MTG_Librarian
                     cardListView.AlwaysGroupByColumn = CardName;
                     sideboardListView.AlwaysGroupByColumn = sideboardCardNameColumn;
                     CardName.GroupKeyGetter = sideboardCardNameColumn.GroupKeyGetter = delegate (object rowObject) {
-                        if (rowObject is FullInventoryCard card)
+                        if (rowObject is InventoryCard card)
                         {
                             if (card.Board == "mainboard" && Collection.Commander.HasValue && card.InventoryId == Collection.Commander.Value)
                                 return "0Commander";
@@ -288,7 +288,7 @@ namespace MTG_Librarian
                             var count = 0;
                             foreach (var item in cardListView.Objects)
                             {
-                                if (item is FullInventoryCard card && card.ListViewGroupKey == groupKey.ToString())
+                                if (item is InventoryCard card && card.ListViewGroupKey == groupKey.ToString())
                                     count += card.Count.Value;
                             }
                             return $"{groupKey.ToString()} ({count})";
@@ -303,7 +303,7 @@ namespace MTG_Librarian
                             var count = 0;
                             foreach (var item in sideboardListView.Objects)
                             {
-                                if (item is FullInventoryCard card && card.ListViewGroupKey == groupKey.ToString())
+                                if (item is InventoryCard card && card.ListViewGroupKey == groupKey.ToString())
                                     count += card.Count.Value;
                             }
                             return $"{groupKey.ToString()} ({count})";
@@ -354,14 +354,14 @@ namespace MTG_Librarian
             }
         }
         // TODO: handle for sideboardListView as well
-        public void AddFullInventoryCard(FullInventoryCard cardInstance)
+        public void AddFullInventoryCard(InventoryCard cardInstance)
         {
             cardListView.AddObject(cardInstance);
             cardListView.EnsureModelVisible(cardInstance);
             UpdateTotals();
         }
 
-        public void AddFullInventoryCards(List<FullInventoryCard> cards, string board)
+        public void AddFullInventoryCards(List<InventoryCard> cards, string board)
         {
             DefaultCurrency = SettingsManager.ApplicationSettings.DefaultCurrency;
             if (cards.Count > 0)
@@ -382,14 +382,14 @@ namespace MTG_Librarian
 
         private void RemoveFullInventoryCards(List<int> cardIds, FastObjectListView listView)
         {
-            var cardsToRemove = listView.Objects.Cast<object>().Where(x => x is FullInventoryCard).Cast<FullInventoryCard>().Where(x => cardIds.Contains(x.InventoryId)).ToList();
+            var cardsToRemove = listView.Objects.Cast<object>().Where(x => x is InventoryCard).Cast<InventoryCard>().Where(x => cardIds.Contains(x.InventoryId)).ToList();
             if (cardsToRemove.Count > 0)
                 RemoveFullInventoryCards(cardsToRemove, listView);
         }
 
-        private void RemoveFullInventoryCards(List<FullInventoryCard> cardsToRemove, FastObjectListView listView)
+        private void RemoveFullInventoryCards(List<InventoryCard> cardsToRemove, FastObjectListView listView)
         {
-            var inventoryCardsStillSelected = listView.SelectedObjects.Cast<object>().Where(x => x is FullInventoryCard).Cast<FullInventoryCard>().ToList();
+            var inventoryCardsStillSelected = listView.SelectedObjects.Cast<object>().Where(x => x is InventoryCard).Cast<InventoryCard>().ToList();
             foreach (var card in cardsToRemove)
                 if (inventoryCardsStillSelected.Contains(card))
                     inventoryCardsStillSelected.Remove(card);
@@ -429,7 +429,7 @@ namespace MTG_Librarian
             }
 
         }
-        public void RemoveFullInventoryCards(List<FullInventoryCard> cardsToRemove, string board)
+        public void RemoveFullInventoryCards(List<InventoryCard> cardsToRemove, string board)
         {
             if (cardsToRemove.Count > 0)
             {
@@ -461,7 +461,7 @@ namespace MTG_Librarian
             e.Effect = DragDropEffects.Move;
             if (e.SourceModels[0] is OLVCardItem)
                 e.InfoMessage = $"Add {e.SourceModels.Count} card{(e.SourceModels.Count == 1 ? "" : "s")} to {DocumentName}";
-            else if (e.SourceModels[0] is FullInventoryCard fullInventoryCard)
+            else if (e.SourceModels[0] is InventoryCard fullInventoryCard)
             {
                 if (e.ListView != e.SourceListView)
                 {
@@ -492,7 +492,7 @@ namespace MTG_Librarian
         {
             var listView = sender as FastObjectListView;
             listView.Focus();
-            if (e.RowObject is FullInventoryCard editedCard)
+            if (e.RowObject is InventoryCard editedCard)
             {
                 var args = new CardsUpdatedEventArgs { Items = new ArrayList { editedCard }, CollectionViewForm = this, Board = listView == cardListView ? "mainboard" : "sideboard" };
                 var rowItem = listView.ModelToItem(editedCard);
@@ -510,7 +510,7 @@ namespace MTG_Librarian
 
                 if (listView.SelectedObjects != null && 
                     !(!listView.SelectedObjects.Contains(editedCard) && e.Column.CheckBoxes))
-                    foreach (FullInventoryCard card in listView.SelectedObjects)
+                    foreach (InventoryCard card in listView.SelectedObjects)
                     {
                         if (card != editedCard)
                         {
@@ -541,7 +541,7 @@ namespace MTG_Librarian
                 {
                     e.Handled = true;
                     foreach (var item in listView.SelectedObjects)
-                        if (item is FullInventoryCard card)
+                        if (item is InventoryCard card)
                             card.Count++;
                     OnCardsUpdated(new CardsUpdatedEventArgs { Items = listView.SelectedObjects as ArrayList, CollectionViewForm = this, Board = listView == cardListView ? "mainboard" : "sideboard" });
                 }
@@ -551,7 +551,7 @@ namespace MTG_Librarian
                     bool pendingDeletion = false;
                     foreach (var item in listView.SelectedObjects)
                     {
-                        if (item is FullInventoryCard card)
+                        if (item is InventoryCard card)
                         {
                             card.Count--;
                             if (card.Count < 1)
@@ -563,7 +563,7 @@ namespace MTG_Librarian
                         if (ConfirmCardDeletion("Some of the highlighted cards will be deleted. Are you sure you wish to continue?") != DialogResult.Yes)
                         {
                             foreach (var item in listView.SelectedObjects)
-                                if (item is FullInventoryCard card)
+                                if (item is InventoryCard card)
                                     card.Count++;
                             return;
                         }
@@ -575,11 +575,11 @@ namespace MTG_Librarian
                     e.Handled = true;
                     if (listView.SelectedObjects.Count > 0)
                     {
-                        var cardsToPrice = new Dictionary<string, FullInventoryCard>();
+                        var cardsToPrice = new Dictionary<string, InventoryCard>();
                         foreach (var row in listView.SelectedObjects)
-                            if (row is FullInventoryCard card && card.ScryfallId != null)
+                            if (row is InventoryCard card && card.ScryfallId != null)
                                 if (!cardsToPrice.ContainsKey(card.ScryfallId))
-                                    cardsToPrice.Add(card.ScryfallId, row as FullInventoryCard);
+                                    cardsToPrice.Add(card.ScryfallId, row as InventoryCard);
                         if (cardsToPrice.Count > 0)
                             CardManager.FetchPrices(cardsToPrice.Values.ToList());
                         else
@@ -591,7 +591,7 @@ namespace MTG_Librarian
 
         private void fastObjectListView1_CellClick(object sender, CellClickEventArgs e)
         {
-            if (e.Column != null && e.Column.IsEditable && e.Model is FullInventoryCard card)
+            if (e.Column != null && e.Column.IsEditable && e.Model is InventoryCard card)
             {
                 if (e.ClickCount == 2 && !e.Column.CheckBoxes)
                 {
@@ -638,7 +638,7 @@ namespace MTG_Librarian
 
         private void cardListView_SubItemChecking(object sender, SubItemCheckingEventArgs e)
         {
-            if (e.RowObject is FullInventoryCard card)
+            if (e.RowObject is InventoryCard card)
             {
                 if (!(card.has_foil && card.has_nonfoil))
                 {
@@ -661,7 +661,7 @@ namespace MTG_Librarian
                 {
                     if (ConfirmCardDeletion() == DialogResult.Yes)
                     {
-                        foreach (FullInventoryCard cardItem in listView.SelectedObjects)
+                        foreach (InventoryCard cardItem in listView.SelectedObjects)
                             cardItem.Count = 0;
                         OnCardsUpdated(new CardsUpdatedEventArgs { Items = listView.SelectedObjects as ArrayList, CollectionViewForm = this, Board = listView == cardListView ? "mainboard" : "sideboard" });
                     }
@@ -671,7 +671,7 @@ namespace MTG_Librarian
 
         private void cardListView_CellEditStarting(object sender, CellEditEventArgs e)
         {
-            if (e.RowObject is FullInventoryCard card)
+            if (e.RowObject is InventoryCard card)
             {
                 var listView = sender as FastObjectListView;
                 int costIndex = listView.AllColumns.FirstOrDefault(x => x.AspectName == "Cost").Index;
@@ -717,7 +717,7 @@ namespace MTG_Librarian
 
         private void cardListView_CellEditFinishing(object sender, CellEditEventArgs e)
         {
-            if (e.RowObject is FullInventoryCard card)
+            if (e.RowObject is InventoryCard card)
             {
                 var listView = sender as FastObjectListView;
                 int costIndex = listView.AllColumns.FirstOrDefault(x => x.AspectName == "Cost").Index;
@@ -792,7 +792,7 @@ namespace MTG_Librarian
             {
                 if (ConfirmCardDeletion() == DialogResult.Yes)
                 {
-                    foreach (FullInventoryCard cardItem in cardListView.SelectedObjects)
+                    foreach (InventoryCard cardItem in cardListView.SelectedObjects)
                         cardItem.Count = 0;
                     OnCardsUpdated(new CardsUpdatedEventArgs { Items = cardListView.SelectedObjects as ArrayList, CollectionViewForm = this });
                 }
@@ -809,7 +809,7 @@ namespace MTG_Librarian
                 splitToolStripMenuItem.Visible = false;
                 combineToolStripMenuItem.Visible = false;
                 makeCommanderToolStripMenuItem.Visible = false;
-                if (listView.SelectedObject is FullInventoryCard card)
+                if (listView.SelectedObject is InventoryCard card)
                 {
                     if (card.Count > 1)
                     {
@@ -834,7 +834,7 @@ namespace MTG_Librarian
 
                 if (listView.SelectedObjects != null && listView.SelectedObjects.Count > 1)
                 {
-                    var selectedCards = listView.SelectedObjects.Cast<object>().Where(x => x is FullInventoryCard).Cast<FullInventoryCard>();
+                    var selectedCards = listView.SelectedObjects.Cast<object>().Where(x => x is InventoryCard).Cast<InventoryCard>();
                     var firstCard = selectedCards.First();
                     foreach (var selectedCard in selectedCards)
                         if (selectedCard.ScryfallId != firstCard.ScryfallId)
@@ -847,12 +847,12 @@ namespace MTG_Librarian
 
         private void splitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (cardListView.SelectedObject is FullInventoryCard card && card.Count > 1)
+            if (cardListView.SelectedObject is InventoryCard card && card.Count > 1)
             {
                 int total = card.Count.Value;
-                var card1 = card.InventoryCard;
+                var card1 = card.InventoryCardBase;
                 card1.Count = total / 2;
-                var card2 = card.InventoryCard;
+                var card2 = card.InventoryCardBase;
                 card2.Count = total - card1.Count;
                 card2.InventoryId = 0;
 
@@ -882,7 +882,7 @@ namespace MTG_Librarian
         {
             if (cardListView.SelectedObjects != null && cardListView.SelectedObjects.Count > 1)
             {
-                var selectedCards = cardListView.SelectedObjects.Cast<object>().Where(x => x is FullInventoryCard).Cast<FullInventoryCard>();
+                var selectedCards = cardListView.SelectedObjects.Cast<object>().Where(x => x is InventoryCard).Cast<InventoryCard>();
                 var firstCard = selectedCards.First();
                 foreach (var selectedCard in selectedCards)
                     if (selectedCard.ScryfallId != firstCard.ScryfallId)
@@ -897,12 +897,12 @@ namespace MTG_Librarian
                 firstCard.Count = totalCount;
                 using (var context = new ScryfallCardsDbContext())
                 {
-                    context.Update(firstCard.InventoryCard);
+                    context.Update(firstCard.InventoryCardBase);
                     foreach (var selectedCard in selectedCards)
                         if (selectedCard != firstCard)
                         {
                             cardListView.RemoveObject(selectedCard);
-                            context.Remove(selectedCard.InventoryCard);
+                            context.Remove(selectedCard.InventoryCardBase);
                         }
                     context.SaveChanges();
                 }
@@ -994,31 +994,31 @@ namespace MTG_Librarian
                     {
                         int result = 0;
                         if (AspectName == "number")
-                            result = (x as FullInventoryCard).SortableNumber.CompareTo((y as FullInventoryCard).SortableNumber);
+                            result = (x as InventoryCard).SortableNumber.CompareTo((y as InventoryCard).SortableNumber);
                         else if (AspectName == "PaddedName")
-                            result = (x as FullInventoryCard).Name.CompareTo((y as FullInventoryCard).Name);
+                            result = (x as InventoryCard).Name.CompareTo((y as InventoryCard).Name);
                         else if (AspectName == "type")
-                            result = (x as FullInventoryCard).type_line.CompareTo((y as FullInventoryCard).type_line);
+                            result = (x as InventoryCard).type_line.CompareTo((y as InventoryCard).type_line);
                         else if (AspectName == "Edition")
-                            result = (x as FullInventoryCard).set_name.CompareTo((y as FullInventoryCard).set_name);
+                            result = (x as InventoryCard).set_name.CompareTo((y as InventoryCard).set_name);
                         else if (AspectName == "ManaCost")
                         {
-                            string valueX = (x as FullInventoryCard).mana_cost ?? "";
-                            string valueY = (y as FullInventoryCard).mana_cost ?? "";
+                            string valueX = (x as InventoryCard).mana_cost ?? "";
+                            string valueY = (y as InventoryCard).mana_cost ?? "";
                             result = valueX.CompareTo(valueY);
                         }
                         else if (AspectName == "TimeAdded")
-                            result = (x as FullInventoryCard).SortableTimeAdded.CompareTo((y as FullInventoryCard).SortableTimeAdded);
+                            result = (x as InventoryCard).SortableTimeAdded.CompareTo((y as InventoryCard).SortableTimeAdded);
                         else if (AspectName == "Foil")
-                            result = (x as FullInventoryCard).Foil.CompareTo((y as FullInventoryCard).Foil);
+                            result = (x as InventoryCard).Foil.CompareTo((y as InventoryCard).Foil);
                         else if (AspectName == "Cost")
-                            result = CompareNullableDoubles((x as FullInventoryCard).Cost, (y as FullInventoryCard).Cost);
+                            result = CompareNullableDoubles((x as InventoryCard).Cost, (y as InventoryCard).Cost);
                         else if (AspectName == "Price")
-                            result = CompareNullableDoubles((x as FullInventoryCard).Price, (y as FullInventoryCard).Price);
+                            result = CompareNullableDoubles((x as InventoryCard).Price, (y as InventoryCard).Price);
                         else if (AspectName == "Count")
                         {
-                            var cx = (x as FullInventoryCard).Count;
-                            var cy = (y as FullInventoryCard).Count;
+                            var cx = (x as InventoryCard).Count;
+                            var cy = (y as InventoryCard).Count;
                             if (!cx.HasValue && cy.HasValue)
                                 result = -1;
                             else if (cx.HasValue && !cy.HasValue)
@@ -1029,13 +1029,13 @@ namespace MTG_Librarian
                                 result = cx.Value.CompareTo(cy.Value);
                         }
                         else if (AspectName == "Tags")
-                            result = CompareText((x as FullInventoryCard).Tags, (y as FullInventoryCard).Tags);
+                            result = CompareText((x as InventoryCard).Tags, (y as InventoryCard).Tags);
                         else if (AspectName == "text")
-                            result = CompareText((x as FullInventoryCard).text, (y as FullInventoryCard).text);
+                            result = CompareText((x as InventoryCard).text, (y as InventoryCard).text);
                         else if (AspectName == "Delta")
-                            result = CompareNullableDoubles((x as FullInventoryCard).Delta, (y as FullInventoryCard).Delta);
+                            result = CompareNullableDoubles((x as InventoryCard).Delta, (y as InventoryCard).Delta);
                         else if (AspectName == "X")
-                            result = CompareNullableDoubles((x as FullInventoryCard).Percent, (y as FullInventoryCard).Percent);
+                            result = CompareNullableDoubles((x as InventoryCard).Percent, (y as InventoryCard).Percent);
                         return SortOrder == SortOrder.Ascending ? result : -1 * result;
                     }
                 }
@@ -1051,7 +1051,7 @@ namespace MTG_Librarian
         private void makeCommanderToolStripMenuItem_Click(object sender, EventArgs e)
         {
             var listView = cardListViewMenuStrip.SourceControl as FastObjectListView;
-            if (listView == cardListView && listView.SelectedObject is FullInventoryCard card)
+            if (listView == cardListView && listView.SelectedObject is InventoryCard card)
             {
                 if (Collection.Commander.HasValue && card.InventoryId == Collection.Commander.Value)
                     Collection.Commander = null;

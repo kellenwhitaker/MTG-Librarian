@@ -8,7 +8,7 @@ namespace MTG_Librarian
 {
     public static class DBInstanceExtensions
     {
-        public static FullInventoryCard ToFullCard(this InventoryCard inventoryCard, ScryfallCardsDbContext context)
+        public static InventoryCard ToFullCard(this InventoryCardBase inventoryCard, ScryfallCardsDbContext context)
         {
             return
             (from c in context.LibraryView

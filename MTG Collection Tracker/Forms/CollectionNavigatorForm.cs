@@ -347,7 +347,7 @@ namespace MTG_Librarian
                     e.InfoMessage = $"Add set [{setItem.Name}] to {DocumentName}";
                 else if (e.SourceModels[0] is OLVRarityItem rarityItem)
                     e.InfoMessage = $"Add {rarityItem.Rarity}s from [{(rarityItem.Parent as OLVSetItem).Name}] to {DocumentName}";
-                else if (e.SourceModels[0] is FullInventoryCard fullInventoryCard)
+                else if (e.SourceModels[0] is InventoryCard fullInventoryCard)
                 {
                     var parentForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.cardListView == e.SourceListView || x.sideboardListView == e.SourceListView);
                     if (parentForm != null && parentForm.Collection.Id != navigatorCollection.Id)
@@ -387,7 +387,7 @@ namespace MTG_Librarian
                 {
                     var items = e.SourceModels as ArrayList;
                     var sourceForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.Collection.Id == collection.Id);
-                    var cards = new List<FullInventoryCard>();
+                    var cards = new List<InventoryCard>();
                     using (var context = new ScryfallCardsDbContext())
                     {
                         try
@@ -419,7 +419,7 @@ namespace MTG_Librarian
             {
                 var items = e.SourceModels as ArrayList;
                 CollectionViewForm sourceForm = null;
-                if (e.SourceModels[0] is FullInventoryCard)
+                if (e.SourceModels[0] is InventoryCard)
                     sourceForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.cardListView == e.SourceListView || x.sideboardListView == e.SourceListView);
                 
                 var args = new CardsDroppedEventArgs

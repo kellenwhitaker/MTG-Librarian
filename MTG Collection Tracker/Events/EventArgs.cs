@@ -22,7 +22,7 @@ namespace MTG_Librarian
 
     public class InventoryChangedEventArgs : EventArgs
     {
-        public List<FullInventoryCard> Cards { get; set; }
+        public List<InventoryCard> Cards { get; set; }
     }
 
     public class CardsUpdatedFromScryfallEventArgs : EventArgs

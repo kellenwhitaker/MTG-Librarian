@@ -42,9 +42,9 @@ namespace MTG_Librarian
             return document;
         }
 
-        public static InventoryCard AddMagicCardToCollection(ScryfallCardsDbContext context, ScryfallMagicCard magicCard, CardCollection collection, string board, int insertionIndex = 0)
+        public static InventoryCardBase AddMagicCardToCollection(ScryfallCardsDbContext context, ScryfallMagicCard magicCard, CardCollection collection, string board, int insertionIndex = 0)
         {
-            var inventoryCard = new InventoryCard
+            var inventoryCard = new InventoryCardBase
             {
                 DisplayName = magicCard.DisplayName,
                 ScryfallId = magicCard.ScryfallId,
@@ -74,7 +74,7 @@ namespace MTG_Librarian
             using (ScryfallCardsDbContext context = new ScryfallCardsDbContext())
             {
                 int failedCards = 0;
-                var cardsAdded = new List<InventoryCard>();
+                var cardsAdded = new List<InventoryCardBase>();
                 int insertionIndex = 0;
                 foreach (OLVCardItem cardItem in cards)
                 {
@@ -93,9 +93,9 @@ namespace MTG_Librarian
                 }
                 context.SaveChanges();
                 var cvForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.Collection.Id == collection.Id);
-                var fullCardsAdded = new List<FullInventoryCard>();
+                var fullCardsAdded = new List<InventoryCard>();
                 var DefaultPaperCurrency = SettingsManager.ApplicationSettings.DefaultPaperCurrency;
-                foreach (InventoryCard card in cardsAdded)
+                foreach (InventoryCardBase card in cardsAdded)
                 {
                     if (cvForm != null)
                     {
@@ -122,7 +122,7 @@ namespace MTG_Librarian
                 EventManager.OnInventoryChanged(new InventoryChangedEventArgs { Cards = fullCardsAdded });
             }
         }
-        public static void FetchPrices(List<FullInventoryCard> pricesToFetch)
+        public static void FetchPrices(List<InventoryCard> pricesToFetch)
         {
             var fetchPricesTask = new UpdateCardsTask(pricesToFetch.Cast<ScryfallMagicCardBase>().ToList()) { AddFirst = true };
             Globals.Forms.TasksForm.TaskManager.AddTask(fetchPricesTask);
@@ -135,19 +135,19 @@ namespace MTG_Librarian
                 MessageBox.Show("Cannot move cards between collections of different platforms.");
                 return;
             }
-            var cardsList = new List<FullInventoryCard>();
+            var cardsList = new List<InventoryCard>();
             try
             {
                 using (var context = new ScryfallCardsDbContext())
                 {
-                    foreach (FullInventoryCard fullInventoryCard in fullInventoryCards)
+                    foreach (InventoryCard fullInventoryCard in fullInventoryCards)
                     {
                         fullInventoryCard.CollectionId = collection.Id;
                         if (fullInventoryCard.Virtual != collection.Virtual)
                             fullInventoryCard.TimeAdded = DateTime.Now;
                         fullInventoryCard.Virtual = collection.Virtual;
                         fullInventoryCard.Board = destinationBoard;
-                        context.Update(fullInventoryCard.InventoryCard);
+                        context.Update(fullInventoryCard.InventoryCardBase);
                         cardsList.Add(fullInventoryCard);
                     }
                     context.SaveChanges();
@@ -156,7 +156,7 @@ namespace MTG_Librarian
                 if (string.IsNullOrEmpty(sourceBoard))
                 {
                     var ids = new List<int>();
-                    foreach (FullInventoryCard card in cardsList)
+                    foreach (InventoryCard card in cardsList)
                         ids.Add(card.InventoryId);
                     sourceCVForm.RemoveFullInventoryCards(ids, "mainboard");
                     sourceCVForm.RemoveFullInventoryCards(ids, "sideboard");
@@ -207,12 +207,12 @@ namespace MTG_Librarian
 
         private static void UpdateCardsInDB(ScryfallCardsDbContext context, ArrayList items)
         {
-            foreach (FullInventoryCard card in items)
+            foreach (InventoryCard card in items)
             {
                 if (card.Count > 0)
-                    context.Library.Update(card.InventoryCard);
+                    context.Library.Update(card.InventoryCardBase);
                 else
-                    context.Library.Remove(card.InventoryCard);
+                    context.Library.Remove(card.InventoryCardBase);
             }
             context.SaveChanges();
         }
@@ -234,7 +234,7 @@ namespace MTG_Librarian
                 else
                 {
                     string displayName;
-                    if (card is FullInventoryCard fullInventoryCard)
+                    if (card is InventoryCard fullInventoryCard)
                         displayName = fullInventoryCard.DisplayName;
                     else
                         displayName = card.DisplayName;
@@ -264,7 +264,7 @@ namespace MTG_Librarian
             }
         }
 
-        private static ScryfallMagicCard UpdateCopiesOwned(ScryfallCardsDbContext context, FullInventoryCard card)
+        private static ScryfallMagicCard UpdateCopiesOwned(ScryfallCardsDbContext context, InventoryCard card)
         {
             ScryfallMagicCard magicCard = null;
             var allCopiesSum = context.LibraryView.Where(x => x.ScryfallId == card.ScryfallId && !x.Virtual).Sum(x => x.Count);
@@ -282,10 +282,10 @@ namespace MTG_Librarian
                 try
                 {
                     UpdateCardsInDB(context, e.Items);
-                    EventManager.OnInventoryChanged(new InventoryChangedEventArgs { Cards = e.Items.Cast<FullInventoryCard>().ToList() });
-                    var inventoryCardsToRemove = new List<FullInventoryCard>();
+                    EventManager.OnInventoryChanged(new InventoryChangedEventArgs { Cards = e.Items.Cast<InventoryCard>().ToList() });
+                    var inventoryCardsToRemove = new List<InventoryCard>();
                     var magicCardsCopiesUpdated = new List<ScryfallMagicCard>();
-                    foreach (FullInventoryCard card in e.Items)
+                    foreach (InventoryCard card in e.Items)
                     {
                         if (!setItems.TryGetValue(card.set_name, out OLVSetItem setItem)) // get updated set item
                             if ((setItem = Globals.Forms.DBViewForm.SetItems.FirstOrDefault(x => x.Name == card.set_name)) != null)
@@ -308,7 +308,7 @@ namespace MTG_Librarian
                 {
                     DebugOutput.WriteLine(ex.ToString());
                     foreach (var item in e.Items)
-                        if (item is FullInventoryCard card)
+                        if (item is InventoryCard card)
                             context.Entry(card).Reload();
 
                     MessageBox.Show(ex.ToString());

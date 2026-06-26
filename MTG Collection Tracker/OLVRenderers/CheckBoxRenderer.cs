@@ -28,7 +28,7 @@ namespace MTG_Librarian
         {
             var backgroundRect = new Rectangle(r.Left - 1, r.Top - 1, r.Width + 1, r.Height + 1);
             FillBackground(g, backgroundRect);
-            if (ListItem.RowObject is FullInventoryCard cardInstance)
+            if (ListItem.RowObject is InventoryCard cardInstance)
             {
                 int boxLeft = r.Left + (r.Right - r.Left - CheckBoxWidth) / 2;
                 int boxTop = r.Top + (r.Bottom - r.Top - CheckBoxHeight) / 2;
