@@ -1,9 +1,13 @@
 ﻿using BrightIdeasSoftware;
 using KW.WinFormsUI.Docking;
-using OxyPlot;
-using OxyPlot.Axes;
-using OxyPlot.Series;
-using OxyPlot.WindowsForms;
+using LiveChartsCore;
+using LiveChartsCore.Kernel;
+using LiveChartsCore.SkiaSharpView;
+using LiveChartsCore.SkiaSharpView.Drawing.Geometries;
+using LiveChartsCore.SkiaSharpView.Painting;
+using LiveChartsCore.SkiaSharpView.VisualElements;
+using LiveChartsCore.SkiaSharpView.WinForms;
+using SkiaSharp;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -23,8 +27,8 @@ namespace MTG_Librarian
         private string DefaultCurrency = SettingsManager.ApplicationSettings.DefaultCurrency;
         private bool ignoreNextCardListViewSelectionChanged = false;
         private bool ignoreNextSideboardListViewSelectionChanged = false;
-        private PlotModel modelP1;
-        private PlotModel modelB1;
+        private CartesianChart cmcChart;
+        private PieChart colorsChart;
         #region Properties
 
         public string DocumentName => Collection?.CollectionName;
@@ -53,7 +57,33 @@ namespace MTG_Librarian
 
         public CollectionViewForm()
         {
-            InitializeComponent();            
+            InitializeComponent();
+            cmcChart = new CartesianChart();
+            var title = new DrawnLabelVisual(
+                new LabelGeometry
+                {
+                    Text = "Mana Curve",
+                    Paint = new SolidColorPaint(SKColors.Black),
+                    TextSize = 25,
+                    Padding = new LiveChartsCore.Drawing.Padding(5)
+                });
+
+            cmcChart.Title = title;
+            statsTabPage.Controls.Add(cmcChart);
+
+            colorsChart = new PieChart();
+            title = new DrawnLabelVisual(
+                new LabelGeometry
+                {
+                    Text = "Mana Color Cost",
+                    Paint = new SolidColorPaint(SKColors.Black),
+                    TextSize = 25,
+                    Padding = new LiveChartsCore.Drawing.Padding(5)
+                });
+            colorsChart.Title = title;
+            colorsChart.Dock = DockStyle.Left;
+            statsTabPage.Controls.Add(colorsChart);
+
             cardListView.SetDoubleBuffered();
             
             cardListView.FormatRow += (sender, e) =>
@@ -1474,15 +1504,7 @@ namespace MTG_Librarian
         private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (tabControl.SelectedIndex == 1)
-            {
-                modelP1 = new PlotModel { Title = "Mana Color Cost" };
-                modelB1 = new PlotModel { Title = "Mana Curve" };
-
-                var seriesP1 = new PieSeries { StrokeThickness = 2.0, InsideLabelPosition = 0.8, AngleSpan = 360, StartAngle = 0 };
-                seriesP1.OutsideLabelFormat = "{0}: {2:0}%";
-                var seriesB1 = new BarSeries { StrokeColor = OxyColors.Black, StrokeThickness = 1, FillColor = OxyColors.Blue, LabelPlacement = LabelPlacement.Inside, LabelFormatString = "{0}" };
-                seriesB1.TextColor = OxyColors.White;
-                seriesB1.FontWeight = OxyPlot.FontWeights.Bold;
+            {              
                 var whiteSymbols = 0;
                 var blueSymbols = 0;
                 var blackSymbols = 0;
@@ -1526,37 +1548,78 @@ namespace MTG_Librarian
                     }
                 }
 
-                
+                var pieSeries = new List<PieSeries<float>>();
+                var formatter = new Func<ChartPoint, string>(point => $"{point.StackedValue?.Share * 100:0.##}%");
                 if (whiteSymbols > 0)
-                    seriesP1.Slices.Add(new PieSlice("", whiteSymbols) { IsExploded = false, Fill = OxyColors.LightYellow });
+                    pieSeries.Add(new PieSeries<float>
+                    {
+                        DataLabelsPaint = new SolidColorPaint(SKColors.Black),
+                        DataLabelsSize = 22,
+                        DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Outer,
+                        ToolTipLabelFormatter = formatter,
+                        Values = new float[] { whiteSymbols }, Name = "White", Fill = new SolidColorPaint(SKColors.LightYellow) });
                 if (blueSymbols > 0)
-                    seriesP1.Slices.Add(new PieSlice("", blueSymbols) { IsExploded = false, Fill = OxyColors.Blue });
+                    pieSeries.Add(new PieSeries<float>
+                    {
+                        DataLabelsPaint = new SolidColorPaint(SKColors.Black),
+                        DataLabelsSize = 22,
+                        DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Outer,
+                        ToolTipLabelFormatter = formatter,
+                        Values = new float[] { blueSymbols }, Name = "Blue", Fill = new SolidColorPaint(SKColors.Blue) });
                 if (blackSymbols > 0)
-                    seriesP1.Slices.Add(new PieSlice("", blackSymbols) { IsExploded = false, Fill = OxyColors.Black });
+                    pieSeries.Add(new PieSeries<float>
+                    {
+                        DataLabelsPaint = new SolidColorPaint(SKColors.Black),
+                        DataLabelsSize = 22,
+                        DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Outer,
+                        ToolTipLabelFormatter = formatter,
+                        Values = new float[] { blackSymbols }, Name = "Black", Fill = new SolidColorPaint(SKColors.Black) });
                 if (redSymbols > 0)
-                    seriesP1.Slices.Add(new PieSlice("", redSymbols) { IsExploded = false, Fill = OxyColors.Red });
+                    pieSeries.Add(new PieSeries<float>
+                    {
+                        DataLabelsPaint = new SolidColorPaint(SKColors.Black),
+                        DataLabelsSize = 22,
+                        DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Outer,
+                        ToolTipLabelFormatter = formatter,
+                        Values = new float[] { redSymbols }, Name = "Red", Fill = new SolidColorPaint(SKColors.Red) });
                 if (greenSymbols > 0)
-                    seriesP1.Slices.Add(new PieSlice("", greenSymbols) { IsExploded = false, Fill = OxyColors.Green });
+                    pieSeries.Add(new PieSeries<float>
+                    {
+                        DataLabelsPaint = new SolidColorPaint(SKColors.Black),
+                        DataLabelsSize = 22,
+                        DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Outer,
+                        ToolTipLabelFormatter = formatter,
+                        Values = new float[] { greenSymbols }, Name = "Green", Fill = new SolidColorPaint(SKColors.Green) });
                 if (colorlessSymbols > 0)
-                    seriesP1.Slices.Add(new PieSlice("", colorlessSymbols) { IsExploded = false, Fill = OxyColors.Gray });
+                    pieSeries.Add(new PieSeries<float>
+                    {
+                        DataLabelsPaint = new SolidColorPaint(SKColors.Black),
+                        DataLabelsSize = 22,
+                        DataLabelsPosition = LiveChartsCore.Measure.PolarLabelsPosition.Outer,
+                        ToolTipLabelFormatter = formatter,
+                        Values = new float[] { colorlessSymbols }, Name = "Colorless", Fill = new SolidColorPaint(SKColors.Gray) });
 
-                modelP1.Series.Add(seriesP1);
-                plotView1.Model = modelP1;
+                colorsChart.Series = pieSeries.ToArray();
+                colorsChart.Width = 400;
                 var cmcDictionary2 = cmcDictionary.ToImmutableSortedDictionary();
-                foreach (var kvp in cmcDictionary2)
+                cmcChart.Series = new ISeries[]
                 {
-                    seriesB1.Items.Add(new BarItem { Value = kvp.Value });
-                }
-
-                modelB1.Axes.Add(new CategoryAxis
+                    new ColumnSeries<float>
+                    {
+                        Values = cmcDictionary2.Values.ToArray(),
+                    }
+                };
+                cmcChart.XAxes = new LiveChartsCore.SkiaSharpView.Axis[]
                 {
-                    Position = AxisPosition.Left,
-                    Key = "CakeAxis",
-                    ItemsSource = cmcDictionary2.Keys.Select(x => x.ToString()).ToList(),
-                });
-
-                modelB1.Series.Add(seriesB1);
-                plotView2.Model = modelB1;
+                    new LiveChartsCore.SkiaSharpView.Axis
+                    {
+                        Labels = cmcDictionary2.Keys.Select(x => x.ToString()).ToArray(),
+                        Name = "CMC",
+                    }
+                };
+                cmcChart.Width = 400;
+                cmcChart.Height = colorsChart.Height;
+                cmcChart.Left = 450;
             }
         }
     }

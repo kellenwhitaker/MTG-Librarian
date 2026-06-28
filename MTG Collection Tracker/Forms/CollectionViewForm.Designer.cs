@@ -91,8 +91,6 @@
             this.olvColumn20 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn21 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.statsTabPage = new System.Windows.Forms.TabPage();
-            this.plotView1 = new OxyPlot.WindowsForms.PlotView();
-            this.plotView2 = new OxyPlot.WindowsForms.PlotView();
             ((System.ComponentModel.ISupportInitialize)(this.cardListView)).BeginInit();
             this.cardListViewMenuStrip.SuspendLayout();
             this.tabControl.SuspendLayout();
@@ -103,7 +101,6 @@
             this.splitContainer2.SuspendLayout();
             this.manaButtonsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sideboardListView)).BeginInit();
-            this.statsTabPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // cardListView
@@ -844,37 +841,11 @@
             // statsTabPage
             // 
             this.statsTabPage.BackColor = System.Drawing.Color.White;
-            this.statsTabPage.Controls.Add(this.plotView2);
-            this.statsTabPage.Controls.Add(this.plotView1);
             this.statsTabPage.Location = new System.Drawing.Point(4, 4);
             this.statsTabPage.Name = "statsTabPage";
             this.statsTabPage.Size = new System.Drawing.Size(1872, 506);
             this.statsTabPage.TabIndex = 1;
             this.statsTabPage.Text = "Stats";
-            // 
-            // plotView1
-            // 
-            this.plotView1.Location = new System.Drawing.Point(8, 8);
-            this.plotView1.Name = "plotView1";
-            this.plotView1.PanCursor = System.Windows.Forms.Cursors.Hand;
-            this.plotView1.Size = new System.Drawing.Size(345, 192);
-            this.plotView1.TabIndex = 0;
-            this.plotView1.Text = "plotView1";
-            this.plotView1.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
-            this.plotView1.ZoomRectangleCursor = System.Windows.Forms.Cursors.SizeNWSE;
-            this.plotView1.ZoomVerticalCursor = System.Windows.Forms.Cursors.SizeNS;
-            // 
-            // plotView2
-            // 
-            this.plotView2.Location = new System.Drawing.Point(414, 8);
-            this.plotView2.Name = "plotView2";
-            this.plotView2.PanCursor = System.Windows.Forms.Cursors.Hand;
-            this.plotView2.Size = new System.Drawing.Size(537, 192);
-            this.plotView2.TabIndex = 1;
-            this.plotView2.Text = "plotView2";
-            this.plotView2.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
-            this.plotView2.ZoomRectangleCursor = System.Windows.Forms.Cursors.SizeNWSE;
-            this.plotView2.ZoomVerticalCursor = System.Windows.Forms.Cursors.SizeNS;
             // 
             // CollectionViewForm
             // 
@@ -899,7 +870,6 @@
             this.splitContainer2.ResumeLayout(false);
             this.manaButtonsPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.sideboardListView)).EndInit();
-            this.statsTabPage.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -967,7 +937,5 @@
         private System.Windows.Forms.ToolStripMenuItem makeCommanderToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem collapsedViewToolStripMenuItem;
         private System.Windows.Forms.TabPage statsTabPage;
-        private OxyPlot.WindowsForms.PlotView plotView1;
-        private OxyPlot.WindowsForms.PlotView plotView2;
     }
 }
