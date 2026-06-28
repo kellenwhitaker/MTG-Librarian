@@ -560,10 +560,6 @@
       <Project>{341BF109-563F-4D39-8641-67165526A6BF}</Project>
       <Name>BlockProgressBar</Name>
     </ProjectReference>
-    <ProjectReference Include="..\CompatibleTabControl\CompatibleTabControl.csproj">
-      <Project>{C2B72EDD-08C7-468D-B0A3-9C566B9D6764}</Project>
-      <Name>CompatibleTabControl</Name>
-    </ProjectReference>
     <ProjectReference Include="..\EnhancedTextBox\EnhancedTextBox.csproj">
       <Project>{AB4E6C08-149B-4D93-A5E1-8D1D74F4C6F1}</Project>
       <Name>EnhancedTextBox</Name>

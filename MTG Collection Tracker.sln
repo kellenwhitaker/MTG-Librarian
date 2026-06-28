@@ -11,8 +11,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnhancedTextBox", "Enhanced
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FlatButton", "FlatButton\FlatButton.csproj", "{0D1FFA41-BE90-4C8A-AEBD-7A9F33432219}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CompatibleTabControl", "CompatibleTabControl\CompatibleTabControl.csproj", "{C2B72EDD-08C7-468D-B0A3-9C566B9D6764}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BetterPanel", "BetterPanel\BetterPanel.csproj", "{D8F9B6B6-C70A-4368-92CD-434561A0DF89}"
 EndProject
 Global
@@ -37,10 +35,6 @@ Global
 		{0D1FFA41-BE90-4C8A-AEBD-7A9F33432219}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D1FFA41-BE90-4C8A-AEBD-7A9F33432219}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D1FFA41-BE90-4C8A-AEBD-7A9F33432219}.Release|Any CPU.Build.0 = Release|Any CPU
-		{C2B72EDD-08C7-468D-B0A3-9C566B9D6764}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C2B72EDD-08C7-468D-B0A3-9C566B9D6764}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C2B72EDD-08C7-468D-B0A3-9C566B9D6764}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C2B72EDD-08C7-468D-B0A3-9C566B9D6764}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D8F9B6B6-C70A-4368-92CD-434561A0DF89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{D8F9B6B6-C70A-4368-92CD-434561A0DF89}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D8F9B6B6-C70A-4368-92CD-434561A0DF89}.Release|Any CPU.ActiveCfg = Release|Any CPU
