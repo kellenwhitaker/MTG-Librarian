@@ -55,6 +55,7 @@
             this.splitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.combineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.makeCommanderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.collapsedViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cardNameFilterTextBox = new EnhancedTextBox.EnhancedTextBox();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.mainTabPage = new System.Windows.Forms.TabPage();
@@ -343,9 +344,10 @@
             this.deleteCardsToolStripMenuItem,
             this.splitToolStripMenuItem,
             this.combineToolStripMenuItem,
-            this.makeCommanderToolStripMenuItem});
+            this.makeCommanderToolStripMenuItem,
+            this.collapsedViewToolStripMenuItem});
             this.cardListViewMenuStrip.Name = "cardListViewMenuStrip";
-            this.cardListViewMenuStrip.Size = new System.Drawing.Size(211, 128);
+            this.cardListViewMenuStrip.Size = new System.Drawing.Size(211, 152);
             this.cardListViewMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.cardListViewMenuStrip_Opening);
             // 
             // deleteCardsToolStripMenuItem
@@ -376,6 +378,14 @@
             this.makeCommanderToolStripMenuItem.Text = "Make Commander";
             this.makeCommanderToolStripMenuItem.Visible = false;
             this.makeCommanderToolStripMenuItem.Click += new System.EventHandler(this.makeCommanderToolStripMenuItem_Click);
+            // 
+            // collapsedViewToolStripMenuItem
+            // 
+            this.collapsedViewToolStripMenuItem.Name = "collapsedViewToolStripMenuItem";
+            this.collapsedViewToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.collapsedViewToolStripMenuItem.Text = "Collapsed View";
+            this.collapsedViewToolStripMenuItem.Visible = false;
+            this.collapsedViewToolStripMenuItem.Click += new System.EventHandler(this.collapsedViewToolStripMenuItem_Click);
             // 
             // cardNameFilterTextBox
             // 
@@ -913,5 +923,6 @@
         private BrightIdeasSoftware.OLVColumn olvColumn20;
         private BrightIdeasSoftware.OLVColumn olvColumn21;
         private System.Windows.Forms.ToolStripMenuItem makeCommanderToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem collapsedViewToolStripMenuItem;
     }
 }

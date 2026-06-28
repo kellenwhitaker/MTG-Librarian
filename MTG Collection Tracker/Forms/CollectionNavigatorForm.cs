@@ -347,11 +347,23 @@ namespace MTG_Librarian
                     e.InfoMessage = $"Add set [{setItem.Name}] to {DocumentName}";
                 else if (e.SourceModels[0] is OLVRarityItem rarityItem)
                     e.InfoMessage = $"Add {rarityItem.Rarity}s from [{(rarityItem.Parent as OLVSetItem).Name}] to {DocumentName}";
-                else if (e.SourceModels[0] is InventoryCard fullInventoryCard)
+                else if (e.SourceModels[0] is InventoryCardCluster)
                 {
+                    int count = 0;
+                    foreach (InventoryCardCluster cluster in e.SourceModels)
+                        count += (int)cluster.Count;
                     var parentForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.cardListView == e.SourceListView || x.sideboardListView == e.SourceListView);
                     if (parentForm != null && parentForm.Collection.Id != navigatorCollection.Id)
-                        e.InfoMessage = $"Move {e.SourceModels.Count} card{(e.SourceModels.Count == 1 ? "" : "s")} to {DocumentName}";
+                        e.InfoMessage = $"Move {count} card{(count == 1 ? "" : "s")} to {DocumentName}";
+                }
+                else if (e.SourceModels[0] is InventoryCard)
+                {
+                    int count = 0;
+                    foreach (InventoryCard card in e.SourceModels)
+                        count += (int)card.Count;
+                    var parentForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.cardListView == e.SourceListView || x.sideboardListView == e.SourceListView);
+                    if (parentForm != null && parentForm.Collection.Id != navigatorCollection.Id)
+                        e.InfoMessage = $"Move {count} card{(count == 1 ? "" : "s")} to {DocumentName}";
                 }
             }
         }
@@ -417,11 +429,22 @@ namespace MTG_Librarian
             }
             else if (rowObjectUnderMouse is NavigatorCollection navigatorCollection)
             {
-                var items = e.SourceModels as ArrayList;
+                var items = new ArrayList();
                 CollectionViewForm sourceForm = null;
-                if (e.SourceModels[0] is InventoryCard)
+                if (e.SourceModels[0] is InventoryCardCluster)
+                {
+                    foreach (InventoryCardCluster cluster in e.SourceModels)
+                    {
+                        items.AddRange(cluster.Cards);
+                    }
                     sourceForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.cardListView == e.SourceListView || x.sideboardListView == e.SourceListView);
-                
+                }
+                else if (e.SourceModels[0] is InventoryCard)
+                {
+                    items.AddRange(e.SourceModels);
+                    sourceForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.cardListView == e.SourceListView || x.sideboardListView == e.SourceListView);
+                }
+
                 var args = new CardsDroppedEventArgs
                 {
                     Items = items,

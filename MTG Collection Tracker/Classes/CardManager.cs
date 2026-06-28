@@ -102,14 +102,7 @@ namespace MTG_Librarian
                         var fullCard = card.ToFullCard(context);
                         if (fullCard != null)
                         {
-                            string priceString = "";
-                            string finish = fullCard.Finish;
-                            if (fullCard.Platform == "MTGO")
-                                fullCard.prices.TryGetValue($"tix", out priceString);
-                            else if (fullCard.Platform == "Paper")
-                                fullCard.prices.TryGetValue($"{DefaultPaperCurrency.ToLower()}{(finish != "nonfoil" ? $"_{finish}" : "")}", out priceString);
-                            if (!string.IsNullOrEmpty(priceString))
-                                fullCard.Price = Convert.ToDouble(priceString);
+                            fullCard.Price = fullCard.FindPrice(DefaultCurrency);
                             fullCardsAdded.Add(fullCard);
                         }
                     }

@@ -17,7 +17,7 @@ namespace MTG_Librarian
 
         public static void CardSelected(object sender, CardSelectedEventArgs e)
         {
-            if (e.MagicCards.Count == 1)
+            if (e.MagicCards.Count == 1 || e.Cluster)
             {
                 ScryfallMagicCardBase card = null;
                 if (e.MagicCards[0] is InventoryCard)
@@ -135,34 +135,56 @@ namespace MTG_Librarian
                 var DefaultPaperCurrency = SettingsManager.ApplicationSettings.DefaultPaperCurrency;
                 foreach (var form in Globals.Forms.OpenCollectionForms)
                 {
-                    var cardsToRefresh = new List<InventoryCard>();
+                    var mbCardsToRefresh = new List<object>();
+                    var sbCardsToRefresh = new List<object>();
                     foreach (var scryfallCard in e.Cards)
                     {
-                        var matches = new List<InventoryCard>();
                         foreach (var row in form.cardListView.Objects)
-                            if (row is InventoryCard card && card.ScryfallId == scryfallCard.ScryfallId)
-                                matches.Add(row as InventoryCard);
-                        if (matches.Count() > 0)
-                        {
-                            foreach (var match in matches)
+                            if (row is InventoryCardCluster cluster)
                             {
-                                match.CopyFromMagicCard(scryfallCard);
-                                string priceString = "";
-                                string finish = match.Finish;
-                                if (match.Platform == "MTGO")
-                                    match.prices.TryGetValue("tix", out priceString);
-                                else if (match.Platform == "Paper")
-                                    match.prices.TryGetValue($"{DefaultPaperCurrency.ToLower()}{(finish != "nonfoil" ? $"_{finish}" : "")}", out priceString);
-                                if (!string.IsNullOrEmpty(priceString))
-                                    match.Price = Convert.ToDouble(priceString);
-                                cardsToRefresh.Add(match);
+                                foreach (var card in cluster.Cards)
+                                    if (card.ScryfallId == scryfallCard.ScryfallId)
+                                    {
+                                        mbCardsToRefresh.Add(cluster);
+                                        card.CopyFromMagicCard(scryfallCard);
+                                        card.Price = card.FindPrice(DefaultPaperCurrency);
+                                    }
                             }
-                        }
+                            else if (row is InventoryCard card && card.ScryfallId == scryfallCard.ScryfallId)
+                            {
+                                mbCardsToRefresh.Add(card);
+                                card.CopyFromMagicCard(scryfallCard);
+                                card.Price = card.FindPrice(DefaultPaperCurrency);
+                            }
+
+                        foreach (var row in form.sideboardListView.Objects)
+                            if (row is InventoryCardCluster cluster)
+                            {
+                                foreach (var card in cluster.Cards)
+                                    if (card.ScryfallId == scryfallCard.ScryfallId)
+                                    {
+                                        sbCardsToRefresh.Add(cluster);
+                                        card.CopyFromMagicCard(scryfallCard);
+                                        card.Price = card.FindPrice(DefaultPaperCurrency);
+                                    }
+                            }
+                            else if (row is InventoryCard card && card.ScryfallId == scryfallCard.ScryfallId)
+                            {
+                                sbCardsToRefresh.Add(card);
+                                card.CopyFromMagicCard(scryfallCard);
+                                card.Price = card.FindPrice(DefaultPaperCurrency);
+                            }
+
                     }
-                    if (cardsToRefresh.Count > 0)
+                    if (mbCardsToRefresh.Count > 0)
                     {
-                        form.cardListView.RefreshObjects(cardsToRefresh);
-                        form.UpdateTotals();
+                        form.cardListView.RefreshObjects(mbCardsToRefresh);
+                        form.UpdateTotals(form.cardListView);
+                    }
+                    else if (sbCardsToRefresh.Count > 0)
+                    {
+                        form.sideboardListView.RefreshObjects(sbCardsToRefresh);
+                        form.UpdateTotals(form.sideboardListView);
                     }
                 }            
             }

@@ -16,5 +16,6 @@ namespace MTG_Librarian
         public bool     Permanent { get; set; }
         public string   Platform { get; set; }
         public int?     Commander { get; set; }
+        public bool?    CollapsedView { get; set; }
     }
 }

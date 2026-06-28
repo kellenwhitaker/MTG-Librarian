@@ -131,6 +131,19 @@ namespace MTG_Librarian
             }
         }
 
+        public double? FindPrice(string defaultPaperCurrency)
+        {
+            string priceString = "";
+            if (Platform == "MTGO")
+                prices.TryGetValue("tix", out priceString);
+            else if (Platform == "Paper")
+                prices.TryGetValue($"{defaultPaperCurrency.ToLower()}{(Finish != "nonfoil" ? $"_{Finish}" : "")}", out priceString);
+            if (!string.IsNullOrEmpty(priceString))
+                return Convert.ToDouble(priceString);
+            else
+                return null;            
+        }
+
         private void UpdateSortableTimeAdded()
         {
             if (TimeAdded.HasValue && InsertionIndex.HasValue) _sortableTimeAdded = $"{TimeAdded.Value.ToString("s")} {InsertionIndex.ToString().PadLeft(10)}";

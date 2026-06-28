@@ -5,6 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.Linq;
 using System.Web.UI.WebControls;
@@ -214,7 +215,7 @@ namespace MTG_Librarian
 
         #endregion Filters
         
-        private void UpdateTotals(FastObjectListView listView)
+        public void UpdateTotals(FastObjectListView listView)
         {
             var totalsRow = (listView.Objects as ArrayList)[0] as InventoryTotalsItem;
             totalsRow.Price = 0;
@@ -222,7 +223,14 @@ namespace MTG_Librarian
             totalsRow.Count = 0;
             foreach (var row in listView.FilteredObjects)
             {
-                if (row is InventoryCard card)
+                if (row is InventoryCardCluster cluster)
+                {
+                    int cardCount = cluster.Count;
+                    totalsRow.Count += cardCount;
+                    totalsRow.Price += cluster.Price * cardCount;
+                    totalsRow.Cost += cluster.Cost * cardCount;
+                }
+                else if (row is InventoryCard card)
                 {
                     int cardCount = card.Count.HasValue ? card.Count.Value : 1;
                     totalsRow.Count += cardCount;
@@ -256,8 +264,9 @@ namespace MTG_Librarian
                     sideboardListView.Visible = false;
                     cardListView.Dock = DockStyle.Fill;
                 }
-                else if (Collection.Type == "deck")
+                else if (Collection.Type == "deck")                
                 {
+                    collapsedViewToolStripMenuItem.Visible = true;
                     CountColumn.DisplayIndex = sideboardCountColumn.DisplayIndex = 1;
                     tcgplayerMarketPriceColumn.DisplayIndex = sideboardPriceColumn.DisplayIndex = 2;
                     ManaCost.DisplayIndex = sideboardManaCostColumn.DisplayIndex =  3;
@@ -278,7 +287,7 @@ namespace MTG_Librarian
                     };
 
                     CardName.GroupKeyToTitleConverter = delegate (object groupKey) {
-                        if (groupKey.ToString() == "")
+                        if (groupKey?.ToString() == "")
                             return "Mainboard";
                         else
                         { 
@@ -288,25 +297,29 @@ namespace MTG_Librarian
                             var count = 0;
                             foreach (var item in cardListView.Objects)
                             {
-                                if (item is InventoryCard card && card.ListViewGroupKey == groupKey.ToString())
+                                if (item is InventoryCardCluster cluster && cluster.ListViewGroupKey == groupKey.ToString())
+                                    count += cluster.Count;
+                                else if (item is InventoryCard card && card.ListViewGroupKey == groupKey.ToString() && card.Count.HasValue)
                                     count += card.Count.Value;
                             }
-                            return $"{groupKey.ToString()} ({count})";
+                            return $"{groupKey?.ToString()} ({count})";
                         }
                     };
 
                     sideboardCardNameColumn.GroupKeyToTitleConverter = delegate (object groupKey) {
-                        if (groupKey.ToString() == "")
+                        if (groupKey?.ToString() == "")
                             return "Sideboard";
                         else
                         {
                             var count = 0;
                             foreach (var item in sideboardListView.Objects)
                             {
-                                if (item is InventoryCard card && card.ListViewGroupKey == groupKey.ToString())
+                                if (item is InventoryCardCluster cluster && cluster.ListViewGroupKey == groupKey.ToString())
+                                    count += cluster.Count;
+                                else if (item is InventoryCard card && card.ListViewGroupKey == groupKey.ToString() && card.Count.HasValue)
                                     count += card.Count.Value;
                             }
-                            return $"{groupKey.ToString()} ({count})";
+                            return $"{groupKey?.ToString()} ({count})";
                         }
                     };
                 }
@@ -319,29 +332,44 @@ namespace MTG_Librarian
                                 select c;
 
                     foreach (var fullCard in items)
-                    {
-                        string priceString = "";
-                        string finish = fullCard.Finish;
-                        string key = "";
-                        if (fullCard.Platform == "MTGO")
-                            key = "tix";
-                        else if (fullCard.Platform == "Paper")
-                            key = $"{DefaultPaperCurrency.ToLower()}{(finish != "nonfoil" ? $"_{finish}" : "")}";
-                        if (fullCard.prices != null && fullCard.prices.TryGetValue(key, out priceString) && !string.IsNullOrEmpty(priceString))
-                        {
-                            fullCard.Price = Convert.ToDouble(priceString);
-                        }
+                    {                        
+                        fullCard.Price = fullCard.FindPrice(DefaultPaperCurrency);                        
                     }
                     cardListView.AddObject(new InventoryTotalsItem { DisplayName = "        Totals:" });
                     if (Collection.Type == "deck")
                     {
                         sideboardListView.AddObject(new InventoryTotalsItem { DisplayName = "        Totals:" });
-                        foreach (var card in items)
+                        if (Collection.CollapsedView.HasValue && Collection.CollapsedView.Value)
                         {
-                            if (card.Board == "sideboard")
-                                sideboardListView.AddObject(card);
-                            else
-                                cardListView.AddObject(card);
+                            var mainboardClusterDictionary = new Dictionary<string, InventoryCardCluster>();
+                            var sideboardClusterDictionary = new Dictionary<string, InventoryCardCluster>();
+                            foreach (var card in items)
+                                if (card.Board == "sideboard")
+                                {
+                                    if (sideboardClusterDictionary.ContainsKey(card.Name))
+                                        sideboardClusterDictionary[card.Name].Cards.Add(card);
+                                    else
+                                        sideboardClusterDictionary.Add(card.Name, new InventoryCardCluster(card));
+                                }
+                                else
+                                {
+                                    if (mainboardClusterDictionary.ContainsKey(card.Name))
+                                        mainboardClusterDictionary[card.Name].Cards.Add(card);
+                                    else
+                                        mainboardClusterDictionary.Add(card.Name, new InventoryCardCluster(card));
+                                }
+                            cardListView.AddObjects(mainboardClusterDictionary.Values);
+                            sideboardListView.AddObjects(sideboardClusterDictionary.Values);
+                        }
+                        else
+                        {
+                            foreach (var card in items)
+                            {
+                                if (card.Board == "sideboard")
+                                    sideboardListView.AddObject(card);
+                                else
+                                    cardListView.AddObject(card);
+                            }
                         }
                     }
                     else
@@ -368,13 +396,67 @@ namespace MTG_Librarian
             {
                 if (board == "sideboard")
                 {
-                    sideboardListView.AddObjects(cards);
-                    sideboardListView.EnsureModelVisible(cards[cards.Count - 1]);
+                    if (Collection.CollapsedView.HasValue && Collection.CollapsedView.Value)
+                    {
+                        bool foundCluster;
+                        foreach (var card in cards)
+                        {
+                            foundCluster = false;
+                            foreach (var item in sideboardListView.Objects)
+                                if (item is InventoryCardCluster cluster)
+                                    if (cluster.Name == card.Name)
+                                    {
+                                        cluster.Cards.Add(card);
+                                        sideboardListView.RefreshObject(cluster);
+                                        foundCluster = true;
+                                        break;
+                                    }
+                            if (!foundCluster)
+                            {
+                                var newCluster = new InventoryCardCluster(card);
+                                sideboardListView.AddObject(newCluster);
+                                sideboardListView.EnsureModelVisible(newCluster);
+                            }
+                        }
+                        sideboardListView.BuildGroups();
+                    }
+                    else
+                    {
+                        sideboardListView.AddObjects(cards);
+                        sideboardListView.EnsureModelVisible(cards[cards.Count - 1]);
+                    }
                 }
                 else
                 {
-                    cardListView.AddObjects(cards);
-                    cardListView.EnsureModelVisible(cards[cards.Count - 1]);
+                    if (Collection.CollapsedView.HasValue && Collection.CollapsedView.Value)
+                    {
+                        bool foundCluster;
+                        foreach (var card in cards)
+                        {
+                            foundCluster = false;
+                            foreach (var item in cardListView.Objects)
+                                if (item is InventoryCardCluster cluster)
+                                    if (cluster.Name == card.Name)
+                                    {
+                                        cluster.Cards.Add(card);
+                                        cardListView.RefreshObject(cluster);
+                                        foundCluster = true;
+                                        break;
+                                    }
+                            if (!foundCluster)
+                            {
+                                var newCluster = new InventoryCardCluster(card);
+                                cardListView.AddObject(newCluster);
+                                cardListView.EnsureModelVisible(newCluster);
+                            }
+                        }
+                        cardListView.BuildGroups();
+                    }
+                    else
+                    {
+                        cardListView.AddObjects(cards);
+                        cardListView.EnsureModelVisible(cards[cards.Count - 1]);
+                    }
                 }
                 UpdateTotals();
             }
@@ -390,14 +472,33 @@ namespace MTG_Librarian
         private void RemoveFullInventoryCards(List<InventoryCard> cardsToRemove, FastObjectListView listView)
         {
             var inventoryCardsStillSelected = listView.SelectedObjects.Cast<object>().Where(x => x is InventoryCard).Cast<InventoryCard>().ToList();
-            foreach (var card in cardsToRemove)
-                if (inventoryCardsStillSelected.Contains(card))
-                    inventoryCardsStillSelected.Remove(card);
+            var clustersToRemove = new List<InventoryCardCluster>();
+
+            if (Collection.CollapsedView.HasValue && Collection.CollapsedView.Value)
+            {
+                foreach (var item in listView.Objects)
+                    if (item is InventoryCardCluster cluster)
+                    {
+                        foreach (var card in cardsToRemove)
+                            if (cluster.Cards.Contains(card))
+                            {
+                                clustersToRemove.Add(cluster);
+                                break;
+                            }
+                    }
+            }
+            if (listView.SelectedObjects.Count > 0 && listView.SelectedObjects[0] is InventoryCard)
+                foreach (var card in cardsToRemove)
+                    if (inventoryCardsStillSelected.Contains(card))
+                        inventoryCardsStillSelected.Remove(card);
             int indexAfterLast = cardsToRemove.Max(x => listView.IndexOf(x)) + 1;
             object objectAfterLast = null;
             if (indexAfterLast > -1 && indexAfterLast < listView.Objects.Count())
                 objectAfterLast = listView.GetModelObject(indexAfterLast);
-            listView.RemoveObjects(cardsToRemove);
+            if (clustersToRemove.Count > 0)
+                listView.RemoveObjects(clustersToRemove);
+            else
+                listView.RemoveObjects(cardsToRemove);
             listView.SelectedObjects = inventoryCardsStillSelected;
             if (listView.SelectedObject == null)
             {
@@ -458,32 +559,63 @@ namespace MTG_Librarian
         #region OLV Events
         private void fastObjectListView1_ModelCanDrop(object sender, ModelDropEventArgs e)
         {
-            e.Effect = DragDropEffects.Move;
-            if (e.SourceModels[0] is OLVCardItem)
-                e.InfoMessage = $"Add {e.SourceModels.Count} card{(e.SourceModels.Count == 1 ? "" : "s")} to {DocumentName}";
-            else if (e.SourceModels[0] is InventoryCard fullInventoryCard)
+            e.Effect = DragDropEffects.None;
+            
+            if (e.SourceModels == null || e.SourceModels.Count == 0)
+                return;
+
+            if (e.ListView == e.SourceListView)
+                return;
+
+            var firstModel = e.SourceModels[0];
+            int count = 0;
+
+            if (firstModel is OLVCardItem)
             {
-                if (e.ListView != e.SourceListView)
-                {
-                    var destination = DocumentName;
-                    if (Collection.Type == "deck")
-                        destination += e.ListView == cardListView ? "- mainboard" : "- sideboard";
-                    e.InfoMessage = $"Add {e.SourceModels.Count} card{(e.SourceModels.Count == 1 ? "" : "s")} to {destination}";
-                }
+                count = e.SourceModels.Count;
+            }
+            else if (firstModel is InventoryCardCluster)
+            {
+                foreach (InventoryCardCluster cluster in e.SourceModels)
+                    count += cluster.Count;
+            }
+            else if (firstModel is InventoryCard)
+            {                
+                foreach (InventoryCard card in e.SourceModels)
+                    count += (int)card.Count;
             }
             else
-                e.Effect = DragDropEffects.None;
+            {
+                return;
+            }
+
+            var destination = DocumentName;
+            if (Collection.Type == "deck")
+                destination += e.ListView == cardListView ? " - mainboard" : " - sideboard";
+
+            e.InfoMessage = $"Add {count} card{(count == 1 ? "" : "s")} to {destination}";
+            e.Effect = DragDropEffects.Move;
         }
         private void fastObjectListView1_ModelDropped(object sender, ModelDropEventArgs e)
         {
             var sourceForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.cardListView == e.SourceListView || x.sideboardListView == e.SourceListView);
             var args = new CardsDroppedEventArgs
             {
-                Items = e.SourceModels as ArrayList,
                 TargetCollection = Collection,
                 SourceForm = sourceForm,
                 TargetBoard = e.ListView == cardListView ? "mainboard" : "sideboard"
             };
+
+            if (e.SourceModels[0] is InventoryCardCluster)
+            {
+                var items = new ArrayList();
+                foreach (InventoryCardCluster cluster in e.SourceModels)
+                    items.AddRange(cluster.Cards);
+                args.Items = items;
+            }
+            else
+                args.Items = e.SourceModels as ArrayList;
+
             if (sourceForm != null)
                 args.SourceBoard = e.SourceListView == sourceForm.cardListView ? "mainboard" : "sideboard";
             OnCardsDropped(args);
@@ -494,21 +626,35 @@ namespace MTG_Librarian
             listView.Focus();
             if (e.RowObject is InventoryCard editedCard)
             {
-                var args = new CardsUpdatedEventArgs { Items = new ArrayList { editedCard }, CollectionViewForm = this, Board = listView == cardListView ? "mainboard" : "sideboard" };
+                var args = new CardsUpdatedEventArgs { CollectionViewForm = this, Board = listView == cardListView ? "mainboard" : "sideboard" };
+                if (editedCard is InventoryCardCluster cluster)
+                    args.Items = new ArrayList(cluster.Cards);
+                else
+                    args.Items = new ArrayList { editedCard };
                 var rowItem = listView.ModelToItem(editedCard);
-                if (e.Column.AspectName == "Count" && editedCard.Count < 1)
+                if (e.Column.AspectName == "Count" && ((e.RowObject is InventoryCardCluster cardCluster && cardCluster.Cards[0].Count < 1) || editedCard.Count < 1))
                 {
                     if (ConfirmCardDeletion() != DialogResult.Yes)
                     {
                         if (Int32.TryParse(e.Value.ToString(), out int oldCount))
-                            editedCard.Count = oldCount;
+                        {
+                            if (e.RowObject is InventoryCardCluster inventoryCardCluster)
+                                inventoryCardCluster.Cards[0].Count = oldCount;
+                            else
+                                editedCard.Count = oldCount;
+                        }
                         else
-                            editedCard.Count = 1;
+                        {
+                            if (e.RowObject is InventoryCardCluster inventoryCardCluster)
+                                inventoryCardCluster.Cards[0].Count = 1;
+                            else
+                                editedCard.Count = 1;
+                        }
                         return;
                     }
                 }
 
-                if (listView.SelectedObjects != null && 
+                if (!(e.RowObject is InventoryCardCluster) &&  listView.SelectedObjects != null && 
                     !(!listView.SelectedObjects.Contains(editedCard) && e.Column.CheckBoxes))
                     foreach (InventoryCard card in listView.SelectedObjects)
                     {
@@ -540,35 +686,78 @@ namespace MTG_Librarian
                 if (e.KeyChar == '=' || e.KeyChar == '+')
                 {
                     e.Handled = true;
-                    foreach (var item in listView.SelectedObjects)
-                        if (item is InventoryCard card)
-                            card.Count++;
-                    OnCardsUpdated(new CardsUpdatedEventArgs { Items = listView.SelectedObjects as ArrayList, CollectionViewForm = this, Board = listView == cardListView ? "mainboard" : "sideboard" });
+                    if (listView.SelectedObjects[0] is InventoryCardCluster cluster)
+                    {
+                        if (listView.SelectedObjects.Count == 1 && cluster.Cards.Count == 1)
+                        {
+                            var cardsUpdated = new List<InventoryCard>();
+                            foreach (var card in cluster.Cards)
+                            {
+                                cardsUpdated.Add(card);
+                                card.Count++;
+                            }
+                            OnCardsUpdated(new CardsUpdatedEventArgs { Items =  new ArrayList(cardsUpdated), CollectionViewForm = this, Board = listView == cardListView ? "mainboard" : "sideboard" });
+                        }
+                    }
+                    else
+                    {
+                        foreach (var item in listView.SelectedObjects)
+                            if (item is InventoryCard card)
+                                card.Count++;
+                        OnCardsUpdated(new CardsUpdatedEventArgs { Items = listView.SelectedObjects as ArrayList, CollectionViewForm = this, Board = listView == cardListView ? "mainboard" : "sideboard" });
+                    }
                 }
                 else if (e.KeyChar == '-' || e.KeyChar == '_')
                 {
                     e.Handled = true;
                     bool pendingDeletion = false;
-                    foreach (var item in listView.SelectedObjects)
+                    var cardsUpdated = new List<InventoryCard>();
+                    if (listView.SelectedObjects[0] is InventoryCardCluster cluster)
                     {
-                        if (item is InventoryCard card)
+                        if (listView.SelectedObjects.Count == 1 && cluster.Cards.Count == 1)
                         {
-                            card.Count--;
-                            if (card.Count < 1)
-                                pendingDeletion = true;
+                            foreach (var card in cluster.Cards)
+                            {
+                                cardsUpdated.Add(card);
+                                card.Count--;
+                                if (card.Count < 1)
+                                    pendingDeletion = true;
+                            }
                         }
+                        else
+                            return;
                     }
+                    else
+                        foreach (var item in listView.SelectedObjects)
+                        {
+                            if (item is InventoryCard card)
+                            {
+                                card.Count--;
+                                if (card.Count < 1)
+                                    pendingDeletion = true;
+                            }
+                        }
                     if (pendingDeletion)
                     {
                         if (ConfirmCardDeletion("Some of the highlighted cards will be deleted. Are you sure you wish to continue?") != DialogResult.Yes)
                         {
-                            foreach (var item in listView.SelectedObjects)
-                                if (item is InventoryCard card)
-                                    card.Count++;
+                            if (listView.SelectedObjects[0] is InventoryCardCluster cardCluster)
+                            {
+                                if (listView.SelectedObjects.Count == 1 && cardCluster.Cards.Count == 1)
+                                    foreach (var card in cardCluster.Cards)
+                                        card.Count++;
+                            }
+                            else
+                                foreach (var item in listView.SelectedObjects)
+                                    if (item is InventoryCard card)
+                                        card.Count++;
                             return;
                         }
                     }
-                    OnCardsUpdated(new CardsUpdatedEventArgs { Items = listView.SelectedObjects as ArrayList, CollectionViewForm = this, Board = listView == cardListView ? "mainboard" : "sideboard" });
+                    if (cardsUpdated.Count > 0)
+                        OnCardsUpdated(new CardsUpdatedEventArgs { Items = new ArrayList(cardsUpdated), CollectionViewForm = this, Board = listView == cardListView ? "mainboard" : "sideboard" });
+                    else
+                        OnCardsUpdated(new CardsUpdatedEventArgs { Items = listView.SelectedObjects as ArrayList, CollectionViewForm = this, Board = listView == cardListView ? "mainboard" : "sideboard" });
                 }
                 else if (e.KeyChar == '\r')
                 {
@@ -576,10 +765,18 @@ namespace MTG_Librarian
                     if (listView.SelectedObjects.Count > 0)
                     {
                         var cardsToPrice = new Dictionary<string, InventoryCard>();
-                        foreach (var row in listView.SelectedObjects)
-                            if (row is InventoryCard card && card.ScryfallId != null)
-                                if (!cardsToPrice.ContainsKey(card.ScryfallId))
-                                    cardsToPrice.Add(card.ScryfallId, row as InventoryCard);
+                        if (listView.SelectedObjects[0] is InventoryCardCluster cluster)
+                        {
+                            foreach (var card in cluster.Cards)
+                                if (card.ScryfallId != null)
+                                    if (!cardsToPrice.ContainsKey(card.ScryfallId))
+                                        cardsToPrice.Add(card.ScryfallId, card);
+                        }
+                        else
+                            foreach (var row in listView.SelectedObjects)
+                                if (row is InventoryCard card && card.ScryfallId != null)
+                                    if (!cardsToPrice.ContainsKey(card.ScryfallId))
+                                        cardsToPrice.Add(card.ScryfallId, row as InventoryCard);
                         if (cardsToPrice.Count > 0)
                             CardManager.FetchPrices(cardsToPrice.Values.ToList());
                         else
@@ -633,7 +830,16 @@ namespace MTG_Librarian
                 return;
             }
             if (listView.SelectedObjects != null && listView.SelectedObjects.Count > 0 && listView.SelectedObjects[0] is ScryfallMagicCardBase)
-                OnCardSelected(new CardSelectedEventArgs { MagicCards = listView.SelectedObjects });
+            {
+                if (listView.SelectedObjects[0] is InventoryCardCluster cluster)
+                {
+                    OnCardSelected(new CardSelectedEventArgs { MagicCards = cluster.Cards, Cluster = true});
+                }
+                else
+                {
+                    OnCardSelected(new CardSelectedEventArgs { MagicCards = listView.SelectedObjects });
+                }
+            }
         }
 
         private void cardListView_SubItemChecking(object sender, SubItemCheckingEventArgs e)
@@ -661,9 +867,26 @@ namespace MTG_Librarian
                 {
                     if (ConfirmCardDeletion() == DialogResult.Yes)
                     {
-                        foreach (InventoryCard cardItem in listView.SelectedObjects)
-                            cardItem.Count = 0;
-                        OnCardsUpdated(new CardsUpdatedEventArgs { Items = listView.SelectedObjects as ArrayList, CollectionViewForm = this, Board = listView == cardListView ? "mainboard" : "sideboard" });
+                        if (cardListView.SelectedObjects[0] is InventoryCardCluster)
+                        {
+                            var cardList = new ArrayList();
+                            foreach (InventoryCardCluster cluster in cardListView.SelectedObjects)
+                            {
+                                foreach (var card in cluster.Cards)
+                                {
+                                    cardList.Add(card);
+                                    card.Count = 0;
+                                }
+                            }
+                            OnCardsUpdated(new CardsUpdatedEventArgs { Items = cardList, CollectionViewForm = this, Board = sender == cardListView ? "mainboard" : "sideboard" });
+                        }
+                        else if (cardListView.SelectedObjects[0] is InventoryCard)
+                        {
+                            foreach (InventoryCard cardItem in cardListView.SelectedObjects)
+                                cardItem.Count = 0;
+
+                            OnCardsUpdated(new CardsUpdatedEventArgs { Items = cardListView.SelectedObjects as ArrayList, CollectionViewForm = this, Board = sender == cardListView ? "mainboard" : "sideboard" });
+                        }
                     }
                 }
             }
@@ -671,9 +894,34 @@ namespace MTG_Librarian
 
         private void cardListView_CellEditStarting(object sender, CellEditEventArgs e)
         {
+            var listView = sender as FastObjectListView;
+            if (e.RowObject is InventoryCardCluster cluster)
+            {
+                int countIndex = listView.AllColumns.FirstOrDefault(x => x.AspectName == "Count").Index;
+                if (e.SubItemIndex == countIndex && cluster.Cards.Count > 1)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+                if (listView.SelectedObjects?.Count > 1)
+                {
+                    e.Cancel = true;
+                    return;
+                }
+                string scryfallId = null;
+                foreach (var cardItem in cluster.Cards)
+                {
+                    if (scryfallId == null)
+                        scryfallId = cardItem.ScryfallId;
+                    else if (scryfallId != cardItem.ScryfallId)
+                    {
+                        e.Cancel = true;
+                        return;
+                    }
+                }
+            }
             if (e.RowObject is InventoryCard card)
             {
-                var listView = sender as FastObjectListView;
                 int costIndex = listView.AllColumns.FirstOrDefault(x => x.AspectName == "Cost").Index;
                 int condIndex = listView.AllColumns.FirstOrDefault(x => x.AspectName == "Condition").Index;
                 int finishIndex = listView.AllColumns.FirstOrDefault(x => x.AspectName == "Finish").Index;
@@ -702,6 +950,8 @@ namespace MTG_Librarian
                 }
                 else if (e.SubItemIndex == finishIndex)
                 {
+                    if (card is InventoryCardCluster cardCluster)
+                        cardCluster.finishes = cardCluster.Cards[0].finishes;
                     EditorComboBox = new ComboBox { Bounds = e.CellBounds, DropDownStyle = ComboBoxStyle.DropDownList };
                     EditorComboBox.Items.AddRange(card.finishes);
                     foreach (var item in EditorComboBox.Items)
@@ -723,36 +973,84 @@ namespace MTG_Librarian
                 int costIndex = listView.AllColumns.FirstOrDefault(x => x.AspectName == "Cost").Index;
                 int condIndex = listView.AllColumns.FirstOrDefault(x => x.AspectName == "Condition").Index;
                 int finishIndex = listView.AllColumns.FirstOrDefault(x => x.AspectName == "Finish").Index;
+                int countIndex = listView.AllColumns.FirstOrDefault(x => x.AspectName == "Count").Index;
+                int tagsIndex = listView.AllColumns.FirstOrDefault(x => x.AspectName == "Tags").Index;
                 if (e.SubItemIndex == costIndex)
                 {
                     if (double.TryParse(e.NewValue?.ToString(), out double cellValue))
-                        card.Cost = cellValue;
+                    {
+                        if (e.RowObject is InventoryCardCluster cluster)
+                        {
+                            foreach (var cardItem in cluster.Cards)
+                                cardItem.Cost = cellValue;
+                        }
+                        else
+                            card.Cost = cellValue;
+                    }
                     listView.RefreshObject(card);
                     e.Cancel = true;
                 }
                 else if (e.SubItemIndex == condIndex)
                 {
-                    if (EditorComboBox.SelectedIndex == 0)
-                        card.Condition = null;
+                    if (e.RowObject is InventoryCardCluster cluster)
+                    {
+                        foreach (var cardItem in cluster.Cards)
+                        {
+                            if (EditorComboBox.SelectedIndex == 0)
+                                cardItem.Condition = null;
+                            else
+                                cardItem.Condition = EditorComboBox.SelectedItem?.ToString();
+                        }
+                    }
                     else
-                        card.Condition = EditorComboBox.SelectedItem?.ToString();
+                    {
+                        if (EditorComboBox.SelectedIndex == 0)
+                            card.Condition = null;
+                        else
+                            card.Condition = EditorComboBox.SelectedItem?.ToString();
+                    }
                     listView.RefreshObject(card);
                     e.Cancel = true;
                 }
                 else if (e.SubItemIndex == finishIndex)
-                {
-                    string priceString = "";
+                {                    
                     var DefaultPaperCurrency = SettingsManager.ApplicationSettings.DefaultPaperCurrency;
-                    card.Finish = EditorComboBox.SelectedItem?.ToString();
-                    if (card.Platform == "MTGO")
-                        card.prices.TryGetValue("tix", out priceString);
-                    else if (card.Platform == "Paper")
-                        card.prices.TryGetValue($"{DefaultPaperCurrency.ToLower()}{(card.Finish != "nonfoil" ? $"_{card.Finish}" : "")}", out priceString);
-                    if (!string.IsNullOrEmpty(priceString))
-                        card.Price = Convert.ToDouble(priceString);
+                    if (card is InventoryCardCluster cluster)
+                    {
+                        foreach (var cardItem in cluster.Cards)
+                        {
+                            cardItem.Finish = EditorComboBox.SelectedItem?.ToString();
+                            cardItem.Price = cardItem.FindPrice(DefaultPaperCurrency);
+                        }
+                    }
+                    else
+                    {
+                        card.Price = card.FindPrice(DefaultPaperCurrency);
+                    }
 
                     listView.RefreshObject(card);
                     e.Cancel = true;
+                }
+                else if (e.SubItemIndex == countIndex)
+                {
+                    if (e.RowObject is InventoryCardCluster cluster)
+                    {
+                        if (int.TryParse(e.NewValue?.ToString(), out int cellValue))
+                            foreach (var cardItem in cluster.Cards)
+                                cardItem.Count = cellValue;                            
+                        listView.RefreshObject(card);
+                        e.Cancel = true;
+                    }
+                }
+                else if (e.SubItemIndex == tagsIndex)
+                {
+                    if (e.RowObject is InventoryCardCluster cluster)
+                    {
+                        foreach (var cardItem in cluster.Cards)
+                            cardItem.Tags = e.NewValue?.ToString();
+                        listView.RefreshObject(card);
+                        e.Cancel = true;
+                    }
                 }
             }
         }
@@ -792,9 +1090,27 @@ namespace MTG_Librarian
             {
                 if (ConfirmCardDeletion() == DialogResult.Yes)
                 {
-                    foreach (InventoryCard cardItem in cardListView.SelectedObjects)
-                        cardItem.Count = 0;
-                    OnCardsUpdated(new CardsUpdatedEventArgs { Items = cardListView.SelectedObjects as ArrayList, CollectionViewForm = this });
+                    var board = cardListViewMenuStrip.SourceControl == cardListView ? "mainboard" : "sideboard";
+                    if (cardListView.SelectedObjects[0] is InventoryCardCluster)
+                    {
+                        var cardList = new ArrayList();
+                        foreach (InventoryCardCluster cluster in cardListView.SelectedObjects)
+                        {
+                            foreach (var card in cluster.Cards)
+                            {
+                                cardList.Add(card);
+                                card.Count = 0;
+                            }
+                        }
+                        OnCardsUpdated(new CardsUpdatedEventArgs { Items = cardList, CollectionViewForm = this, Board = board});
+                    }
+                    else if (cardListView.SelectedObjects[0] is InventoryCard)
+                    {
+                        foreach (InventoryCard cardItem in cardListView.SelectedObjects)
+                            cardItem.Count = 0;
+
+                        OnCardsUpdated(new CardsUpdatedEventArgs { Items = cardListView.SelectedObjects as ArrayList, CollectionViewForm = this, Board = board });
+                    }  
                 }
             }
         }
@@ -806,12 +1122,13 @@ namespace MTG_Librarian
                 e.Cancel = true;
             else
             {
+                collapsedViewToolStripMenuItem.Text = (Collection.CollapsedView.HasValue && Collection.CollapsedView.Value) ? "Expand View" : "Collapse View";
                 splitToolStripMenuItem.Visible = false;
                 combineToolStripMenuItem.Visible = false;
                 makeCommanderToolStripMenuItem.Visible = false;
                 if (listView.SelectedObject is InventoryCard card)
                 {
-                    if (card.Count > 1)
+                    if ((!Collection.CollapsedView.HasValue || !Collection.CollapsedView.Value) && card.Count > 1)
                     {
                         splitToolStripMenuItem.Visible = true;
                     }
@@ -1054,9 +1371,13 @@ namespace MTG_Librarian
             if (listView == cardListView && listView.SelectedObject is InventoryCard card)
             {
                 if (Collection.Commander.HasValue && card.InventoryId == Collection.Commander.Value)
+                {
                     Collection.Commander = null;
+                }
                 else
+                {
                     Collection.Commander = card.InventoryId;
+                }
                 
                 using (var context = new ScryfallCardsDbContext())
                 {
@@ -1065,6 +1386,81 @@ namespace MTG_Librarian
                 }
 
                 listView.BuildGroups();
+            }
+        }
+        private void collapsedViewToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (Collection.CollapsedView.HasValue && Collection.CollapsedView.Value)
+            {
+                Collection.CollapsedView = false;
+                var items = new List<object>();
+                foreach (var item in cardListView.Objects)
+                {
+                    if (item is InventoryCardCluster cluster)
+                        items.AddRange(cluster.Cards);
+                    else
+                        items.Add(item);
+                }
+                cardListView.ClearObjects();
+                cardListView.AddObjects(items);
+
+                items.Clear();
+                foreach (var item in sideboardListView.Objects)
+                {
+                    if (item is InventoryCardCluster cluster)
+                        items.AddRange(cluster.Cards);
+                    else
+                        items.Add(item);
+                }
+                sideboardListView.ClearObjects();
+                sideboardListView.AddObjects(items);
+            }
+            else
+            {
+                Collection.CollapsedView = true;
+                var clusterDictionary = new Dictionary<string, InventoryCardCluster>();
+                InventoryTotalsItem totalsItem = null;
+                foreach (var item in cardListView.Objects)
+                {
+                    if (item is InventoryCard card)
+                    {
+                        if (!clusterDictionary.ContainsKey(card.Name))
+                            clusterDictionary.Add(card.Name, new InventoryCardCluster(card));
+                        else
+                            clusterDictionary[card.Name].Cards.Add(card);
+                    }
+                    else if (item is InventoryTotalsItem totals)
+                    {
+                        totalsItem = totals;
+                    }
+                }
+                cardListView.ClearObjects();
+                cardListView.AddObject(totalsItem);
+                cardListView.AddObjects(clusterDictionary.Values.ToList());
+
+                clusterDictionary.Clear();
+                foreach (var item in sideboardListView.Objects)
+                {
+                    if (item is InventoryCard card)
+                    {
+                        if (!clusterDictionary.ContainsKey(card.Name))
+                            clusterDictionary.Add(card.Name, new InventoryCardCluster(card));
+                        else
+                            clusterDictionary[card.Name].Cards.Add(card);
+                    }
+                    else if (item is InventoryTotalsItem totals)
+                    {
+                        totalsItem = totals;
+                    }
+                }
+                sideboardListView.ClearObjects();
+                sideboardListView.AddObject(totalsItem);
+                sideboardListView.AddObjects(clusterDictionary.Values.ToList());
+            }
+            using (var context = new ScryfallCardsDbContext())
+            {
+                context.Update(Collection);
+                context.SaveChanges();
             }
         }
     }

@@ -46,6 +46,7 @@ namespace MTG_Librarian
     {
         public ScryfallMagicCardBase MagicCard { get; set; }
         public IList MagicCards { get; set; }
+        public bool Cluster { get; set; } = false;
     }
 
     public class CardsActivatedEventArgs : EventArgs

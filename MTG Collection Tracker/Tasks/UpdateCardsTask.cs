@@ -97,13 +97,14 @@ namespace MTG_Librarian
                         }
                         context.SaveChanges();
                     }
-
+                    watch.Stop();
                     RunState = RunState.Completed;
                 }
             }
             catch (Exception ex)
             {
                 DebugOutput.WriteLine(ex.ToString());
+                RunState = RunState.Failed;
             }
         }
 

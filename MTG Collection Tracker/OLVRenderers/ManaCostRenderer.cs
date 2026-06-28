@@ -26,6 +26,13 @@ namespace MTG_Librarian
                 else if (card.card_faces != null)
                     manaCost = card.card_faces[0].mana_cost;
             }
+            else if (ListItem.RowObject is InventoryCardCluster cluster)
+            {
+                if (cluster.mana_cost != null)
+                    manaCost = cluster.mana_cost;
+                else if (cluster.card_faces != null)
+                    manaCost = cluster.card_faces[0].mana_cost;
+            }
             else if (ListItem.RowObject is OLVCardItem olvCard)
             {
                 if (olvCard.MagicCard.mana_cost != null)
