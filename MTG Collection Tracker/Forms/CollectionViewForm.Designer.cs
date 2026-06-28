@@ -90,6 +90,9 @@
             this.olvColumn19 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn20 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn21 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.statsTabPage = new System.Windows.Forms.TabPage();
+            this.plotView1 = new OxyPlot.WindowsForms.PlotView();
+            this.plotView2 = new OxyPlot.WindowsForms.PlotView();
             ((System.ComponentModel.ISupportInitialize)(this.cardListView)).BeginInit();
             this.cardListViewMenuStrip.SuspendLayout();
             this.tabControl.SuspendLayout();
@@ -100,6 +103,7 @@
             this.splitContainer2.SuspendLayout();
             this.manaButtonsPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.sideboardListView)).BeginInit();
+            this.statsTabPage.SuspendLayout();
             this.SuspendLayout();
             // 
             // cardListView
@@ -347,34 +351,34 @@
             this.makeCommanderToolStripMenuItem,
             this.collapsedViewToolStripMenuItem});
             this.cardListViewMenuStrip.Name = "cardListViewMenuStrip";
-            this.cardListViewMenuStrip.Size = new System.Drawing.Size(211, 152);
+            this.cardListViewMenuStrip.Size = new System.Drawing.Size(201, 124);
             this.cardListViewMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.cardListViewMenuStrip_Opening);
             // 
             // deleteCardsToolStripMenuItem
             // 
             this.deleteCardsToolStripMenuItem.Name = "deleteCardsToolStripMenuItem";
-            this.deleteCardsToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.deleteCardsToolStripMenuItem.Size = new System.Drawing.Size(200, 24);
             this.deleteCardsToolStripMenuItem.Text = "Delete card(s)";
             this.deleteCardsToolStripMenuItem.Click += new System.EventHandler(this.deleteCardsToolStripMenuItem_Click);
             // 
             // splitToolStripMenuItem
             // 
             this.splitToolStripMenuItem.Name = "splitToolStripMenuItem";
-            this.splitToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.splitToolStripMenuItem.Size = new System.Drawing.Size(200, 24);
             this.splitToolStripMenuItem.Text = "Split";
             this.splitToolStripMenuItem.Click += new System.EventHandler(this.splitToolStripMenuItem_Click);
             // 
             // combineToolStripMenuItem
             // 
             this.combineToolStripMenuItem.Name = "combineToolStripMenuItem";
-            this.combineToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.combineToolStripMenuItem.Size = new System.Drawing.Size(200, 24);
             this.combineToolStripMenuItem.Text = "Combine";
             this.combineToolStripMenuItem.Click += new System.EventHandler(this.combineToolStripMenuItem_Click);
             // 
             // makeCommanderToolStripMenuItem
             // 
             this.makeCommanderToolStripMenuItem.Name = "makeCommanderToolStripMenuItem";
-            this.makeCommanderToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.makeCommanderToolStripMenuItem.Size = new System.Drawing.Size(200, 24);
             this.makeCommanderToolStripMenuItem.Text = "Make Commander";
             this.makeCommanderToolStripMenuItem.Visible = false;
             this.makeCommanderToolStripMenuItem.Click += new System.EventHandler(this.makeCommanderToolStripMenuItem_Click);
@@ -382,7 +386,7 @@
             // collapsedViewToolStripMenuItem
             // 
             this.collapsedViewToolStripMenuItem.Name = "collapsedViewToolStripMenuItem";
-            this.collapsedViewToolStripMenuItem.Size = new System.Drawing.Size(210, 24);
+            this.collapsedViewToolStripMenuItem.Size = new System.Drawing.Size(200, 24);
             this.collapsedViewToolStripMenuItem.Text = "Collapsed View";
             this.collapsedViewToolStripMenuItem.Visible = false;
             this.collapsedViewToolStripMenuItem.Click += new System.EventHandler(this.collapsedViewToolStripMenuItem_Click);
@@ -403,12 +407,14 @@
             // 
             this.tabControl.Alignment = System.Windows.Forms.TabAlignment.Bottom;
             this.tabControl.Controls.Add(this.mainTabPage);
+            this.tabControl.Controls.Add(this.statsTabPage);
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Name = "tabControl";
             this.tabControl.SelectedIndex = 0;
             this.tabControl.Size = new System.Drawing.Size(1880, 535);
             this.tabControl.TabIndex = 1;
+            this.tabControl.SelectedIndexChanged += new System.EventHandler(this.tabControl_SelectedIndexChanged);
             // 
             // mainTabPage
             // 
@@ -835,6 +841,41 @@
             this.olvColumn21.Text = "Added";
             this.olvColumn21.Width = 200;
             // 
+            // statsTabPage
+            // 
+            this.statsTabPage.BackColor = System.Drawing.Color.White;
+            this.statsTabPage.Controls.Add(this.plotView2);
+            this.statsTabPage.Controls.Add(this.plotView1);
+            this.statsTabPage.Location = new System.Drawing.Point(4, 4);
+            this.statsTabPage.Name = "statsTabPage";
+            this.statsTabPage.Size = new System.Drawing.Size(1872, 506);
+            this.statsTabPage.TabIndex = 1;
+            this.statsTabPage.Text = "Stats";
+            // 
+            // plotView1
+            // 
+            this.plotView1.Location = new System.Drawing.Point(8, 8);
+            this.plotView1.Name = "plotView1";
+            this.plotView1.PanCursor = System.Windows.Forms.Cursors.Hand;
+            this.plotView1.Size = new System.Drawing.Size(345, 192);
+            this.plotView1.TabIndex = 0;
+            this.plotView1.Text = "plotView1";
+            this.plotView1.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
+            this.plotView1.ZoomRectangleCursor = System.Windows.Forms.Cursors.SizeNWSE;
+            this.plotView1.ZoomVerticalCursor = System.Windows.Forms.Cursors.SizeNS;
+            // 
+            // plotView2
+            // 
+            this.plotView2.Location = new System.Drawing.Point(414, 8);
+            this.plotView2.Name = "plotView2";
+            this.plotView2.PanCursor = System.Windows.Forms.Cursors.Hand;
+            this.plotView2.Size = new System.Drawing.Size(537, 192);
+            this.plotView2.TabIndex = 1;
+            this.plotView2.Text = "plotView2";
+            this.plotView2.ZoomHorizontalCursor = System.Windows.Forms.Cursors.SizeWE;
+            this.plotView2.ZoomRectangleCursor = System.Windows.Forms.Cursors.SizeNWSE;
+            this.plotView2.ZoomVerticalCursor = System.Windows.Forms.Cursors.SizeNS;
+            // 
             // CollectionViewForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -858,6 +899,7 @@
             this.splitContainer2.ResumeLayout(false);
             this.manaButtonsPanel.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.sideboardListView)).EndInit();
+            this.statsTabPage.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -924,5 +966,8 @@
         private BrightIdeasSoftware.OLVColumn olvColumn21;
         private System.Windows.Forms.ToolStripMenuItem makeCommanderToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem collapsedViewToolStripMenuItem;
+        private System.Windows.Forms.TabPage statsTabPage;
+        private OxyPlot.WindowsForms.PlotView plotView1;
+        private OxyPlot.WindowsForms.PlotView plotView2;
     }
 }

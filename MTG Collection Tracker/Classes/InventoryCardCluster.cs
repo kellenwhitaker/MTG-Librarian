@@ -17,6 +17,7 @@ namespace MTG_Librarian
             this.Name = card.Name;
             this.type_line = card.type_line;
             this.mana_cost = card.mana_cost;
+            this.cmc = card.cmc;
             this.card_faces = card.card_faces;
             this.InventoryId = card.InventoryId;
             this.CollectionId = card.CollectionId;
@@ -38,6 +39,7 @@ namespace MTG_Librarian
             this.Name = card.Name;
             this.type_line = card.type_line;
             this.mana_cost = card.mana_cost;
+            this.cmc = card.cmc;
             this.card_faces = card.card_faces;
             this.CollectionId = card.CollectionId;
             this.TimeAdded = card.TimeAdded;

@@ -1,8 +1,13 @@
 ﻿using BrightIdeasSoftware;
 using KW.WinFormsUI.Docking;
+using OxyPlot;
+using OxyPlot.Axes;
+using OxyPlot.Series;
+using OxyPlot.WindowsForms;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics.Eventing.Reader;
@@ -18,6 +23,8 @@ namespace MTG_Librarian
         private string DefaultCurrency = SettingsManager.ApplicationSettings.DefaultCurrency;
         private bool ignoreNextCardListViewSelectionChanged = false;
         private bool ignoreNextSideboardListViewSelectionChanged = false;
+        private PlotModel modelP1;
+        private PlotModel modelB1;
         #region Properties
 
         public string DocumentName => Collection?.CollectionName;
@@ -46,7 +53,7 @@ namespace MTG_Librarian
 
         public CollectionViewForm()
         {
-            InitializeComponent();
+            InitializeComponent();            
             cardListView.SetDoubleBuffered();
             
             cardListView.FormatRow += (sender, e) =>
@@ -1461,6 +1468,95 @@ namespace MTG_Librarian
             {
                 context.Update(Collection);
                 context.SaveChanges();
+            }
+        }
+
+        private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (tabControl.SelectedIndex == 1)
+            {
+                modelP1 = new PlotModel { Title = "Mana Color Cost" };
+                modelB1 = new PlotModel { Title = "Mana Curve" };
+
+                var seriesP1 = new PieSeries { StrokeThickness = 2.0, InsideLabelPosition = 0.8, AngleSpan = 360, StartAngle = 0 };
+                seriesP1.OutsideLabelFormat = "{0}: {2:0}%";
+                var seriesB1 = new BarSeries { StrokeColor = OxyColors.Black, StrokeThickness = 1, FillColor = OxyColors.Blue, LabelPlacement = LabelPlacement.Inside, LabelFormatString = "{0}" };
+                seriesB1.TextColor = OxyColors.White;
+                seriesB1.FontWeight = OxyPlot.FontWeights.Bold;
+                var whiteSymbols = 0;
+                var blueSymbols = 0;
+                var blackSymbols = 0;
+                var redSymbols = 0;
+                var greenSymbols = 0;
+                var colorlessSymbols = 0;
+                var cmcDictionary = new Dictionary<float, float>();
+                foreach (var item in cardListView.Objects)
+                {
+                    if (item is InventoryCardCluster cluster)
+                    {
+                        whiteSymbols += cluster.Count * cluster.mana_cost.Count(c => c == 'W');
+                        blueSymbols += cluster.Count * cluster.mana_cost.Count(c => c == 'U');
+                        blackSymbols += cluster.Count * cluster.mana_cost.Count(c => c == 'B');
+                        redSymbols += cluster.Count * cluster.mana_cost.Count(c => c == 'R');
+                        greenSymbols += cluster.Count * cluster.mana_cost.Count(c => c == 'G');
+                        colorlessSymbols += cluster.Count * cluster.mana_cost.Count(c => c == 'C');
+                        if (!cluster.type_line.Contains("Land"))
+                        {
+                            if (cmcDictionary.ContainsKey(cluster.cmc))
+                                cmcDictionary[cluster.cmc] += cluster.Count;
+                            else
+                                cmcDictionary[cluster.cmc] = cluster.Count;
+                        }
+                    }
+                    else if (item is InventoryCard card)
+                    {
+                        whiteSymbols += (int)card.Count * card.mana_cost.Count(c => c == 'W');
+                        blueSymbols += (int)card.Count * card.mana_cost.Count(c => c == 'U');
+                        blackSymbols += (int)card.Count * card.mana_cost.Count(c => c == 'B');
+                        redSymbols += (int)card.Count * card.mana_cost.Count(c => c == 'R');
+                        greenSymbols += (int)card.Count * card.mana_cost.Count(c => c == 'G');
+                        colorlessSymbols += (int)card.Count * card.mana_cost.Count(c => c == 'C');
+                        if (!card.type_line.Contains("Land"))
+                        {
+                            if (cmcDictionary.ContainsKey(card.cmc))
+                                cmcDictionary[card.cmc] += (int)card.Count;
+                            else
+                                cmcDictionary[card.cmc] = (int)card.Count;
+                        }
+                    }
+                }
+
+                
+                if (whiteSymbols > 0)
+                    seriesP1.Slices.Add(new PieSlice("", whiteSymbols) { IsExploded = false, Fill = OxyColors.LightYellow });
+                if (blueSymbols > 0)
+                    seriesP1.Slices.Add(new PieSlice("", blueSymbols) { IsExploded = false, Fill = OxyColors.Blue });
+                if (blackSymbols > 0)
+                    seriesP1.Slices.Add(new PieSlice("", blackSymbols) { IsExploded = false, Fill = OxyColors.Black });
+                if (redSymbols > 0)
+                    seriesP1.Slices.Add(new PieSlice("", redSymbols) { IsExploded = false, Fill = OxyColors.Red });
+                if (greenSymbols > 0)
+                    seriesP1.Slices.Add(new PieSlice("", greenSymbols) { IsExploded = false, Fill = OxyColors.Green });
+                if (colorlessSymbols > 0)
+                    seriesP1.Slices.Add(new PieSlice("", colorlessSymbols) { IsExploded = false, Fill = OxyColors.Gray });
+
+                modelP1.Series.Add(seriesP1);
+                plotView1.Model = modelP1;
+                var cmcDictionary2 = cmcDictionary.ToImmutableSortedDictionary();
+                foreach (var kvp in cmcDictionary2)
+                {
+                    seriesB1.Items.Add(new BarItem { Value = kvp.Value });
+                }
+
+                modelB1.Axes.Add(new CategoryAxis
+                {
+                    Position = AxisPosition.Left,
+                    Key = "CakeAxis",
+                    ItemsSource = cmcDictionary2.Keys.Select(x => x.ToString()).ToList(),
+                });
+
+                modelB1.Series.Add(seriesB1);
+                plotView2.Model = modelB1;
             }
         }
     }
