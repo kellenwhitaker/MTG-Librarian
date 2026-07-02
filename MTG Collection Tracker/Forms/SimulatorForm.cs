@@ -815,6 +815,28 @@ namespace MTG_Librarian
             else
                 drawButton.Enabled = true;
         }
+
+        private void resetToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            handPanel.Controls.Clear();
+            landPanel.Controls.Clear();
+            battlefieldPanel.Controls.Clear();
+            cardHand.Clear();
+            lands.Clear();
+            battlefield.Clear();
+            graveyard.Clear();
+            exile.Clear();
+            cardLibrary.Shuffle();
+            handDrawn = false;
+            handKept = false;
+            Mulligans = 0;
+            drawButton.Enabled = true;
+            mulliganButton.Enabled = false;
+            keepHandButton.Enabled = false;
+            messageLabel.Text = null;
+            foreach (var card in cardLibrary.GetLibrary())
+                SetLiveCardEvents(card);
+        }
     }
     public static class CardImageCache
     {

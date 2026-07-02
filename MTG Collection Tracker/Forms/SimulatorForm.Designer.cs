@@ -54,12 +54,15 @@
             this.messageLabel = new System.Windows.Forms.Label();
             this.mulliganButton = new System.Windows.Forms.Button();
             this.keepHandButton = new System.Windows.Forms.Button();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.resetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.liveCardMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.exilePictureBox)).BeginInit();
             this.zoneMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.graveyardPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.libraryPictureBox)).BeginInit();
             this.landPanel.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // drawButton
@@ -281,11 +284,30 @@
             this.keepHandButton.UseVisualStyleBackColor = true;
             this.keepHandButton.Click += new System.EventHandler(this.keepHandButton_Click);
             // 
+            // menuStrip1
+            // 
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.resetToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1092, 28);
+            this.menuStrip1.TabIndex = 10;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // resetToolStripMenuItem
+            // 
+            this.resetToolStripMenuItem.Name = "resetToolStripMenuItem";
+            this.resetToolStripMenuItem.Size = new System.Drawing.Size(59, 24);
+            this.resetToolStripMenuItem.Text = "Reset";
+            this.resetToolStripMenuItem.Click += new System.EventHandler(this.resetToolStripMenuItem_Click);
+            // 
             // SimulatorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1092, 856);
+            this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.keepHandButton);
             this.Controls.Add(this.mulliganButton);
             this.Controls.Add(this.landPanel);
@@ -295,6 +317,7 @@
             this.Controls.Add(this.handPanel);
             this.Controls.Add(this.drawButton);
             this.Controls.Add(this.libraryPictureBox);
+            this.MainMenuStrip = this.menuStrip1;
             this.Name = "SimulatorForm";
             this.Text = "Simulator";
             this.Resize += new System.EventHandler(this.SimulatorForm_Resize);
@@ -305,7 +328,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.libraryPictureBox)).EndInit();
             this.landPanel.ResumeLayout(false);
             this.landPanel.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -336,5 +362,7 @@
         private System.Windows.Forms.Button mulliganButton;
         private System.Windows.Forms.Button keepHandButton;
         private System.Windows.Forms.Label messageLabel;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem resetToolStripMenuItem;
     }
 }
