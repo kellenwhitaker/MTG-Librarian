@@ -82,7 +82,15 @@ namespace MTG_Librarian
                     DrawLabel(g, countersLabel, font, brush, new PointF(10, 30));
                 }
             }
-            pictureBox.Image = copy;
+            if (!Tapped)
+                pictureBox.Image = copy;
+            else
+            {
+                untappedImage = copy;
+                var rotatedCopy = copy.GetCopyOf();
+                rotatedCopy.RotateFlip(RotateFlipType.Rotate90FlipNone);
+                pictureBox.Image = rotatedCopy; 
+            }
         }
         private void DrawLabel(Graphics g, string text, Font font, Brush brush, PointF position)
         {
