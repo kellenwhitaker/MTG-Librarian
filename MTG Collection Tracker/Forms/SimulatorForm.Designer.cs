@@ -51,11 +51,15 @@
             this.graveyardPictureBox = new System.Windows.Forms.PictureBox();
             this.libraryPictureBox = new System.Windows.Forms.PictureBox();
             this.landPanel = new System.Windows.Forms.Panel();
+            this.messageLabel = new System.Windows.Forms.Label();
+            this.mulliganButton = new System.Windows.Forms.Button();
+            this.keepHandButton = new System.Windows.Forms.Button();
             this.liveCardMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.exilePictureBox)).BeginInit();
             this.zoneMenuStrip.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.graveyardPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.libraryPictureBox)).BeginInit();
+            this.landPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // drawButton
@@ -238,16 +242,52 @@
             // landPanel
             // 
             this.landPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.landPanel.Controls.Add(this.messageLabel);
             this.landPanel.Location = new System.Drawing.Point(1, 211);
             this.landPanel.Name = "landPanel";
             this.landPanel.Size = new System.Drawing.Size(764, 298);
             this.landPanel.TabIndex = 7;
+            // 
+            // messageLabel
+            // 
+            this.messageLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.messageLabel.AutoSize = true;
+            this.messageLabel.Location = new System.Drawing.Point(3, 277);
+            this.messageLabel.Name = "messageLabel";
+            this.messageLabel.Size = new System.Drawing.Size(0, 16);
+            this.messageLabel.TabIndex = 0;
+            // 
+            // mulliganButton
+            // 
+            this.mulliganButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.mulliganButton.Enabled = false;
+            this.mulliganButton.Location = new System.Drawing.Point(1005, 520);
+            this.mulliganButton.Name = "mulliganButton";
+            this.mulliganButton.Size = new System.Drawing.Size(75, 23);
+            this.mulliganButton.TabIndex = 8;
+            this.mulliganButton.Text = "Mulligan";
+            this.mulliganButton.UseVisualStyleBackColor = true;
+            this.mulliganButton.Click += new System.EventHandler(this.mulliganButton_Click);
+            // 
+            // keepHandButton
+            // 
+            this.keepHandButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.keepHandButton.Enabled = false;
+            this.keepHandButton.Location = new System.Drawing.Point(944, 520);
+            this.keepHandButton.Name = "keepHandButton";
+            this.keepHandButton.Size = new System.Drawing.Size(55, 23);
+            this.keepHandButton.TabIndex = 9;
+            this.keepHandButton.Text = "Keep";
+            this.keepHandButton.UseVisualStyleBackColor = true;
+            this.keepHandButton.Click += new System.EventHandler(this.keepHandButton_Click);
             // 
             // SimulatorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1092, 856);
+            this.Controls.Add(this.keepHandButton);
+            this.Controls.Add(this.mulliganButton);
             this.Controls.Add(this.landPanel);
             this.Controls.Add(this.exilePictureBox);
             this.Controls.Add(this.graveyardPictureBox);
@@ -263,6 +303,8 @@
             this.zoneMenuStrip.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.graveyardPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.libraryPictureBox)).EndInit();
+            this.landPanel.ResumeLayout(false);
+            this.landPanel.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -291,5 +333,8 @@
         private System.Windows.Forms.ToolStripMenuItem addCounterToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem removeCounterToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tapuntapToolStripMenuItem;
+        private System.Windows.Forms.Button mulliganButton;
+        private System.Windows.Forms.Button keepHandButton;
+        private System.Windows.Forms.Label messageLabel;
     }
 }

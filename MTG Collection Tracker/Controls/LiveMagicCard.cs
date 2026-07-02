@@ -39,10 +39,13 @@ namespace MTG_Librarian
                 }
                 else
                 {
-                    pictureBox.Image = untappedImage;
-                    pictureBox.Width = untappedImage.Width;
-                    pictureBox.Top = 0;
-                    Width = untappedImage.Width;    
+                    if (untappedImage != null)
+                    {
+                        pictureBox.Image = untappedImage;
+                        pictureBox.Width = untappedImage.Width;
+                        pictureBox.Top = 0;
+                        Width = untappedImage.Width;
+                    }
                 }
             }
         }

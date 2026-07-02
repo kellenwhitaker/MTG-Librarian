@@ -24,6 +24,8 @@ namespace MTG_Librarian
         private List<ScryfallMagicCardBase> mainboard;
         private PictureBox cardZoomPictureBox = new PictureBox();
         private ZoneSearchForm zoneSearchForm = new ZoneSearchForm();
+        private int Mulligans = 0;
+        private bool handKept = false;
 
         public List<ScryfallMagicCardBase> Mainboard 
         { 
@@ -32,6 +34,8 @@ namespace MTG_Librarian
             {
                 mainboard = value;
                 cardLibrary = new CardLibrary(mainboard);
+                foreach (var card in cardLibrary.GetLibrary())
+                    SetLiveCardEvents(card);
             } 
         }
         private CardLibrary cardLibrary;
@@ -241,6 +245,8 @@ namespace MTG_Librarian
         }
         private void CheckEmptyLibrary()
         {
+            if (!handKept) return;
+
             if (cardLibrary.IsEmpty())
             {
                 drawButton.Enabled = false;
@@ -324,18 +330,20 @@ namespace MTG_Librarian
                     var hand = cardLibrary.DrawHand();
                     foreach (var card in hand)
                     {
-                        SetLiveCardEvents(card);
-                        card.ShowButtons();
+                        card.ContextMenuStrip = null;
+                        card.HideButtons();
                         card.Zone = LiveMagicCard.GameZone.Hand;
                         cardHand.Add(card);
                         cardsAdded.Add(card);
                     }
                     handDrawn = true;
+                    mulliganButton.Enabled = true;
+                    keepHandButton.Enabled = true;
+                    drawButton.Enabled = false;
                 }
                 else
                 {
                     var card = cardLibrary.Draw();
-                    SetLiveCardEvents(card);
                     card.ShowButtons();
                     card.Zone = LiveMagicCard.GameZone.Hand;
                     cardHand.Add(card);
@@ -344,13 +352,18 @@ namespace MTG_Librarian
 
                 CheckEmptyLibrary();
                 handPanel.Controls.AddRange(cardsAdded.ToArray());
-                var index = 0;
-                foreach (var liveCard in cardHand)
-                {
-                    liveCard.Location = new Point(index * (liveCard.Width + 10), 0);
-                    index++;
-                }
+                ArrangeCardsInZone(GameZone.Hand);
             }
+        }
+
+        private void Card_MouseUp(object sender, MouseEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void Card_MouseDown(object sender, MouseEventArgs e)
+        {
+            throw new NotImplementedException();
         }
 
         private void SimulatorForm_Resize(object sender, EventArgs e)
@@ -399,10 +412,6 @@ namespace MTG_Librarian
             if (source == libraryPictureBox)
             {
                 zoneCards = cardLibrary.GetLibrary();
-                foreach (var card in zoneCards)
-                {
-                    SetLiveCardEvents(card);
-                }
             }
             else if (source == graveyardPictureBox)
             {
@@ -463,9 +472,8 @@ namespace MTG_Librarian
             CheckEmptyLibrary();
             ArrangeCardsInZone(zone);
         }
-        private void putOnBottomOfLibraryToolStripMenuItem_Click(object sender, EventArgs e)
+        private void PutOnBottomOfLibrary(LiveMagicCard liveCard)
         {
-            var liveCard = (LiveMagicCard)liveCardMenuStrip.SourceControl;
             var zone = liveCard.Zone;
             if (liveCard.Count > 1)
             {
@@ -486,9 +494,27 @@ namespace MTG_Librarian
             }
             if (zoneSearchForm.Visible)
                 zoneSearchForm.RemoveCard(liveCard);
-
             CheckEmptyLibrary();
             ArrangeCardsInZone(zone);
+        }
+        private void putOnBottomOfLibraryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var liveCard = (LiveMagicCard)liveCardMenuStrip.SourceControl;
+            PutOnBottomOfLibrary(liveCard);
+            if (Mulligans > 0)
+            {
+                Mulligans--;
+                if (Mulligans == 0)
+                {
+                    foreach (var card in cardHand)
+                    {
+                        card.ShowButtons();
+                        card.ContextMenuStrip = liveCardMenuStrip;
+                    }
+                    drawButton.Enabled = true;
+                    messageLabel.Text = null;
+                }
+            }
         }
         private void add11CounterToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -558,74 +584,99 @@ namespace MTG_Librarian
         }
         private void liveCardMenuStrip_Opening(object sender, CancelEventArgs e)
         {
-            var liveCard = (LiveMagicCard)liveCardMenuStrip.SourceControl;
-            switch (liveCard.Zone)
+            if (Mulligans > 0)
             {
-                case GameZone.Battlefield:
-                    tapuntapToolStripMenuItem.Enabled = true;
+                if (!keepHandButton.Enabled)
+                {
+                    tapuntapToolStripMenuItem.Enabled = false;
                     moveToBattlefieldToolStripMenuItem.Enabled = false;
-                    moveToHandToolStripMenuItem.Enabled = true;
-                    moveToGraveyardToolStripMenuItem.Enabled = true;
-                    moveToExileToolStripMenuItem.Enabled = true;
-                    putOnTopOfLibraryToolStripMenuItem.Enabled = true;
-                    putOnBottomOfLibraryToolStripMenuItem.Enabled = true;
-                    add11CounterToolStripMenuItem.Enabled = true;
-                    add11CounterToolStripMenuItem1.Enabled = true;
-                    addCounterToolStripMenuItem.Enabled = true;
-                    removeCounterToolStripMenuItem.Enabled = true;
-                    break;
-                case GameZone.Hand:
-                    tapuntapToolStripMenuItem.Enabled = false;
                     moveToHandToolStripMenuItem.Enabled = false;
-                    moveToBattlefieldToolStripMenuItem.Enabled = true;
-                    moveToGraveyardToolStripMenuItem.Enabled = true;
-                    moveToExileToolStripMenuItem.Enabled = true;
-                    putOnTopOfLibraryToolStripMenuItem.Enabled = true;
-                    putOnBottomOfLibraryToolStripMenuItem.Enabled = true;
-                    add11CounterToolStripMenuItem.Enabled = false;
-                    add11CounterToolStripMenuItem1.Enabled = false;
-                    addCounterToolStripMenuItem.Enabled = false;
-                    removeCounterToolStripMenuItem.Enabled = false;
-                    break;
-                case GameZone.Graveyard:
-                    tapuntapToolStripMenuItem.Enabled = false;
-                    moveToHandToolStripMenuItem.Enabled = true;
-                    moveToBattlefieldToolStripMenuItem.Enabled = true;
                     moveToGraveyardToolStripMenuItem.Enabled = false;
-                    moveToExileToolStripMenuItem.Enabled = true;
-                    putOnTopOfLibraryToolStripMenuItem.Enabled = true;
-                    putOnBottomOfLibraryToolStripMenuItem.Enabled = true;
-                    add11CounterToolStripMenuItem.Enabled = false;
-                    add11CounterToolStripMenuItem1.Enabled = false;
-                    addCounterToolStripMenuItem.Enabled = false;
-                    removeCounterToolStripMenuItem.Enabled = false;
-                    break;
-                case GameZone.Exile:
-                    tapuntapToolStripMenuItem.Enabled = false;
-                    moveToHandToolStripMenuItem.Enabled = true;
-                    moveToBattlefieldToolStripMenuItem.Enabled = true;
-                    moveToGraveyardToolStripMenuItem.Enabled = true;
                     moveToExileToolStripMenuItem.Enabled = false;
-                    putOnTopOfLibraryToolStripMenuItem.Enabled = true;
+                    putOnTopOfLibraryToolStripMenuItem.Enabled = false;
                     putOnBottomOfLibraryToolStripMenuItem.Enabled = true;
                     add11CounterToolStripMenuItem.Enabled = false;
                     add11CounterToolStripMenuItem1.Enabled = false;
                     addCounterToolStripMenuItem.Enabled = false;
                     removeCounterToolStripMenuItem.Enabled = false;
-                    break;
-                case GameZone.Library:
-                    tapuntapToolStripMenuItem.Enabled = false;
-                    moveToHandToolStripMenuItem.Enabled = true;
-                    moveToBattlefieldToolStripMenuItem.Enabled = true;
-                    moveToGraveyardToolStripMenuItem.Enabled = true;
-                    moveToExileToolStripMenuItem.Enabled = true;
-                    putOnTopOfLibraryToolStripMenuItem.Enabled = false;
-                    putOnBottomOfLibraryToolStripMenuItem.Enabled = false;
-                    add11CounterToolStripMenuItem.Enabled = false;
-                    add11CounterToolStripMenuItem1.Enabled = false;
-                    addCounterToolStripMenuItem.Enabled = false;
-                    removeCounterToolStripMenuItem.Enabled = false;
-                    break;
+                }
+                else
+                {
+                    e.Cancel = true;
+                    return;
+                }
+            }
+            else
+            {
+                var liveCard = (LiveMagicCard)liveCardMenuStrip.SourceControl;
+                switch (liveCard.Zone)
+                {
+                    case GameZone.Battlefield:
+                        tapuntapToolStripMenuItem.Enabled = true;
+                        moveToBattlefieldToolStripMenuItem.Enabled = false;
+                        moveToHandToolStripMenuItem.Enabled = true;
+                        moveToGraveyardToolStripMenuItem.Enabled = true;
+                        moveToExileToolStripMenuItem.Enabled = true;
+                        putOnTopOfLibraryToolStripMenuItem.Enabled = true;
+                        putOnBottomOfLibraryToolStripMenuItem.Enabled = true;
+                        add11CounterToolStripMenuItem.Enabled = true;
+                        add11CounterToolStripMenuItem1.Enabled = true;
+                        addCounterToolStripMenuItem.Enabled = true;
+                        removeCounterToolStripMenuItem.Enabled = true;
+                        break;
+                    case GameZone.Hand:
+                        tapuntapToolStripMenuItem.Enabled = false;
+                        moveToHandToolStripMenuItem.Enabled = false;
+                        moveToBattlefieldToolStripMenuItem.Enabled = true;
+                        moveToGraveyardToolStripMenuItem.Enabled = true;
+                        moveToExileToolStripMenuItem.Enabled = true;
+                        putOnTopOfLibraryToolStripMenuItem.Enabled = true;
+                        putOnBottomOfLibraryToolStripMenuItem.Enabled = true;
+                        add11CounterToolStripMenuItem.Enabled = false;
+                        add11CounterToolStripMenuItem1.Enabled = false;
+                        addCounterToolStripMenuItem.Enabled = false;
+                        removeCounterToolStripMenuItem.Enabled = false;
+                        break;
+                    case GameZone.Graveyard:
+                        tapuntapToolStripMenuItem.Enabled = false;
+                        moveToHandToolStripMenuItem.Enabled = true;
+                        moveToBattlefieldToolStripMenuItem.Enabled = true;
+                        moveToGraveyardToolStripMenuItem.Enabled = false;
+                        moveToExileToolStripMenuItem.Enabled = true;
+                        putOnTopOfLibraryToolStripMenuItem.Enabled = true;
+                        putOnBottomOfLibraryToolStripMenuItem.Enabled = true;
+                        add11CounterToolStripMenuItem.Enabled = false;
+                        add11CounterToolStripMenuItem1.Enabled = false;
+                        addCounterToolStripMenuItem.Enabled = false;
+                        removeCounterToolStripMenuItem.Enabled = false;
+                        break;
+                    case GameZone.Exile:
+                        tapuntapToolStripMenuItem.Enabled = false;
+                        moveToHandToolStripMenuItem.Enabled = true;
+                        moveToBattlefieldToolStripMenuItem.Enabled = true;
+                        moveToGraveyardToolStripMenuItem.Enabled = true;
+                        moveToExileToolStripMenuItem.Enabled = false;
+                        putOnTopOfLibraryToolStripMenuItem.Enabled = true;
+                        putOnBottomOfLibraryToolStripMenuItem.Enabled = true;
+                        add11CounterToolStripMenuItem.Enabled = false;
+                        add11CounterToolStripMenuItem1.Enabled = false;
+                        addCounterToolStripMenuItem.Enabled = false;
+                        removeCounterToolStripMenuItem.Enabled = false;
+                        break;
+                    case GameZone.Library:
+                        tapuntapToolStripMenuItem.Enabled = false;
+                        moveToHandToolStripMenuItem.Enabled = true;
+                        moveToBattlefieldToolStripMenuItem.Enabled = true;
+                        moveToGraveyardToolStripMenuItem.Enabled = true;
+                        moveToExileToolStripMenuItem.Enabled = true;
+                        putOnTopOfLibraryToolStripMenuItem.Enabled = false;
+                        putOnBottomOfLibraryToolStripMenuItem.Enabled = false;
+                        add11CounterToolStripMenuItem.Enabled = false;
+                        add11CounterToolStripMenuItem1.Enabled = false;
+                        addCounterToolStripMenuItem.Enabled = false;
+                        removeCounterToolStripMenuItem.Enabled = false;
+                        break;
+                }
             }
         }
 
@@ -726,6 +777,43 @@ namespace MTG_Librarian
             else
                 liveCard.Tapped = !liveCard.Tapped;
             ArrangeCardsInZone(zone);
+        }
+        private void mulliganButton_Click(object sender, EventArgs e)
+        {
+            while (cardHand.Count > 0)
+            {
+                var liveCard = cardHand[0];
+                cardHand.RemoveAt(0);
+                PutOnBottomOfLibrary(liveCard);
+            }
+            cardLibrary.Reshuffle();
+            cardLibrary.DrawHand().ForEach(card =>
+            {
+                card.ContextMenuStrip = null;
+                card.HideButtons();
+                card.Zone = LiveMagicCard.GameZone.Hand;
+                cardHand.Add(card);
+                handPanel.Controls.Add(card);
+            });
+            Mulligans++;
+            ArrangeCardsInZone(GameZone.Hand);
+        }
+        private void keepHandButton_Click(object sender, EventArgs e)
+        {
+            mulliganButton.Enabled = false;
+            keepHandButton.Enabled = false;
+            handKept = true;
+            foreach (var card in cardHand)
+            {
+                card.ContextMenuStrip = liveCardMenuStrip;
+                if (Mulligans == 0)
+                    card.ShowButtons();
+            }
+
+            if (Mulligans > 0)
+                messageLabel.Text = $"Select {Mulligans} card(s) to put on the bottom of your library.";
+            else
+                drawButton.Enabled = true;
         }
     }
     public static class CardImageCache
