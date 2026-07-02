@@ -543,6 +543,16 @@ namespace MTG_Librarian.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Magic_card_back {
+            get {
+                object obj = ResourceManager.GetObject("Magic_card_back", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap mtgl_logo {
             get {
                 object obj = ResourceManager.GetObject("mtgl_logo", resourceCulture);

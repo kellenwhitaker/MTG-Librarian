@@ -46,6 +46,7 @@ namespace MTG_Librarian
         {
             SetupImageLists();
             EventManager.DefaultCurrencyChanged += DefaultCurrencyChanged;
+            Globals.Forms.DockPanel.ActiveDocumentChanged += DockPanelActiveDocumentChanged;
             Globals.Forms.CardInfoForm = new CardInfoForm();
             EventManager.DefaultCurrencyChanged += Globals.Forms.CardInfoForm.DefaultCurrencyChanged;
             EventManager.CardImageRetrieved += Globals.Forms.CardInfoForm.cardImageRetrieved;
@@ -69,6 +70,16 @@ namespace MTG_Librarian
             splitContainer1.SplitterDistance = Height;
             InitUIWorker.RunWorkerAsync();
         }
+
+        private void DockPanelActiveDocumentChanged(object sender, EventArgs e)
+        {
+            var cvForm = Globals.Forms.DockPanel.ActiveDocument as CollectionViewForm;
+            if (cvForm != null && cvForm.Collection.Type == "deck")
+                deckToolStripMenuItem.Visible = true;
+            else
+                deckToolStripMenuItem.Visible = false;
+        }
+
         public void UpdateStatusBarTotals(IList cards)
         {
             int cardCount = 0;
@@ -370,6 +381,34 @@ namespace MTG_Librarian
         private void updateMissingSetIconsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             UpdateMissingSetIconsWorker.RunWorkerAsync();
+        }
+
+        private void simulatorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var currentCollectionForm = Globals.Forms.DockPanel.ActiveDocument as CollectionViewForm;
+            if (currentCollectionForm.Collection.Type == "deck")
+            {
+                var simulatorForm = new SimulatorForm();
+                var mainboard = new List<ScryfallMagicCardBase>();
+                foreach (var item in currentCollectionForm.cardListView.Objects)
+                {
+                    if (item is InventoryCardCluster cluster)
+                    {
+                        foreach (var inventoryCard in cluster.Cards)
+                        {
+                            for (int i = 0; i < cluster.Count; i++)
+                                mainboard.Add(inventoryCard);
+                        }
+                    }
+                    if (item is InventoryCard card)
+                    {
+                        for (int i = 0; i < card.Count; i++)
+                            mainboard.Add(card);
+                    }
+                }
+                simulatorForm.Mainboard = mainboard;
+                simulatorForm.Show();
+            }
         }
     }
 }

@@ -91,6 +91,7 @@
   <ItemGroup>
     <Compile Include="Classes\AlphaNumericString.cs" />
     <Compile Include="Classes\ApplicationSettings.cs" />
+    <Compile Include="Classes\CardLibrary.cs" />
     <Compile Include="Classes\CardManager.cs" />
     <Compile Include="Classes\ConcurrentDeque.cs" />
     <Compile Include="Classes\DebugOutput.cs" />
@@ -100,6 +101,12 @@
     <Compile Include="Classes\ScryfallSearchCollection.cs" />
     <Compile Include="Classes\SettingsManager.cs" />
     <Compile Include="Classes\Unzipper.cs" />
+    <Compile Include="Controls\LiveMagicCard.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\LiveMagicCard.Designer.cs">
+      <DependentUpon>LiveMagicCard.cs</DependentUpon>
+    </Compile>
     <Compile Include="Entities\CardCollection.cs" />
     <Compile Include="Entities\InventoryCard.cs" />
     <Compile Include="Entities\CardSet.cs" />
@@ -137,6 +144,18 @@
     </Compile>
     <Compile Include="Forms\SettingsForm.Designer.cs">
       <DependentUpon>SettingsForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\SimulatorForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\SimulatorForm.Designer.cs">
+      <DependentUpon>SimulatorForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\ZoneSearchForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ZoneSearchForm.Designer.cs">
+      <DependentUpon>ZoneSearchForm.cs</DependentUpon>
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="OLVRenderers\CardInstanceNameRenderer.cs">
@@ -234,6 +253,9 @@
     <Compile Include="Tasks\UpdateCardsTask.cs" />
     <Compile Include="Tasks\ScryfallSearchTask.cs" />
     <Compile Include="Tasks\TaskManager.cs" />
+    <EmbeddedResource Include="Controls\LiveMagicCard.resx">
+      <DependentUpon>LiveMagicCard.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\CardInfoForm.resx">
       <DependentUpon>CardInfoForm.cs</DependentUpon>
       <SubType>Designer</SubType>
@@ -258,6 +280,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SettingsForm.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\SimulatorForm.resx">
+      <DependentUpon>SimulatorForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ZoneSearchForm.resx">
+      <DependentUpon>ZoneSearchForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -557,6 +585,8 @@
     </Content>
     <Content Include="Resources\clear_16.png" />
     <Content Include="Resources\clear_20.png" />
+    <Content Include="Resources\Magic_card_back.png" />
+    <None Include="Resources\Magic_card_back1.png" />
     <None Include="Resources\WP 16.png" />
     <None Include="Resources\UP 16.png" />
     <None Include="Resources\T 16.png" />

@@ -1,0 +1,295 @@
+﻿namespace MTG_Librarian
+{
+    partial class SimulatorForm
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            this.components = new System.ComponentModel.Container();
+            this.drawButton = new System.Windows.Forms.Button();
+            this.handPanel = new System.Windows.Forms.Panel();
+            this.battlefieldPanel = new System.Windows.Forms.Panel();
+            this.liveCardMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.tapuntapToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.moveToGraveyardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.moveToExileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.moveToHandToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.moveToBattlefieldToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.putOnTopOfLibraryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.putOnBottomOfLibraryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripSeparator();
+            this.add11CounterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.add11CounterToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.addCounterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.removeCounterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exilePictureBox = new System.Windows.Forms.PictureBox();
+            this.zoneMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.searchZoneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.graveyardPictureBox = new System.Windows.Forms.PictureBox();
+            this.libraryPictureBox = new System.Windows.Forms.PictureBox();
+            this.landPanel = new System.Windows.Forms.Panel();
+            this.liveCardMenuStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.exilePictureBox)).BeginInit();
+            this.zoneMenuStrip.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.graveyardPictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.libraryPictureBox)).BeginInit();
+            this.SuspendLayout();
+            // 
+            // drawButton
+            // 
+            this.drawButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.drawButton.Location = new System.Drawing.Point(863, 520);
+            this.drawButton.Name = "drawButton";
+            this.drawButton.Size = new System.Drawing.Size(75, 23);
+            this.drawButton.TabIndex = 1;
+            this.drawButton.Text = "Draw";
+            this.drawButton.UseVisualStyleBackColor = true;
+            this.drawButton.Click += new System.EventHandler(this.drawButton_Click);
+            // 
+            // handPanel
+            // 
+            this.handPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.handPanel.AutoScroll = true;
+            this.handPanel.Location = new System.Drawing.Point(1, 515);
+            this.handPanel.Name = "handPanel";
+            this.handPanel.Size = new System.Drawing.Size(764, 335);
+            this.handPanel.TabIndex = 2;
+            // 
+            // battlefieldPanel
+            // 
+            this.battlefieldPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.battlefieldPanel.AutoScroll = true;
+            this.battlefieldPanel.Location = new System.Drawing.Point(1, -100);
+            this.battlefieldPanel.Name = "battlefieldPanel";
+            this.battlefieldPanel.Size = new System.Drawing.Size(764, 305);
+            this.battlefieldPanel.TabIndex = 4;
+            // 
+            // liveCardMenuStrip
+            // 
+            this.liveCardMenuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.liveCardMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tapuntapToolStripMenuItem,
+            this.moveToGraveyardToolStripMenuItem,
+            this.moveToExileToolStripMenuItem,
+            this.moveToHandToolStripMenuItem,
+            this.moveToBattlefieldToolStripMenuItem,
+            this.putOnTopOfLibraryToolStripMenuItem,
+            this.putOnBottomOfLibraryToolStripMenuItem,
+            this.toolStripMenuItem1,
+            this.add11CounterToolStripMenuItem,
+            this.add11CounterToolStripMenuItem1,
+            this.addCounterToolStripMenuItem,
+            this.removeCounterToolStripMenuItem});
+            this.liveCardMenuStrip.Name = "liveCardMenuStrip";
+            this.liveCardMenuStrip.Size = new System.Drawing.Size(239, 274);
+            this.liveCardMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.liveCardMenuStrip_Opening);
+            // 
+            // tapuntapToolStripMenuItem
+            // 
+            this.tapuntapToolStripMenuItem.Name = "tapuntapToolStripMenuItem";
+            this.tapuntapToolStripMenuItem.Size = new System.Drawing.Size(238, 24);
+            this.tapuntapToolStripMenuItem.Text = "Tap/untap";
+            this.tapuntapToolStripMenuItem.Click += new System.EventHandler(this.tapuntapToolStripMenuItem_Click);
+            // 
+            // moveToGraveyardToolStripMenuItem
+            // 
+            this.moveToGraveyardToolStripMenuItem.Name = "moveToGraveyardToolStripMenuItem";
+            this.moveToGraveyardToolStripMenuItem.Size = new System.Drawing.Size(238, 24);
+            this.moveToGraveyardToolStripMenuItem.Text = "Move to graveyard";
+            this.moveToGraveyardToolStripMenuItem.Click += new System.EventHandler(this.moveToGraveyardToolStripMenuItem_Click);
+            // 
+            // moveToExileToolStripMenuItem
+            // 
+            this.moveToExileToolStripMenuItem.Name = "moveToExileToolStripMenuItem";
+            this.moveToExileToolStripMenuItem.Size = new System.Drawing.Size(238, 24);
+            this.moveToExileToolStripMenuItem.Text = "Move to exile";
+            this.moveToExileToolStripMenuItem.Click += new System.EventHandler(this.moveToExileToolStripMenuItem_Click);
+            // 
+            // moveToHandToolStripMenuItem
+            // 
+            this.moveToHandToolStripMenuItem.Name = "moveToHandToolStripMenuItem";
+            this.moveToHandToolStripMenuItem.Size = new System.Drawing.Size(238, 24);
+            this.moveToHandToolStripMenuItem.Text = "Move to hand";
+            this.moveToHandToolStripMenuItem.Click += new System.EventHandler(this.moveToHandToolStripMenuItem_Click);
+            // 
+            // moveToBattlefieldToolStripMenuItem
+            // 
+            this.moveToBattlefieldToolStripMenuItem.Name = "moveToBattlefieldToolStripMenuItem";
+            this.moveToBattlefieldToolStripMenuItem.Size = new System.Drawing.Size(238, 24);
+            this.moveToBattlefieldToolStripMenuItem.Text = "Move to battlefield";
+            this.moveToBattlefieldToolStripMenuItem.Click += new System.EventHandler(this.moveToBattlefieldToolStripMenuItem_Click);
+            // 
+            // putOnTopOfLibraryToolStripMenuItem
+            // 
+            this.putOnTopOfLibraryToolStripMenuItem.Name = "putOnTopOfLibraryToolStripMenuItem";
+            this.putOnTopOfLibraryToolStripMenuItem.Size = new System.Drawing.Size(238, 24);
+            this.putOnTopOfLibraryToolStripMenuItem.Text = "Put on top of library";
+            this.putOnTopOfLibraryToolStripMenuItem.Click += new System.EventHandler(this.putOnTopOfLibraryToolStripMenuItem_Click);
+            // 
+            // putOnBottomOfLibraryToolStripMenuItem
+            // 
+            this.putOnBottomOfLibraryToolStripMenuItem.Name = "putOnBottomOfLibraryToolStripMenuItem";
+            this.putOnBottomOfLibraryToolStripMenuItem.Size = new System.Drawing.Size(238, 24);
+            this.putOnBottomOfLibraryToolStripMenuItem.Text = "Put on bottom of library";
+            this.putOnBottomOfLibraryToolStripMenuItem.Click += new System.EventHandler(this.putOnBottomOfLibraryToolStripMenuItem_Click);
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(235, 6);
+            // 
+            // add11CounterToolStripMenuItem
+            // 
+            this.add11CounterToolStripMenuItem.Name = "add11CounterToolStripMenuItem";
+            this.add11CounterToolStripMenuItem.Size = new System.Drawing.Size(238, 24);
+            this.add11CounterToolStripMenuItem.Text = "Add +1/+1 counter";
+            this.add11CounterToolStripMenuItem.Click += new System.EventHandler(this.add11CounterToolStripMenuItem_Click);
+            // 
+            // add11CounterToolStripMenuItem1
+            // 
+            this.add11CounterToolStripMenuItem1.Name = "add11CounterToolStripMenuItem1";
+            this.add11CounterToolStripMenuItem1.Size = new System.Drawing.Size(238, 24);
+            this.add11CounterToolStripMenuItem1.Text = "Add -1/-1 counter";
+            this.add11CounterToolStripMenuItem1.Click += new System.EventHandler(this.add11CounterToolStripMenuItem1_Click);
+            // 
+            // addCounterToolStripMenuItem
+            // 
+            this.addCounterToolStripMenuItem.Name = "addCounterToolStripMenuItem";
+            this.addCounterToolStripMenuItem.Size = new System.Drawing.Size(238, 24);
+            this.addCounterToolStripMenuItem.Text = "Add counter";
+            this.addCounterToolStripMenuItem.Click += new System.EventHandler(this.addCounterToolStripMenuItem_Click);
+            // 
+            // removeCounterToolStripMenuItem
+            // 
+            this.removeCounterToolStripMenuItem.Name = "removeCounterToolStripMenuItem";
+            this.removeCounterToolStripMenuItem.Size = new System.Drawing.Size(238, 24);
+            this.removeCounterToolStripMenuItem.Text = "Remove counter";
+            this.removeCounterToolStripMenuItem.Click += new System.EventHandler(this.removeCounterToolStripMenuItem_Click);
+            // 
+            // exilePictureBox
+            // 
+            this.exilePictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.exilePictureBox.ContextMenuStrip = this.zoneMenuStrip;
+            this.exilePictureBox.Location = new System.Drawing.Point(863, -96);
+            this.exilePictureBox.Name = "exilePictureBox";
+            this.exilePictureBox.Size = new System.Drawing.Size(217, 280);
+            this.exilePictureBox.TabIndex = 6;
+            this.exilePictureBox.TabStop = false;
+            // 
+            // zoneMenuStrip
+            // 
+            this.zoneMenuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.zoneMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.searchZoneToolStripMenuItem});
+            this.zoneMenuStrip.Name = "zoneMenuStrip";
+            this.zoneMenuStrip.Size = new System.Drawing.Size(168, 28);
+            this.zoneMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.zoneMenuStrip_Opening);
+            // 
+            // searchZoneToolStripMenuItem
+            // 
+            this.searchZoneToolStripMenuItem.Name = "searchZoneToolStripMenuItem";
+            this.searchZoneToolStripMenuItem.Size = new System.Drawing.Size(167, 24);
+            this.searchZoneToolStripMenuItem.Text = "Search zone...";
+            this.searchZoneToolStripMenuItem.Click += new System.EventHandler(this.searchZoneToolStripMenuItem_Click);
+            // 
+            // graveyardPictureBox
+            // 
+            this.graveyardPictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.graveyardPictureBox.ContextMenuStrip = this.zoneMenuStrip;
+            this.graveyardPictureBox.Location = new System.Drawing.Point(863, 224);
+            this.graveyardPictureBox.Name = "graveyardPictureBox";
+            this.graveyardPictureBox.Size = new System.Drawing.Size(217, 280);
+            this.graveyardPictureBox.TabIndex = 5;
+            this.graveyardPictureBox.TabStop = false;
+            // 
+            // libraryPictureBox
+            // 
+            this.libraryPictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.libraryPictureBox.ContextMenuStrip = this.zoneMenuStrip;
+            this.libraryPictureBox.Location = new System.Drawing.Point(863, 549);
+            this.libraryPictureBox.Name = "libraryPictureBox";
+            this.libraryPictureBox.Size = new System.Drawing.Size(217, 280);
+            this.libraryPictureBox.TabIndex = 0;
+            this.libraryPictureBox.TabStop = false;
+            // 
+            // landPanel
+            // 
+            this.landPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.landPanel.Location = new System.Drawing.Point(1, 211);
+            this.landPanel.Name = "landPanel";
+            this.landPanel.Size = new System.Drawing.Size(764, 298);
+            this.landPanel.TabIndex = 7;
+            // 
+            // SimulatorForm
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.ClientSize = new System.Drawing.Size(1092, 856);
+            this.Controls.Add(this.landPanel);
+            this.Controls.Add(this.exilePictureBox);
+            this.Controls.Add(this.graveyardPictureBox);
+            this.Controls.Add(this.battlefieldPanel);
+            this.Controls.Add(this.handPanel);
+            this.Controls.Add(this.drawButton);
+            this.Controls.Add(this.libraryPictureBox);
+            this.Name = "SimulatorForm";
+            this.Text = "Simulator";
+            this.Resize += new System.EventHandler(this.SimulatorForm_Resize);
+            this.liveCardMenuStrip.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.exilePictureBox)).EndInit();
+            this.zoneMenuStrip.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.graveyardPictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.libraryPictureBox)).EndInit();
+            this.ResumeLayout(false);
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.PictureBox libraryPictureBox;
+        private System.Windows.Forms.Button drawButton;
+        private System.Windows.Forms.Panel handPanel;
+        private System.Windows.Forms.Panel battlefieldPanel;
+        private System.Windows.Forms.PictureBox graveyardPictureBox;
+        private System.Windows.Forms.PictureBox exilePictureBox;
+        private System.Windows.Forms.ContextMenuStrip liveCardMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem moveToGraveyardToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem moveToExileToolStripMenuItem;
+        private System.Windows.Forms.ContextMenuStrip zoneMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem searchZoneToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem moveToHandToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem moveToBattlefieldToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem putOnTopOfLibraryToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem putOnBottomOfLibraryToolStripMenuItem;
+        private System.Windows.Forms.ToolStripSeparator toolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem add11CounterToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem add11CounterToolStripMenuItem1;
+        private System.Windows.Forms.Panel landPanel;
+        private System.Windows.Forms.ToolStripMenuItem addCounterToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem removeCounterToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem tapuntapToolStripMenuItem;
+    }
+}
