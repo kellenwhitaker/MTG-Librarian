@@ -118,8 +118,22 @@ namespace MTG_Librarian
         }
         public bool oversized { get; set; }
         public bool promo { get; set; }
+        [NotMapped]
+        public string[] promo_types;
+        public string PromoTypes
+        {
+            get
+            {
+                return promo_types == null ? null : JsonConvert.SerializeObject(promo_types);
+            }
+            set
+            {
+                promo_types = value == null ? null : JsonConvert.DeserializeObject<string[]>(value);
+            }
+        }
         public bool reprint { get; set; }
         public bool variation { get; set; }
+        public string variation_of { get; set; }
         public string set_id { get; set; }
         public string set { get; set; }
         public string set_name { get; set; }
@@ -148,7 +162,21 @@ namespace MTG_Librarian
         }
         public string illustration_id { get; set; }
         public string border_color { get; set; }
+        [JsonProperty("frame")]
         public string frame_version { get; set; }
+        [NotMapped]
+        public string[] frame_effects;
+        public string FrameEffects
+        {
+            get
+            {
+                return frame_effects == null ? null : JsonConvert.SerializeObject(frame_effects);
+            }
+            set
+            {
+                frame_effects = value == null ? null : JsonConvert.DeserializeObject<string[]>(value);
+            }
+        }
         public bool full_art { get; set; }
         public bool textless { get; set; }
         public bool booster { get; set; }
@@ -199,5 +227,37 @@ namespace MTG_Librarian
         public string printed_type_line { get; set; }
         public string loyalty { get; set; }
         public string flavor_name { get; set; }
+        [NotMapped]
+        public string[] attraction_lights;
+        public string AttractionLights
+        {
+            get
+            {
+                return attraction_lights == null ? null : JsonConvert.SerializeObject(attraction_lights);
+            }
+            set
+            {
+                attraction_lights = value == null ? null : JsonConvert.DeserializeObject<string[]>(value);
+            }
+        }
+        public string watermark { get; set; }
+        public string defense { get; set; }
+        public bool? game_changer { get; set; }
+        public string hand_modifier { get; set; }
+        public string life_modifier { get; set; }
+
+        [NotMapped]
+        public string[] produced_mana;
+        public string ProducedMana
+        {
+            get
+            {
+                return produced_mana == null ? null : JsonConvert.SerializeObject(produced_mana);
+            }
+            set
+            {
+                produced_mana = value == null ? null : JsonConvert.DeserializeObject<string[]>(value);
+            }
+        }
     }
 }

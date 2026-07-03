@@ -190,6 +190,7 @@ namespace MTG_Librarian
                 { "Finishes", (card.finishes != null) ? string.Join(", ", card.finishes) : "" },
                 { "Oversized", card.oversized.ToString() },
                 { "Promo", card.promo.ToString() },
+                { "Promo types", (card.promo_types != null) ? string.Join(", ", card.promo_types) : "" },
                 { "Reprint", card.reprint.ToString() },
                 { "Variation", card.variation.ToString() },
                 { "Set type", card.set_type },
@@ -197,12 +198,20 @@ namespace MTG_Librarian
                 { "Digital", card.digital.ToString() },
                 { "Border color", card.border_color },
                 { "Frame version", card.frame_version },
+                { "Frame effects", (card.frame_effects != null) ? string.Join(", ", card.frame_effects) : "" },
                 { "Full art", card.full_art.ToString() },
                 { "Textless", card.textless.ToString() },
                 { "Booster", card.booster.ToString() },
                 { "Story spotlight", card.story_spotlight.ToString() },
                 { "Edhrec rank", card.edhrec_rank.ToString() },
                 { "Penny rank", card.penny_rank.ToString() },
+                { "Attraction lights", (card.attraction_lights != null) ? string.Join(", ", card.attraction_lights) : "" },
+                { "Watermark", card.watermark },
+                { "Defense", card.defense },
+                { "Game Changer", card.game_changer.ToString() },
+                { "Hand modifier", card.hand_modifier },
+                { "Life modifier", card.life_modifier },
+                { "Produced mana", (card.produced_mana != null) ? string.Join(", ", card.produced_mana) : "" }
             };
             attributesListView.AddObjects(attributesDictionary);
             attributesListView.AutoResizeColumns();

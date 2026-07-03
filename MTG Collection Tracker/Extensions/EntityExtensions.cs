@@ -91,6 +91,15 @@ namespace MTG_Librarian
                 printed_text = scryfallCard.printed_text,
                 flavor_name = scryfallCard.flavor_name,
                 loyalty = scryfallCard.loyalty,
+                frame_effects = scryfallCard.frame_effects,
+                attraction_lights = scryfallCard.attraction_lights,
+                promo_types = scryfallCard.promo_types,
+                watermark = scryfallCard.watermark,
+                defense = scryfallCard.defense,
+                game_changer = scryfallCard.game_changer,
+                hand_modifier = scryfallCard.hand_modifier,
+                life_modifier = scryfallCard.life_modifier,
+                produced_mana = scryfallCard.produced_mana
             };
         }
     }

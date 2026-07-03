@@ -218,7 +218,18 @@ namespace MTG_Librarian
             prices = magicCard.prices;
             related_uris = magicCard.related_uris;
             purchase_uris = magicCard.purchase_uris;
-            
+            flavor_name = magicCard.flavor_name;
+            loyalty = magicCard.loyalty;
+            frame_effects = magicCard.frame_effects;
+            attraction_lights = magicCard.attraction_lights;
+            promo_types = magicCard.promo_types;
+            watermark = magicCard.watermark;
+            defense = magicCard.defense;
+            game_changer = magicCard.game_changer;
+            hand_modifier = magicCard.hand_modifier;
+            life_modifier = magicCard.life_modifier;
+            produced_mana = magicCard.produced_mana;
+
             PartB = magicCard.PartB;            
         }
     }
