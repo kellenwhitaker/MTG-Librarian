@@ -44,6 +44,10 @@
             this.setColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.numberColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.priceColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.attributesTabPage = new System.Windows.Forms.TabPage();
+            this.attributesListView = new BrightIdeasSoftware.FastObjectListView();
+            this.keyColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.valueColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.tabControl.SuspendLayout();
             this.mainTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cardPictureBox)).BeginInit();
@@ -52,6 +56,8 @@
             this.rulingsTabPage.SuspendLayout();
             this.printingsTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.printingsListView)).BeginInit();
+            this.attributesTabPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.attributesListView)).BeginInit();
             this.SuspendLayout();
             // 
             // tabControl
@@ -61,6 +67,7 @@
             this.tabControl.Controls.Add(this.legalitiesTabPage);
             this.tabControl.Controls.Add(this.rulingsTabPage);
             this.tabControl.Controls.Add(this.printingsTabPage);
+            this.tabControl.Controls.Add(this.attributesTabPage);
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl.Location = new System.Drawing.Point(0, 0);
             this.tabControl.Name = "tabControl";
@@ -226,6 +233,45 @@
             this.priceColumn.AspectName = "Price";
             this.priceColumn.Text = "Price";
             // 
+            // attributesTabPage
+            // 
+            this.attributesTabPage.Controls.Add(this.attributesListView);
+            this.attributesTabPage.Location = new System.Drawing.Point(4, 4);
+            this.attributesTabPage.Name = "attributesTabPage";
+            this.attributesTabPage.Size = new System.Drawing.Size(371, 941);
+            this.attributesTabPage.TabIndex = 4;
+            this.attributesTabPage.Text = "Attributes";
+            this.attributesTabPage.UseVisualStyleBackColor = true;
+            // 
+            // attributesListView
+            // 
+            this.attributesListView.AllColumns.Add(this.keyColumn);
+            this.attributesListView.AllColumns.Add(this.valueColumn);
+            this.attributesListView.CellEditUseWholeCell = false;
+            this.attributesListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.keyColumn,
+            this.valueColumn});
+            this.attributesListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.attributesListView.HideSelection = false;
+            this.attributesListView.Location = new System.Drawing.Point(0, 0);
+            this.attributesListView.Name = "attributesListView";
+            this.attributesListView.ShowGroups = false;
+            this.attributesListView.Size = new System.Drawing.Size(371, 941);
+            this.attributesListView.TabIndex = 0;
+            this.attributesListView.UseCompatibleStateImageBehavior = false;
+            this.attributesListView.View = System.Windows.Forms.View.Details;
+            this.attributesListView.VirtualMode = true;
+            // 
+            // keyColumn
+            // 
+            this.keyColumn.AspectName = "Key";
+            this.keyColumn.Text = "Key";
+            // 
+            // valueColumn
+            // 
+            this.valueColumn.AspectName = "Value";
+            this.valueColumn.Text = "Value";
+            // 
             // CardInfoForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -244,6 +290,8 @@
             this.rulingsTabPage.ResumeLayout(false);
             this.printingsTabPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.printingsListView)).EndInit();
+            this.attributesTabPage.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.attributesListView)).EndInit();
             this.ResumeLayout(false);
 
         }
@@ -265,5 +313,9 @@
         private BrightIdeasSoftware.OLVColumn numberColumn;
         private BrightIdeasSoftware.OLVColumn priceColumn;
         public System.Windows.Forms.TabControl tabControl;
+        private System.Windows.Forms.TabPage attributesTabPage;
+        private BrightIdeasSoftware.FastObjectListView attributesListView;
+        private BrightIdeasSoftware.OLVColumn keyColumn;
+        private BrightIdeasSoftware.OLVColumn valueColumn;
     }
 }

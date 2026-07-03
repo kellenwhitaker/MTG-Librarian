@@ -197,5 +197,7 @@ namespace MTG_Librarian
         public string printed_text { get; set; }
         public string printed_name { get; set; }
         public string printed_type_line { get; set; }
+        public string loyalty { get; set; }
+        public string flavor_name { get; set; }
     }
 }

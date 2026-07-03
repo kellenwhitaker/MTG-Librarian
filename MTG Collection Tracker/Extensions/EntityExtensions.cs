@@ -89,6 +89,8 @@ namespace MTG_Librarian
                 printed_name = scryfallCard.printed_name,
                 printed_type_line = scryfallCard.printed_type_line,
                 printed_text = scryfallCard.printed_text,
+                flavor_name = scryfallCard.flavor_name,
+                loyalty = scryfallCard.loyalty,
             };
         }
     }

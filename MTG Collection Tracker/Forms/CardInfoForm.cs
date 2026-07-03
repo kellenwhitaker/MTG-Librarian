@@ -1,5 +1,6 @@
 ﻿using KW.WinFormsUI.Docking;
 using System;
+using System.Collections.Generic;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 // TODO: Cleanup
@@ -164,6 +165,47 @@ namespace MTG_Librarian
             }
             legalitiesListView.AutoResizeColumns();
 
+            attributesListView.ClearObjects();
+            var attributesDictionary = new Dictionary<string, string>
+            {
+                { "Flavor name", card.flavor_name },
+                { "Type", card.type_line },
+                { "Mana Cost", card.mana_cost },
+                { "CMC", card.cmc.ToString() },
+                { "Power/Toughness", (card.power != null && card.toughness != null) ? $"{card.power}/{card.toughness}" : "" },
+                { "Loyalty", card.loyalty },
+                { "Colors", (card.colors != null) ? string.Join(", ", card.colors) : "" },
+                { "Color Identity", (card.color_identity != null) ? string.Join(", ", card.color_identity) : "" },
+                { "Rarity", char.ToUpper(card.rarity[0]) + card.rarity.Substring(1) },
+                { "Set Name", card.set_name },
+                { "Set Code", card.set.ToUpper() },
+                { "Collector Number", card.collector_number },
+                { "Artist", card.artist },
+                { "Language", card.lang },
+                { "Released at", card.released_at },
+                { "Layout", card.layout },
+                { "Keywords", (card.keywords != null) ? string.Join(", ", card.keywords) : "" },
+                { "Games", (card.games != null) ? string.Join(", ", card.games) : "" },
+                { "Reserved", card.reserved.ToString() },
+                { "Finishes", (card.finishes != null) ? string.Join(", ", card.finishes) : "" },
+                { "Oversized", card.oversized.ToString() },
+                { "Promo", card.promo.ToString() },
+                { "Reprint", card.reprint.ToString() },
+                { "Variation", card.variation.ToString() },
+                { "Set type", card.set_type },
+                { "Security stamp", card.security_stamp },
+                { "Digital", card.digital.ToString() },
+                { "Border color", card.border_color },
+                { "Frame version", card.frame_version },
+                { "Full art", card.full_art.ToString() },
+                { "Textless", card.textless.ToString() },
+                { "Booster", card.booster.ToString() },
+                { "Story spotlight", card.story_spotlight.ToString() },
+                { "Edhrec rank", card.edhrec_rank.ToString() },
+                { "Penny rank", card.penny_rank.ToString() },
+            };
+            attributesListView.AddObjects(attributesDictionary);
+            attributesListView.AutoResizeColumns();
             if (oldCard == null || oldCard.ScryfallId != MagicCard.ScryfallId)
             {
                 if (tabControl.SelectedTab == rulingsTabPage)
