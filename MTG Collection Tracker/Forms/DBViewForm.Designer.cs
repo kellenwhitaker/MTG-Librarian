@@ -482,6 +482,7 @@ namespace MTG_Librarian
             this.setListView.UseCompatibleStateImageBehavior = false;
             this.setListView.View = System.Windows.Forms.View.Details;
             this.setListView.VirtualMode = true;
+            this.setListView.SelectionChanged += new System.EventHandler(this.setListView_SelectionChanged);
             // 
             // SetName
             // 
