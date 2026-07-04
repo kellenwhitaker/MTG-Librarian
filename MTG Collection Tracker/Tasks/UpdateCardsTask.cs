@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace MTG_Librarian
@@ -98,6 +99,7 @@ namespace MTG_Librarian
                             }
                         }
                         context.SaveChanges();
+                        Thread.Sleep(500); // Sleep briefly to avoid hitting rate limits
                     }
                     watch.Stop();
                     RunState = RunState.Completed;
