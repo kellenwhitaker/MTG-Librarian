@@ -137,6 +137,8 @@ namespace MTG_Librarian
             this.DisplayName = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn2 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.ManaCost = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.powerColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.toughnessColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.Set = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.CollectorNumber = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.cardTextColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -1575,6 +1577,8 @@ namespace MTG_Librarian
             this.cardListView.AllColumns.Add(this.DisplayName);
             this.cardListView.AllColumns.Add(this.olvColumn2);
             this.cardListView.AllColumns.Add(this.ManaCost);
+            this.cardListView.AllColumns.Add(this.powerColumn);
+            this.cardListView.AllColumns.Add(this.toughnessColumn);
             this.cardListView.AllColumns.Add(this.Set);
             this.cardListView.AllColumns.Add(this.CollectorNumber);
             this.cardListView.AllColumns.Add(this.cardTextColumn);
@@ -1585,6 +1589,8 @@ namespace MTG_Librarian
             this.DisplayName,
             this.olvColumn2,
             this.ManaCost,
+            this.powerColumn,
+            this.toughnessColumn,
             this.Set,
             this.CollectorNumber,
             this.cardTextColumn});
@@ -1648,6 +1654,18 @@ namespace MTG_Librarian
             this.ManaCost.MinimumWidth = 100;
             this.ManaCost.Text = "Mana Cost";
             this.ManaCost.Width = 100;
+            // 
+            // powerColumn
+            // 
+            this.powerColumn.AspectName = "Power";
+            this.powerColumn.IsEditable = false;
+            this.powerColumn.Text = "P";
+            // 
+            // toughnessColumn
+            // 
+            this.toughnessColumn.AspectName = "Toughness";
+            this.toughnessColumn.IsEditable = false;
+            this.toughnessColumn.Text = "T";
             // 
             // Set
             // 
@@ -1893,5 +1911,7 @@ namespace MTG_Librarian
         private CustomControls.FlatButton colorsRedButton;
         private CustomControls.FlatButton colorsGreenButton;
         private CustomControls.FlatButton colorsColorlessButton;
+        private BrightIdeasSoftware.OLVColumn powerColumn;
+        private BrightIdeasSoftware.OLVColumn toughnessColumn;
     }
 }

@@ -31,6 +31,8 @@ namespace MTG_Librarian
         public int CopiesOwned => MagicCard.CopiesOwned;
         public double? Price => MagicCard.Price;
         public string Text => MagicCard.text;
+        public string Power => MagicCard.power;
+        public string Toughness => MagicCard.toughness;
         public override string ImageKey => $"{MagicCard.SymbolCode}: {MagicCard.rarity}";
         public override OLVItem Parent { get; set; }
         public override Predicate<object> Filter => throw new NotImplementedException();

@@ -79,10 +79,12 @@ namespace MTG_Librarian
             {
                 switch (cardListView.LastSortColumn.AspectName)
                 {
-                    case "DisplayName": query += "order=name"; break;
-                    case "ManaCost": query += "order=cmc"; break;
-                    case "Set": query += "order=set"; break;
-                    case "Price": query += $"order={SettingsManager.ApplicationSettings.DefaultCurrency.ToLower()}"; break;
+                    case "DisplayName": query += "&order=name"; break;
+                    case "ManaCost": query += "&order=cmc"; break;
+                    case "Set": query += "&order=set"; break;
+                    case "Price": query += $"&order={SettingsManager.ApplicationSettings.DefaultCurrency.ToLower()}"; break;
+                    case "Power": query += "&order=power"; break;
+                    case "Toughness": query += "&order=toughness"; break;
                     default: break;
                 }
                 if (cardListView.LastSortOrder == SortOrder.Ascending)
@@ -729,7 +731,7 @@ namespace MTG_Librarian
             e.Handled = true;
             if (!addingToCLV)
             {
-                if (e.ColumnToSort != null && (e.ColumnToSort.AspectName == "DisplayName" || e.ColumnToSort.AspectName == "ManaCost" || e.ColumnToSort.AspectName == "Set" || e.ColumnToSort.AspectName == "Price"))
+                if (e.ColumnToSort != null && (e.ColumnToSort.AspectName == "DisplayName" || e.ColumnToSort.AspectName == "ManaCost" || e.ColumnToSort.AspectName == "Set" || e.ColumnToSort.AspectName == "Price" || e.ColumnToSort.AspectName == "Power" || e.ColumnToSort.AspectName == "Toughness"))
                 {
                     cardListView.LastSortColumn = e.ColumnToSort;
                     cardListView.LastSortOrder = e.SortOrder;
