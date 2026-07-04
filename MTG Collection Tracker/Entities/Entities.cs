@@ -67,7 +67,7 @@ namespace MTG_Librarian
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var sqliteConn = new SqliteConnection("Data Source=scryfallcards.db;");
+            var sqliteConn = new SqliteConnection("Data Source=cards.db;");
             optionsBuilder.UseSqlite(sqliteConn);
         }
     }
