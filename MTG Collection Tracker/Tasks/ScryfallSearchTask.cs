@@ -23,7 +23,7 @@ namespace MTG_Librarian
             WorkerSupportsCancellation = true;
             Query = query;
             Caption = $"Search: {Query.Replace("%3A", ":")}";
-            TotalWorkUnits = 5;
+            TotalWorkUnits = 1;
         }
         public override void Run()
         {
