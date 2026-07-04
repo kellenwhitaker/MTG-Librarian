@@ -52,6 +52,11 @@ namespace MTG_Librarian
         #endregion Methods
 
         #region Settings Properties
+        [ApplicationScopedSetting()]
+        public string ApplicationVersion
+        {
+            get => "0.1-beta";
+         }
 
         [UserScopedSetting()]
         [DefaultSettingValue("0")]

@@ -67,6 +67,8 @@ namespace MTG_Librarian
                             searchCollection.identifiers.Add(new ScryfallSearchCollectionIdentifier { id = id });
 
                         var request = new RestRequest("/cards/collection", Method.Post);
+                        request.AddHeader("Accept", "application/json");
+                        request.AddHeader("User-Agent", $"MTG Librarian/{SettingsManager.ApplicationSettings.ApplicationVersion}");
                         request.AddHeader("Content-Type", "application/json");
                         request.AddJsonBody(JsonConvert.SerializeObject(searchCollection));
                         var response = client.Execute(request);

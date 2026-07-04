@@ -38,6 +38,8 @@ namespace MTG_Librarian
                 Results.Clear();
                 var client = new RestClient(scryfallBaseUrl);
                 var request = new RestRequest(scryfallUrl, Method.Get);
+                request.AddHeader("Accept", "application/json");
+                request.AddHeader("User-Agent", $"MTG Librarian/{SettingsManager.ApplicationSettings.ApplicationVersion}");
                 string responseContent = client.Execute(request).Content;
                 if (CancellationPending)
                 {

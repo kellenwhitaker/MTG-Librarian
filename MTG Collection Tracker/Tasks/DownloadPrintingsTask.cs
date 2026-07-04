@@ -27,8 +27,10 @@ namespace MTG_Librarian
         {
             try
             {
-                var client = new RestClient(Card.prints_search_uri);
+                var client = new RestClient(Card.prints_search_uri);                
                 var request = new RestRequest("", Method.Get);
+                request.AddHeader("Accept", "application/json");
+                request.AddHeader("User-Agent", $"MTG Librarian/{SettingsManager.ApplicationSettings.ApplicationVersion}");
                 string responseContent = client.Execute(request).Content;
                 var responseObject = JsonConvert.DeserializeObject<ScryfallCardList>(responseContent);
                 if (responseObject == null) throw new InvalidDataException("Invalid JSON encountered");
