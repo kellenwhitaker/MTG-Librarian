@@ -26,7 +26,9 @@ namespace MTG_Librarian
             this.Virtual = card.Virtual;
             this.Platform = card.Platform;
             this.Board = card.Board;
-            this.IsCommander = card.IsCommander;            
+            this.IsCommander = card.IsCommander;
+            this.power = card.power;
+            this.toughness = card.toughness;
             Cards.Add(card);
         }
         public InventoryCardCluster(List<InventoryCard> cards)
@@ -48,7 +50,8 @@ namespace MTG_Librarian
             this.Platform = card.Platform;
             this.Board = card.Board;
             this.IsCommander = card.IsCommander;            
-            
+            this.power = card.power;
+            this.toughness = card.toughness;
             Cards.AddRange(cards);
         }
 

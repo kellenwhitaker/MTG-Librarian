@@ -91,6 +91,10 @@
             this.olvColumn20 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn21 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.statsTabPage = new System.Windows.Forms.TabPage();
+            this.powerColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.toughnessColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.sideboardPowerColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.sideboardToughnessColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             ((System.ComponentModel.ISupportInitialize)(this.cardListView)).BeginInit();
             this.cardListViewMenuStrip.SuspendLayout();
             this.tabControl.SuspendLayout();
@@ -112,6 +116,8 @@
             this.cardListView.AllColumns.Add(this.olvColumn10);
             this.cardListView.AllColumns.Add(this.olvColumn2);
             this.cardListView.AllColumns.Add(this.ManaCost);
+            this.cardListView.AllColumns.Add(this.powerColumn);
+            this.cardListView.AllColumns.Add(this.toughnessColumn);
             this.cardListView.AllColumns.Add(this.olvColumn4);
             this.cardListView.AllColumns.Add(this.olvColumn5);
             this.cardListView.AllColumns.Add(this.CountColumn);
@@ -135,6 +141,8 @@
             this.ConditionColumn,
             this.olvColumn2,
             this.ManaCost,
+            this.powerColumn,
+            this.toughnessColumn,
             this.olvColumn4,
             this.olvColumn5,
             this.CountColumn,
@@ -650,6 +658,8 @@
             this.sideboardListView.AllColumns.Add(this.olvColumn10);
             this.sideboardListView.AllColumns.Add(this.olvColumn9);
             this.sideboardListView.AllColumns.Add(this.sideboardManaCostColumn);
+            this.sideboardListView.AllColumns.Add(this.sideboardPowerColumn);
+            this.sideboardListView.AllColumns.Add(this.sideboardToughnessColumn);
             this.sideboardListView.AllColumns.Add(this.olvColumn12);
             this.sideboardListView.AllColumns.Add(this.olvColumn13);
             this.sideboardListView.AllColumns.Add(this.sideboardCountColumn);
@@ -673,6 +683,8 @@
             this.olvColumn8,
             this.olvColumn9,
             this.sideboardManaCostColumn,
+            this.sideboardPowerColumn,
+            this.sideboardToughnessColumn,
             this.olvColumn12,
             this.olvColumn13,
             this.sideboardCountColumn,
@@ -847,6 +859,30 @@
             this.statsTabPage.TabIndex = 1;
             this.statsTabPage.Text = "Stats";
             // 
+            // powerColumn
+            // 
+            this.powerColumn.AspectName = "power";
+            this.powerColumn.IsEditable = false;
+            this.powerColumn.Text = "P";
+            // 
+            // toughnessColumn
+            // 
+            this.toughnessColumn.AspectName = "toughness";
+            this.toughnessColumn.IsEditable = false;
+            this.toughnessColumn.Text = "T";
+            // 
+            // sideboardPowerColumn
+            // 
+            this.sideboardPowerColumn.AspectName = "power";
+            this.sideboardPowerColumn.IsEditable = false;
+            this.sideboardPowerColumn.Text = "P";
+            // 
+            // sideboardToughnessColumn
+            // 
+            this.sideboardToughnessColumn.AspectName = "toughness";
+            this.sideboardToughnessColumn.IsEditable = false;
+            this.sideboardToughnessColumn.Text = "T";
+            // 
             // CollectionViewForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -937,5 +973,9 @@
         private System.Windows.Forms.ToolStripMenuItem makeCommanderToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem collapsedViewToolStripMenuItem;
         private System.Windows.Forms.TabPage statsTabPage;
+        private BrightIdeasSoftware.OLVColumn powerColumn;
+        private BrightIdeasSoftware.OLVColumn toughnessColumn;
+        private BrightIdeasSoftware.OLVColumn sideboardPowerColumn;
+        private BrightIdeasSoftware.OLVColumn sideboardToughnessColumn;
     }
 }

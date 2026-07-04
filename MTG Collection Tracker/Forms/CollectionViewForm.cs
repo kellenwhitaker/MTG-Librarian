@@ -1337,7 +1337,33 @@ namespace MTG_Librarian
                     else
                         return x.CompareTo(y);
                 }
-
+                private static int ComparePT(string x, string y)
+                {
+                    if (x == null && y != null)
+                        return -1;
+                    else if (x != null && y == null)
+                        return 1;
+                    else if (x == null && y == null)
+                        return 0;
+                    else
+                    {
+                        if (x == "*" && y != "*")
+                            return 1;
+                        else if (x != "*" && y == "*")
+                            return -1;
+                        else if (x == "1+*" && y != "1+*")
+                            return 1;
+                        else if (x != "1+*" && y == "1+*")
+                            return -1;
+                        else
+                        {
+                            int intx, inty;
+                            int.TryParse(x, out intx);
+                            int.TryParse(y, out inty);
+                            return intx.CompareTo(inty);
+                        }
+                    }
+                }
                 public int Compare(object x, object y)
                 {
                     if (x is InventoryTotalsItem)
@@ -1390,6 +1416,10 @@ namespace MTG_Librarian
                             result = CompareNullableDoubles((x as InventoryCard).Delta, (y as InventoryCard).Delta);
                         else if (AspectName == "X")
                             result = CompareNullableDoubles((x as InventoryCard).Percent, (y as InventoryCard).Percent);
+                        else if (AspectName == "power")
+                            result = ComparePT((x as InventoryCard).power, (y as InventoryCard).power);
+                        else if (AspectName == "toughness")
+                            result = ComparePT((x as InventoryCard).toughness, (y as InventoryCard).toughness);
                         return SortOrder == SortOrder.Ascending ? result : -1 * result;
                     }
                 }
