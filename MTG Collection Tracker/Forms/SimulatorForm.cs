@@ -54,18 +54,7 @@ namespace MTG_Librarian
                 pictureBox.Image = null;
                 return;
             }
-            using (var context = new CardImagesDbContext(card.set_name))
-            {
-                var image = context.CardImages.FirstOrDefault(x => x.ScryfallId == card.ScryfallId);
-                if (image != null)
-                {
-                    using (var ms = new System.IO.MemoryStream(image.CardImageBytes))
-                    {
-                        var img = Image.FromStream(ms);
-                        pictureBox.Image = img.ScaleImage(pictureBox.Width, pictureBox.Height);
-                    }
-                }
-            }
+            pictureBox.Image = CardImageCache.GetScaledImage(card.ScryfallId, card.set_name, pictureBox.Width, pictureBox.Height);
         }
         private void DiscardButton_Click(object sender, EventArgs e)
         {
@@ -818,9 +807,7 @@ namespace MTG_Librarian
 
         private void resetToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            handPanel.Controls.Clear();
-            landPanel.Controls.Clear();
-            battlefieldPanel.Controls.Clear();
+            DisposeAllCards();
             cardHand.Clear();
             lands.Clear();
             battlefield.Clear();
@@ -836,6 +823,30 @@ namespace MTG_Librarian
             messageLabel.Text = null;
             foreach (var card in cardLibrary.GetLibrary())
                 SetLiveCardEvents(card);
+        }
+
+        private void SimulatorForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            DisposeAllCards();
+        }         
+
+        private void DisposeAllCards()
+        {
+            handPanel.Controls.Clear();
+            landPanel.Controls.Clear();
+            battlefieldPanel.Controls.Clear();
+            foreach (var oldCard in cardHand)
+                oldCard.Dispose();
+            foreach (var oldCard in lands)
+                oldCard.Dispose();
+            foreach (var oldCard in battlefield)
+                oldCard.Dispose();
+            foreach (var oldCard in graveyard)
+                oldCard.Dispose();
+            foreach (var oldCard in exile)
+                oldCard.Dispose();
+            foreach (var oldCard in cardLibrary.GetLibrary())
+                oldCard.Dispose();
         }
     }
     public static class CardImageCache

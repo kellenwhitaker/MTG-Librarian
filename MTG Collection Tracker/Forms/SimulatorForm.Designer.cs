@@ -320,6 +320,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "SimulatorForm";
             this.Text = "Simulator";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.SimulatorForm_FormClosed);
             this.Resize += new System.EventHandler(this.SimulatorForm_Resize);
             this.liveCardMenuStrip.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.exilePictureBox)).EndInit();

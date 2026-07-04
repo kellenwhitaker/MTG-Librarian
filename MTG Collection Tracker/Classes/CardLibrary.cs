@@ -36,7 +36,7 @@ namespace MTG_Librarian
             library.Remove(card);
         }
         public void Shuffle()
-        {
+        {   
             Random rng = new Random();
             var shuffled = mainboard.OrderBy(a => rng.Next()).ToList();
             library = new List<LiveMagicCard>();
