@@ -376,37 +376,22 @@ namespace MTG_Librarian
                 {
                     using (var context = new ScryfallCardsDbContext())
                     {
-                        var dbSets = from s in context.Sets
-                                     orderby s.name
-                                     select s;
-
-                        OLVSetItem set;
-                        foreach (var dbSet in dbSets)
+                        var dbSets = context.Sets.ToList();
+                        var setDictionary = new Dictionary<string, OLVSetItem>();
+                        foreach (var set in dbSets)
                         {
-                            set = new OLVSetItem(dbSet);
-                            var cards = from c in context.Catalog
-                                        where c.set == dbSet.code
-                                        orderby new AlphaNumericString(c.collector_number), c.Name
-                                        select c;
-
-                            foreach (var card in cards)
-                            {
-                                var invItems = from i in context.LibraryView
-                                               where i.set == card.set && i.collector_number == card.collector_number
-                                               select i;
-
-                                if (invItems.FirstOrDefault() != null)
-                                {
-                                    int count = 0;
-                                    foreach (var item in invItems)
-                                        if (!item.Virtual && item.Count.HasValue)
-                                            count += item.Count.Value;
-                                    card.CopiesOwned = count;
-                                    set.AddCard(card);
-                                }
-                            }
-                            SetItems.Add(set);
+                            var setItem = new OLVSetItem(set);
+                            setDictionary[set.code] = setItem;
+                            SetItems.Add(setItem);
                         }
+
+                        var cardsWithInventory = (from c in context.LibraryView
+                                                 where !c.Virtual && c.Count.HasValue
+                                                 select c).ToList();
+
+                        foreach (var card in cardsWithInventory)
+                            if (setDictionary.TryGetValue(card.set, out var setItem))
+                                setItem.AddCard(card);
                     }
                 }
                 catch (Exception ex)

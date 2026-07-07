@@ -139,6 +139,21 @@ namespace MTG_Librarian
             }
         }
 
+        public void AddCard(InventoryCard card)
+        {
+            ScryfallMagicCard existing;
+            if (Cards.TryGetValue(card.collector_number, out existing))
+                existing.CopiesOwned += card.Count.Value;
+            else
+            {
+                Cards.Add(card.collector_number, new ScryfallMagicCard
+                {
+                    collector_number = card.collector_number,
+                    CopiesOwned = card.Count.Value
+                });
+            }
+        }
+
         public void AddRarity(OLVRarityItem rarity)
         {
             Rarities.Add(rarity);
