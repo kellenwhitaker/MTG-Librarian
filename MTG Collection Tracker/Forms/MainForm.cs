@@ -351,16 +351,7 @@ namespace MTG_Librarian
                     if (item is InventoryCard card)
                     {
                         cardsToRefresh.Add(card);
-                        string priceString = "";
-                        string finish = card.Finish;
-                        if (card.Platform == "MTGO")
-                            card.prices.TryGetValue("tix", out priceString);
-                        else if (card.Platform == "Paper")
-                            card.prices.TryGetValue($"{DefaultPaperCurrency.ToLower()}{(finish != "nonfoil" ? $"_{finish}" : "")}", out priceString);
-                        if (!string.IsNullOrEmpty(priceString))
-                            card.Price = Convert.ToDouble(priceString);
-                        else
-                            card.Price = null;
+                        card.Price = card.FindPrice(DefaultPaperCurrency);
                     }
                 }
                 form.UpdateTotals();
