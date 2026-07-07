@@ -66,7 +66,6 @@ namespace MTG_Librarian
         {
             splash.ProgressChanged(e.UserState as SplashProgressObject);
         }
-
         private void InitUIWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
             SettingsManager.LayoutDockPanel();
@@ -77,6 +76,7 @@ namespace MTG_Librarian
             SettingsManager.LayoutMainForm();
             using (var context = new ScryfallCardsDbContext())
             {
+                
                 var match = (from m in context.Metadata
                             where m.Name == "LastCatalogUpdate"
                             select m).FirstOrDefault();
@@ -96,7 +96,8 @@ namespace MTG_Librarian
             var result = new UpdateSetsResult
             {
                 setsNeedingIcons = new List<ScryfallCardSet>(),
-                setsNeedingRefresh = new List<ScryfallCardSet>()
+                setsNeedingRefresh = new List<ScryfallCardSet>(),
+                newSets = new List<ScryfallCardSet>()
             };
             var scryfallSets = GetScryfallSets();
             try
@@ -113,8 +114,12 @@ namespace MTG_Librarian
                                     select s;
 
                         var match = dbSet.FirstOrDefault();
-                        if (match == null && set.code == set.SymbolCode)
-                            result.setsNeedingIcons.Add(set);
+                        if (match == null)
+                        {   
+                            result.newSets.Add(set);
+                            if (set.code == set.SymbolCode)
+                                result.setsNeedingIcons.Add(set);
+                        }
                         else if (match != null)
                         {
                             (set.CommonIconBytes, set.UncommonIconBytes, set.RareIconBytes, set.MythicRareIconBytes) =
@@ -190,8 +195,18 @@ namespace MTG_Librarian
                 context.SaveChanges();
             }
             var result = e.Result as UpdateSetsResult;
-            if (result.setsNeedingRefresh.Count > 0)
+            if (result.newSets.Count > 0)
             {
+                var olvSets = new List<OLVSetItem>();
+                foreach (var set in result.newSets)
+                {
+                    olvSets.Add(new OLVSetItem(set));
+                }
+
+                Globals.Forms.DBViewForm.setListView.AddObjects(olvSets);
+            }
+            if (result.setsNeedingRefresh.Count > 0)
+            {                
                 foreach (var set in result.setsNeedingRefresh)
                     Globals.Forms.DBViewForm.LoadSet(set.code);
             }
@@ -205,7 +220,7 @@ namespace MTG_Librarian
 
                 Globals.Forms.TasksForm.TaskManager.AddTasks(tasksToAdd);
                 mainStatusLabel.Text = $"{result.setsNeedingIcons.Count} set{(result.setsNeedingIcons.Count > 1 ? "s" : "")} added to download queue.";
-            }
+            }   
         }
 
         private void UpdateMissingSetIconsWorker_DoWork(object sender, System.ComponentModel.DoWorkEventArgs e)
@@ -240,6 +255,7 @@ namespace MTG_Librarian
         {
             public List<ScryfallCardSet> setsNeedingIcons;
             public List<ScryfallCardSet> setsNeedingRefresh;
+            public List<ScryfallCardSet> newSets;
         }
     }
     

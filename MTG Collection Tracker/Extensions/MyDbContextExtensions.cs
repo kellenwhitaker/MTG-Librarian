@@ -57,5 +57,25 @@ namespace MTG_Librarian
                 context.Update(card);
             }
         }
+        public static void Upsert(this ScryfallCardsDbContext context, CollectionGroup group)
+        {
+            var existing = context.CollectionGroups.AsNoTracking().FirstOrDefault(x => x.Id == group.Id);
+            if (existing == null) // new group
+                context.Add(group);
+            else // update existing group
+            {
+                context.Update(group);
+            }
+        }
+        public static void Upsert(this ScryfallCardsDbContext context, CardCollection collection)
+        {
+            var existing = context.Collections.AsNoTracking().FirstOrDefault(x => x.Id == collection.Id);
+            if (existing == null) // new collection
+                context.Add(collection);
+            else // update existing collection
+            {
+                context.Update(collection);
+            }
+        }
     }
 }

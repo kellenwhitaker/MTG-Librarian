@@ -224,8 +224,8 @@ namespace MTG_Librarian
                 Globals.Forms.DBViewForm.LoadSet(e.SetCode);
                 var cardsNeedingRefresh = new List<OLVCardItem>();
                 foreach (var obj in Globals.Forms.DBViewForm.cardListView.Objects)
-                    if ((obj as OLVCardItem).MagicCard.set == e.SetCode)
-                        cardsNeedingRefresh.Add(obj as OLVCardItem);
+                    if ((obj is OLVCardItem item) && item.MagicCard.set == e.SetCode)
+                        cardsNeedingRefresh.Add(item);
 
                 if (cardsNeedingRefresh.Count > 0)
                     Globals.Forms.DBViewForm.cardListView.RefreshObjects(cardsNeedingRefresh);

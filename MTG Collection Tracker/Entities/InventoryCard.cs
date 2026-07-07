@@ -229,6 +229,7 @@ namespace MTG_Librarian
             hand_modifier = magicCard.hand_modifier;
             life_modifier = magicCard.life_modifier;
             produced_mana = magicCard.produced_mana;
+            color_indicator = magicCard.color_indicator;
 
             PartB = magicCard.PartB;            
         }

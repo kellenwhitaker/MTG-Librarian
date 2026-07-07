@@ -99,7 +99,8 @@ namespace MTG_Librarian
                 game_changer = scryfallCard.game_changer,
                 hand_modifier = scryfallCard.hand_modifier,
                 life_modifier = scryfallCard.life_modifier,
-                produced_mana = scryfallCard.produced_mana
+                produced_mana = scryfallCard.produced_mana,
+                color_indicator = scryfallCard.color_indicator,
             };
         }
     }

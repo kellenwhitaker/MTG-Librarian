@@ -259,5 +259,18 @@ namespace MTG_Librarian
                 produced_mana = value == null ? null : JsonConvert.DeserializeObject<string[]>(value);
             }
         }
+        [NotMapped]
+        public string[] color_indicator;
+        public string ColorIndicator
+        {
+            get
+            {
+                return color_indicator == null ? null : JsonConvert.SerializeObject(color_indicator);
+            }
+            set
+            {
+                color_indicator = value == null ? null : JsonConvert.DeserializeObject<string[]>(value);
+            }
+        }
     }
 }

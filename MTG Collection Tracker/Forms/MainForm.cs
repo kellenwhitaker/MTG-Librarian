@@ -7,6 +7,7 @@ using System.Data;
 using System.Drawing;
 using System.IO;
 using System.Linq;
+using System.Runtime.Remoting.Contexts;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
@@ -30,6 +31,7 @@ namespace MTG_Librarian
         public MainForm()
         {
             InitializeComponent();
+            InitDB();
             Globals.Forms.DockPanel = dockPanel1;
             Globals.Forms.DockPanel.SetDoubleBuffered();
             Globals.Forms.MainForm = this;
@@ -69,6 +71,25 @@ namespace MTG_Librarian
             Globals.Forms.TasksForm.TaskManager.PrintingsDownloaded += EventManager.PrintingsDownloaded;
             splitContainer1.SplitterDistance = Height;
             InitUIWorker.RunWorkerAsync();
+        }
+        public void InitDB()
+        {
+            using (var context = new ScryfallCardsDbContext())
+                if (!context.CollectionGroups.Any())
+                {
+                    var collectionsGroup = new CollectionGroup { GroupName = "Collections", Permanent = true, Virtual = false };
+                    context.Add(collectionsGroup);
+                    var wishlistGroup = new CollectionGroup { GroupName = "Wish Lists", Permanent = true, Virtual = false };
+                    context.Add(wishlistGroup);
+                    var decksGroup = new CollectionGroup { GroupName = "Decks", Permanent = true, Virtual = false };
+                    context.Add(decksGroup);
+                    var watchlistGroup = new CollectionGroup { GroupName = "Watch Lists", Permanent = true, Virtual = false };
+                    context.Add(watchlistGroup);
+                    context.SaveChanges();
+                    var mainCollection = new CardCollection { CollectionName = "Main", Type = "collection", GroupName = collectionsGroup.GroupName, GroupId = collectionsGroup.Id, Virtual = false, Permanent = true, Platform = "Paper" };
+                    context.Add(mainCollection);
+                    context.SaveChanges();
+                }
         }
 
         private void DockPanelActiveDocumentChanged(object sender, EventArgs e)

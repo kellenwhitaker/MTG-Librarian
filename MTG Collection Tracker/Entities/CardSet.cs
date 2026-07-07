@@ -47,7 +47,6 @@ namespace MTG_Librarian
         public DateTime? LastUpdated { get; set; }
     }
 
-    [Table("Sets")]
     public class CardSet
     {
         [Key]

@@ -176,6 +176,7 @@ namespace MTG_Librarian
                 { "Loyalty", card.loyalty },
                 { "Colors", (card.colors != null) ? string.Join(", ", card.colors) : "" },
                 { "Color Identity", (card.color_identity != null) ? string.Join(", ", card.color_identity) : "" },
+                { "Color indicator", (card.color_indicator != null) ? string.Join(", ", card.color_indicator) : "" },
                 { "Rarity", char.ToUpper(card.rarity[0]) + card.rarity.Substring(1) },
                 { "Set Name", card.set_name },
                 { "Set Code", card.set.ToUpper() },
