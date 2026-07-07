@@ -614,7 +614,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="EntityFramework">
-      <Version>6.5.1</Version>
+      <Version>6.5.2</Version>
     </PackageReference>
     <PackageReference Include="Fizzler">
       <Version>1.1.0</Version>

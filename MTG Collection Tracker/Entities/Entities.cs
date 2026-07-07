@@ -4,9 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Data.SQLite;
 using System.IO;
-using System.Runtime.Remoting.Contexts;
 using System.Windows.Forms;
 
 namespace MTG_Librarian
