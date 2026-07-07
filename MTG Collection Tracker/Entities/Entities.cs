@@ -191,12 +191,12 @@ namespace MTG_Librarian
 	                        PRIMARY KEY(""ScryfallId""),
                             FOREIGN KEY(""set_id"") REFERENCES ""Sets""(""id""));
                         CREATE TABLE CollectionGroups (
-                            GroupName TEXT, 
+                            GroupName TEXT NOT NULL UNIQUE, 
                             Permanent BOOLEAN NOT NULL DEFAULT FALSE, 
                             Id INTEGER PRIMARY KEY, 
                             ""Virtual"" BOOLEAN NOT NULL);
                         CREATE TABLE Collections (
-                            CollectionName TEXT NOT NULL, 
+                            CollectionName TEXT NOT NULL UNIQUE, 
                             Type TEXT NOT NULL, 
                             ""Virtual"" BOOLEAN NOT NULL DEFAULT FALSE, 
                             GroupName TEXT, 
