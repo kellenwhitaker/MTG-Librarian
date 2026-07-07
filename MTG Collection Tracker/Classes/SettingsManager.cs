@@ -176,12 +176,14 @@ namespace MTG_Librarian
 
         private static void SetupDefaultDockConfiguration()
         {
-            Globals.Forms.DBViewForm.Show(Globals.Forms.DockPanel, DockState.DockBottom);
-            Globals.Forms.CardInfoForm.Show(Globals.Forms.DockPanel, DockState.DockLeft);
             Globals.Forms.TasksForm.Show(Globals.Forms.DockPanel, DockState.DockRight);
             Globals.Forms.NavigationForm.Show(Globals.Forms.DockPanel, DockState.DockRight);
-            Globals.Forms.DockPanel.UpdateDockWindowZOrder(DockStyle.Left, true);
+            Globals.Forms.DBViewForm.Show(Globals.Forms.DockPanel, DockState.DockBottom);
+            Globals.Forms.CardInfoForm.Show(Globals.Forms.DockPanel, DockState.DockLeft);
+
             Globals.Forms.DockPanel.UpdateDockWindowZOrder(DockStyle.Right, true);
+            Globals.Forms.DockPanel.UpdateDockWindowZOrder(DockStyle.Bottom, true);
+            Globals.Forms.DockPanel.UpdateDockWindowZOrder(DockStyle.Left, true);
             CardCollection mainCollection;
             using (var context = new ScryfallCardsDbContext())
                 mainCollection = (from c in context.Collections

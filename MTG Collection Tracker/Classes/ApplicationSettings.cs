@@ -107,7 +107,7 @@ namespace MTG_Librarian
         }
 
         [UserScopedSetting()]
-        [DefaultSettingValue("0.15")]
+        [DefaultSettingValue("0.2")]
         public double DockLeftPortion
         {
             get => (double)this["DockLeftPortion"];
