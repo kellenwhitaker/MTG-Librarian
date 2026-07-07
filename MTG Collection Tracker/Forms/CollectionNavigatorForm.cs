@@ -223,6 +223,33 @@ namespace MTG_Librarian
                     {
                         using (var context = new ScryfallCardsDbContext())
                         {
+                            if (!isGroup)
+                            {
+                                var collection = navigatorItem as NavigatorCollection;
+                                if (collection != null)
+                                {
+                                    var cards = from c in context.Library
+                                                where c.CollectionId == collection.Id
+                                                select c;
+                                    context.RemoveRange(cards);
+                                    context.SaveChanges();
+                                }
+                            }
+                            else
+                            {
+                                var group = navigatorItem as NavigatorGroup;
+                                if (group != null)
+                                {
+                                    foreach (var collection in group.Collections)
+                                    {
+                                        var cards = from c in context.Library
+                                                    where c.CollectionId == collection.Id
+                                                    select c;
+                                        context.RemoveRange(cards);
+                                    }
+                                    context.SaveChanges();
+                                }
+                            }
                             context.Remove(navigatorItem.Entity);
                             context.SaveChanges();
                             if (isGroup)
@@ -262,7 +289,7 @@ namespace MTG_Librarian
             if (group != null)
             {
                 var form = new NewCollectionForm();
-                form.collectionNameTextBox.Text = "New Collection";
+                form.collectionNameTextBox.Text = group.Name == "Decks" ? "New Deck" : "New Collection";
                 var defaultPlatforms = SettingsManager.ApplicationSettings.DefaultPlatforms;
                 if (defaultPlatforms[0] == '1')
                     form.platformComboBox.Text = "Paper";
