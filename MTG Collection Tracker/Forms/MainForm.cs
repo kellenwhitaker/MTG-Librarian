@@ -431,5 +431,12 @@ namespace MTG_Librarian
                 simulatorForm.Show();
             }
         }
+        private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var aboutForm = new AboutForm())
+            {
+                aboutForm.ShowDialog();
+            }
+        }
     }
 }
