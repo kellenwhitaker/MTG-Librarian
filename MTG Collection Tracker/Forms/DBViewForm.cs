@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using KW.WinFormsUI.Docking;
 using BrightIdeasSoftware;
 using System.Collections;
+using System.Diagnostics;
 // TODO: add operators to mana cost field in search panel
 namespace MTG_Librarian
 {
@@ -362,7 +363,7 @@ namespace MTG_Librarian
                 DebugOutput.WriteLine(ex.ToString());
             }
         }
-        // TODO: refactor
+
         public delegate void LoadSetsDelegate();
         public void LoadSets()
         {
@@ -530,30 +531,37 @@ namespace MTG_Librarian
 
         public void InventoryChanged(object sender, InventoryChangedEventArgs e)
         {
+            var setsNeedingRecount = new List<string>();
+            var cardsNeedingRefresh = new List<OLVCardItem>();
+            var cardCounts = new Dictionary<string, int>();
             using (var context = new ScryfallCardsDbContext())
             {
-                var setsNeedingRecount = new List<string>();
                 foreach (var card in e.Cards)
                 {
-                    var scryfallCard = card.ToScryfallMagicCard();
-                    var invCards = from i in context.LibraryView
-                                   where i.ScryfallId == scryfallCard.ScryfallId
-                                   select i;
-                    int count = 0;
+                    if (!cardCounts.ContainsKey(card.ScryfallId))
+                        cardCounts.Add(card.ScryfallId, 0);
+                    if (!setsNeedingRecount.Contains(card.set))
+                        setsNeedingRecount.Add(card.set);
+                    var invCards = (from i in context.LibraryView
+                                    where i.ScryfallId == card.ScryfallId && !i.Virtual && i.Count.HasValue
+                                    select i).ToList();
                     foreach (var inv in invCards)
                     {
-                        if (inv.Count.HasValue)
-                            count += inv.Count.Value;
+                        if (cardCounts.ContainsKey(card.ScryfallId))
+                            cardCounts[card.ScryfallId] += inv.Count.Value;
                     }
-                    foreach (OLVCardItem lvCard in cardListView.Objects)
-                        if (lvCard.MagicCard.ScryfallId == card.ScryfallId)
-                        {
-                            lvCard.MagicCard.CopiesOwned = count;
-                            cardListView.RefreshObject(lvCard);
-                        }
-                    if (!setsNeedingRecount.Contains(scryfallCard.set))
-                        setsNeedingRecount.Add(scryfallCard.set);
                 }
+                
+                
+                foreach (OLVCardItem lvCard in cardListView.Objects)
+                        if (cardCounts.ContainsKey(lvCard.MagicCard.ScryfallId))
+                        {
+                            lvCard.MagicCard.CopiesOwned = cardCounts[lvCard.MagicCard.ScryfallId];                            
+                            cardsNeedingRefresh.Add(lvCard);
+                        }
+                
+                cardListView.RefreshObjects(cardsNeedingRefresh);
+
                 foreach (var set in setsNeedingRecount)
                 {
                     OLVSetItem olvSet = null;
@@ -565,28 +573,14 @@ namespace MTG_Librarian
                         }
                     if (olvSet != null)
                     {
-                        olvSet.Cards.Clear();
-                        var cards = from c in context.Catalog
-                                    where c.set == set
-                                    orderby new AlphaNumericString(c.collector_number), c.Name
-                                    select c;
+                        olvSet.Cards.Clear(); 
+                        var cardsWithInventory = (from c in context.LibraryView
+                                                  where c.set == olvSet.CardSet.code && !c.Virtual && c.Count.HasValue
+                                                  select c).ToList();
 
-                        foreach (var card in cards)
-                        {
-                            var invItems = from i in context.LibraryView
-                                           where i.set == card.set && i.collector_number == card.collector_number
-                                           select i;
-
-                            if (invItems.FirstOrDefault() != null)
-                            {
-                                int count = 0;
-                                foreach (var item in invItems)
-                                    if (!item.Virtual && item.Count.HasValue)
-                                        count += item.Count.Value;
-                                card.CopiesOwned = count;
+                        foreach (var card in cardsWithInventory)
                                 olvSet.AddCard(card);
-                            }
-                        }
+ 
                         setListView.RefreshObject(olvSet);
                     }
                 }
