@@ -27,6 +27,17 @@ namespace MTG_Librarian
         private int Mulligans = 0;
         private bool handKept = false;
 
+        protected override CreateParams CreateParams
+        {
+            get
+            {
+                CreateParams cp = base.CreateParams;
+                // WS_EX_COMPOSITED (0x02000000) forces Windows to draw all 
+                // children from bottom-to-top using double-buffering.
+                cp.ExStyle |= 0x02000000;
+                return cp;
+            }
+        }
         public List<ScryfallMagicCardBase> Mainboard 
         { 
             get { return mainboard; } 

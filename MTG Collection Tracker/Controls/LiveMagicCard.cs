@@ -141,6 +141,7 @@ namespace MTG_Librarian
         public LiveMagicCard()
         {
             InitializeComponent();
+            this.DoubleBuffered = true;
         }
 
         public void HideButtons()
