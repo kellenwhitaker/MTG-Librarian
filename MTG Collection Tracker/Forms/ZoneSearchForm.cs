@@ -67,22 +67,11 @@ namespace MTG_Librarian
                     cardZoomPictureBox.Top = this.Height - cardZoomPictureBox.Height - 30;
 
                 var card = liveCard.GetCard();
-                using (var context = new CardImagesDbContext(card.set_name))
-                {
-                    var image = context.CardImages.FirstOrDefault(x => x.ScryfallId == card.ScryfallId);
-                    if (image != null)
-                    {
-                        using (var ms = new System.IO.MemoryStream(image.CardImageBytes))
-                        {
-                            var img = Image.FromStream(ms);
-                            cardZoomPictureBox.Image = img.ScaleImage(cardZoomPictureBox.Width, cardZoomPictureBox.Height);
-                            Controls.Add(cardZoomPictureBox);
-                            cardZoomPictureBox.BringToFront();
-                        }
-                    }
-                }
+                cardZoomPictureBox.Image = CardImageCache.GetScaledImage(card.ScryfallId, card.set_name, cardZoomPictureBox.Width, cardZoomPictureBox.Height);
+                cardZoomPictureBox.Height -= 3;
+                Controls.Add(cardZoomPictureBox);
+                cardZoomPictureBox.BringToFront();
             }
-
         }
         public ZoneSearchForm(List<LiveMagicCard> cards)
         {

@@ -305,6 +305,7 @@ namespace MTG_Librarian
                 
                 var card = liveCard.GetCard();
                 cardZoomPictureBox.Image = CardImageCache.GetScaledImage(card.ScryfallId, card.set_name, cardZoomPictureBox.Width, cardZoomPictureBox.Height);
+                cardZoomPictureBox.Height -= 3;
                 Controls.Add(cardZoomPictureBox);
                 cardZoomPictureBox.BringToFront();
             }
@@ -845,10 +846,6 @@ namespace MTG_Librarian
                 oldCard.Dispose();
             foreach (var oldCard in cardLibrary.GetLibrary())
                 oldCard.Dispose();
-        }
-
-        private void SimulatorForm_Load(object sender, EventArgs e)
-        {
         }
     }
     public static class CardImageCache
