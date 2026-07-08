@@ -353,16 +353,6 @@ namespace MTG_Librarian
             }
         }
 
-        private void Card_MouseUp(object sender, MouseEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void Card_MouseDown(object sender, MouseEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
         private void SimulatorForm_Resize(object sender, EventArgs e)
         {
             handPanel.Width = this.Width - libraryPictureBox.Width - 30;
