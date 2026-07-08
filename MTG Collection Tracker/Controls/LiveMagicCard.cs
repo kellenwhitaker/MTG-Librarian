@@ -128,7 +128,7 @@ namespace MTG_Librarian
                 UpdateTextOverlay();
             } 
         }
-        public bool CanStack => Counters == 0 && P1P1Counters == 0;
+        public bool CanStack => Counters == 0 && P1P1Counters == 0 && !Tapped;
         public enum GameZone
         {
             Library,
