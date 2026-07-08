@@ -50,6 +50,7 @@ namespace MTG_Librarian
             this.Controls.Add(this.cardsPanel);
             this.Name = "ZoneSearchForm";
             this.Text = "Search Zone";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.ZoneSearchForm_FormClosed);
             this.ResumeLayout(false);
 
         }

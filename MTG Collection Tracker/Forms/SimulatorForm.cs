@@ -286,6 +286,9 @@ namespace MTG_Librarian
         }
         private void liveCardMouseDown(object sender, MouseEventArgs args)
         {
+            if (zoneSearchForm.Visible)
+                return;
+
             var liveCard = (LiveMagicCard)((PictureBox)sender).Parent;
             if (args.Button == MouseButtons.Left)
             {

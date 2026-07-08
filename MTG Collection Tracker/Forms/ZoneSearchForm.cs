@@ -88,5 +88,14 @@ namespace MTG_Librarian
                 index++;
             }
         }
+
+        private void ZoneSearchForm_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            foreach (var card in Cards)
+            {
+                card.pictureBox.MouseDown -= liveCardMouseDown;
+                card.pictureBox.MouseUp -= liveCardMouseUp;
+            }
+        }
     }
 }
