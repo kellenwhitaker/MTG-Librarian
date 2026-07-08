@@ -93,7 +93,7 @@
             this.battlefieldPanel.BackColor = System.Drawing.Color.Transparent;
             this.battlefieldPanel.Location = new System.Drawing.Point(1, -100);
             this.battlefieldPanel.Name = "battlefieldPanel";
-            this.battlefieldPanel.Size = new System.Drawing.Size(764, 305);
+            this.battlefieldPanel.Size = new System.Drawing.Size(764, 315);
             this.battlefieldPanel.TabIndex = 4;
             // 
             // liveCardMenuStrip
@@ -264,14 +264,14 @@
             this.resetToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1092, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(1092, 30);
             this.menuStrip1.TabIndex = 10;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // resetToolStripMenuItem
             // 
             this.resetToolStripMenuItem.Name = "resetToolStripMenuItem";
-            this.resetToolStripMenuItem.Size = new System.Drawing.Size(59, 24);
+            this.resetToolStripMenuItem.Size = new System.Drawing.Size(59, 26);
             this.resetToolStripMenuItem.Text = "Reset";
             this.resetToolStripMenuItem.Click += new System.EventHandler(this.resetToolStripMenuItem_Click);
             // 
