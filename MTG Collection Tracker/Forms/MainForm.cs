@@ -419,9 +419,17 @@ namespace MTG_Librarian
                     }
                 }
                 simulatorForm.Mainboard = mainboard;
+                var nullImageCards = simulatorForm.GetNullImages();
+                if (nullImageCards != null && nullImageCards.Count > 0) 
+                {
+                    EventManager.CardImageRetrieved += simulatorForm.CardImageRetrieved;
+                    foreach (var card in nullImageCards)
+                        CardManager.RetrieveImage(card, "A");                    
+                }
                 simulatorForm.Show();
             }
         }
+
         private void aboutToolStripMenuItem_Click(object sender, EventArgs e)
         {
             using (var aboutForm = new AboutForm())

@@ -30,7 +30,6 @@ namespace MTG_Librarian
                 tapped = value;
                 if (tapped)
                 {
-                    untappedImage = pictureBox.Image;
                     var copy = pictureBox.Image.GetCopyOf();
                     copy.RotateFlip(RotateFlipType.Rotate90FlipNone);
                     pictureBox.Image = copy;
@@ -161,7 +160,7 @@ namespace MTG_Librarian
         {
             InitializeComponent();
             this.Cards = new List<ScryfallMagicCardBase> { card };
-            pictureBox.Image = CardImageCache.GetScaledImage(card.ScryfallId, card.set_name, pictureBox.Width, pictureBox.Height);
+            untappedImage = pictureBox.Image = CardImageCache.GetScaledImage(card.ScryfallId, card.set_name, pictureBox.Width, pictureBox.Height);
         }
 
         public void AddCard(ScryfallMagicCardBase card)
@@ -182,6 +181,12 @@ namespace MTG_Librarian
             Cards.RemoveAt(0);
             UpdateTextOverlay();
             return removedCard;
+        }
+
+        internal void RefreshImage()
+        {
+            var card = GetCard();
+            pictureBox.Image = untappedImage = CardImageCache.GetScaledImage(card.ScryfallId, card.set_name, pictureBox.Width, pictureBox.Height);
         }
     }
 }

@@ -38,6 +38,18 @@ namespace MTG_Librarian
                 return cp;
             }
         }
+        public List<ScryfallMagicCardBase> GetNullImages()
+        {
+            var liveCards = cardLibrary.GetLibrary().Where(card => card.UntappedImage == null).ToList();
+            var nullImageCards = new List<ScryfallMagicCardBase>();
+            foreach (var liveCard in liveCards)
+            {
+                var card = liveCard.GetCard();
+                if (card != null)
+                    nullImageCards.Add(card);
+            }
+            return nullImageCards;
+        }
         public List<ScryfallMagicCardBase> Mainboard 
         { 
             get { return mainboard; } 
@@ -860,6 +872,37 @@ namespace MTG_Librarian
                 oldCard.Dispose();
             foreach (var oldCard in cardLibrary.GetLibrary())
                 oldCard.Dispose();
+        }
+        public void CardImageRetrieved(object sender, CardImageRetrievedEventArgs e)
+        {
+            foreach (var card in cardLibrary.GetLibrary())
+            {
+                if (card.GetCard().ScryfallId == e.uuid)
+                {
+                    card.RefreshImage();
+                }
+            }
+            foreach (var card in cardHand)
+            {
+                if (card.GetCard().ScryfallId == e.uuid)
+                {
+                    card.RefreshImage();
+                }
+            }
+            foreach (var card in lands)
+            {
+                if (card.GetCard().ScryfallId == e.uuid)
+                {
+                    card.RefreshImage();
+                }
+            }
+            foreach (var card in battlefield)
+            {
+                if (card.GetCard().ScryfallId == e.uuid)
+                {
+                    card.RefreshImage();
+                }
+            }
         }
     }
     public static class CardImageCache

@@ -306,7 +306,7 @@ namespace MTG_Librarian
 
         public void cardImageRetrieved(object sender, CardImageRetrievedEventArgs e)
         {
-            if (e.uuid == DisplayedCard.ScryfallId)
+            if (e.uuid == DisplayedCard?.ScryfallId)
                 cardPictureBox.Image = e.CardImage.ScaleImage(cardPictureBox.Width, cardPictureBox.Height);
         }
 
