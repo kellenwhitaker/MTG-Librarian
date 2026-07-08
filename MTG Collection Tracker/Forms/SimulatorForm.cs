@@ -848,6 +848,10 @@ namespace MTG_Librarian
             foreach (var oldCard in cardLibrary.GetLibrary())
                 oldCard.Dispose();
         }
+
+        private void SimulatorForm_Load(object sender, EventArgs e)
+        {
+        }
     }
     public static class CardImageCache
     {

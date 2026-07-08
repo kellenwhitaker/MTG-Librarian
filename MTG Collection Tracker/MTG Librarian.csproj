@@ -191,7 +191,7 @@
     <Compile Include="OLVRenderers\XRenderer.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Properties\Resources1.Designer.cs">
+    <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
@@ -299,7 +299,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
-      <LastGenOutput>Resources1.Designer.cs</LastGenOutput>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SplashForm.resx">
       <DependentUpon>SplashForm.cs</DependentUpon>
@@ -592,6 +592,8 @@
     <Content Include="Icons\X_20.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Resources\5011.png" />
+    <None Include="Resources\5020.png" />
     <Content Include="Resources\clear_16.png" />
     <Content Include="Resources\clear_20.png" />
     <Content Include="Resources\Magic_card_back.png" />

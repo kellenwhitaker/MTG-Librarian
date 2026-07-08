@@ -45,24 +45,24 @@
             this.add11CounterToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.addCounterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.removeCounterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exilePictureBox = new System.Windows.Forms.PictureBox();
             this.zoneMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.searchZoneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.graveyardPictureBox = new System.Windows.Forms.PictureBox();
-            this.libraryPictureBox = new System.Windows.Forms.PictureBox();
             this.landPanel = new System.Windows.Forms.Panel();
             this.messageLabel = new System.Windows.Forms.Label();
             this.mulliganButton = new System.Windows.Forms.Button();
             this.keepHandButton = new System.Windows.Forms.Button();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.resetToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exilePictureBox = new System.Windows.Forms.PictureBox();
+            this.graveyardPictureBox = new System.Windows.Forms.PictureBox();
+            this.libraryPictureBox = new System.Windows.Forms.PictureBox();
             this.liveCardMenuStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.exilePictureBox)).BeginInit();
             this.zoneMenuStrip.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.graveyardPictureBox)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.libraryPictureBox)).BeginInit();
             this.landPanel.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.exilePictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.graveyardPictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.libraryPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // drawButton
@@ -80,6 +80,7 @@
             // 
             this.handPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.handPanel.AutoScroll = true;
+            this.handPanel.BackColor = System.Drawing.Color.Transparent;
             this.handPanel.Location = new System.Drawing.Point(1, 515);
             this.handPanel.Name = "handPanel";
             this.handPanel.Size = new System.Drawing.Size(764, 335);
@@ -89,6 +90,7 @@
             // 
             this.battlefieldPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.battlefieldPanel.AutoScroll = true;
+            this.battlefieldPanel.BackColor = System.Drawing.Color.Transparent;
             this.battlefieldPanel.Location = new System.Drawing.Point(1, -100);
             this.battlefieldPanel.Name = "battlefieldPanel";
             this.battlefieldPanel.Size = new System.Drawing.Size(764, 305);
@@ -196,16 +198,6 @@
             this.removeCounterToolStripMenuItem.Text = "Remove counter";
             this.removeCounterToolStripMenuItem.Click += new System.EventHandler(this.removeCounterToolStripMenuItem_Click);
             // 
-            // exilePictureBox
-            // 
-            this.exilePictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.exilePictureBox.ContextMenuStrip = this.zoneMenuStrip;
-            this.exilePictureBox.Location = new System.Drawing.Point(863, -96);
-            this.exilePictureBox.Name = "exilePictureBox";
-            this.exilePictureBox.Size = new System.Drawing.Size(217, 280);
-            this.exilePictureBox.TabIndex = 6;
-            this.exilePictureBox.TabStop = false;
-            // 
             // zoneMenuStrip
             // 
             this.zoneMenuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
@@ -222,29 +214,10 @@
             this.searchZoneToolStripMenuItem.Text = "Search zone...";
             this.searchZoneToolStripMenuItem.Click += new System.EventHandler(this.searchZoneToolStripMenuItem_Click);
             // 
-            // graveyardPictureBox
-            // 
-            this.graveyardPictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.graveyardPictureBox.ContextMenuStrip = this.zoneMenuStrip;
-            this.graveyardPictureBox.Location = new System.Drawing.Point(863, 224);
-            this.graveyardPictureBox.Name = "graveyardPictureBox";
-            this.graveyardPictureBox.Size = new System.Drawing.Size(217, 280);
-            this.graveyardPictureBox.TabIndex = 5;
-            this.graveyardPictureBox.TabStop = false;
-            // 
-            // libraryPictureBox
-            // 
-            this.libraryPictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.libraryPictureBox.ContextMenuStrip = this.zoneMenuStrip;
-            this.libraryPictureBox.Location = new System.Drawing.Point(863, 549);
-            this.libraryPictureBox.Name = "libraryPictureBox";
-            this.libraryPictureBox.Size = new System.Drawing.Size(217, 280);
-            this.libraryPictureBox.TabIndex = 0;
-            this.libraryPictureBox.TabStop = false;
-            // 
             // landPanel
             // 
             this.landPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.landPanel.BackColor = System.Drawing.Color.Transparent;
             this.landPanel.Controls.Add(this.messageLabel);
             this.landPanel.Location = new System.Drawing.Point(1, 211);
             this.landPanel.Name = "landPanel";
@@ -291,21 +264,55 @@
             this.resetToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1092, 28);
+            this.menuStrip1.Size = new System.Drawing.Size(1092, 30);
             this.menuStrip1.TabIndex = 10;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // resetToolStripMenuItem
             // 
             this.resetToolStripMenuItem.Name = "resetToolStripMenuItem";
-            this.resetToolStripMenuItem.Size = new System.Drawing.Size(59, 24);
+            this.resetToolStripMenuItem.Size = new System.Drawing.Size(59, 26);
             this.resetToolStripMenuItem.Text = "Reset";
             this.resetToolStripMenuItem.Click += new System.EventHandler(this.resetToolStripMenuItem_Click);
+            // 
+            // exilePictureBox
+            // 
+            this.exilePictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.exilePictureBox.BackColor = System.Drawing.Color.Transparent;
+            this.exilePictureBox.ContextMenuStrip = this.zoneMenuStrip;
+            this.exilePictureBox.Location = new System.Drawing.Point(863, -96);
+            this.exilePictureBox.Name = "exilePictureBox";
+            this.exilePictureBox.Size = new System.Drawing.Size(217, 280);
+            this.exilePictureBox.TabIndex = 6;
+            this.exilePictureBox.TabStop = false;
+            // 
+            // graveyardPictureBox
+            // 
+            this.graveyardPictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.graveyardPictureBox.BackColor = System.Drawing.Color.Transparent;
+            this.graveyardPictureBox.ContextMenuStrip = this.zoneMenuStrip;
+            this.graveyardPictureBox.Location = new System.Drawing.Point(863, 224);
+            this.graveyardPictureBox.Name = "graveyardPictureBox";
+            this.graveyardPictureBox.Size = new System.Drawing.Size(217, 280);
+            this.graveyardPictureBox.TabIndex = 5;
+            this.graveyardPictureBox.TabStop = false;
+            // 
+            // libraryPictureBox
+            // 
+            this.libraryPictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.libraryPictureBox.BackColor = System.Drawing.Color.Transparent;
+            this.libraryPictureBox.ContextMenuStrip = this.zoneMenuStrip;
+            this.libraryPictureBox.Location = new System.Drawing.Point(863, 549);
+            this.libraryPictureBox.Name = "libraryPictureBox";
+            this.libraryPictureBox.Size = new System.Drawing.Size(217, 280);
+            this.libraryPictureBox.TabIndex = 0;
+            this.libraryPictureBox.TabStop = false;
             // 
             // SimulatorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackgroundImage = global::MTG_Librarian.Properties.Resources._5020;
             this.ClientSize = new System.Drawing.Size(1092, 856);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.keepHandButton);
@@ -321,16 +328,17 @@
             this.Name = "SimulatorForm";
             this.Text = "Simulator";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.SimulatorForm_FormClosed);
+            this.Load += new System.EventHandler(this.SimulatorForm_Load);
             this.Resize += new System.EventHandler(this.SimulatorForm_Resize);
             this.liveCardMenuStrip.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.exilePictureBox)).EndInit();
             this.zoneMenuStrip.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.graveyardPictureBox)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.libraryPictureBox)).EndInit();
             this.landPanel.ResumeLayout(false);
             this.landPanel.PerformLayout();
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.exilePictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.graveyardPictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.libraryPictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
