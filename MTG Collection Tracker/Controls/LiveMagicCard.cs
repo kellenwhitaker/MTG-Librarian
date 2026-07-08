@@ -21,6 +21,7 @@ namespace MTG_Librarian
         public int Count => Cards != null ? Cards.Count : 0;        
         private bool tapped = false;
         private Image untappedImage;
+        public Image UntappedImage => untappedImage;
         public bool Tapped 
         {
             get { return tapped; }

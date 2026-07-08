@@ -289,8 +289,16 @@ namespace MTG_Librarian
             var liveCard = (LiveMagicCard)((PictureBox)sender).Parent;
             if (args.Button == MouseButtons.Left)
             {
-                cardZoomPictureBox.Width = (int)(liveCard.pictureBox.Width * 1.5);
-                cardZoomPictureBox.Height = (int)(liveCard.pictureBox.Height * 1.5);
+                if (!liveCard.Tapped)
+                {
+                    cardZoomPictureBox.Width = (int)(liveCard.pictureBox.Width * 1.5);
+                    cardZoomPictureBox.Height = (int)(liveCard.pictureBox.Height * 1.5);
+                }
+                else
+                {
+                    cardZoomPictureBox.Width = (int)(liveCard.UntappedImage.Width * 1.5);
+                    cardZoomPictureBox.Height = (int)(liveCard.UntappedImage.Height * 1.5);
+                }
                 cardZoomPictureBox.Location = this.PointToClient(liveCard.Parent.PointToScreen(liveCard.Location));
                 if (cardZoomPictureBox.Top + cardZoomPictureBox.Height > this.Height)
                     cardZoomPictureBox.Top = this.Height - cardZoomPictureBox.Height - 30;
