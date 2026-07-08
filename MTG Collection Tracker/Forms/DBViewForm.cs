@@ -20,6 +20,8 @@ namespace MTG_Librarian
         object SetSelected = null;
         public bool addingToCLV = false;
         private Point mouseLocation;
+        public OLVMessageRow messageRow;
+        public bool isFetchingResults = false;
 
         #endregion Fields
 
@@ -28,6 +30,7 @@ namespace MTG_Librarian
         public DBViewForm()
         {
             InitializeComponent();
+            messageRow = new OLVMessageRow { Message = "Fetching more results..." };
             setListView.SmallImageList = Globals.ImageLists.SmallIconList;
             setListView.TreeColumnRenderer = new SetRenderer();
             setListView.UseFiltering = true;
@@ -48,6 +51,7 @@ namespace MTG_Librarian
             (commanderRedButton.ImageKey, commanderGreenButton.ImageKey, commanderColorlessButton.ImageKey) = ("{R}", "{G}", "{C}");
             cardListView.UseFiltering = true;
             cardListView.SetDoubleBuffered();
+            cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "DisplayName").Renderer = new CardInstanceNameRenderer();
             cardListView.AllColumns.FirstOrDefault(x => x.AspectName == "ManaCost").Renderer = new ManaCostRenderer();
             formatFilterComboBox.SelectedIndex = 0;
             uniqueComboBox.SelectedIndex = 2;
@@ -496,8 +500,11 @@ namespace MTG_Librarian
         }
         private void cardListView_Scroll(object sender, ScrollEventArgs e)
         {
-            if (cardListView.Items[cardListView.Items.Count - 1].Bounds.Top < 500)
+            var lastItem = cardListView.Items[cardListView.Items.Count - 1];
+            if (lastItem.Position.Y < 500 && SearchHasMoreResults && !isFetchingResults)
             {
+                isFetchingResults = true;
+                cardListView.AddObject(messageRow);
                 FetchMoreResults();
             }
         }

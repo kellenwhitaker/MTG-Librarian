@@ -110,6 +110,8 @@ namespace MTG_Librarian
                         }
                     }
                     Globals.Forms.DBViewForm.addingToCLV = true;
+                    Globals.Forms.DBViewForm.cardListView.RemoveObject(Globals.Forms.DBViewForm.messageRow);
+                    Globals.Forms.DBViewForm.isFetchingResults = false;
                     Globals.Forms.DBViewForm.cardListView.AddObjects(cardItems);
                     Globals.Forms.DBViewForm.addingToCLV = false;
                     Globals.Forms.DBViewForm.Text = $"Catalog | Query returned with {Globals.Forms.DBViewForm.cardListView.Objects.Count()} / {e.TotalCards} results: {e.Query}".Replace("&", "&&").Replace("%3A", ":");

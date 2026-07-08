@@ -7,11 +7,11 @@ namespace MTG_Librarian
     {
         private void FillBackground(Graphics g, Rectangle backgroundRect)
         {
-            if (ListItem.RowObject is InventoryTotalsItem)
+            if (ListItem.RowObject is InventoryTotalsItem || ListItem.RowObject is OLVMessageRow)
             {
                 using (var solidBrush = new SolidBrush(ListItem.BackColor))
                 {
-                    g.FillRectangle(solidBrush, backgroundRect);
+                    g.FillRectangle(Brushes.DodgerBlue, backgroundRect);
                 }
                 return;
             }
@@ -37,9 +37,13 @@ namespace MTG_Librarian
 
         public override void Render(Graphics g, Rectangle r)
         {
-            if (ListItem.RowObject is InventoryCard cardInstance)
+            if (ListItem.RowObject is InventoryCard || ListItem.RowObject is OLVCardItem)
             {
-                int? imgIndex = ListView.SmallImageList?.Images?.IndexOfKey(cardInstance.ImageKey);
+                int? imgIndex = null;
+                if (ListItem.RowObject is InventoryCard cardInstance)
+                    imgIndex = ListView.SmallImageList?.Images?.IndexOfKey(cardInstance.ImageKey);
+                else if (ListItem.RowObject is OLVCardItem cardItem)
+                    imgIndex = ListView.SmallImageList?.Images?.IndexOfKey(cardItem.ImageKey);
                 int imgWidth = ListView.SmallImageList?.ImageSize.Width ?? 0;
                 var backgroundRect = new Rectangle(r.Left - 1, r.Top - 1, r.Width + 1, r.Height + 1);
                 FillBackground(g, backgroundRect);
@@ -52,7 +56,7 @@ namespace MTG_Librarian
                 else
                     g.DrawString(GetText(), Font, fontColor, r.Left + 5, r.Top + 3);
             }
-            else if (ListItem.RowObject is InventoryTotalsItem totals)
+            else if (ListItem.RowObject is InventoryTotalsItem || ListItem.RowObject is OLVMessageRow)
             {
                 using (var boldFont = new Font(Font, FontStyle.Bold))
                 {

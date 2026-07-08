@@ -159,7 +159,14 @@ namespace MTG_Librarian
             Rarities.Add(rarity);
         }
     }
-
+    public class OLVMessageRow : OLVItem
+    {
+        public override OLVItem Parent { get; set; }
+        public override string ImageKey => null;
+        public override Predicate<object> Filter => throw new NotImplementedException();
+        public string Message { get; set; }
+        public string DisplayName => Message.PadRight(500);
+    }
     public class InventoryTotalsItem : OLVItem
     {
         public override OLVItem Parent { get; set; }
@@ -173,7 +180,6 @@ namespace MTG_Librarian
         public double Delta => Price - Cost;
         public double Percent => Cost != 0.0 ? 100 * Delta / Cost : 0.0;
     }
-
     public class OLVAttributeItem : OLVItem
     {
         public override OLVItem Parent { get; set; }
@@ -183,7 +189,6 @@ namespace MTG_Librarian
         public string Description { get; set; }
         public bool Not { get; set; } = false;
     }
-
     public abstract class OLVItem
     {
         public abstract OLVItem Parent { get; set; }
