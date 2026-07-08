@@ -1630,7 +1630,7 @@ namespace MTG_Librarian
             // priceColumn
             // 
             this.priceColumn.AspectName = "Price";
-            this.priceColumn.AspectToStringFormat = "";
+            this.priceColumn.AspectToStringFormat = "{0:N2}";
             this.priceColumn.Text = "Price";
             // 
             // DisplayName

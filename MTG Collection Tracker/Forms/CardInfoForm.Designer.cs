@@ -231,6 +231,7 @@
             // priceColumn
             // 
             this.priceColumn.AspectName = "Price";
+            this.priceColumn.AspectToStringFormat = "{0:N2}";
             this.priceColumn.Text = "Price";
             // 
             // attributesTabPage

@@ -37,6 +37,8 @@
             this.olvColumn10 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn2 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.ManaCost = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.powerColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.toughnessColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn4 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn5 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.CountColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -80,6 +82,8 @@
             this.olvColumn8 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn9 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.sideboardManaCostColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.sideboardPowerColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.sideboardToughnessColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn12 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn13 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.sideboardCountColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -91,10 +95,6 @@
             this.olvColumn20 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn21 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.statsTabPage = new System.Windows.Forms.TabPage();
-            this.powerColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.toughnessColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.sideboardPowerColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.sideboardToughnessColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             ((System.ComponentModel.ISupportInitialize)(this.cardListView)).BeginInit();
             this.cardListViewMenuStrip.SuspendLayout();
             this.tabControl.SuspendLayout();
@@ -235,6 +235,18 @@
             this.ManaCost.Text = "Mana Cost";
             this.ManaCost.Width = 100;
             // 
+            // powerColumn
+            // 
+            this.powerColumn.AspectName = "power";
+            this.powerColumn.IsEditable = false;
+            this.powerColumn.Text = "P";
+            // 
+            // toughnessColumn
+            // 
+            this.toughnessColumn.AspectName = "toughness";
+            this.toughnessColumn.IsEditable = false;
+            this.toughnessColumn.Text = "T";
+            // 
             // olvColumn4
             // 
             this.olvColumn4.AspectName = "set_name";
@@ -264,7 +276,7 @@
             // CostColumn
             // 
             this.CostColumn.AspectName = "Cost";
-            this.CostColumn.AspectToStringFormat = "{0:0.00}";
+            this.CostColumn.AspectToStringFormat = "{0:N2}";
             this.CostColumn.AutoCompleteEditor = false;
             this.CostColumn.AutoCompleteEditorMode = System.Windows.Forms.AutoCompleteMode.None;
             this.CostColumn.CellEditUseWholeCell = true;
@@ -275,7 +287,7 @@
             // tcgplayerMarketPriceColumn
             // 
             this.tcgplayerMarketPriceColumn.AspectName = "Price";
-            this.tcgplayerMarketPriceColumn.AspectToStringFormat = "{0:0.00}";
+            this.tcgplayerMarketPriceColumn.AspectToStringFormat = "{0:N2}";
             this.tcgplayerMarketPriceColumn.IsEditable = false;
             this.tcgplayerMarketPriceColumn.Text = "Price";
             this.tcgplayerMarketPriceColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -293,7 +305,7 @@
             // DeltaColumn
             // 
             this.DeltaColumn.AspectName = "Delta";
-            this.DeltaColumn.AspectToStringFormat = "{0:0.00}";
+            this.DeltaColumn.AspectToStringFormat = "{0:N2}";
             this.DeltaColumn.IsEditable = false;
             this.DeltaColumn.Text = "Δ";
             this.DeltaColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -301,7 +313,7 @@
             // percentColumn
             // 
             this.percentColumn.AspectName = "Percent";
-            this.percentColumn.AspectToStringFormat = "{0:0.00}";
+            this.percentColumn.AspectToStringFormat = "{0:N2}";
             this.percentColumn.IsEditable = false;
             this.percentColumn.Text = "%";
             this.percentColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -767,6 +779,18 @@
             this.sideboardManaCostColumn.Text = "Mana Cost";
             this.sideboardManaCostColumn.Width = 100;
             // 
+            // sideboardPowerColumn
+            // 
+            this.sideboardPowerColumn.AspectName = "power";
+            this.sideboardPowerColumn.IsEditable = false;
+            this.sideboardPowerColumn.Text = "P";
+            // 
+            // sideboardToughnessColumn
+            // 
+            this.sideboardToughnessColumn.AspectName = "toughness";
+            this.sideboardToughnessColumn.IsEditable = false;
+            this.sideboardToughnessColumn.Text = "T";
+            // 
             // olvColumn12
             // 
             this.olvColumn12.AspectName = "set_name";
@@ -796,7 +820,7 @@
             // olvColumn15
             // 
             this.olvColumn15.AspectName = "Cost";
-            this.olvColumn15.AspectToStringFormat = "{0:0.00}";
+            this.olvColumn15.AspectToStringFormat = "{0:N2}";
             this.olvColumn15.AutoCompleteEditor = false;
             this.olvColumn15.AutoCompleteEditorMode = System.Windows.Forms.AutoCompleteMode.None;
             this.olvColumn15.CellEditUseWholeCell = true;
@@ -807,7 +831,7 @@
             // sideboardPriceColumn
             // 
             this.sideboardPriceColumn.AspectName = "Price";
-            this.sideboardPriceColumn.AspectToStringFormat = "{0:0.00}";
+            this.sideboardPriceColumn.AspectToStringFormat = "{0:N2}";
             this.sideboardPriceColumn.IsEditable = false;
             this.sideboardPriceColumn.Text = "Price";
             this.sideboardPriceColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -815,7 +839,7 @@
             // olvColumn17
             // 
             this.olvColumn17.AspectName = "Delta";
-            this.olvColumn17.AspectToStringFormat = "{0:0.00}";
+            this.olvColumn17.AspectToStringFormat = "{0:N2}";
             this.olvColumn17.IsEditable = false;
             this.olvColumn17.Text = "Δ";
             this.olvColumn17.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -823,7 +847,7 @@
             // olvColumn18
             // 
             this.olvColumn18.AspectName = "Percent";
-            this.olvColumn18.AspectToStringFormat = "{0:0.00}";
+            this.olvColumn18.AspectToStringFormat = "{0:N2}";
             this.olvColumn18.IsEditable = false;
             this.olvColumn18.Text = "%";
             this.olvColumn18.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
@@ -858,30 +882,6 @@
             this.statsTabPage.Size = new System.Drawing.Size(1872, 506);
             this.statsTabPage.TabIndex = 1;
             this.statsTabPage.Text = "Stats";
-            // 
-            // powerColumn
-            // 
-            this.powerColumn.AspectName = "power";
-            this.powerColumn.IsEditable = false;
-            this.powerColumn.Text = "P";
-            // 
-            // toughnessColumn
-            // 
-            this.toughnessColumn.AspectName = "toughness";
-            this.toughnessColumn.IsEditable = false;
-            this.toughnessColumn.Text = "T";
-            // 
-            // sideboardPowerColumn
-            // 
-            this.sideboardPowerColumn.AspectName = "power";
-            this.sideboardPowerColumn.IsEditable = false;
-            this.sideboardPowerColumn.Text = "P";
-            // 
-            // sideboardToughnessColumn
-            // 
-            this.sideboardToughnessColumn.AspectName = "toughness";
-            this.sideboardToughnessColumn.IsEditable = false;
-            this.sideboardToughnessColumn.Text = "T";
             // 
             // CollectionViewForm
             // 
