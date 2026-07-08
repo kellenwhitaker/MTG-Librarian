@@ -19,7 +19,7 @@ namespace MTG_Librarian
             int? imgIndex = ListView.SmallImageList?.Images?.IndexOfKey((ListItem.RowObject as OLVItem)?.ImageKey);
             if (ListItem.RowObject is OLVSetItem cardSet)
             {
-                if (ListItem.SubItems.Count > 0)
+                if (ListItem.SubItems.Count > 0 && UseTriangles)
                 {
                     var arrowRect = new Rectangle(backgroundRect.Left, backgroundRect.Top, 11, backgroundRect.Height);
                     contentRect.X = arrowRect.Right + margin;
