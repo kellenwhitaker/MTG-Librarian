@@ -84,6 +84,17 @@ namespace MTG_Librarian
                 Globals.Forms.MainForm.BeginInvoke(new ScryfallSearchEndedDelegate(ScryfallSearchEnded), sender, e);
             else
             {
+                if (e.CompletedMessage == "Request timed out")
+                {
+                    MessageBox.Show($"Query timed out: {e.Query}".Replace("&", "&&").Replace("%3A", ":"));
+                    Globals.Forms.DBViewForm.cardListView.EmptyListMsg = "Query timed out.";
+                    if (Globals.Forms.DBViewForm.isFetchingResults)
+                    {
+                        Globals.Forms.DBViewForm.cardListView.RemoveObject(Globals.Forms.DBViewForm.messageRow);
+                        Globals.Forms.DBViewForm.isFetchingResults = false;
+                    }
+                    return; 
+                }
                 if (e.Results.Count > 0)
                 {
                     var DefaultCurrency = SettingsManager.ApplicationSettings.DefaultCurrency;
@@ -110,8 +121,11 @@ namespace MTG_Librarian
                         }
                     }
                     Globals.Forms.DBViewForm.addingToCLV = true;
-                    Globals.Forms.DBViewForm.cardListView.RemoveObject(Globals.Forms.DBViewForm.messageRow);
-                    Globals.Forms.DBViewForm.isFetchingResults = false;
+                    if (Globals.Forms.DBViewForm.isFetchingResults)
+                    {
+                        Globals.Forms.DBViewForm.cardListView.RemoveObject(Globals.Forms.DBViewForm.messageRow);
+                        Globals.Forms.DBViewForm.isFetchingResults = false;
+                    }
                     Globals.Forms.DBViewForm.cardListView.AddObjects(cardItems);
                     Globals.Forms.DBViewForm.addingToCLV = false;
                     Globals.Forms.DBViewForm.Text = $"Catalog | Query returned with {Globals.Forms.DBViewForm.cardListView.Objects.Count()} / {e.TotalCards} results: {e.Query}".Replace("&", "&&").Replace("%3A", ":");
@@ -119,7 +133,6 @@ namespace MTG_Librarian
                 }
                 else
                 {
-
                     Globals.Forms.DBViewForm.Text = $"Catalog | Query returned no results: {e.Query}".Replace("&", "&&").Replace("%3A", "=");
                     Globals.Forms.DBViewForm.cardListView.EmptyListMsg = "Query returned no results.";
                 }

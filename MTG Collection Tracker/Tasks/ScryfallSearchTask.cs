@@ -18,6 +18,7 @@ namespace MTG_Librarian
         private string scryfallUrl = null;
         public List<ScryfallMagicCard> Results = new List<ScryfallMagicCard>();
         public int totalCards = 0;
+        public string CompletedMessage;
         public ScryfallSearchTask(string query)
         {
             WorkerSupportsCancellation = true;
@@ -37,10 +38,20 @@ namespace MTG_Librarian
                 if (scryfallUrl == null) scryfallUrl = $"/cards/search?{Query}";
                 Results.Clear();
                 var client = new RestClient(scryfallBaseUrl);
-                var request = new RestRequest(scryfallUrl, Method.Get);
+                var request = new RestRequest(scryfallUrl, Method.Get)
+                {
+                    Timeout = TimeSpan.FromSeconds(15)
+                };
                 request.AddHeader("Accept", "application/json");
                 request.AddHeader("User-Agent", $"MTG Librarian/{SettingsManager.ApplicationSettings.ApplicationVersion}");
-                string responseContent = client.Execute(request).Content;
+                var response = client.Execute(request);
+                if (response.ResponseStatus == ResponseStatus.TimedOut)
+                {
+                    RunState = RunState.Failed;
+                    CompletedMessage = "Request timed out";
+                    return;
+                }
+                string responseContent = response.Content;
                 if (CancellationPending)
                 {
                     RunState = RunState.Canceled;
@@ -69,12 +80,12 @@ namespace MTG_Librarian
                 }
                 else
                     RunState = RunState.Completed;
-                CompletedWorkUnits = TotalWorkUnits;                
+                CompletedWorkUnits = TotalWorkUnits;
             }
             catch (Exception ex)
             {
                 DebugOutput.WriteLine(ex.ToString());
-                RunState = RunState.Failed;
+                RunState = RunState.Failed;                
             }
             finally
             {

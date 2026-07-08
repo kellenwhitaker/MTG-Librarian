@@ -72,6 +72,7 @@ namespace MTG_Librarian
         public int TotalCards { get; set; }
         public bool Waiting { get; set; } = false;
         public string Query { get; set; }
+        public string CompletedMessage { get; set; }
     }
 
     public class CardResourceArgs : BasicCardArgs

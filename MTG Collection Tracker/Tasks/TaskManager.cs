@@ -182,10 +182,10 @@ namespace MTG_Librarian
         }
         private void CheckSearchTask()
         {
-            if (searchTask != null && (searchTask.RunState == RunState.WaitingForInput || searchTask.RunState == RunState.Completed) && !searchTaskEndedEventDispatched)
+            if (searchTask != null && (searchTask.RunState == RunState.Failed || searchTask.RunState == RunState.WaitingForInput || searchTask.RunState == RunState.Completed) && !searchTaskEndedEventDispatched)
             {
                 searchTaskEndedEventDispatched = true;
-                OnScryfallSearchEnded(new ScryfallSearchEndedEventArgs { Query = searchTask.Query, Results = searchTask.Results, TotalCards = searchTask.totalCards, Waiting = (searchTask.RunState == RunState.WaitingForInput) });
+                OnScryfallSearchEnded(new ScryfallSearchEndedEventArgs { Query = searchTask.Query, Results = searchTask.Results, TotalCards = searchTask.totalCards, Waiting = (searchTask.RunState == RunState.WaitingForInput), CompletedMessage = searchTask.CompletedMessage });
             }
         }
         private void CheckEndedTasks()
