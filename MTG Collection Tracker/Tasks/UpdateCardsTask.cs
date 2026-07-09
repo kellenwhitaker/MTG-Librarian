@@ -39,72 +39,78 @@ namespace MTG_Librarian
             base.Run();
         }
 
-        protected override void OnDoWork(DoWorkEventArgs e)
+        protected override void OnRunWorkerCompleted(RunWorkerCompletedEventArgs e)
         {
             try
             {
                 using (var context = new ScryfallCardsDbContext())
                 {
-                    const int batchSize = 75; // Scryfall /cards/collection is typically limited; 75 is safe
-                    string scryfallBaseUrl = "https://api.scryfall.com";
-                    var client = new RestClient(scryfallBaseUrl);
-
-                    
-                    // Process in batches
-                    for (int start = 0; start < cardsToUpdate.Count; start += batchSize)
+                    foreach (var scryfallMagicCard in CardsUpdated)
                     {
-                        var searchCollection = new ScryfallSearchCollection();
-                        var batchIds = cardsToUpdate
-                            .Skip(start)
-                            .Take(batchSize)
-                            .Select(c => c.ScryfallId)
-                            .Where(id => !string.IsNullOrWhiteSpace(id))
-                            .ToList();
-
-                        if (batchIds.Count == 0)
-                            continue;
-
-                        foreach (var id in batchIds)
-                            searchCollection.identifiers.Add(new ScryfallSearchCollectionIdentifier { id = id });
-
-                        var request = new RestRequest("/cards/collection", Method.Post);
-                        request.AddHeader("Accept", "application/json");
-                        request.AddHeader("User-Agent", $"MTG Librarian/{SettingsManager.ApplicationSettings.ApplicationVersion}");
-                        request.AddHeader("Content-Type", "application/json");
-                        request.AddJsonBody(JsonConvert.SerializeObject(searchCollection));
-                        var response = client.Execute(request);
-                        var scryfallCards = response.Content != null
-                            ? JsonConvert.DeserializeObject<ScryfallCardList>(response.Content)?.data
-                            : null;
-                        if (scryfallCards == null)
-                        {
-                            DebugOutput.WriteLine("ScryfallSearchCollection returned null for a batch.");
-                            continue;
-                        }
-
-                        foreach (var sfCard in scryfallCards)
-                        {
-                            try
-                            {
-                                if (sfCard == null) continue;
-                                var scryfallMagicCard = sfCard.ToScryfallMagicCard();
-                                context.Catalog.Update(scryfallMagicCard);
-                                var priceHistory = new PriceHistory { ScryfallId = scryfallMagicCard.ScryfallId, Prices = scryfallMagicCard.Prices };
-                                context.Add(priceHistory);
-                                CardsUpdated.Add(scryfallMagicCard);
-                                CompletedWorkUnits++;
-                            }
-                            catch (Exception innerEx)
-                            {
-                                // Log and continue with other cards
-                                DebugOutput.WriteLine(innerEx.ToString());
-                            }
-                        }
-                        context.SaveChanges();
-                        Thread.Sleep(500); // Sleep briefly to avoid hitting rate limits
+                        context.Catalog.Update(scryfallMagicCard);
+                        var priceHistory = new PriceHistory { ScryfallId = scryfallMagicCard.ScryfallId, Prices = scryfallMagicCard.Prices };
+                        context.Add(priceHistory);
                     }
-                    watch.Stop();
-                    RunState = RunState.Completed;
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception ex)
+            {
+                DebugOutput.WriteLine(ex.ToString());
+                RunState = RunState.Failed;
+            }
+            watch.Stop();
+            RunState = RunState.Completed;
+        }
+        protected override void OnDoWork(DoWorkEventArgs e)
+        {
+            try
+            {
+                const int batchSize = 75; // Scryfall /cards/collection is typically limited; 75 is safe
+                string scryfallBaseUrl = "https://api.scryfall.com";
+                var client = new RestClient(scryfallBaseUrl);
+
+
+                // Process in batches
+                for (int start = 0; start < cardsToUpdate.Count; start += batchSize)
+                {
+                    var searchCollection = new ScryfallSearchCollection();
+                    var batchIds = cardsToUpdate
+                        .Skip(start)
+                        .Take(batchSize)
+                        .Select(c => c.ScryfallId)
+                        .Where(id => !string.IsNullOrWhiteSpace(id))
+                        .ToList();
+
+                    if (batchIds.Count == 0)
+                        continue;
+
+                    foreach (var id in batchIds)
+                        searchCollection.identifiers.Add(new ScryfallSearchCollectionIdentifier { id = id });
+
+                    var request = new RestRequest("/cards/collection", Method.Post);
+                    request.AddHeader("Accept", "application/json");
+                    request.AddHeader("User-Agent", $"MTG Librarian/{SettingsManager.ApplicationSettings.ApplicationVersion}");
+                    request.AddHeader("Content-Type", "application/json");
+                    request.AddJsonBody(JsonConvert.SerializeObject(searchCollection));
+                    var response = client.Execute(request);
+                    var scryfallCards = response.Content != null
+                        ? JsonConvert.DeserializeObject<ScryfallCardList>(response.Content)?.data
+                        : null;
+                    if (scryfallCards == null)
+                    {
+                        DebugOutput.WriteLine("ScryfallSearchCollection returned null for a batch.");
+                        continue;
+                    }
+
+                    foreach (var sfCard in scryfallCards)
+                    {
+                        if (sfCard == null) continue;
+                        var scryfallMagicCard = sfCard.ToScryfallMagicCard();
+                        CardsUpdated.Add(scryfallMagicCard);
+                        CompletedWorkUnits++;
+                    }
+                    Thread.Sleep(500); // Sleep briefly to avoid hitting rate limits
                 }
             }
             catch (Exception ex)
