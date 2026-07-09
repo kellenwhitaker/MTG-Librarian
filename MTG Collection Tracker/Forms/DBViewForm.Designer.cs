@@ -462,6 +462,7 @@ namespace MTG_Librarian
             this.setListView.CellEditUseWholeCell = false;
             this.setListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.SetName,
+            this.ReleaseDate,
             this.completeColumn,
             this.complete4Column});
             this.setListView.ContextMenuStrip = this.contextMenuStrip1;
@@ -496,8 +497,8 @@ namespace MTG_Librarian
             // ReleaseDate
             // 
             this.ReleaseDate.AspectName = "ReleaseDate";
-            this.ReleaseDate.DisplayIndex = 1;
-            this.ReleaseDate.IsVisible = false;
+            this.ReleaseDate.AspectToStringFormat = "{0:yyyy-MM-dd}";
+            this.ReleaseDate.Width = 120;
             // 
             // completeColumn
             // 
