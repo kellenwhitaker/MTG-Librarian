@@ -108,6 +108,8 @@
       <DependentUpon>LiveMagicCard.cs</DependentUpon>
     </Compile>
     <Compile Include="Entities\CardCollection.cs" />
+    <Compile Include="Entities\CardQuantityHistory.cs" />
+    <Compile Include="Entities\CollectionHistory.cs" />
     <Compile Include="Entities\InventoryCard.cs" />
     <Compile Include="Entities\CardSet.cs" />
     <Compile Include="Entities\CollectionGroup.cs" />
@@ -115,6 +117,7 @@
     <Compile Include="Entities\InventoryCardBase.cs" />
     <Compile Include="Classes\InventoryCardCluster.cs" />
     <Compile Include="Entities\MagicCard.cs" />
+    <Compile Include="Entities\PriceHistory.cs" />
     <Compile Include="Entities\ScryfallCard.cs" />
     <Compile Include="Entities\ScryfallCardFace.cs" />
     <Compile Include="Events\EventArgs.cs" />

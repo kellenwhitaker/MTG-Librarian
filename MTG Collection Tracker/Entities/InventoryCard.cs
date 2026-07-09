@@ -15,6 +15,8 @@ namespace MTG_Librarian
 
         public int CollectionId { get; set; }
         public int? Count { get; set; }
+        [NotMapped]
+        public int? OldCount { get; set; } = null;
         public double? Cost { get; set; }
         [NotMapped]
         public double? Price { get; set; }

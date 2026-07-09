@@ -242,7 +242,7 @@ namespace MTG_Librarian
         public event EventHandler<CardsUpdatedFromScryfallEventArgs> CardsUpdatedFromScryfall;
         private void OnCardsUpdatedFromScryfall(CardsUpdatedFromScryfallEventArgs args)
         {
-            CardsUpdatedFromScryfall.Invoke(this, args);
+            CardsUpdatedFromScryfall?.Invoke(this, args);
         }
 
         public event EventHandler<SetDownloadedEventArgs> SetDownloaded;

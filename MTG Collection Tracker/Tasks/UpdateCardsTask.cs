@@ -89,6 +89,8 @@ namespace MTG_Librarian
                                 if (sfCard == null) continue;
                                 var scryfallMagicCard = sfCard.ToScryfallMagicCard();
                                 context.Catalog.Update(scryfallMagicCard);
+                                var priceHistory = new PriceHistory { ScryfallId = scryfallMagicCard.ScryfallId, Prices = scryfallMagicCard.Prices };
+                                context.Add(priceHistory);
                                 CardsUpdated.Add(scryfallMagicCard);
                                 CompletedWorkUnits++;
                             }

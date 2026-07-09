@@ -56,6 +56,9 @@ namespace MTG_Librarian
         public DbSet<ScryfallCardSet> Sets { get; set; }
         public DbSet<CardCollection> Collections { get; set; }
         public DbSet<CollectionGroup> CollectionGroups { get; set; }
+        public DbSet<CollectionHistory> CollectionHistories { get; set; }
+        public DbSet<PriceHistory> PriceHistories { get; set; }
+        public DbSet<CardQuantityHistory> CardQuantityHistories { get; set; }
         public DbSet<CardCollectionItem> CollectionsView { get; set; }
         #endregion
 
@@ -251,6 +254,19 @@ namespace MTG_Librarian
 	                        ""arena_code""	TEXT,
 	                        ""LastUpdated""	TEXT,
 	                        PRIMARY KEY(""id""));
+                        CREATE TABLE ""CollectionHistories"" (
+	                        ""InventoryId""	INTEGER NOT NULL,
+	                        ""SourceCollectionId""	INTEGER,
+	                        ""DestinationCollectionId""	INTEGER NOT NULL,
+	                        ""Time""	TEXT NOT NULL);
+                        CREATE TABLE ""PriceHistories"" (
+	                        ""ScryfallId""	TEXT NOT NULL,
+	                        ""Prices""	TEXT,
+	                        ""Time""	TEXT NOT NULL);
+                        CREATE TABLE ""CardQuantityHistories"" (
+	                        ""InventoryId""	INTEGER NOT NULL,
+	                        ""Quantity""	INTEGER NOT NULL,
+	                        ""Time""	TEXT NOT NULL);
                         CREATE VIEW LibraryView(
                             InventoryId, 
                             ""Count"", 
@@ -350,7 +366,7 @@ namespace MTG_Librarian
                             ProducedMana, 
                             game_changer, 
                             ColorIndicator) AS SELECT * FROM Library INNER JOIN Catalog ON Library.ScryfallId = Catalog.ScryfallId;
-                    CREATE INDEX ""idx_catalog"" ON ""Catalog"" (
+                        CREATE INDEX ""idx_catalog"" ON ""Catalog"" (
 	                        ""ScryfallId"",
 	                        ""oracle_id"",
 	                        ""MultiverseIds"",
@@ -450,7 +466,7 @@ namespace MTG_Librarian
 	                        ""Platform"",
 	                        ""Board"",
 	                        ""IsCommander"");
-                    CREATE INDEX ""idx_sets"" ON ""Sets"" (
+                        CREATE INDEX ""idx_sets"" ON ""Sets"" (
 	                        ""id"",
 	                        ""code"",
 	                        ""mtgo_code"",
@@ -473,6 +489,19 @@ namespace MTG_Librarian
 	                        ""MythicRareIconBytes"",
 	                        ""arena_code"",
 	                        ""LastUpdated"");
+                        CREATE INDEX ""idx_collectionhistories"" ON ""CollectionHistories"" (
+	                        ""InventoryId"",
+	                        ""SourceCollectionId"",
+	                        ""DestinationCollectionId"",
+	                        ""Time"");
+                        CREATE INDEX ""idx_pricehistories"" ON ""PriceHistories"" (
+	                        ""ScryfallId"",
+	                        ""Prices"",
+	                        ""Time"");
+                        CREATE INDEX ""idx_cardquantityhistories"" ON ""CardQuantityHistories"" (
+	                        ""InventoryId"",
+	                        ""Quantity"",
+	                        ""Time"");
                         ";
                             createCommand.ExecuteNonQuery();                            
                         }

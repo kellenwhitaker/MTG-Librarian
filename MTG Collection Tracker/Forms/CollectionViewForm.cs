@@ -700,7 +700,10 @@ namespace MTG_Librarian
                             if (e.Column.AspectName == "Tags")
                                 card.Tags = editedCard.Tags;
                             else if (e.Column.AspectName == "Count")
+                            {
+                                card.OldCount = card.Count;
                                 card.Count = editedCard.Count;
+                            }
                             else if (e.Column.AspectName == "Cost")
                                 card.Cost = editedCard.Cost;
                             else if (e.Column.AspectName == "Foil")
@@ -728,19 +731,23 @@ namespace MTG_Librarian
                         if (listView.SelectedObjects.Count == 1 && cluster.Cards.Count == 1)
                         {
                             var cardsUpdated = new List<InventoryCard>();
-                            foreach (var card in cluster.Cards)
-                            {
-                                cardsUpdated.Add(card);
-                                card.Count++;
-                            }
-                            OnCardsUpdated(new CardsUpdatedEventArgs { Items =  new ArrayList(cardsUpdated), CollectionViewForm = this, Board = listView == cardListView ? "mainboard" : "sideboard" });
+                            var card = cluster.Cards[0];
+                            cardsUpdated.Add(card);
+                            card.OldCount = card.Count;
+                            card.Count++;
+                            OnCardsUpdated(new CardsUpdatedEventArgs { Items = new ArrayList(cardsUpdated), CollectionViewForm = this, Board = listView == cardListView ? "mainboard" : "sideboard" });
                         }
+                        else
+                            return;
                     }
                     else
                     {
                         foreach (var item in listView.SelectedObjects)
                             if (item is InventoryCard card)
+                            {
+                                card.OldCount = card.Count;
                                 card.Count++;
+                            }
                         OnCardsUpdated(new CardsUpdatedEventArgs { Items = listView.SelectedObjects as ArrayList, CollectionViewForm = this, Board = listView == cardListView ? "mainboard" : "sideboard" });
                     }
                 }
@@ -753,13 +760,12 @@ namespace MTG_Librarian
                     {
                         if (listView.SelectedObjects.Count == 1 && cluster.Cards.Count == 1)
                         {
-                            foreach (var card in cluster.Cards)
-                            {
-                                cardsUpdated.Add(card);
-                                card.Count--;
-                                if (card.Count < 1)
-                                    pendingDeletion = true;
-                            }
+                            var card = cluster.Cards[0];
+                            cardsUpdated.Add(card);
+                            card.OldCount = card.Count;
+                            card.Count--;
+                            if (card.Count < 1)
+                                pendingDeletion = true;
                         }
                         else
                             return;
@@ -769,6 +775,7 @@ namespace MTG_Librarian
                         {
                             if (item is InventoryCard card)
                             {
+                                card.OldCount = card.Count;
                                 card.Count--;
                                 if (card.Count < 1)
                                     pendingDeletion = true;
@@ -912,6 +919,7 @@ namespace MTG_Librarian
                                 foreach (var card in cluster.Cards)
                                 {
                                     cardList.Add(card);
+                                    card.OldCount = card.Count;
                                     card.Count = 0;
                                 }
                             }
@@ -920,7 +928,10 @@ namespace MTG_Librarian
                         else if (cardListView.SelectedObjects[0] is InventoryCard)
                         {
                             foreach (InventoryCard cardItem in cardListView.SelectedObjects)
+                            {
+                                cardItem.OldCount = cardItem.Count;
                                 cardItem.Count = 0;
+                            }
 
                             OnCardsUpdated(new CardsUpdatedEventArgs { Items = cardListView.SelectedObjects as ArrayList, CollectionViewForm = this, Board = sender == cardListView ? "mainboard" : "sideboard" });
                         }
@@ -1074,10 +1085,15 @@ namespace MTG_Librarian
                     {
                         if (int.TryParse(e.NewValue?.ToString(), out int cellValue))
                             foreach (var cardItem in cluster.Cards)
-                                cardItem.Count = cellValue;                            
+                            {
+                                cardItem.OldCount = cardItem.Count;
+                                cardItem.Count = cellValue;
+                            }
                         listView.RefreshObject(card);
                         e.Cancel = true;
                     }
+                    else
+                        card.OldCount = card.Count;
                 }
                 else if (e.SubItemIndex == tagsIndex)
                 {
@@ -1136,6 +1152,7 @@ namespace MTG_Librarian
                             foreach (var card in cluster.Cards)
                             {
                                 cardList.Add(card);
+                                card.OldCount = card.Count;
                                 card.Count = 0;
                             }
                         }
@@ -1144,7 +1161,10 @@ namespace MTG_Librarian
                     else if (cardListView.SelectedObjects[0] is InventoryCard)
                     {
                         foreach (InventoryCard cardItem in cardListView.SelectedObjects)
+                        {
+                            cardItem.OldCount = cardItem.Count;
                             cardItem.Count = 0;
+                        }
 
                         OnCardsUpdated(new CardsUpdatedEventArgs { Items = cardListView.SelectedObjects as ArrayList, CollectionViewForm = this, Board = board });
                     }  
@@ -1217,6 +1237,19 @@ namespace MTG_Librarian
                         context.Update(card1);
                         context.Add(card2);
                         context.SaveChanges();
+                        var card1QuantityHistory = new CardQuantityHistory
+                        {
+                            InventoryId = card1.InventoryId,
+                            Quantity = card1.Count.Value,
+                        };
+                        context.Add(card1QuantityHistory);
+                        var card2QuantityHistory = new CardQuantityHistory
+                        {
+                            InventoryId = card2.InventoryId,
+                            Quantity = card2.Count.Value,
+                        };
+                        context.Add(card2QuantityHistory);
+                        context.SaveChanges();
                         card.Count = card1.Count;
                         cardListView.RefreshObject(card);
                         int selectedIndex = cardListView.SelectedIndex;
@@ -1252,10 +1285,22 @@ namespace MTG_Librarian
                 using (var context = new ScryfallCardsDbContext())
                 {
                     context.Update(firstCard.InventoryCardBase);
+                    var firstCardQuantityHistory = new CardQuantityHistory
+                    {
+                        InventoryId = firstCard.InventoryId,
+                        Quantity = firstCard.Count.Value,
+                    };
+                    context.Add(firstCardQuantityHistory);
                     foreach (var selectedCard in selectedCards)
                         if (selectedCard != firstCard)
                         {
                             cardListView.RemoveObject(selectedCard);
+                            var selectedCardQuantityHistory = new CardQuantityHistory
+                            {
+                                InventoryId = selectedCard.InventoryId,
+                                Quantity = 0,
+                            };
+                            context.Add(selectedCardQuantityHistory);
                             context.Remove(selectedCard.InventoryCardBase);
                         }
                     context.SaveChanges();

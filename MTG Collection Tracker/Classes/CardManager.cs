@@ -84,8 +84,15 @@ namespace MTG_Librarian
                         failedCards++;
                         continue;
                     }
+                    var priceHistory = new PriceHistory { ScryfallId = card.ScryfallId, Prices = card.Prices };
+                    context.Add(priceHistory);
                     var inventoryCard = AddMagicCardToCollection(context, card, collection, board, insertionIndex);
                     cardsAdded.Add(inventoryCard);
+                    context.SaveChanges();
+                    var cardQuantityHistory = new CardQuantityHistory { InventoryId = inventoryCard.InventoryId, Quantity = inventoryCard.Count.HasValue ? inventoryCard.Count.Value : 1 };
+                    context.Add(cardQuantityHistory);   
+                    var collectionHistory = new CollectionHistory { InventoryId = inventoryCard.InventoryId, DestinationCollectionId = collection.Id, Time = DateTime.Now };
+                    context.Add(collectionHistory);
                     insertionIndex++;
                     if (!setItems.TryGetValue(card.set_name, out OLVSetItem setItem))
                         if ((setItem = Globals.Forms.DBViewForm.SetItems.FirstOrDefault(x => x.Name == card.set_name)) != null)
@@ -135,12 +142,18 @@ namespace MTG_Librarian
                 {
                     foreach (InventoryCard fullInventoryCard in fullInventoryCards)
                     {
+                        var sourceCollectionId = fullInventoryCard.CollectionId;
                         fullInventoryCard.CollectionId = collection.Id;
                         if (fullInventoryCard.Virtual != collection.Virtual)
                             fullInventoryCard.TimeAdded = DateTime.Now;
                         fullInventoryCard.Virtual = collection.Virtual;
                         fullInventoryCard.Board = destinationBoard;
                         context.Update(fullInventoryCard.InventoryCardBase);
+                        if (sourceCollectionId != collection.Id)
+                        {
+                            var collectionHistory = new CollectionHistory { InventoryId = fullInventoryCard.InventoryId, SourceCollectionId = sourceCollectionId, DestinationCollectionId = collection.Id, Time = DateTime.Now };
+                            context.Add(collectionHistory);
+                        }
                         cardsList.Add(fullInventoryCard);
                     }
                     context.SaveChanges();
@@ -275,6 +288,19 @@ namespace MTG_Librarian
                 try
                 {
                     UpdateCardsInDB(context, e.Items);
+                    foreach (var card in e.Items)
+                    {
+                        if (card is InventoryCard inventoryCard)
+                        {
+                            if (inventoryCard.Count.HasValue && inventoryCard.OldCount.HasValue && inventoryCard.Count.Value != inventoryCard.OldCount.Value)
+                            {
+                                var cardQuantityHistory = new CardQuantityHistory { InventoryId = inventoryCard.InventoryId, Quantity = inventoryCard.Count.Value };
+                                inventoryCard.OldCount = null;
+                                context.Add(cardQuantityHistory);
+                            }
+                        }
+                    }
+                    context.SaveChanges();
                     EventManager.OnInventoryChanged(new InventoryChangedEventArgs { Cards = e.Items.Cast<InventoryCard>().ToList() });
                     var inventoryCardsToRemove = new List<InventoryCard>();
                     var magicCardsCopiesUpdated = new List<ScryfallMagicCard>();
