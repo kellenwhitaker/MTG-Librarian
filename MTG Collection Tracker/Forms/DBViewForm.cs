@@ -22,6 +22,7 @@ namespace MTG_Librarian
         private Point mouseLocation;
         public OLVMessageRow messageRow;
         public bool isFetchingResults = false;
+        private string lastScryfallQuery = null;
 
         #endregion Fields
 
@@ -699,11 +700,16 @@ namespace MTG_Librarian
         {
             Globals.Forms.TasksForm.TaskManager.ContinueSearch();
         }
-        private void DoScryfallQuery()
+        private void DoScryfallQuery(string q = null)
         {
-            string query = BuildScryfallQuery();
+            string query;
+            if (q != null)
+                query = q;
+            else
+                query = BuildScryfallQuery();
             if (query != "" && Globals.Forms.TasksForm != null)
             {
+                lastScryfallQuery = query;
                 Text = $"Catalog | Query: {query.Replace("&", "&&").Replace("%3A", ":")}";
                 cardListView.ClearObjects();
                 cardListView.EmptyListMsg = "Performing query...";
@@ -787,7 +793,19 @@ namespace MTG_Librarian
         private void DBViewForm_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.F2)
-                DoScryfallQuery();
+            {
+                string query = BuildScryfallQuery();
+                if (query != lastScryfallQuery)
+                {
+                    DoScryfallQuery(query);
+                }
+                else if (SearchHasMoreResults)
+                {
+                    isFetchingResults = true;
+                    cardListView.AddObject(messageRow);
+                    FetchMoreResults();
+                }
+            }
         }
 
         private void attributesObjectListView_KeyDown(object sender, KeyEventArgs e)
