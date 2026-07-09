@@ -53,14 +53,17 @@ namespace MTG_Librarian
                     }
                     context.SaveChanges();
                 }
+                watch.Stop();
+                if (CardsUpdated.Count != cardsToUpdate.Count)
+                    RunState = RunState.Failed;
+                else
+                    RunState = RunState.Completed;
             }
             catch (Exception ex)
             {
                 DebugOutput.WriteLine(ex.ToString());
                 RunState = RunState.Failed;
             }
-            watch.Stop();
-            RunState = RunState.Completed;
         }
         protected override void OnDoWork(DoWorkEventArgs e)
         {
@@ -116,7 +119,6 @@ namespace MTG_Librarian
             catch (Exception ex)
             {
                 DebugOutput.WriteLine(ex.ToString());
-                RunState = RunState.Failed;
             }
         }
 
