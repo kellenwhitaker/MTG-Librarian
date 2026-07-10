@@ -1249,6 +1249,12 @@ namespace MTG_Librarian
                             Quantity = card2.Count.Value,
                         };
                         context.Add(card2QuantityHistory);
+                        var card2CollectionHistory = new CollectionHistory
+                        {
+                            DestinationCollectionId = card2.CollectionId,
+                            InventoryId = card2.InventoryId
+                        };
+                        context.Add(card2CollectionHistory);
                         context.SaveChanges();
                         card.Count = card1.Count;
                         cardListView.RefreshObject(card);
