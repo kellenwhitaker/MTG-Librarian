@@ -42,7 +42,7 @@ namespace MTG_Librarian
             return document;
         }
 
-        public static InventoryCardBase AddMagicCardToCollection(ScryfallCardsDbContext context, ScryfallMagicCard magicCard, CardCollection collection, string board, int insertionIndex = 0)
+        public static InventoryCardBase AddMagicCardToCollection(ScryfallCardsDbContext context, ScryfallMagicCard magicCard, CardCollection collection, string board, int count, int insertionIndex = 0)
         {
             var inventoryCard = new InventoryCardBase
             {
@@ -52,7 +52,8 @@ namespace MTG_Librarian
                 InsertionIndex = insertionIndex,
                 Virtual = collection.Virtual,
                 Platform = collection.Platform,
-                Board = board
+                Board = board,
+                Count = count,
             };
 
             if (magicCard.finishes.Length == 1)
@@ -67,7 +68,7 @@ namespace MTG_Librarian
             return inventoryCard;
         }
 
-        public static void AddMagicCardsToCollection(List<OLVCardItem> cards, CardCollection collection, string board)
+        public static void AddMagicCardsToCollection(List<OLVCardItem> cards, CardCollection collection, string board, int count = 1)
         {
             DefaultCurrency = SettingsManager.ApplicationSettings.DefaultCurrency;
             var setItems = new Dictionary<string, OLVSetItem>();
@@ -86,7 +87,7 @@ namespace MTG_Librarian
                     }
                     var priceHistory = new PriceHistory { ScryfallId = card.ScryfallId, Prices = card.Prices };
                     context.Add(priceHistory);
-                    var inventoryCard = AddMagicCardToCollection(context, card, collection, board, insertionIndex);
+                    var inventoryCard = AddMagicCardToCollection(context, card, collection, board, count, insertionIndex);
                     cardsAdded.Add(inventoryCard);
                     context.SaveChanges();
                     var cardQuantityHistory = new CardQuantityHistory { InventoryId = inventoryCard.InventoryId, Quantity = inventoryCard.Count.HasValue ? inventoryCard.Count.Value : 1 };

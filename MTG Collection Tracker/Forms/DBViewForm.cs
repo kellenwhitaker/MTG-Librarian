@@ -1027,5 +1027,64 @@ namespace MTG_Librarian
             colorsRedButton.Refresh();
             colorsGreenButton.Refresh();
         }
+        private void cardListViewMenuStrip_Opening(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (cardListView.SelectedObjects.Count == 0)
+                e.Cancel = true;
+            else
+            {
+                var activeDocument = Globals.Forms.DockPanel.ActiveDocument as CollectionViewForm;
+                if (activeDocument != null)
+                {
+                    if (activeDocument.Collection.Type == "deck")
+                    {
+                        add1CopyToActiveCollectionToolStripMenuItem.Text = "Add 1 Copy to active deck mainboard";
+                        add4CopiesToActiveCollectionToolStripMenuItem.Text = "Add 4 Copies to active deck mainboard";
+                        add1CopyToActiveDeckSideboardToolStripMenuItem.Visible = true;
+                        add4CopiesToActiveDeckSideboardToolStripMenuItem.Visible = true;
+                    }
+                    else if (activeDocument.Collection.GroupName != "Sold")
+                    {
+                        add1CopyToActiveCollectionToolStripMenuItem.Text = "Add 1 Copy to active collection";
+                        add4CopiesToActiveCollectionToolStripMenuItem.Text = "Add 4 Copies to active collection";
+                        add1CopyToActiveDeckSideboardToolStripMenuItem.Visible = false;
+                        add4CopiesToActiveDeckSideboardToolStripMenuItem.Visible = false;
+                    }
+                    else
+                        e.Cancel = true;
+                }
+                else
+                    e.Cancel = true;
+            }
+        }
+        private void AddCardsToActiveCollection(string board, int count)
+        {
+            var activeDocument = Globals.Forms.DockPanel.ActiveDocument as CollectionViewForm;
+            if (activeDocument != null)
+            {
+                var collection = activeDocument.Collection;
+                var selectedCards = cardListView.SelectedObjects.Cast<OLVCardItem>().ToList();
+                CardManager.AddMagicCardsToCollection(selectedCards, collection, board, count);
+            }
+        }
+        private void add1CopyToActiveCollectionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AddCardsToActiveCollection("mainboard", 1);
+        }
+         
+        private void add4CopiesToActiveCollectionToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AddCardsToActiveCollection("mainboard", 4);
+        }
+
+        private void add1CopyToActiveDeckSideboardToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AddCardsToActiveCollection("sideboard", 1);
+        }
+
+        private void add4CopiesToActiveDeckSideboardToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            AddCardsToActiveCollection("sideboard", 4);
+        }
     }
 }

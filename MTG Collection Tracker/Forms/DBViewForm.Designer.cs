@@ -142,6 +142,11 @@ namespace MTG_Librarian
             this.Set = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.CollectorNumber = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.cardTextColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.cardListViewMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.add1CopyToActiveCollectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.add4CopiesToActiveCollectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.add1CopyToActiveDeckSideboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.add4CopiesToActiveDeckSideboardToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tabPage1 = new System.Windows.Forms.TabPage();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
@@ -173,6 +178,7 @@ namespace MTG_Librarian
             ((System.ComponentModel.ISupportInitialize)(this.powerNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cmcNumericUpDown)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.cardListView)).BeginInit();
+            this.cardListViewMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // splitContainer2
@@ -1595,6 +1601,7 @@ namespace MTG_Librarian
             this.Set,
             this.CollectorNumber,
             this.cardTextColumn});
+            this.cardListView.ContextMenuStrip = this.cardListViewMenuStrip;
             this.cardListView.Cursor = System.Windows.Forms.Cursors.Default;
             this.cardListView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.cardListView.EmptyListMsg = "F2 to search";
@@ -1688,6 +1695,48 @@ namespace MTG_Librarian
             this.cardTextColumn.AspectName = "DisplayText";
             this.cardTextColumn.Text = "Text";
             this.cardTextColumn.Width = 200;
+            // 
+            // cardListViewMenuStrip
+            // 
+            this.cardListViewMenuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.cardListViewMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.add1CopyToActiveCollectionToolStripMenuItem,
+            this.add4CopiesToActiveCollectionToolStripMenuItem,
+            this.add1CopyToActiveDeckSideboardToolStripMenuItem,
+            this.add4CopiesToActiveDeckSideboardToolStripMenuItem});
+            this.cardListViewMenuStrip.Name = "cardListViewMenuStrip";
+            this.cardListViewMenuStrip.Size = new System.Drawing.Size(333, 100);
+            this.cardListViewMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.cardListViewMenuStrip_Opening);
+            // 
+            // add1CopyToActiveCollectionToolStripMenuItem
+            // 
+            this.add1CopyToActiveCollectionToolStripMenuItem.Name = "add1CopyToActiveCollectionToolStripMenuItem";
+            this.add1CopyToActiveCollectionToolStripMenuItem.Size = new System.Drawing.Size(332, 24);
+            this.add1CopyToActiveCollectionToolStripMenuItem.Text = "Add 1 copy to active collection";
+            this.add1CopyToActiveCollectionToolStripMenuItem.Click += new System.EventHandler(this.add1CopyToActiveCollectionToolStripMenuItem_Click);
+            // 
+            // add4CopiesToActiveCollectionToolStripMenuItem
+            // 
+            this.add4CopiesToActiveCollectionToolStripMenuItem.Name = "add4CopiesToActiveCollectionToolStripMenuItem";
+            this.add4CopiesToActiveCollectionToolStripMenuItem.Size = new System.Drawing.Size(332, 24);
+            this.add4CopiesToActiveCollectionToolStripMenuItem.Text = "Add 4 copies to active collection";
+            this.add4CopiesToActiveCollectionToolStripMenuItem.Click += new System.EventHandler(this.add4CopiesToActiveCollectionToolStripMenuItem_Click);
+            // 
+            // add1CopyToActiveDeckSideboardToolStripMenuItem
+            // 
+            this.add1CopyToActiveDeckSideboardToolStripMenuItem.Name = "add1CopyToActiveDeckSideboardToolStripMenuItem";
+            this.add1CopyToActiveDeckSideboardToolStripMenuItem.Size = new System.Drawing.Size(332, 24);
+            this.add1CopyToActiveDeckSideboardToolStripMenuItem.Text = "Add 1 copy to active deck sideboard";
+            this.add1CopyToActiveDeckSideboardToolStripMenuItem.Visible = false;
+            this.add1CopyToActiveDeckSideboardToolStripMenuItem.Click += new System.EventHandler(this.add1CopyToActiveDeckSideboardToolStripMenuItem_Click);
+            // 
+            // add4CopiesToActiveDeckSideboardToolStripMenuItem
+            // 
+            this.add4CopiesToActiveDeckSideboardToolStripMenuItem.Name = "add4CopiesToActiveDeckSideboardToolStripMenuItem";
+            this.add4CopiesToActiveDeckSideboardToolStripMenuItem.Size = new System.Drawing.Size(332, 24);
+            this.add4CopiesToActiveDeckSideboardToolStripMenuItem.Text = "Add 4 copies to active deck sideboard";
+            this.add4CopiesToActiveDeckSideboardToolStripMenuItem.Visible = false;
+            this.add4CopiesToActiveDeckSideboardToolStripMenuItem.Click += new System.EventHandler(this.add4CopiesToActiveDeckSideboardToolStripMenuItem_Click);
             // 
             // tabPage1
             // 
@@ -1789,6 +1838,7 @@ namespace MTG_Librarian
             ((System.ComponentModel.ISupportInitialize)(this.powerNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cmcNumericUpDown)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.cardListView)).EndInit();
+            this.cardListViewMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
 
         }
@@ -1914,5 +1964,10 @@ namespace MTG_Librarian
         private CustomControls.FlatButton colorsColorlessButton;
         private BrightIdeasSoftware.OLVColumn powerColumn;
         private BrightIdeasSoftware.OLVColumn toughnessColumn;
+        private System.Windows.Forms.ContextMenuStrip cardListViewMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem add1CopyToActiveCollectionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem add4CopiesToActiveCollectionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem add1CopyToActiveDeckSideboardToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem add4CopiesToActiveDeckSideboardToolStripMenuItem;
     }
 }
