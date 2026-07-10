@@ -258,6 +258,7 @@ namespace MTG_Librarian
             totalsRow.Price = 0;
             totalsRow.Cost = 0;
             totalsRow.Count = 0;
+            totalsRow.SoldPrice = 0;
             foreach (var row in listView.FilteredObjects)
             {
                 if (row is InventoryCardCluster cluster)
@@ -275,6 +276,8 @@ namespace MTG_Librarian
                         totalsRow.Price += card.Price.Value * cardCount;
                     if (card.Cost.HasValue)
                         totalsRow.Cost += card.Cost.Value * cardCount;
+                    if (card.SoldPrice.HasValue)
+                        totalsRow.SoldPrice += card.SoldPrice.Value * cardCount;
                 }
             }
             listView.RefreshObject(totalsRow);
@@ -291,6 +294,8 @@ namespace MTG_Librarian
         {
             if (Collection != null)
             {
+                if (Collection.Virtual)
+                    moveToSoldCardsToolStripMenuItem.Visible = false;
 
                 if (Collection.Type == "collection")
                 {
@@ -300,6 +305,15 @@ namespace MTG_Librarian
                     tabControl.SizeMode = TabSizeMode.Fixed;
                     sideboardListView.Visible = false;
                     cardListView.Dock = DockStyle.Fill;
+                    if (Collection.GroupName == "Sold")
+                    {
+                        soldPriceColumn.IsVisible = soldTimeColumn.IsVisible = true;
+                        cardListView.Columns.Add(soldPriceColumn);
+                        cardListView.Columns.Add(soldTimeColumn);
+                        soldPriceColumn.DisplayIndex = 13;
+                        soldTimeColumn.DisplayIndex = 16;
+                        moveToSoldCardsToolStripMenuItem.Visible = false;
+                    }
                 }
                 else if (Collection.Type == "deck")                
                 {
@@ -1701,6 +1715,73 @@ namespace MTG_Librarian
                 cmcChart.Width = 400;
                 cmcChart.Height = colorsChart.Height;
                 cmcChart.Left = 450;
+            }
+        }
+
+        private void moveToSoldCardsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (cardListView.SelectedObjects.Count == 1 && !(cardListView.SelectedObject is InventoryCardCluster || cardListView.SelectedObject is InventoryTotalsItem))
+            {
+                using (var moveForm = new MoveToSoldCardsForm())
+                {
+                    if (moveForm.ShowDialog() == DialogResult.OK)
+                    {
+                        var card = cardListView.SelectedObject as InventoryCard;
+                        using (var context = new ScryfallCardsDbContext())
+                        {
+                            var collection = (from c in context.Collections
+                                              where c.CollectionName == "Sold Cards" && c.Platform == Collection.Platform
+                                              select c).FirstOrDefault();
+                            if (collection != null)
+                            {
+                                card.SoldPrice = (double?)moveForm.soldPriceNumericUpDown.Value;
+                                card.SoldTime = DateTime.Now;
+                                context.Update(card.InventoryCardBase);
+                                context.SaveChanges();
+                                CardManager.MoveFullInventoryCardsToCollection(new ArrayList { card }, this, collection, card.Board, "mainboard");
+                            }
+                            else
+                                MessageBox.Show("Sold Cards collection not found"); 
+                        }
+                    }
+                }
+            }
+            else
+            {
+                var cardsToMove = new ArrayList();
+                foreach (var item in cardListView.SelectedObjects)
+                {
+                    if (item is InventoryCardCluster cluster)
+                    {
+                        cardsToMove.AddRange(cluster.Cards);
+                    }
+                    else if (item is InventoryCard card)
+                    {
+                        cardsToMove.Add(card);
+                    }
+                }
+                if (cardsToMove.Count > 0)
+                {
+                    using (var context = new ScryfallCardsDbContext())
+                    {
+                        var collection = (from c in context.Collections
+                                          where c.CollectionName == "Sold Cards" && c.Platform == Collection.Platform
+                                          select c).FirstOrDefault();
+                        if (collection != null)
+                        {
+                            var now = DateTime.Now;
+                            foreach (InventoryCard card in cardsToMove)
+                            {
+                                card.SoldTime = now;
+                                context.Update(card.InventoryCardBase);
+                            }
+                            context.SaveChanges();
+                            CardManager.MoveFullInventoryCardsToCollection(cardsToMove, this, collection, "mainboard", "mainboard");
+                        }
+                        else
+                            MessageBox.Show("Sold Cards collection not found");
+                    }
+                }
             }
         }
     }

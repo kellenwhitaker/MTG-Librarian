@@ -79,15 +79,23 @@ namespace MTG_Librarian
                 {
                     var collectionsGroup = new CollectionGroup { GroupName = "Collections", Permanent = true, Virtual = false };
                     context.Add(collectionsGroup);
-                    var wishlistGroup = new CollectionGroup { GroupName = "Wish Lists", Permanent = true, Virtual = false };
+                    var wishlistGroup = new CollectionGroup { GroupName = "Wish Lists", Permanent = true, Virtual = true };
                     context.Add(wishlistGroup);
                     var decksGroup = new CollectionGroup { GroupName = "Decks", Permanent = true, Virtual = false };
                     context.Add(decksGroup);
                     var watchlistGroup = new CollectionGroup { GroupName = "Watch Lists", Permanent = true, Virtual = false };
                     context.Add(watchlistGroup);
+                    var soldGroup = new CollectionGroup { GroupName = "Sold", Permanent = true, Virtual = true };
+                    context.Add(soldGroup);
                     context.SaveChanges();
                     var mainCollection = new CardCollection { CollectionName = "Main", Type = "collection", GroupName = collectionsGroup.GroupName, GroupId = collectionsGroup.Id, Virtual = false, Permanent = true, Platform = "Paper" };
                     context.Add(mainCollection);
+                    var soldCollection = new CardCollection { CollectionName = "Sold Cards", Type = "collection", GroupName = soldGroup.GroupName, GroupId = soldGroup.Id, Virtual = true, Permanent = true, Platform = "Paper" };
+                    var soldCollection2 = new CardCollection { CollectionName = "Sold Cards", Type = "collection", GroupName = soldGroup.GroupName, GroupId = soldGroup.Id, Virtual = true, Permanent = true, Platform = "MTGO" };
+                    var soldCollection3 = new CardCollection { CollectionName = "Sold Cards", Type = "collection", GroupName = soldGroup.GroupName, GroupId = soldGroup.Id, Virtual = true, Permanent = true, Platform = "Arena" };
+                    context.Add(soldCollection);
+                    context.Add(soldCollection2);
+                    context.Add(soldCollection3);
                     context.SaveChanges();
                 }
         }

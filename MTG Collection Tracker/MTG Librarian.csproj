@@ -142,6 +142,12 @@
     <Compile Include="Forms\DockForm.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Forms\MoveToSoldCardsForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\MoveToSoldCardsForm.Designer.cs">
+      <DependentUpon>MoveToSoldCardsForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\NewCollectionForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -286,6 +292,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\MoveToSoldCardsForm.resx">
+      <DependentUpon>MoveToSoldCardsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\NewCollectionForm.resx">
       <DependentUpon>NewCollectionForm.cs</DependentUpon>

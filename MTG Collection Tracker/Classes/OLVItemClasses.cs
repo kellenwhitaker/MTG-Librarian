@@ -177,8 +177,22 @@ namespace MTG_Librarian
         public double Price;
         public double Cost;
         public int Count;
-        public double Delta => Price - Cost;
-        public double Percent => Cost != 0.0 ? 100 * Delta / Cost : 0.0;
+        public double SoldPrice;
+        public double Delta 
+        { 
+            get 
+            {
+                var price = SoldPrice > 0.0 ? SoldPrice : Price;
+                return price - Cost; 
+            } 
+        }
+        public double Percent
+        {
+            get
+            {
+                return Cost != 0.0 ? 100 * Delta / Cost : 0.0;
+            }
+        }
     }
     public class OLVAttributeItem : OLVItem
     {

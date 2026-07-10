@@ -40,6 +40,8 @@ namespace MTG_Librarian
         public string Platform { get; set; }
         public string Board { get; set; }
         public bool? IsCommander { get; set; }
+        public double? SoldPrice { get; set; }
+        public DateTime? SoldTime { get; set; }
         [NotMapped]
         public string SortableTimeAdded
         {
@@ -58,8 +60,9 @@ namespace MTG_Librarian
         { 
             get 
             { 
-                if (Price.HasValue && Cost.HasValue)
-                    return Price.Value - Cost.Value;
+                var price = SoldPrice.HasValue ? SoldPrice : Price;
+                if (price.HasValue && Cost.HasValue)
+                    return price.Value - Cost.Value;
                 else
                     return null;
             } 
@@ -69,8 +72,9 @@ namespace MTG_Librarian
         { 
             get
             {
-                if (Price.HasValue && Cost.HasValue && Cost.Value != 0.0)
-                    return 100 * (Price.Value - Cost.Value) / Cost.Value;
+                var price = SoldPrice.HasValue ? SoldPrice : Price;
+                if (price.HasValue && Cost.HasValue && Cost.Value != 0.0)
+                    return 100 * (price.Value - Cost.Value) / Cost.Value;
                 else
                     return null;
             }
@@ -128,7 +132,9 @@ namespace MTG_Librarian
                     Finish = Finish,
                     Platform = Platform,
                     Board = Board,
-                    IsCommander = IsCommander
+                    IsCommander = IsCommander,
+                    SoldPrice = SoldPrice,
+                    SoldTime = SoldTime
                 };
             }
         }

@@ -26,5 +26,7 @@ namespace MTG_Librarian
         public string       Platform { get; set; }
         public string       Board { get; set; }
         public bool?        IsCommander { get; set; }
+        public double?      SoldPrice { get; set; }
+        public DateTime?      SoldTime { get; set; }
     }
 }

@@ -207,6 +207,7 @@ namespace MTG_Librarian
                             ""Platform"" TEXT, 
                             ""Commander"" INTEGER, 
                             ""CollapsedView"" INTEGER,
+                            UNIQUE(""CollectionName"", ""GroupId"", ""Platform""),
                             FOREIGN KEY(""GroupId"") REFERENCES ""CollectionGroups""(""Id""));
                         CREATE TABLE Library (
                             InventoryId INTEGER PRIMARY KEY AUTOINCREMENT, 
@@ -225,6 +226,8 @@ namespace MTG_Librarian
                             ""Platform"" TEXT, 
                             ""Board"" TEXT, 
                             ""IsCommander"" INTEGER,
+                            ""SoldPrice"" NUMERIC,
+                            ""SoldTime"" DATETIME,
                             FOREIGN KEY (ScryfallId) REFERENCES Catalog(ScryfallId));
                         CREATE TABLE ""Metadata"" (
 	                        ""Name""	TEXT,
@@ -283,7 +286,9 @@ namespace MTG_Librarian
                             Finish, 
                             Platform, 
                             Board, 
-                            IsCommander, 
+                            IsCommander,
+                            SoldPrice,
+                            SoldTime,
                             ScryfallId, 
                             oracle_id, 
                             MultiverseIds, 
@@ -465,7 +470,9 @@ namespace MTG_Librarian
 	                        ""Finish"",
 	                        ""Platform"",
 	                        ""Board"",
-	                        ""IsCommander"");
+	                        ""IsCommander"",
+                            ""SoldPrice"",
+                            ""SoldTime"");
                         CREATE INDEX ""idx_sets"" ON ""Sets"" (
 	                        ""id"",
 	                        ""code"",

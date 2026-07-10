@@ -47,6 +47,8 @@
             this.tcgPlayerMidPriceColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.DeltaColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.percentColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.soldPriceColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.soldTimeColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.cardTextColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.TagsColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.SortableTimeAdded = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -58,6 +60,7 @@
             this.combineToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.makeCommanderToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.collapsedViewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.moveToSoldCardsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cardNameFilterTextBox = new EnhancedTextBox.EnhancedTextBox();
             this.tabControl = new System.Windows.Forms.TabControl();
             this.mainTabPage = new System.Windows.Forms.TabPage();
@@ -126,6 +129,8 @@
             this.cardListView.AllColumns.Add(this.tcgPlayerMidPriceColumn);
             this.cardListView.AllColumns.Add(this.DeltaColumn);
             this.cardListView.AllColumns.Add(this.percentColumn);
+            this.cardListView.AllColumns.Add(this.soldPriceColumn);
+            this.cardListView.AllColumns.Add(this.soldTimeColumn);
             this.cardListView.AllColumns.Add(this.cardTextColumn);
             this.cardListView.AllColumns.Add(this.TagsColumn);
             this.cardListView.AllColumns.Add(this.SortableTimeAdded);
@@ -318,6 +323,21 @@
             this.percentColumn.Text = "%";
             this.percentColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
+            // soldPriceColumn
+            // 
+            this.soldPriceColumn.AspectName = "SoldPrice";
+            this.soldPriceColumn.AspectToStringFormat = "{0:N2}";
+            this.soldPriceColumn.DisplayIndex = 15;
+            this.soldPriceColumn.IsVisible = false;
+            this.soldPriceColumn.Text = "Sold Price";
+            // 
+            // soldTimeColumn
+            // 
+            this.soldTimeColumn.AspectName = "SoldTime";
+            this.soldTimeColumn.DisplayIndex = 16;
+            this.soldTimeColumn.IsVisible = false;
+            this.soldTimeColumn.Text = "Sold On";
+            // 
             // cardTextColumn
             // 
             this.cardTextColumn.AspectName = "DisplayText";
@@ -366,36 +386,37 @@
             this.splitToolStripMenuItem,
             this.combineToolStripMenuItem,
             this.makeCommanderToolStripMenuItem,
-            this.collapsedViewToolStripMenuItem});
+            this.collapsedViewToolStripMenuItem,
+            this.moveToSoldCardsToolStripMenuItem});
             this.cardListViewMenuStrip.Name = "cardListViewMenuStrip";
-            this.cardListViewMenuStrip.Size = new System.Drawing.Size(201, 124);
+            this.cardListViewMenuStrip.Size = new System.Drawing.Size(209, 148);
             this.cardListViewMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.cardListViewMenuStrip_Opening);
             // 
             // deleteCardsToolStripMenuItem
             // 
             this.deleteCardsToolStripMenuItem.Name = "deleteCardsToolStripMenuItem";
-            this.deleteCardsToolStripMenuItem.Size = new System.Drawing.Size(200, 24);
+            this.deleteCardsToolStripMenuItem.Size = new System.Drawing.Size(208, 24);
             this.deleteCardsToolStripMenuItem.Text = "Delete card(s)";
             this.deleteCardsToolStripMenuItem.Click += new System.EventHandler(this.deleteCardsToolStripMenuItem_Click);
             // 
             // splitToolStripMenuItem
             // 
             this.splitToolStripMenuItem.Name = "splitToolStripMenuItem";
-            this.splitToolStripMenuItem.Size = new System.Drawing.Size(200, 24);
+            this.splitToolStripMenuItem.Size = new System.Drawing.Size(208, 24);
             this.splitToolStripMenuItem.Text = "Split";
             this.splitToolStripMenuItem.Click += new System.EventHandler(this.splitToolStripMenuItem_Click);
             // 
             // combineToolStripMenuItem
             // 
             this.combineToolStripMenuItem.Name = "combineToolStripMenuItem";
-            this.combineToolStripMenuItem.Size = new System.Drawing.Size(200, 24);
+            this.combineToolStripMenuItem.Size = new System.Drawing.Size(208, 24);
             this.combineToolStripMenuItem.Text = "Combine";
             this.combineToolStripMenuItem.Click += new System.EventHandler(this.combineToolStripMenuItem_Click);
             // 
             // makeCommanderToolStripMenuItem
             // 
             this.makeCommanderToolStripMenuItem.Name = "makeCommanderToolStripMenuItem";
-            this.makeCommanderToolStripMenuItem.Size = new System.Drawing.Size(200, 24);
+            this.makeCommanderToolStripMenuItem.Size = new System.Drawing.Size(208, 24);
             this.makeCommanderToolStripMenuItem.Text = "Make Commander";
             this.makeCommanderToolStripMenuItem.Visible = false;
             this.makeCommanderToolStripMenuItem.Click += new System.EventHandler(this.makeCommanderToolStripMenuItem_Click);
@@ -403,10 +424,17 @@
             // collapsedViewToolStripMenuItem
             // 
             this.collapsedViewToolStripMenuItem.Name = "collapsedViewToolStripMenuItem";
-            this.collapsedViewToolStripMenuItem.Size = new System.Drawing.Size(200, 24);
+            this.collapsedViewToolStripMenuItem.Size = new System.Drawing.Size(208, 24);
             this.collapsedViewToolStripMenuItem.Text = "Collapsed View";
             this.collapsedViewToolStripMenuItem.Visible = false;
             this.collapsedViewToolStripMenuItem.Click += new System.EventHandler(this.collapsedViewToolStripMenuItem_Click);
+            // 
+            // moveToSoldCardsToolStripMenuItem
+            // 
+            this.moveToSoldCardsToolStripMenuItem.Name = "moveToSoldCardsToolStripMenuItem";
+            this.moveToSoldCardsToolStripMenuItem.Size = new System.Drawing.Size(208, 24);
+            this.moveToSoldCardsToolStripMenuItem.Text = "Move to Sold Cards";
+            this.moveToSoldCardsToolStripMenuItem.Click += new System.EventHandler(this.moveToSoldCardsToolStripMenuItem_Click);
             // 
             // cardNameFilterTextBox
             // 
@@ -977,5 +1005,8 @@
         private BrightIdeasSoftware.OLVColumn toughnessColumn;
         private BrightIdeasSoftware.OLVColumn sideboardPowerColumn;
         private BrightIdeasSoftware.OLVColumn sideboardToughnessColumn;
+        private System.Windows.Forms.ToolStripMenuItem moveToSoldCardsToolStripMenuItem;
+        private BrightIdeasSoftware.OLVColumn soldPriceColumn;
+        private BrightIdeasSoftware.OLVColumn soldTimeColumn;
     }
 }

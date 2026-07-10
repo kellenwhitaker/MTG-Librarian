@@ -144,7 +144,7 @@ namespace MTG_Librarian
                     {
                         var sourceCollectionId = fullInventoryCard.CollectionId;
                         fullInventoryCard.CollectionId = collection.Id;
-                        if (fullInventoryCard.Virtual != collection.Virtual)
+                        if (fullInventoryCard.Virtual != collection.Virtual && collection.GroupName != "Sold")
                             fullInventoryCard.TimeAdded = DateTime.Now;
                         fullInventoryCard.Virtual = collection.Virtual;
                         fullInventoryCard.Board = destinationBoard;
