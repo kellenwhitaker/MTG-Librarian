@@ -47,6 +47,8 @@
             this.dBToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.navigatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tasksToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusPanel = new System.Windows.Forms.Panel();
             this.panel1 = new System.Windows.Forms.Panel();
             this.mainStatusLabel = new System.Windows.Forms.Label();
@@ -55,8 +57,8 @@
             this.TasksProgressBar = new CustomControls.BlockProgressBar();
             this.TasksLabel = new System.Windows.Forms.Label();
             this.UpdateMissingSetIconsWorker = new System.ComponentModel.BackgroundWorker();
-            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.aboutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.collectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.priceHistoryToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -97,13 +99,12 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.statusPanel);
             this.splitContainer1.Size = new System.Drawing.Size(1924, 782);
-            this.splitContainer1.SplitterDistance = 740;
+            this.splitContainer1.SplitterDistance = 743;
             this.splitContainer1.SplitterWidth = 1;
             this.splitContainer1.TabIndex = 2;
             // 
             // dockPanel1
             // 
-
             this.dockPanel1.Theme = this.vS2015LightTheme1;
             this.dockPanel1.AllowEndUserNestedDocking = false;
             this.dockPanel1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -119,7 +120,7 @@
             this.dockPanel1.Name = "dockPanel1";
             this.dockPanel1.Padding = new System.Windows.Forms.Padding(6);
             this.dockPanel1.ShowAutoHideContentOnHover = false;
-            this.dockPanel1.Size = new System.Drawing.Size(1924, 712);
+            this.dockPanel1.Size = new System.Drawing.Size(1924, 715);
             this.dockPanel1.TabIndex = 1;
             // 
             // mainMenuStrip
@@ -128,6 +129,7 @@
             this.mainMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.deckToolStripMenuItem,
+            this.collectionToolStripMenuItem,
             this.catalogToolStripMenuItem,
             this.windowsToolStripMenuItem,
             this.helpToolStripMenuItem});
@@ -229,6 +231,21 @@
             this.tasksToolStripMenuItem.Text = "Tasks";
             this.tasksToolStripMenuItem.Click += new System.EventHandler(this.tasksToolStripMenuItem_Click);
             // 
+            // helpToolStripMenuItem
+            // 
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.aboutToolStripMenuItem});
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(55, 24);
+            this.helpToolStripMenuItem.Text = "Help";
+            // 
+            // aboutToolStripMenuItem
+            // 
+            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
+            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(142, 26);
+            this.aboutToolStripMenuItem.Text = "About...";
+            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            // 
             // statusPanel
             // 
             this.statusPanel.BackColor = System.Drawing.Color.DodgerBlue;
@@ -238,7 +255,7 @@
             this.statusPanel.Location = new System.Drawing.Point(0, 0);
             this.statusPanel.Margin = new System.Windows.Forms.Padding(4);
             this.statusPanel.Name = "statusPanel";
-            this.statusPanel.Size = new System.Drawing.Size(1924, 41);
+            this.statusPanel.Size = new System.Drawing.Size(1924, 38);
             this.statusPanel.TabIndex = 3;
             // 
             // panel1
@@ -249,7 +266,7 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(677, 41);
+            this.panel1.Size = new System.Drawing.Size(677, 38);
             this.panel1.TabIndex = 2;
             // 
             // mainStatusLabel
@@ -287,7 +304,7 @@
             this.mainPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.mainPanel.Controls.Add(this.TasksProgressBar);
             this.mainPanel.Controls.Add(this.TasksLabel);
-            this.mainPanel.Location = new System.Drawing.Point(1079, 10);
+            this.mainPanel.Location = new System.Drawing.Point(1079, 7);
             this.mainPanel.Margin = new System.Windows.Forms.Padding(4);
             this.mainPanel.Name = "mainPanel";
             this.mainPanel.Size = new System.Drawing.Size(841, 31);
@@ -323,20 +340,20 @@
             this.UpdateMissingSetIconsWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.UpdateMissingSetIconsWorker_DoWork);
             this.UpdateMissingSetIconsWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.UpdateMissingSetIconsWorker_RunWorkerCompleted);
             // 
-            // helpToolStripMenuItem
+            // collectionToolStripMenuItem
             // 
-            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.aboutToolStripMenuItem});
-            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(55, 24);
-            this.helpToolStripMenuItem.Text = "Help";
+            this.collectionToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.priceHistoryToolStripMenuItem});
+            this.collectionToolStripMenuItem.Name = "collectionToolStripMenuItem";
+            this.collectionToolStripMenuItem.Size = new System.Drawing.Size(90, 24);
+            this.collectionToolStripMenuItem.Text = "Collection";
             // 
-            // aboutToolStripMenuItem
+            // priceHistoryToolStripMenuItem
             // 
-            this.aboutToolStripMenuItem.Name = "aboutToolStripMenuItem";
-            this.aboutToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
-            this.aboutToolStripMenuItem.Text = "About...";
-            this.aboutToolStripMenuItem.Click += new System.EventHandler(this.aboutToolStripMenuItem_Click);
+            this.priceHistoryToolStripMenuItem.Name = "priceHistoryToolStripMenuItem";
+            this.priceHistoryToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.priceHistoryToolStripMenuItem.Text = "Price History...";
+            this.priceHistoryToolStripMenuItem.Click += new System.EventHandler(this.priceHistoryToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -397,6 +414,8 @@
         private System.Windows.Forms.ToolStripMenuItem simulatorToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem aboutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem collectionToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem priceHistoryToolStripMenuItem;
     }
 }
 

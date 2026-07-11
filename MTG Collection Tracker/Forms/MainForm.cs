@@ -103,10 +103,16 @@ namespace MTG_Librarian
         private void DockPanelActiveDocumentChanged(object sender, EventArgs e)
         {
             var cvForm = Globals.Forms.DockPanel.ActiveDocument as CollectionViewForm;
-            if (cvForm != null && cvForm.Collection.Type == "deck")
-                deckToolStripMenuItem.Visible = true;
+            if (cvForm != null)
+            {
+                collectionToolStripMenuItem.Visible = true;
+                if (cvForm.Collection.Type == "deck")
+                    deckToolStripMenuItem.Visible = true;
+                else
+                    deckToolStripMenuItem.Visible = false;
+            }
             else
-                deckToolStripMenuItem.Visible = false;
+                collectionToolStripMenuItem.Visible = false;
         }
 
         public void UpdateStatusBarTotals(IList cards)
@@ -443,6 +449,15 @@ namespace MTG_Librarian
             using (var aboutForm = new AboutForm())
             {
                 aboutForm.ShowDialog();
+            }
+        }
+
+        private void priceHistoryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            using (var priceHistoryForm = new PriceHistoryForm())
+            {
+                priceHistoryForm.CollectionId = (Globals.Forms.DockPanel.ActiveDocument as CollectionViewForm).Collection.Id;
+                priceHistoryForm.ShowDialog();
             }
         }
     }

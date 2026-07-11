@@ -12,18 +12,18 @@ namespace MTG_Librarian
         public int rowid { get; set; }
         public string ScryfallId { get; set; }
         [NotMapped]
-        public Dictionary<string, string> prices;
-        public string Prices
+        public Dictionary<string, string> prices
         {
             get
             {
-                return prices == null ? null : JsonConvert.SerializeObject(prices);
+                return JsonConvert.DeserializeObject<Dictionary<string, string>>(Prices);
             }
             set
             {
-                prices = value == null ? null : JsonConvert.DeserializeObject<Dictionary<string, string>>(value);
+                Prices = JsonConvert.SerializeObject(value);
             }
         }
+        public string Prices { get; set; }
         public DateTime Time { get; set; } = DateTime.Now;
     }
 }

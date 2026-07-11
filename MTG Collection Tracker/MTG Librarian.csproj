@@ -154,6 +154,12 @@
     <Compile Include="Forms\NewCollectionForm.Designer.cs">
       <DependentUpon>NewCollectionForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\PriceHistoryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\PriceHistoryForm.Designer.cs">
+      <DependentUpon>PriceHistoryForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\SettingsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -298,6 +304,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\NewCollectionForm.resx">
       <DependentUpon>NewCollectionForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\PriceHistoryForm.resx">
+      <DependentUpon>PriceHistoryForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\SettingsForm.resx">
       <DependentUpon>SettingsForm.cs</DependentUpon>
