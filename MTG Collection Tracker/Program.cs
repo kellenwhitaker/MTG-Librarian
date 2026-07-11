@@ -11,6 +11,7 @@ namespace MTG_Librarian
         [STAThread]
         static void Main()
         {
+            SQLitePCL.Batteries_V2.Init();
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             MainForm form = new MainForm();
