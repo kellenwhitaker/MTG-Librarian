@@ -131,7 +131,7 @@ namespace MTG_Librarian
 
         public static void MoveFullInventoryCardsToCollection(ArrayList fullInventoryCards, CollectionViewForm sourceCVForm, CardCollection collection, string sourceBoard, string destinationBoard)
         {
-            if (sourceCVForm.Collection.Platform != collection.Platform)
+            if (sourceCVForm != null && sourceCVForm.Collection.Platform != collection.Platform)
             {
                 MessageBox.Show("Cannot move cards between collections of different platforms.");
                 return;
@@ -159,8 +159,7 @@ namespace MTG_Librarian
                     }
                     context.SaveChanges();
                 }
-
-                if (string.IsNullOrEmpty(sourceBoard))
+                if (string.IsNullOrEmpty(sourceBoard) && sourceCVForm != null)
                 {
                     var ids = new List<int>();
                     foreach (InventoryCard card in cardsList)
@@ -169,7 +168,8 @@ namespace MTG_Librarian
                     sourceCVForm.RemoveFullInventoryCards(ids, "sideboard");
                 }
 
-                sourceCVForm.RemoveFullInventoryCards(cardsList, sourceBoard);
+                if (sourceCVForm != null)
+                    sourceCVForm.RemoveFullInventoryCards(cardsList, sourceBoard);
                 var destinationCVForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.Collection.Id == collection.Id);
                 if (destinationCVForm != null)
                 {

@@ -630,8 +630,11 @@ namespace MTG_Librarian
                 foreach (InventoryCardCluster cluster in e.SourceModels)
                     count += cluster.Count;
             }
-            else if (firstModel is InventoryCard)
-            {                
+            else if (firstModel is InventoryCard firstCard)
+            {
+                if (firstCard.SoldTime.HasValue && Collection.GroupName != "Sold")
+                    return;
+
                 foreach (InventoryCard card in e.SourceModels)
                     count += (int)card.Count;
             }
@@ -639,7 +642,7 @@ namespace MTG_Librarian
             {
                 return;
             }
-
+    
             var destination = DocumentName;
             if (Collection.Type == "deck")
                 destination += e.ListView == cardListView ? " - mainboard" : " - sideboard";

@@ -267,7 +267,22 @@ namespace MTG_Librarian
                 CardManager.AddMagicCardsToCollection(cardItems, e.TargetCollection, e.TargetBoard);
             }
             else if (e.Items[0] is InventoryCard)
+            {
+                if (e.TargetCollection.GroupName == "Sold")
+                {
+                    using (var context = new ScryfallCardsDbContext())
+                    {
+                        var now = DateTime.Now;
+                        foreach (InventoryCard card in e.Items)
+                        {
+                            card.SoldTime = now;
+                            context.Update(card.InventoryCardBase);
+                        }
+                        context.SaveChanges();
+                    }
+                }
                 CardManager.MoveFullInventoryCardsToCollection(e.Items, e.SourceForm as CollectionViewForm, e.TargetCollection, e.SourceBoard, e.TargetBoard);
+            }
         }
 
         public static void NavigationFormCardsDropped(object sender, CardsDroppedEventArgs e)

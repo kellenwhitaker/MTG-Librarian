@@ -313,6 +313,7 @@ namespace MTG_Librarian
                             var collection = new CardCollection
                             {
                                 GroupId = group.CollectionGroup.Id,
+                                GroupName = group.Name,
                                 CollectionName = form.collectionNameTextBox.Text,
                                 Permanent = false,
                                 Type = "collection",
@@ -352,12 +353,26 @@ namespace MTG_Librarian
                 {
                     if (rowObjectUnderMouse is NavigatorGroup group)
                     {
+                        if (collection.CardCollection.GroupName == "Sold")
+                            return;
+                        if (group.Name == collection.CardCollection.GroupName)
+                            return;
+                        if (group.Name == "Sold" && collection.Virtual)
+                            return;
+
                         navigatorListView.SelectedObject = group;
                         e.Effect = DragDropEffects.Copy;
                         e.InfoMessage = $"Move {collection.Name} to {group.Name} group";
                     }
                     else if (rowObjectUnderMouse is NavigatorCollection col && col != collection)
                     {
+                        if (col.CardCollection.Platform != collection.CardCollection.Platform)
+                            return;
+                        if (collection.CardCollection.GroupName == "Sold" && col.CardCollection.GroupName != "Sold")
+                            return;
+                        if (col.CardCollection.GroupName == "Sold" && collection.CardCollection.Virtual)
+                            return;
+
                         navigatorListView.SelectedObject = col;
                         e.Effect = DragDropEffects.Move;
                         e.InfoMessage = $"Move {collection.Name} to {col.Name} collection";
@@ -367,30 +382,50 @@ namespace MTG_Librarian
             else if (!(e.SourceModels[0] is InventoryTotalsItem) && rowObjectUnderMouse is NavigatorCollection navigatorCollection)
             {
                 string DocumentName = navigatorCollection.CardCollection.CollectionName;
-                e.Effect = DragDropEffects.Move;
                 if (e.SourceModels[0] is OLVCardItem)
-                    e.InfoMessage = $"Add {e.SourceModels.Count} card{(e.SourceModels.Count == 1 ? "" : "s")} to {DocumentName}";
-                else if (e.SourceModels[0] is OLVSetItem setItem)
-                    e.InfoMessage = $"Add set [{setItem.Name}] to {DocumentName}";
-                else if (e.SourceModels[0] is OLVRarityItem rarityItem)
-                    e.InfoMessage = $"Add {rarityItem.Rarity}s from [{(rarityItem.Parent as OLVSetItem).Name}] to {DocumentName}";
-                else if (e.SourceModels[0] is InventoryCardCluster)
                 {
+                    if (navigatorCollection.CardCollection.GroupName == "Sold")
+                        return;
+
+                    e.Effect = DragDropEffects.Move;
+                    e.InfoMessage = $"Add {e.SourceModels.Count} card{(e.SourceModels.Count == 1 ? "" : "s")} to {DocumentName}";
+                }
+                //else if (e.SourceModels[0] is OLVSetItem setItem)
+                   // e.InfoMessage = $"Add set [{setItem.Name}] to {DocumentName}";
+                //else if (e.SourceModels[0] is OLVRarityItem rarityItem)
+                    //e.InfoMessage = $"Add {rarityItem.Rarity}s from [{(rarityItem.Parent as OLVSetItem).Name}] to {DocumentName}";
+                else if (e.SourceModels[0] is InventoryCardCluster firstCluster)
+                {
+                    var firstCard = firstCluster.Cards[0];
+                    if (firstCard.Virtual && navigatorCollection.CardCollection.GroupName == "Sold")
+                        return;
+
                     int count = 0;
                     foreach (InventoryCardCluster cluster in e.SourceModels)
                         count += (int)cluster.Count;
                     var parentForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.cardListView == e.SourceListView || x.sideboardListView == e.SourceListView);
                     if (parentForm != null && parentForm.Collection.Id != navigatorCollection.Id)
+                    {
+                        e.Effect = DragDropEffects.Move;
                         e.InfoMessage = $"Move {count} card{(count == 1 ? "" : "s")} to {DocumentName}";
+                    }
                 }
-                else if (e.SourceModels[0] is InventoryCard)
+                else if (e.SourceModels[0] is InventoryCard firstCard)
                 {
+                    if (firstCard.SoldTime.HasValue && navigatorCollection.CardCollection.GroupName != "Sold")
+                        return;
+                    if (firstCard.Virtual && navigatorCollection.CardCollection.GroupName == "Sold")
+                        return;
+
                     int count = 0;
                     foreach (InventoryCard card in e.SourceModels)
                         count += (int)card.Count;
                     var parentForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.cardListView == e.SourceListView || x.sideboardListView == e.SourceListView);
                     if (parentForm != null && parentForm.Collection.Id != navigatorCollection.Id)
-                        e.InfoMessage = $"Move {count} card{(count == 1 ? "" : "s")} to {DocumentName}";
+                    {
+                        e.Effect = DragDropEffects.Move;
+                        e.InfoMessage = $"Move {count} card{(count == 1 ? "" : "s")} to {DocumentName}"; 
+                    }
                 }
             }
         }
@@ -406,14 +441,35 @@ namespace MTG_Librarian
                     {
                         try
                         {
+                            if (group.Name == "Sold")
+                            {
+                                var cards = from c in context.Library
+                                            where c.CollectionId == collection.Id
+                                            select c;
+                                var now = DateTime.Now;
+                                foreach (var card in cards)
+                                {
+                                    card.SoldTime = now;
+                                    context.Library.Update(card);
+                                }
+                                collection.CardCollection.Type = "collection";
+                                collection.CardCollection.GroupName = "Sold";
+                            }
                             collection.CardCollection.GroupId = group.Id;
-                            if (collection.CardCollection.GroupName == "Wish Lists" || group.Name == "Wish Lists")
-                                collection.CardCollection.Virtual = group.Virtual;
+                            collection.CardCollection.Virtual = group.Virtual;
                             context.Update(collection.CardCollection);
                             context.SaveChanges();
                             collection.RemoveFromParent();
                             group.AddCollection(collection);
                             navigatorListView.RebuildAll(true);
+
+                            var sourceForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.Collection.Id == collection.Id);
+                            if (sourceForm != null)
+                            {
+                                sourceForm.Close();
+                                Globals.Forms.OpenCollectionForms.Remove(sourceForm);
+                                CardManager.LoadCollection(collection.CardCollection);
+                            }
                         }
                         catch (Exception ex)
                         {

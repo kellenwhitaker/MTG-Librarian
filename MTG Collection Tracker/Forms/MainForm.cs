@@ -85,14 +85,14 @@ namespace MTG_Librarian
                     context.Add(decksGroup);
                     var watchlistGroup = new CollectionGroup { GroupName = "Watch Lists", Permanent = true, Virtual = false };
                     context.Add(watchlistGroup);
-                    var soldGroup = new CollectionGroup { GroupName = "Sold", Permanent = true, Virtual = true };
+                    var soldGroup = new CollectionGroup { GroupName = "Sold", Permanent = true, Virtual = false };
                     context.Add(soldGroup);
                     context.SaveChanges();
                     var mainCollection = new CardCollection { CollectionName = "Main", Type = "collection", GroupName = collectionsGroup.GroupName, GroupId = collectionsGroup.Id, Virtual = false, Permanent = true, Platform = "Paper" };
                     context.Add(mainCollection);
-                    var soldCollection = new CardCollection { CollectionName = "Sold Cards", Type = "collection", GroupName = soldGroup.GroupName, GroupId = soldGroup.Id, Virtual = true, Permanent = true, Platform = "Paper" };
-                    var soldCollection2 = new CardCollection { CollectionName = "Sold Cards", Type = "collection", GroupName = soldGroup.GroupName, GroupId = soldGroup.Id, Virtual = true, Permanent = true, Platform = "MTGO" };
-                    var soldCollection3 = new CardCollection { CollectionName = "Sold Cards", Type = "collection", GroupName = soldGroup.GroupName, GroupId = soldGroup.Id, Virtual = true, Permanent = true, Platform = "Arena" };
+                    var soldCollection = new CardCollection { CollectionName = "Sold Cards", Type = "collection", GroupName = soldGroup.GroupName, GroupId = soldGroup.Id, Virtual = false, Permanent = true, Platform = "Paper" };
+                    var soldCollection2 = new CardCollection { CollectionName = "Sold Cards", Type = "collection", GroupName = soldGroup.GroupName, GroupId = soldGroup.Id, Virtual = false, Permanent = true, Platform = "MTGO" };
+                    var soldCollection3 = new CardCollection { CollectionName = "Sold Cards", Type = "collection", GroupName = soldGroup.GroupName, GroupId = soldGroup.Id, Virtual = false, Permanent = true, Platform = "Arena" };
                     context.Add(soldCollection);
                     context.Add(soldCollection2);
                     context.Add(soldCollection3);
