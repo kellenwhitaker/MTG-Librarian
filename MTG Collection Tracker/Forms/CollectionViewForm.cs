@@ -1254,25 +1254,6 @@ namespace MTG_Librarian
                         context.Update(card1);
                         context.Add(card2);
                         context.SaveChanges();
-                        var card1QuantityHistory = new CardQuantityHistory
-                        {
-                            InventoryId = card1.InventoryId,
-                            Quantity = card1.Count.Value,
-                        };
-                        context.Add(card1QuantityHistory);
-                        var card2QuantityHistory = new CardQuantityHistory
-                        {
-                            InventoryId = card2.InventoryId,
-                            Quantity = card2.Count.Value,
-                        };
-                        context.Add(card2QuantityHistory);
-                        var card2CollectionHistory = new CollectionHistory
-                        {
-                            DestinationCollectionId = card2.CollectionId,
-                            InventoryId = card2.InventoryId
-                        };
-                        context.Add(card2CollectionHistory);
-                        context.SaveChanges();
                         card.Count = card1.Count;
                         cardListView.RefreshObject(card);
                         int selectedIndex = cardListView.SelectedIndex;
@@ -1308,22 +1289,10 @@ namespace MTG_Librarian
                 using (var context = new ScryfallCardsDbContext())
                 {
                     context.Update(firstCard.InventoryCardBase);
-                    var firstCardQuantityHistory = new CardQuantityHistory
-                    {
-                        InventoryId = firstCard.InventoryId,
-                        Quantity = firstCard.Count.Value,
-                    };
-                    context.Add(firstCardQuantityHistory);
                     foreach (var selectedCard in selectedCards)
                         if (selectedCard != firstCard)
                         {
                             cardListView.RemoveObject(selectedCard);
-                            var selectedCardQuantityHistory = new CardQuantityHistory
-                            {
-                                InventoryId = selectedCard.InventoryId,
-                                Quantity = 0,
-                            };
-                            context.Add(selectedCardQuantityHistory);
                             context.Remove(selectedCard.InventoryCardBase);
                         }
                     context.SaveChanges();
