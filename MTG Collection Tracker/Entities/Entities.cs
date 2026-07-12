@@ -258,19 +258,6 @@ namespace MTG_Librarian
 	                        ""arena_code""	TEXT,
 	                        ""LastUpdated""	TEXT,
 	                        PRIMARY KEY(""id""));
-                        CREATE TABLE ""CollectionHistories"" (
-	                        ""InventoryId""	INTEGER NOT NULL,
-	                        ""SourceCollectionId""	INTEGER,
-	                        ""DestinationCollectionId""	INTEGER NOT NULL,
-	                        ""Time""	TEXT NOT NULL);
-                        CREATE TABLE ""PriceHistories"" (
-	                        ""ScryfallId""	TEXT NOT NULL,
-	                        ""Prices""	TEXT,
-	                        ""Time""	TEXT NOT NULL);
-                        CREATE TABLE ""CardQuantityHistories"" (
-	                        ""InventoryId""	INTEGER NOT NULL,
-	                        ""Quantity""	INTEGER NOT NULL,
-	                        ""Time""	TEXT NOT NULL);
                         CREATE TABLE ""CollectionSnapshots"" (
 	                        ""CollectionId""	INTEGER NOT NULL,
 	                        ""Time""	TEXT NOT NULL,
@@ -503,19 +490,6 @@ namespace MTG_Librarian
 	                        ""MythicRareIconBytes"",
 	                        ""arena_code"",
 	                        ""LastUpdated"");
-                        CREATE INDEX ""idx_collectionhistories"" ON ""CollectionHistories"" (
-	                        ""InventoryId"",
-	                        ""SourceCollectionId"",
-	                        ""DestinationCollectionId"",
-	                        ""Time"");
-                        CREATE INDEX ""idx_pricehistories"" ON ""PriceHistories"" (
-	                        ""ScryfallId"",
-	                        ""Prices"",
-	                        ""Time"");
-                        CREATE INDEX ""idx_cardquantityhistories"" ON ""CardQuantityHistories"" (
-	                        ""InventoryId"",
-	                        ""Quantity"",
-	                        ""Time"");
                         CREATE INDEX ""idx_collectionsnapshots"" ON ""CollectionSnapshots"" (
 	                        ""CollectionId"",
 	                        ""Time"",
