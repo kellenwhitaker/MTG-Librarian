@@ -69,7 +69,7 @@ namespace MTG_Librarian
                         RunState = RunState.Failed;
                     return;
                 }
-                DebugOutput.WriteLine(responseContent);
+                //DebugOutput.WriteLine(responseContent);
                 totalCards = responseObject.total_cards;
                 foreach (var item in responseObject.data)
                     Results.Add(item.ToScryfallMagicCard());
