@@ -198,7 +198,7 @@ namespace MTG_Librarian
                             Id INTEGER PRIMARY KEY, 
                             ""Virtual"" BOOLEAN NOT NULL);
                         CREATE TABLE Collections (
-                            CollectionName TEXT NOT NULL UNIQUE, 
+                            CollectionName TEXT NOT NULL, 
                             Type TEXT NOT NULL, 
                             ""Virtual"" BOOLEAN NOT NULL DEFAULT FALSE, 
                             GroupName TEXT, 
