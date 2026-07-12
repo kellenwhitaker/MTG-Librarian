@@ -1257,7 +1257,9 @@ namespace MTG_Librarian
                         card.Count = card1.Count;
                         cardListView.RefreshObject(card);
                         int selectedIndex = cardListView.SelectedIndex;
-                        cardListView.AddObject(card2.ToFullCard(context));
+                        var inventoryCard = card2.ToFullCard(context);
+                        inventoryCard.Price = card.Price;
+                        cardListView.AddObject(inventoryCard);
                         cardListView.SelectedIndex = selectedIndex;
                     }
                 }
