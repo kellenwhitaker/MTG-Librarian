@@ -1,4 +1,7 @@
 ﻿using LiveChartsCore;
+using LiveChartsCore.Defaults;
+using LiveChartsCore.Kernel;
+using LiveChartsCore.Kernel.Sketches;
 using LiveChartsCore.SkiaSharpView;
 using LiveChartsCore.SkiaSharpView.Drawing.Geometries;
 using LiveChartsCore.SkiaSharpView.Painting;
@@ -7,6 +10,7 @@ using LiveChartsCore.SkiaSharpView.WinForms;
 using SkiaSharp;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Data.Entity;
@@ -14,32 +18,24 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Globalization;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Forms.DataVisualization.Charting;
 
 namespace MTG_Librarian
 {
     public partial class PriceHistoryForm : Form
     {
-        private int collectionId;
+        private CardCollection collection;
         private CartesianChart priceHistoryChart;
         private string defaultPaperCurrency;
-        public int CollectionId { get { return collectionId; } set { collectionId = value; FillChart(); } }
+        public CardCollection Collection { get { return collection; } set { collection = value; FillChart(); } }
         public PriceHistoryForm()
         {
             InitializeComponent();
             priceHistoryChart = new CartesianChart();
-            var title = new DrawnLabelVisual(
-               new LabelGeometry
-               {
-                   Text = "Price History",
-                   Paint = new SolidColorPaint(SKColors.Black),
-                   TextSize = 25,
-                   Padding = new LiveChartsCore.Drawing.Padding(5)
-               });
-
-            priceHistoryChart.Title = title;
             priceHistoryChart.Dock = DockStyle.Fill;
             Controls.Add(priceHistoryChart);
             defaultPaperCurrency = SettingsManager.ApplicationSettings.DefaultPaperCurrency;
@@ -47,173 +43,75 @@ namespace MTG_Librarian
 
         private void FillChart()
         {
-            DebugOutput.WriteLine($"Filling price history chart for collection ID: {collectionId}");
+            DebugOutput.WriteLine($"Filling price history chart for collection ID: {collection.Id}");
             var cultureInfo = new CultureInfo(defaultPaperCurrency == "USD" ? "en-US" : "fr-FR");
-            var priceList = new List<double>();
-            var countList = new List<int>();
-            var dateList = new List<DateTime>();
-            
+            var countSeries = new ObservableCollection<DateTimePoint>();
+            var costSeries = new ObservableCollection<DateTimePoint>();
+            var priceSeries = new ObservableCollection<DateTimePoint>();
+
             using (var context = new ScryfallCardsDbContext()) 
             {
                 var watch = new Stopwatch();
                 watch.Start();
-        
-                var collectionEntries = context.CollectionHistories
-                    .AsNoTracking()
-                    .Where(c => c.DestinationCollectionId == collectionId || c.SourceCollectionId == collectionId)
-                    .OrderBy(c => c.Time)
-                    .ToList();
-                watch.Stop();
-                DebugOutput.WriteLine($"Collection history retrieval took {watch.ElapsedMilliseconds} ms");
-                watch.Restart();
-                if (collectionEntries.Count == 0)
+                var collectionEntries = (from c in context.CollectionSnapshots
+                                        where c.CollectionId == collection.Id
+                                        select c)
+                                        .OrderBy(c => c.Time)
+                                        .GroupBy(c => c.Time.Date)
+                                        .Select(g => g.Last())
+                                        .ToList();
+
+                collectionEntries = DateGapFiller.FillGaps(collectionEntries);
+                int index = 0;
+                foreach (var entry in collectionEntries)
                 {
-                    watch.Stop();
-                    DebugOutput.WriteLine($"Data retrieval took {watch.ElapsedMilliseconds} ms");
-                    return;
+                    countSeries.Add(new DateTimePoint(entry.Time, entry.Count));
+                    costSeries.Add(new DateTimePoint(entry.Time, entry.Cost));
+                    priceSeries.Add(new DateTimePoint(entry.Time, entry.Price));
+                    index++;
                 }
-
-                var startDate = collectionEntries[0].Time.Date;
-                var endDate = DateTime.Now.Date;
-                var inventoryIds = collectionEntries.Select(c => c.InventoryId).ToHashSet();
-
-                var quantityEntries = context.CardQuantityHistories
-                    .AsNoTracking()
-                    .Where(q => inventoryIds.Contains(q.InventoryId))
-                    .ToList();
-                watch.Stop();
-                DebugOutput.WriteLine($"Quantity history retrieval took {watch.ElapsedMilliseconds} ms");
-                watch.Restart();
-                var inventoryCards = context.Library
-                    .Where(i => inventoryIds.Contains(i.InventoryId))
-                    .Select(i => new 
-                    { 
-                        i.InventoryId, 
-                        i.ScryfallId, 
-                        i.Platform, 
-                        i.Finish 
-                    })
-                    .ToDictionary(i => i.InventoryId, i => new InventoryCard 
-                    { 
-                        InventoryId = i.InventoryId, 
-                        ScryfallId = i.ScryfallId, 
-                        Platform = i.Platform, 
-                        Finish = i.Finish 
-                    });
-                watch.Stop();
-                DebugOutput.WriteLine($"Inventory retrieval took {watch.ElapsedMilliseconds} ms");
-                watch.Restart();
-                var scryfallIds = inventoryCards.Values.Select(i => i.ScryfallId).ToHashSet();
-
-                var priceHistories = context.PriceHistories
-                    .AsNoTracking()
-                    .Where(p => scryfallIds.Contains(p.ScryfallId))
-                    .ToList();
-
-                watch.Stop();
-                DebugOutput.WriteLine($"Price history retrieval took {watch.ElapsedMilliseconds} ms");
-                watch.Restart();
-
-                // Group data by date for faster lookup
-                var priceHistoriesByDate = priceHistories
-                    .GroupBy(p => p.Time.Date)
-                    .ToDictionary(g => g.Key, g => g.ToList());
-
-                var quantityEntriesByDate = quantityEntries
-                    .GroupBy(q => q.Time.Date)
-                    .ToDictionary(g => g.Key, g => g.ToList());
-
-                var collectionEntriesByDate = collectionEntries
-                    .GroupBy(c => c.Time.Date)
-                    .ToDictionary(g => g.Key, g => g.ToList());
-
-                var selectionInventory = new Dictionary<int, InventoryCard>();
-                bool foundActiveInventory = false;
-
-                for (var selectionDate = startDate; selectionDate <= endDate; selectionDate = selectionDate.AddDays(1))
-                {
-                    // Update collection inventory
-                    if (collectionEntriesByDate.TryGetValue(selectionDate, out var collectionHistoryEntries))
-                    {
-                        foreach (var entry in collectionHistoryEntries)
-                        {
-                            if (inventoryCards.TryGetValue(entry.InventoryId, out var inventoryCard))
-                            {
-                                if (entry.DestinationCollectionId == collectionId)
-                                    selectionInventory[inventoryCard.InventoryId] = inventoryCard;
-                                else
-                                    selectionInventory.Remove(inventoryCard.InventoryId);
-                            }
-                        }
-                    }
-
-                    // Update quantities
-                    if (quantityEntriesByDate.TryGetValue(selectionDate, out var quantityHistoryEntries))
-                    {
-                        foreach (var entry in quantityHistoryEntries)
-                        {
-                            if (selectionInventory.TryGetValue(entry.InventoryId, out var inventoryCard))
-                                inventoryCard.Count = entry.Quantity;
-                        }
-                    }
-
-                    // Update prices
-                    if (priceHistoriesByDate.TryGetValue(selectionDate, out var priceHistoryEntries))
-                    {
-                        var pricesByScryfallId = priceHistoryEntries.GroupBy(p => p.ScryfallId).ToDictionary(g => g.Key, g => g.Last().Prices);
-                        foreach (var inventoryCard in selectionInventory.Values)
-                        {
-                            if (pricesByScryfallId.TryGetValue(inventoryCard.ScryfallId, out var prices))
-                                inventoryCard.Prices = prices;
-                        }
-                    }
-
-                    if (selectionInventory.Count == 0 && !foundActiveInventory)
-                        continue;
-
-                    foundActiveInventory = true;
-                    CountInventory(selectionInventory, out int totalCount, out double totalPrice);
-                    priceList.Add(totalPrice);
-                    countList.Add(totalCount);
-                    dateList.Add(selectionDate);
-                }
-
-                watch.Stop();
-                DebugOutput.WriteLine($"Data processing took {watch.ElapsedMilliseconds} ms");
+                var span = collectionEntries.Count > 0 ? collectionEntries.Count : 0;//dateList.Count > 0 ? (dateList[dateList.Count - 1] - dateList[0]).Add(TimeSpan.FromDays(1)) : TimeSpan.Zero;
+                SetChartTitle(span);
             }
-
+            var platform = Collection.Platform;
             priceHistoryChart.Series = new ISeries[]
             {
-                new ColumnSeries<int>
+                new ColumnSeries<DateTimePoint>
                 {
-                    Values = countList.ToArray(),
+                    Name = "Card Count",
+                    Values = countSeries,
                     ScalesYAt = 0,
                 },
-                new LineSeries<double>
+                new LineSeries<DateTimePoint>
                 {
-                    Values = priceList.ToArray(),
-                    GeometrySize = 10,
+                    EnableNullSplitting = false,
+                    Name = "Price",
+                    Values = priceSeries,
+                    GeometrySize = 5,
                     Fill = null,
                     Stroke = new SolidColorPaint(SKColors.Blue, 3),
                     ScalesYAt = 1,
-                    YToolTipLabelFormatter = (chartPoint) => chartPoint.Model.ToString("C", cultureInfo)
-                }
-            };
-
-            priceHistoryChart.XAxes = new LiveChartsCore.SkiaSharpView.Axis[]
-            {
-                new LiveChartsCore.SkiaSharpView.Axis
+                    YToolTipLabelFormatter = (chartPoint) => platform == "Paper" ? chartPoint.Model.Value?.ToString("C", cultureInfo) : chartPoint.Model.ToString()
+                },
+                new LineSeries<DateTimePoint>
                 {
-                    Labels = dateList.Select(x => x.ToString("yyyy-MM-dd")).ToArray(),
-                    Name = "Date",
+                    EnableNullSplitting = false,
+                    Name = "Cost",
+                    Values = costSeries,
+                    GeometrySize = 5,
+                    Fill = null,
+                    Stroke = new SolidColorPaint(SKColors.Green, 3),
+                    ScalesYAt = 1,
+                    YToolTipLabelFormatter = (chartPoint) => platform == "Paper" ? chartPoint.Model.Value?.ToString("C", cultureInfo) : chartPoint.Model.ToString()
                 }
             };
-
+            var xAxis = new DateTimeAxis(TimeSpan.FromDays(1), date => date.ToString("yyyy-MM-dd"));
+            priceHistoryChart.XAxes = new LiveChartsCore.SkiaSharpView.Axis[] { xAxis };            
             priceHistoryChart.YAxes = new LiveChartsCore.SkiaSharpView.Axis[]
             {
                 new LiveChartsCore.SkiaSharpView.Axis
                 {
-                    Name = "Count",
+                    Name = "Card Count",
                     Position = LiveChartsCore.Measure.AxisPosition.Start,
                     Labeler = (value) => value.ToString("N0"),
                     MinStep = 1
@@ -222,25 +120,65 @@ namespace MTG_Librarian
                 {
                     Name = "Price",
                     Position = LiveChartsCore.Measure.AxisPosition.End,
-                    Labeler = (value) => value.ToString("C", cultureInfo)
+                    Labeler = (value) => platform == "Paper" ? value.ToString("C", cultureInfo) : value.ToString()
                 }
-            }; 
+            };
+            priceHistoryChart.LegendPosition = LiveChartsCore.Measure.LegendPosition.Bottom;
+            priceHistoryChart.ZoomMode = LiveChartsCore.Measure.ZoomAndPanMode.X;
         }
 
-        private void CountInventory(Dictionary<int, InventoryCard> selectionInventory, out int totalCount, out double totalPrice)
+        private void SetChartTitle(int span)
         {
-            totalCount = 0;
-            totalPrice = 0.0;
+            var years = span / 365;
+            var days = span % 365;
+            string yearsText = years > 0 ? $"{years} {(years == 1 ? "year" : "years")} " : "";
 
-            foreach (var card in selectionInventory.Values)
+            var title = new DrawnLabelVisual(
+            new LabelGeometry
             {
-                totalCount += card.Count.Value;
-                var price = card.FindPrice(defaultPaperCurrency);
-                if (price.HasValue)
+                Text = $"Price History ({yearsText}{days} {(days == 1 ? "day" : "days")})",
+                Paint = new SolidColorPaint(SKColors.Black),
+                TextSize = 25,
+                Padding = new LiveChartsCore.Drawing.Padding(5)
+            });
+            priceHistoryChart.Title = title;
+        } 
+    }
+
+    public class DateGapFiller
+    {
+        public static List<CollectionSnapshot> FillGaps(List<CollectionSnapshot> existingData)
+        {
+            if (existingData == null || existingData.Count == 0)
+                return new List<CollectionSnapshot>();
+            var filledData = new List<CollectionSnapshot>();
+            CollectionSnapshot lastSnapshot = null;
+            foreach (var item in existingData)
+            {
+                if (lastSnapshot == null)
+                    filledData.Add(item);
+                else
                 {
-                    totalPrice += (double)(card.Count * price.Value);
+                    var lastDate = lastSnapshot.Time.Date;
+                    var currentDate = item.Time.Date;
+                    var daysDifference = (currentDate - lastDate).Days;
+                    for (int i = 1; i < daysDifference; i++)
+                    {
+                        var missingDate = lastDate.AddDays(i);
+                        filledData.Add(new CollectionSnapshot
+                        {
+                            Time = missingDate,
+                            Count = null,
+                            Cost = null,
+                            Price = null
+                        });
+                    }
+                    filledData.Add(item);
                 }
+                lastSnapshot = item;
             }
+            return filledData;
         }
     }
+
 }

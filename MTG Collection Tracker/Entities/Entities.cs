@@ -59,6 +59,7 @@ namespace MTG_Librarian
         public DbSet<CollectionHistory> CollectionHistories { get; set; }
         public DbSet<PriceHistory> PriceHistories { get; set; }
         public DbSet<CardQuantityHistory> CardQuantityHistories { get; set; }
+        public DbSet<CollectionSnapshot> CollectionSnapshots { get; set; }
         public DbSet<CardCollectionItem> CollectionsView { get; set; }
         #endregion
 
@@ -270,6 +271,12 @@ namespace MTG_Librarian
 	                        ""InventoryId""	INTEGER NOT NULL,
 	                        ""Quantity""	INTEGER NOT NULL,
 	                        ""Time""	TEXT NOT NULL);
+                        CREATE TABLE ""CollectionSnapshots"" (
+	                        ""CollectionId""	INTEGER NOT NULL,
+	                        ""Time""	TEXT NOT NULL,
+	                        ""Count""	INTEGER NOT NULL,
+	                        ""Cost""	NUMERIC NOT NULL,
+	                        ""Price""	NUMERIC NOT NULL);
                         CREATE VIEW LibraryView(
                             InventoryId, 
                             ""Count"", 
@@ -509,6 +516,12 @@ namespace MTG_Librarian
 	                        ""InventoryId"",
 	                        ""Quantity"",
 	                        ""Time"");
+                        CREATE INDEX ""idx_collectionsnapshots"" ON ""CollectionSnapshots"" (
+	                        ""CollectionId"",
+	                        ""Time"",
+	                        ""Count"",
+	                        ""Cost"",
+	                        ""Price"");
                         ";
                             createCommand.ExecuteNonQuery();                            
                         }

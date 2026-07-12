@@ -13,6 +13,94 @@ namespace MTG_Librarian
     public static class CardManager
     {
         private static string DefaultCurrency;
+
+        public static void SaveCollectionSnapshot(CardCollection collection, ScryfallCardsDbContext cardsContext)
+        {
+            var defaultPaperCurrency = SettingsManager.ApplicationSettings.DefaultPaperCurrency;
+            var snapshot = new CollectionSnapshot
+            {
+                CollectionId = collection.Id,
+                Time = DateTime.Now,
+            };
+            var count = 0;
+            var cost = 0.0;
+            var price = 0.0;
+            var inventoryCards = cardsContext.LibraryView.Where(x => x.CollectionId == collection.Id)
+                .Select(i => new
+                {
+                    i.InventoryId,
+                    i.Platform,
+                    i.Finish,
+                    i.Count,
+                    i.Cost,
+                    i.Prices
+                })
+                .Select(g => new InventoryCard { InventoryId = g.InventoryId, Platform = g.Platform, Finish = g.Finish, Count = g.Count, Cost = g.Cost, Prices = g.Prices })
+                .ToList();
+            count = inventoryCards.Sum(x => x.Count ?? 0);
+            foreach (var card in inventoryCards)
+            {
+                cost += (card.Cost ?? 0.0) * (card.Count ?? 0);
+                var cardPrice = card.FindPrice(defaultPaperCurrency);
+                if (cardPrice.HasValue)
+                    price += cardPrice.Value * (card.Count ?? 0);
+            }
+            snapshot.Count = count;
+            snapshot.Cost = cost;
+            snapshot.Price = price;
+            cardsContext.CollectionSnapshots.Add(snapshot);
+            //context.SaveChanges();
+        }
+        
+        public static void SaveCollectionSnapshots()
+        {
+            var defaultPaperCurrency = SettingsManager.ApplicationSettings.DefaultPaperCurrency;
+            using (var context = new ScryfallCardsDbContext())
+            {
+                var collections = context.Collections.ToList();
+                foreach (var collection in collections)
+                {
+                    SaveCollectionSnapshot(collection, context);
+                    /*
+                    var snapshot = new CollectionSnapshot
+                    {
+                        CollectionId = collection.Id,
+                        Time = DateTime.Now,
+                    };
+                    var count = 0;
+                    var cost = 0.0;
+                    var price = 0.0;
+
+                    var inventoryCards = context.LibraryView.Where(x => x.CollectionId == collection.Id)
+                        .Select(i => new
+                        {
+                            i.InventoryId,
+                            i.Platform,
+                            i.Finish,
+                            i.Count,
+                            i.Cost,
+                            i.Prices
+                        })
+                        .Select(g => new InventoryCard { InventoryId = g.InventoryId, Platform = g.Platform, Finish = g.Finish, Count = g.Count, Cost = g.Cost, Prices = g.Prices })
+                        .ToList();
+
+                    count = inventoryCards.Sum(x => x.Count ?? 0);
+                    foreach (var card in inventoryCards)
+                    {
+                        cost += (card.Cost ?? 0.0) * (card.Count ?? 0);
+                        var cardPrice = card.FindPrice(defaultPaperCurrency);
+                        if (cardPrice.HasValue)
+                            price += cardPrice.Value * (card.Count ?? 0);
+                    }
+                    snapshot.Count = count;
+                    snapshot.Cost = cost;
+                    snapshot.Price = price;
+                    context.CollectionSnapshots.Add(snapshot);
+                    */
+                }
+                context.SaveChanges();
+            }
+        }
         public static CollectionViewForm LoadCollection(int id, DockState dockState = DockState.Document)
         {
             CollectionViewForm document = null;

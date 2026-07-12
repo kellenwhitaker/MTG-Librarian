@@ -274,6 +274,7 @@ namespace MTG_Librarian
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
+            CardManager.SaveCollectionSnapshots();
             SettingsManager.FillSettings();
             SettingsManager.SaveSettings();
         }
@@ -456,7 +457,14 @@ namespace MTG_Librarian
         {
             using (var priceHistoryForm = new PriceHistoryForm())
             {
-                priceHistoryForm.CollectionId = (Globals.Forms.DockPanel.ActiveDocument as CollectionViewForm).Collection.Id;
+                var collection = (Globals.Forms.DockPanel.ActiveDocument as CollectionViewForm).Collection;
+                using (var context = new ScryfallCardsDbContext())
+                {
+                    CardManager.SaveCollectionSnapshot(collection, context);
+                    context.SaveChanges();
+                }
+                priceHistoryForm.Collection = collection;
+                priceHistoryForm.Text = $"Price History - {collection.CollectionName}";
                 priceHistoryForm.ShowDialog();
             }
         }

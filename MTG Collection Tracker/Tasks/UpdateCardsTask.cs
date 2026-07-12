@@ -48,8 +48,6 @@ namespace MTG_Librarian
                     foreach (var scryfallMagicCard in CardsUpdated)
                     {
                         context.Catalog.Update(scryfallMagicCard);
-                        var priceHistory = new PriceHistory { ScryfallId = scryfallMagicCard.ScryfallId, Prices = scryfallMagicCard.Prices };
-                        context.Add(priceHistory);
                     }
                     context.SaveChanges();
                 }

@@ -110,6 +110,7 @@
     <Compile Include="Entities\CardCollection.cs" />
     <Compile Include="Entities\CardQuantityHistory.cs" />
     <Compile Include="Entities\CollectionHistory.cs" />
+    <Compile Include="Entities\CollectionSnapshot.cs" />
     <Compile Include="Entities\InventoryCard.cs" />
     <Compile Include="Entities\CardSet.cs" />
     <Compile Include="Entities\CollectionGroup.cs" />
