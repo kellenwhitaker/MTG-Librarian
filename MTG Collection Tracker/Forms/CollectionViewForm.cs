@@ -1156,15 +1156,16 @@ namespace MTG_Librarian
 
         private void deleteCardsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (cardListView.SelectedObjects?.Count > 0)
+            var listView = cardListViewMenuStrip.SourceControl as FastObjectListView;
+            if (listView.SelectedObjects?.Count > 0)
             {
                 if (ConfirmCardDeletion() == DialogResult.Yes)
                 {
-                    var board = cardListViewMenuStrip.SourceControl == cardListView ? "mainboard" : "sideboard";
-                    if (cardListView.SelectedObjects[0] is InventoryCardCluster)
+                    var board = listView == cardListView ? "mainboard" : "sideboard";
+                    if (listView.SelectedObjects[0] is InventoryCardCluster)
                     {
                         var cardList = new ArrayList();
-                        foreach (InventoryCardCluster cluster in cardListView.SelectedObjects)
+                        foreach (InventoryCardCluster cluster in listView.SelectedObjects)
                         {
                             foreach (var card in cluster.Cards)
                             {
@@ -1175,15 +1176,15 @@ namespace MTG_Librarian
                         }
                         OnCardsUpdated(new CardsUpdatedEventArgs { Items = cardList, CollectionViewForm = this, Board = board});
                     }
-                    else if (cardListView.SelectedObjects[0] is InventoryCard)
+                    else if (listView.SelectedObjects[0] is InventoryCard)
                     {
-                        foreach (InventoryCard cardItem in cardListView.SelectedObjects)
+                        foreach (InventoryCard cardItem in listView.SelectedObjects)
                         {
                             cardItem.OldCount = cardItem.Count;
                             cardItem.Count = 0;
                         }
 
-                        OnCardsUpdated(new CardsUpdatedEventArgs { Items = cardListView.SelectedObjects as ArrayList, CollectionViewForm = this, Board = board });
+                        OnCardsUpdated(new CardsUpdatedEventArgs { Items = listView.SelectedObjects as ArrayList, CollectionViewForm = this, Board = board });
                     }  
                 }
             }
@@ -1238,7 +1239,8 @@ namespace MTG_Librarian
 
         private void splitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (cardListView.SelectedObject is InventoryCard card && card.Count > 1)
+            var listView = cardListViewMenuStrip.SourceControl as FastObjectListView;
+            if (listView.SelectedObject is InventoryCard card && card.Count > 1)
             {
                 int total = card.Count.Value;
                 var card1 = card.InventoryCardBase;
@@ -1255,12 +1257,12 @@ namespace MTG_Librarian
                         context.Add(card2);
                         context.SaveChanges();
                         card.Count = card1.Count;
-                        cardListView.RefreshObject(card);
-                        int selectedIndex = cardListView.SelectedIndex;
+                        listView.RefreshObject(card);
+                        int selectedIndex = listView.SelectedIndex;
                         var inventoryCard = card2.ToFullCard(context);
                         inventoryCard.Price = card.Price;
-                        cardListView.AddObject(inventoryCard);
-                        cardListView.SelectedIndex = selectedIndex;
+                        listView.AddObject(inventoryCard);
+                        listView.SelectedIndex = selectedIndex;
                     }
                 }
                 catch (Exception ex)
@@ -1273,9 +1275,10 @@ namespace MTG_Librarian
 
         private void combineToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (cardListView.SelectedObjects != null && cardListView.SelectedObjects.Count > 1)
+            var listView = cardListViewMenuStrip.SourceControl as FastObjectListView;
+            if (listView.SelectedObjects != null && listView.SelectedObjects.Count > 1)
             {
-                var selectedCards = cardListView.SelectedObjects.Cast<object>().Where(x => x is InventoryCard).Cast<InventoryCard>();
+                var selectedCards = listView.SelectedObjects.Cast<object>().Where(x => x is InventoryCard).Cast<InventoryCard>();
                 var firstCard = selectedCards.First();
                 foreach (var selectedCard in selectedCards)
                     if (selectedCard.ScryfallId != firstCard.ScryfallId)
@@ -1294,12 +1297,12 @@ namespace MTG_Librarian
                     foreach (var selectedCard in selectedCards)
                         if (selectedCard != firstCard)
                         {
-                            cardListView.RemoveObject(selectedCard);
+                            listView.RemoveObject(selectedCard);
                             context.Remove(selectedCard.InventoryCardBase);
                         }
                     context.SaveChanges();
                 }
-                cardListView.SelectedObject = firstCard;
+                listView.SelectedObject = firstCard;
                 UpdateTotals();
             }
         }
@@ -1694,13 +1697,14 @@ namespace MTG_Librarian
 
         private void moveToSoldCardsToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (cardListView.SelectedObjects.Count == 1 && !(cardListView.SelectedObject is InventoryCardCluster || cardListView.SelectedObject is InventoryTotalsItem))
+            var listView = cardListViewMenuStrip.SourceControl as FastObjectListView;
+            if (listView.SelectedObjects.Count == 1 && !(listView.SelectedObject is InventoryCardCluster || listView.SelectedObject is InventoryTotalsItem))
             {
                 using (var moveForm = new MoveToSoldCardsForm())
                 {
                     if (moveForm.ShowDialog() == DialogResult.OK)
                     {
-                        var card = cardListView.SelectedObject as InventoryCard;
+                        var card = listView.SelectedObject as InventoryCard;
                         using (var context = new ScryfallCardsDbContext())
                         {
                             var collection = (from c in context.Collections
@@ -1723,7 +1727,8 @@ namespace MTG_Librarian
             else
             {
                 var cardsToMove = new ArrayList();
-                foreach (var item in cardListView.SelectedObjects)
+                string sourceBoard = listView == cardListView ? "mainboard" : "sideboard";
+                foreach (var item in listView.SelectedObjects)
                 {
                     if (item is InventoryCardCluster cluster)
                     {
@@ -1750,7 +1755,7 @@ namespace MTG_Librarian
                                 context.Update(card.InventoryCardBase);
                             }
                             context.SaveChanges();
-                            CardManager.MoveFullInventoryCardsToCollection(cardsToMove, this, collection, "mainboard", "mainboard");
+                            CardManager.MoveFullInventoryCardsToCollection(cardsToMove, this, collection, sourceBoard, "mainboard");
                         }
                         else
                             MessageBox.Show("Sold Cards collection not found");

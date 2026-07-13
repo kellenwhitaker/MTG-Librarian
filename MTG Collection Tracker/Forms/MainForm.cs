@@ -389,17 +389,20 @@ namespace MTG_Librarian
             {
                 var targetForm = Globals.Forms.DockPanel.ActiveDocument as CollectionViewForm;
                 var targetCollection = targetForm.Collection;
-                var targetLV = targetForm.cardListView;
-                Directory.CreateDirectory("export");
-                using (StreamWriter file = new StreamWriter($"export\\{targetCollection.CollectionName}.csv"))
+                saveFileDialog.FileName = $"{targetCollection.CollectionName}.csv";
+                if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    file.WriteLine("Quantity,Name,Code,PurchasePrice,Foil,Condition,Language,PurchaseDate");
-                    foreach (var row in targetLV.Objects)
+                    try
                     {
-                        if (row is InventoryCard card)
-                            file.WriteLine($"{card.Count},\"{card.DisplayName}\",{card.set_id},{(card.Cost.HasValue ? card.Cost : 0)},{(card.Foil ? 1 : 0)},0,0,{card.TimeAdded}");                       
+                        var exporter = new Exporter(targetCollection);
+                        exporter.ExportToCSV(saveFileDialog.FileName);
                     }
-                    
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show($"Error exporting collection: {ex.Message}", "Export Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
+                    MessageBox.Show($"Collection exported successfully to {saveFileDialog.FileName}", "Export Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
         }
