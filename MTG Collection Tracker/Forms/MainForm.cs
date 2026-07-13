@@ -92,10 +92,8 @@ namespace MTG_Librarian
                     context.Add(mainCollection);
                     var soldCollection = new CardCollection { CollectionName = "Sold Cards", Type = "collection", GroupName = soldGroup.GroupName, GroupId = soldGroup.Id, Virtual = false, Permanent = true, Platform = "Paper" };
                     var soldCollection2 = new CardCollection { CollectionName = "Sold Cards", Type = "collection", GroupName = soldGroup.GroupName, GroupId = soldGroup.Id, Virtual = false, Permanent = true, Platform = "MTGO" };
-                    var soldCollection3 = new CardCollection { CollectionName = "Sold Cards", Type = "collection", GroupName = soldGroup.GroupName, GroupId = soldGroup.Id, Virtual = false, Permanent = true, Platform = "Arena" };
                     context.Add(soldCollection);
                     context.Add(soldCollection2);
-                    context.Add(soldCollection3);
                     context.SaveChanges();
                 }
         }
