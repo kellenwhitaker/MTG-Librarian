@@ -349,9 +349,18 @@ namespace MTG_Librarian
                             foreach (var item in cardListView.Objects)
                             {
                                 if (item is InventoryCardCluster cluster && cluster.ListViewGroupKey == groupKey.ToString())
+                                {
+                                    var firstCard = cluster.Cards[0];
+                                    if (Collection.Commander.HasValue && firstCard.InventoryId == Collection.Commander.Value)
+                                        continue;
                                     count += cluster.Count;
+                                }
                                 else if (item is InventoryCard card && card.ListViewGroupKey == groupKey.ToString() && card.Count.HasValue)
+                                {
+                                    if (Collection.Commander.HasValue && card.InventoryId == Collection.Commander.Value)
+                                        continue;
                                     count += card.Count.Value;
+                                }
                             }
                             return $"{groupKey?.ToString()} ({count})";
                         }
