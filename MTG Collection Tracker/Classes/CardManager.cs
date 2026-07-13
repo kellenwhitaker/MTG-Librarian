@@ -17,6 +17,7 @@ namespace MTG_Librarian
         public static void SaveCollectionSnapshot(CardCollection collection, ScryfallCardsDbContext cardsContext)
         {
             var defaultPaperCurrency = SettingsManager.ApplicationSettings.DefaultPaperCurrency;
+            bool soldCollection = collection.GroupName == "Sold";
             var snapshot = new CollectionSnapshot
             {
                 CollectionId = collection.Id,
@@ -33,17 +34,26 @@ namespace MTG_Librarian
                     i.Finish,
                     i.Count,
                     i.Cost,
-                    i.Prices
+                    i.Prices,
+                    i.SoldPrice
                 })
-                .Select(g => new InventoryCard { InventoryId = g.InventoryId, Platform = g.Platform, Finish = g.Finish, Count = g.Count, Cost = g.Cost, Prices = g.Prices })
+                .Select(g => new InventoryCard { InventoryId = g.InventoryId, Platform = g.Platform, Finish = g.Finish, Count = g.Count, Cost = g.Cost, Prices = g.Prices, SoldPrice = g.SoldPrice })
                 .ToList();
             count = inventoryCards.Sum(x => x.Count ?? 0);
             foreach (var card in inventoryCards)
             {
                 cost += (card.Cost ?? 0.0) * (card.Count ?? 0);
-                var cardPrice = card.FindPrice(defaultPaperCurrency);
-                if (cardPrice.HasValue)
-                    price += cardPrice.Value * (card.Count ?? 0);
+                if (!soldCollection)
+                {
+                    var cardPrice = card.FindPrice(defaultPaperCurrency);
+                    if (cardPrice.HasValue)
+                        price += cardPrice.Value * (card.Count ?? 0);
+                }
+                else
+                {
+                    if (card.SoldPrice.HasValue)
+                        price += card.SoldPrice.Value * (card.Count ?? 0);
+                }
             }
             snapshot.Count = count;
             snapshot.Cost = cost;
