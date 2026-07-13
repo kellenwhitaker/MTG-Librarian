@@ -373,13 +373,30 @@ namespace MTG_Librarian
             this.formatFilterComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.formatFilterComboBox.FormattingEnabled = true;
             this.formatFilterComboBox.Items.AddRange(new object[] {
-            "Any format",
+            "No format filter",
             "Standard",
-            "Modern",
             "Pioneer",
+            "Modern",
             "Legacy",
             "Vintage",
-            "Commander"});
+            "Commander",
+            "Future Standard",
+            "Historic",
+            "Timeless",
+            "Gladiator",
+            "Pauper",
+            "Penny Dreadful",
+            "Oathbreaker",
+            "Standard Brawl",
+            "Brawl",
+            "Competitive Brawl",
+            "Alchemy",
+            "Pauper Commander",
+            "Duel Commander",
+            "Old School 93/94",
+            "Premodern",
+            "PreDH",
+            "Tiny Leaders: Reborn"});
             this.formatFilterComboBox.Location = new System.Drawing.Point(293, 6);
             this.formatFilterComboBox.Margin = new System.Windows.Forms.Padding(4);
             this.formatFilterComboBox.Name = "formatFilterComboBox";

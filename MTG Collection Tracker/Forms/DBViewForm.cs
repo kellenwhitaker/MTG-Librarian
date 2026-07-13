@@ -126,7 +126,39 @@ namespace MTG_Librarian
                 queryClauses.Add($"set%3A{setCode}");
             }
             if (formatFilterComboBox.SelectedIndex > 0)
-                queryClauses.Add($"(legal%3A{formatFilterComboBox.SelectedItem.ToString()}+or+restricted%3A{formatFilterComboBox.SelectedItem.ToString()})");
+            { 
+                var format = formatFilterComboBox.SelectedItem.ToString();
+                switch (format)
+                {
+                    case "Future Standard":
+                        format = "future";
+                        break;
+                    case "Penny Dreadful":
+                        format = "penny";
+                        break;
+                    case "Standard Brawl":
+                        format = "standardbrawl";
+                        break;
+                    case "Competitive Brawl":
+                        format = "competitivebrawl";
+                        break;
+                    case "Pauper Commander":
+                        format = "paupercommander";
+                        break;
+                    case "Duel Commander":
+                        format = "duel";
+                        break;
+                    case "Old School 93/94":
+                        format = "oldschool";
+                        break;
+                    case "Tiny Leaders: Reborn":
+                        format = "tlr";
+                        break;
+                    default:
+                        break;
+                }
+                queryClauses.Add($"(legal%3A{format}+or+restricted%3A{format})");
+            }
 
             // --- Append inputs from searchParametersPanel ---
             // Helper to percent-encode comparison operators used in the query
