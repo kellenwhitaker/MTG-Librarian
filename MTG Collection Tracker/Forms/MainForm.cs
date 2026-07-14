@@ -389,18 +389,84 @@ namespace MTG_Librarian
             {
                 var targetForm = Globals.Forms.DockPanel.ActiveDocument as CollectionViewForm;
                 var targetCollection = targetForm.Collection;
-                saveFileDialog.FileName = $"{targetCollection.CollectionName}.csv";
+                saveFileDialog.FileName = $"{targetCollection.CollectionName}";
+                saveFileDialog.OverwritePrompt = true;
+                if (targetCollection.Type == "deck")
+                    saveFileDialog.Filter = "CSV Files (*.csv)|*.csv|Magic Online DEK Files (*.dek)|*.dek|Magic Online Text Files (*.txt)|*.txt|Magic Arena Text Files (*.txt)|*.txt";
+                else
+                    saveFileDialog.Filter = "CSV Files (*.csv)|*.csv";
+                saveFileDialog.FilterIndex = 0;
+                saveFileDialog.AddExtension = true;
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
-                    try
+                    List<InventoryCard> cardList;
+                    using (var context = new ScryfallCardsDbContext())
                     {
-                        var exporter = new Exporter(targetCollection);
-                        exporter.ExportToCSV(saveFileDialog.FileName);
+                        cardList = (from c in context.LibraryView
+                                    where c.CollectionId == targetCollection.Id
+                                    select c)
+                                    .OrderBy(c => c.Board)
+                                    .ThenBy(c => c.TimeAdded)
+                                    .ToList();
                     }
-                    catch (Exception ex)
+                    if (cardList == null || cardList.Count == 0)
                     {
-                        MessageBox.Show($"Error exporting collection: {ex.Message}", "Export Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        MessageBox.Show("No cards found in the collection.", "Export Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         return;
+                    }
+                    if (targetCollection.Type == "deck" && (saveFileDialog.FilterIndex == 2 || saveFileDialog.FilterIndex == 3))
+                    {
+                        foreach (var card in cardList)
+                        {
+                            if (card.mtgo_id == 0)
+                            {
+                                if (MessageBox.Show("The deck could not be validated because it contains cards without a valid MTGO ID. Are you sure you wish to continue?", "Export Error", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                                    return;
+                                else
+                                    break;
+                            }
+                        }
+                        try
+                        {
+                            var exporter = new Exporter(targetCollection, cardList);
+                            if (saveFileDialog.FilterIndex == 2)
+                                exporter.ExportToMTGODek(saveFileDialog.FileName);
+                            else if (saveFileDialog.FilterIndex == 3)
+                                exporter.ExportToMTGOText(saveFileDialog.FileName);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Error exporting collection: {ex.Message}", "Export Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                    }
+                    else if (targetCollection.Type == "deck" && saveFileDialog.FilterIndex == 4)
+                    {
+                        foreach (var card in cardList)
+                        {
+                            if (!card.games.Contains("arena"))
+                            {
+                                if (MessageBox.Show("The deck could not be validated because it contains cards unavailable in MTG Arena. Are you sure you wish to continue?", "Export Error", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                                    return;
+                                else
+                                    break;
+                            }
+                        }
+                        try
+                        {
+                            var exporter = new Exporter(targetCollection, cardList);
+                            exporter.ExportToArenaText(saveFileDialog.FileName);
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show($"Error exporting collection: {ex.Message}", "Export Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            return;
+                        }
+                    }
+                    else
+                    {
+                        var exporter = new Exporter(targetCollection, cardList);
+                        exporter.ExportToCSV(saveFileDialog.FileName);
                     }
                     MessageBox.Show($"Collection exported successfully to {saveFileDialog.FileName}", "Export Successful", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
