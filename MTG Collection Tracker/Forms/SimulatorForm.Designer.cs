@@ -47,6 +47,7 @@
             this.removeCounterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.zoneMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.searchZoneToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.playToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.landPanel = new System.Windows.Forms.Panel();
             this.messageLabel = new System.Windows.Forms.Label();
             this.mulliganButton = new System.Windows.Forms.Button();
@@ -56,6 +57,8 @@
             this.exilePictureBox = new System.Windows.Forms.PictureBox();
             this.graveyardPictureBox = new System.Windows.Forms.PictureBox();
             this.libraryPictureBox = new System.Windows.Forms.PictureBox();
+            this.commandPictureBox = new System.Windows.Forms.PictureBox();
+            this.moveToCommandToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.liveCardMenuStrip.SuspendLayout();
             this.zoneMenuStrip.SuspendLayout();
             this.landPanel.SuspendLayout();
@@ -63,6 +66,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.exilePictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.graveyardPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.libraryPictureBox)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.commandPictureBox)).BeginInit();
             this.SuspendLayout();
             // 
             // drawButton
@@ -105,6 +109,7 @@
             this.moveToExileToolStripMenuItem,
             this.moveToHandToolStripMenuItem,
             this.moveToBattlefieldToolStripMenuItem,
+            this.moveToCommandToolStripMenuItem,
             this.putOnTopOfLibraryToolStripMenuItem,
             this.putOnBottomOfLibraryToolStripMenuItem,
             this.toolStripMenuItem1,
@@ -113,7 +118,7 @@
             this.addCounterToolStripMenuItem,
             this.removeCounterToolStripMenuItem});
             this.liveCardMenuStrip.Name = "liveCardMenuStrip";
-            this.liveCardMenuStrip.Size = new System.Drawing.Size(239, 274);
+            this.liveCardMenuStrip.Size = new System.Drawing.Size(239, 326);
             this.liveCardMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.liveCardMenuStrip_Opening);
             // 
             // tapuntapToolStripMenuItem
@@ -202,9 +207,10 @@
             // 
             this.zoneMenuStrip.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.zoneMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.searchZoneToolStripMenuItem});
+            this.searchZoneToolStripMenuItem,
+            this.playToolStripMenuItem});
             this.zoneMenuStrip.Name = "zoneMenuStrip";
-            this.zoneMenuStrip.Size = new System.Drawing.Size(168, 28);
+            this.zoneMenuStrip.Size = new System.Drawing.Size(168, 52);
             this.zoneMenuStrip.Opening += new System.ComponentModel.CancelEventHandler(this.zoneMenuStrip_Opening);
             // 
             // searchZoneToolStripMenuItem
@@ -213,6 +219,14 @@
             this.searchZoneToolStripMenuItem.Size = new System.Drawing.Size(167, 24);
             this.searchZoneToolStripMenuItem.Text = "Search zone...";
             this.searchZoneToolStripMenuItem.Click += new System.EventHandler(this.searchZoneToolStripMenuItem_Click);
+            // 
+            // playToolStripMenuItem
+            // 
+            this.playToolStripMenuItem.Name = "playToolStripMenuItem";
+            this.playToolStripMenuItem.Size = new System.Drawing.Size(167, 24);
+            this.playToolStripMenuItem.Text = "Play";
+            this.playToolStripMenuItem.Visible = false;
+            this.playToolStripMenuItem.Click += new System.EventHandler(this.playToolStripMenuItem_Click);
             // 
             // landPanel
             // 
@@ -228,6 +242,8 @@
             // 
             this.messageLabel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
             this.messageLabel.AutoSize = true;
+            this.messageLabel.BackColor = System.Drawing.Color.Black;
+            this.messageLabel.ForeColor = System.Drawing.Color.White;
             this.messageLabel.Location = new System.Drawing.Point(3, 277);
             this.messageLabel.Name = "messageLabel";
             this.messageLabel.Size = new System.Drawing.Size(0, 16);
@@ -264,14 +280,14 @@
             this.resetToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1092, 30);
+            this.menuStrip1.Size = new System.Drawing.Size(1092, 28);
             this.menuStrip1.TabIndex = 10;
             this.menuStrip1.Text = "menuStrip1";
             // 
             // resetToolStripMenuItem
             // 
             this.resetToolStripMenuItem.Name = "resetToolStripMenuItem";
-            this.resetToolStripMenuItem.Size = new System.Drawing.Size(59, 26);
+            this.resetToolStripMenuItem.Size = new System.Drawing.Size(59, 24);
             this.resetToolStripMenuItem.Text = "Reset";
             this.resetToolStripMenuItem.Click += new System.EventHandler(this.resetToolStripMenuItem_Click);
             // 
@@ -308,12 +324,32 @@
             this.libraryPictureBox.TabIndex = 0;
             this.libraryPictureBox.TabStop = false;
             // 
+            // commandPictureBox
+            // 
+            this.commandPictureBox.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
+            this.commandPictureBox.BackColor = System.Drawing.Color.Transparent;
+            this.commandPictureBox.ContextMenuStrip = this.zoneMenuStrip;
+            this.commandPictureBox.Location = new System.Drawing.Point(640, 549);
+            this.commandPictureBox.Name = "commandPictureBox";
+            this.commandPictureBox.Size = new System.Drawing.Size(217, 280);
+            this.commandPictureBox.TabIndex = 11;
+            this.commandPictureBox.TabStop = false;
+            this.commandPictureBox.Visible = false;
+            // 
+            // moveToCommandToolStripMenuItem
+            // 
+            this.moveToCommandToolStripMenuItem.Name = "moveToCommandToolStripMenuItem";
+            this.moveToCommandToolStripMenuItem.Size = new System.Drawing.Size(238, 24);
+            this.moveToCommandToolStripMenuItem.Text = "Move to command";
+            this.moveToCommandToolStripMenuItem.Click += new System.EventHandler(this.moveToCommandToolStripMenuItem_Click);
+            // 
             // SimulatorForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::MTG_Librarian.Properties.Resources._5020;
             this.ClientSize = new System.Drawing.Size(1092, 856);
+            this.Controls.Add(this.commandPictureBox);
             this.Controls.Add(this.menuStrip1);
             this.Controls.Add(this.keepHandButton);
             this.Controls.Add(this.mulliganButton);
@@ -338,6 +374,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.exilePictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.graveyardPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.libraryPictureBox)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.commandPictureBox)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -372,5 +409,8 @@
         private System.Windows.Forms.Label messageLabel;
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem resetToolStripMenuItem;
+        private System.Windows.Forms.PictureBox commandPictureBox;
+        private System.Windows.Forms.ToolStripMenuItem playToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem moveToCommandToolStripMenuItem;
     }
 }

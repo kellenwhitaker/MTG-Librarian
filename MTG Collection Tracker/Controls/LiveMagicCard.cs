@@ -135,7 +135,8 @@ namespace MTG_Librarian
             Hand,
             Battlefield,
             Graveyard,
-            Exile
+            Exile,
+            Command
         }
         public LiveMagicCard()
         {

@@ -1,4 +1,5 @@
 ﻿using LiveChartsCore.SkiaSharpView.Drawing.Geometries;
+using SQLitePCL;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -21,6 +22,7 @@ namespace MTG_Librarian
         private List<LiveMagicCard> battlefield = new List<LiveMagicCard>();
         private List<LiveMagicCard> graveyard = new List<LiveMagicCard>();
         private List<LiveMagicCard> exile = new List<LiveMagicCard>();
+        private List<LiveMagicCard> command = new List<LiveMagicCard>();
         private List<ScryfallMagicCardBase> mainboard;
         private PictureBox cardZoomPictureBox = new PictureBox();
         private ZoneSearchForm zoneSearchForm = new ZoneSearchForm();
@@ -38,9 +40,35 @@ namespace MTG_Librarian
                 return cp;
             }
         }
+        private ScryfallMagicCardBase commander;
+        public ScryfallMagicCardBase Commander
+        {
+            get { return commander; }
+            set
+            {
+                commander = value;
+                if (commander != null)
+                {
+                    var liveCommander = new LiveMagicCard(commander);
+                    SetLiveCardEvents(liveCommander);
+                    liveCommander.Zone = LiveMagicCard.GameZone.Command;
+                    command.Add(liveCommander);
+                    UpdatePictureBoxImage(commandPictureBox, commander);
+                    commandPictureBox.Visible = true;
+                }
+                else
+                {
+                    command.Clear();
+                    UpdatePictureBoxImage(commandPictureBox, null);
+                    commandPictureBox.Visible = false;
+                }
+            }
+        }
         public List<ScryfallMagicCardBase> GetNullImages()
         {
             var liveCards = cardLibrary.GetLibrary().Where(card => card.UntappedImage == null).ToList();
+            if (commander != null && command.Count > 0 && command[0].UntappedImage == null)
+                liveCards.Add(command[0]);
             var nullImageCards = new List<ScryfallMagicCardBase>();
             foreach (var liveCard in liveCards)
             {
@@ -50,16 +78,16 @@ namespace MTG_Librarian
             }
             return nullImageCards;
         }
-        public List<ScryfallMagicCardBase> Mainboard 
-        { 
-            get { return mainboard; } 
-            set 
+        public List<ScryfallMagicCardBase> Mainboard
+        {
+            get { return mainboard; }
+            set
             {
                 mainboard = value;
                 cardLibrary = new CardLibrary(mainboard);
                 foreach (var card in cardLibrary.GetLibrary())
                     SetLiveCardEvents(card);
-            } 
+            }
         }
         private CardLibrary cardLibrary;
         public SimulatorForm()
@@ -109,7 +137,7 @@ namespace MTG_Librarian
             int totalWidth = 0;
             foreach (var card in cards)
             {
-                
+
                 card.Location = new Point(totalWidth + 10, 0);
                 totalWidth += card.Width + 10;
                 index++;
@@ -253,12 +281,16 @@ namespace MTG_Librarian
                     CheckEmptyLibrary();
                     zoneSearchForm.cardsPanel.Controls.Remove(livecard);
                     break;
+                default:
+                    command.Remove(livecard);
+                    UpdatePictureBoxImage(commandPictureBox, null);
+                    commandPictureBox.Visible = false;
+                    handPanel.Width += commandPictureBox.Width + 10;
+                    break;
             }
         }
         private void CheckEmptyLibrary()
         {
-            if (!handKept) return;
-
             if (cardLibrary.IsEmpty())
             {
                 drawButton.Enabled = false;
@@ -300,7 +332,15 @@ namespace MTG_Librarian
         private void PlayButton_Click(object sender, EventArgs e)
         {
             var liveCard = (LiveMagicCard)((Button)sender).Parent;
-            MoveToBattlefield(liveCard);
+            if (liveCard.type_line.Contains("Sorcery") || liveCard.type_line.Contains("Instant"))
+            {
+                if (liveCard.type_line.Contains("Adventure"))
+                    MoveToExile(liveCard);
+                else
+                    MoveToGraveyard(liveCard);
+            }
+            else
+                MoveToBattlefield(liveCard);
         }
         private void liveCardMouseUp(object sender, MouseEventArgs args)
         {
@@ -328,7 +368,7 @@ namespace MTG_Librarian
                 cardZoomPictureBox.Location = this.PointToClient(liveCard.Parent.PointToScreen(liveCard.Location));
                 if (cardZoomPictureBox.Top + cardZoomPictureBox.Height > this.Height)
                     cardZoomPictureBox.Top = this.Height - cardZoomPictureBox.Height - 30;
-                
+
                 var card = liveCard.GetCard();
                 cardZoomPictureBox.Image = CardImageCache.GetScaledImage(card.ScryfallId, card.set_name, cardZoomPictureBox.Width, cardZoomPictureBox.Height);
                 cardZoomPictureBox.Height -= 3;
@@ -352,26 +392,32 @@ namespace MTG_Librarian
                 if (!handDrawn)
                 {
                     var hand = cardLibrary.DrawHand();
-                    foreach (var card in hand)
+                    if (hand != null)
                     {
-                        card.ContextMenuStrip = null;
-                        card.HideButtons();
-                        card.Zone = LiveMagicCard.GameZone.Hand;
-                        cardHand.Add(card);
-                        cardsAdded.Add(card);
+                        foreach (var card in hand)
+                        {
+                            card.ContextMenuStrip = null;
+                            card.HideButtons();
+                            card.Zone = LiveMagicCard.GameZone.Hand;
+                            cardHand.Add(card);
+                            cardsAdded.Add(card);
+                        }
+                        handDrawn = true;
+                        mulliganButton.Enabled = true;
+                        keepHandButton.Enabled = true;
+                        drawButton.Enabled = false;
                     }
-                    handDrawn = true;
-                    mulliganButton.Enabled = true;
-                    keepHandButton.Enabled = true;
-                    drawButton.Enabled = false;
                 }
                 else
                 {
                     var card = cardLibrary.Draw();
-                    card.ShowButtons();
-                    card.Zone = LiveMagicCard.GameZone.Hand;
-                    cardHand.Add(card);
-                    cardsAdded.Add(card);
+                    if (card != null)
+                    {
+                        card.ShowButtons();
+                        card.Zone = LiveMagicCard.GameZone.Hand;
+                        cardHand.Add(card);
+                        cardsAdded.Add(card);
+                    }
                 }
 
                 CheckEmptyLibrary();
@@ -385,6 +431,10 @@ namespace MTG_Librarian
             handPanel.Width = this.Width - libraryPictureBox.Width - 30;
             landPanel.Width = handPanel.Width;
             battlefieldPanel.Width = handPanel.Width;
+            if (commander != null)
+            {
+                handPanel.Width -= commandPictureBox.Width + 10;
+            }
         }
 
         private void moveToGraveyardToolStripMenuItem_Click(object sender, EventArgs e)
@@ -405,18 +455,35 @@ namespace MTG_Librarian
 
         private void zoneMenuStrip_Opening(object sender, CancelEventArgs e)
         {
+            if (!handKept)
+            {
+                e.Cancel = true;
+                return;
+            }
+
             var source = (PictureBox)zoneMenuStrip.SourceControl;
             if (source == libraryPictureBox)
             {
                 searchZoneToolStripMenuItem.Text = "Search Library";
+                searchZoneToolStripMenuItem.Visible = true;
+                playToolStripMenuItem.Visible = false;
             }
             else if (source == graveyardPictureBox)
             {
                 searchZoneToolStripMenuItem.Text = "Search Graveyard";
+                searchZoneToolStripMenuItem.Visible = true;
+                playToolStripMenuItem.Visible = false;
             }
             else if (source == exilePictureBox)
             {
                 searchZoneToolStripMenuItem.Text = "Search Exile";
+                searchZoneToolStripMenuItem.Visible = true;
+                playToolStripMenuItem.Visible = false;
+            }
+            else if (source == commandPictureBox)
+            {
+                searchZoneToolStripMenuItem.Visible = false;
+                playToolStripMenuItem.Visible = true;
             }
         }
         private void searchZoneToolStripMenuItem_Click(object sender, EventArgs e)
@@ -691,6 +758,10 @@ namespace MTG_Librarian
                         removeCounterToolStripMenuItem.Enabled = false;
                         break;
                 }
+                if (liveCard.GetCard() == commander)
+                    moveToCommandToolStripMenuItem.Enabled = true;
+                else
+                    moveToCommandToolStripMenuItem.Enabled = false;
             }
         }
 
@@ -811,6 +882,7 @@ namespace MTG_Librarian
             });
             Mulligans++;
             ArrangeCardsInZone(GameZone.Hand);
+            CheckEmptyLibrary();
         }
         private void keepHandButton_Click(object sender, EventArgs e)
         {
@@ -838,6 +910,7 @@ namespace MTG_Librarian
             battlefield.Clear();
             graveyard.Clear();
             exile.Clear();
+            command.Clear();
             cardLibrary.Shuffle();
             handDrawn = false;
             handKept = false;
@@ -848,12 +921,20 @@ namespace MTG_Librarian
             messageLabel.Text = null;
             foreach (var card in cardLibrary.GetLibrary())
                 SetLiveCardEvents(card);
+
+            if (commander != null)
+            {
+                var commanderCard = new LiveMagicCard(commander);
+                SetLiveCardEvents(commanderCard);
+                command.Add(commanderCard);
+                UpdatePictureBoxImage(commandPictureBox, commander);
+            }
         }
 
         private void SimulatorForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             DisposeAllCards();
-        }         
+        }
 
         private void DisposeAllCards()
         {
@@ -869,6 +950,8 @@ namespace MTG_Librarian
             foreach (var oldCard in graveyard)
                 oldCard.Dispose();
             foreach (var oldCard in exile)
+                oldCard.Dispose();
+            foreach (var oldCard in command)
                 oldCard.Dispose();
             foreach (var oldCard in cardLibrary.GetLibrary())
                 oldCard.Dispose();
@@ -902,6 +985,43 @@ namespace MTG_Librarian
                 {
                     card.RefreshImage();
                 }
+            }
+            foreach (var card in command)
+            {
+                if (card.GetCard().ScryfallId == e.uuid)
+                {
+                    UpdatePictureBoxImage(commandPictureBox, card.GetCard());
+                }
+            }
+        }
+        private void playToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var card = command.FirstOrDefault();
+            if (card != null)
+            {
+                card.HideButtons();
+                MoveToBattlefield(card); 
+            }
+        }
+        private void moveToCommandToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var liveCard = (LiveMagicCard)liveCardMenuStrip.SourceControl;
+            if (liveCard != null)
+                MoveToCommand(liveCard);
+
+        }
+        private void MoveToCommand(LiveMagicCard liveCard)
+        {
+            var zone = liveCard.Zone;
+            var card = liveCard.GetCard();
+            if (card != null)
+            {
+                liveCard.Zone = LiveMagicCard.GameZone.Command;
+                command.Add(liveCard);
+                RemoveFromZone(liveCard, zone);
+                UpdatePictureBoxImage(commandPictureBox, card);
+                commandPictureBox.Visible = true;
+                handPanel.Width -= commandPictureBox.Width + 10;
             }
         }
     }
@@ -955,5 +1075,4 @@ namespace MTG_Librarian
             }
         }
     }
-
 }

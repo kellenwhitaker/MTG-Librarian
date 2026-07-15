@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace MTG_Librarian
 {
@@ -51,12 +52,18 @@ namespace MTG_Librarian
         }
         public LiveMagicCard Draw()
         {
+            if (library.Count == 0)
+                return null;
+
             var card = library[library.Count - 1];
             library.RemoveAt(library.Count - 1);
             return card;
         }
         public List<LiveMagicCard> DrawHand()
         {
+            if (library.Count < 7)
+                return null;
+       
             var hand = new List<LiveMagicCard>();
             for (int i = 0; i < 7; i++)
             {

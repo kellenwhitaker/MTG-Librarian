@@ -485,23 +485,35 @@ namespace MTG_Librarian
             {
                 var simulatorForm = new SimulatorForm();
                 var mainboard = new List<ScryfallMagicCardBase>();
+                ScryfallMagicCardBase commander = null;
                 foreach (var item in currentCollectionForm.cardListView.Objects)
                 {
                     if (item is InventoryCardCluster cluster)
                     {
                         foreach (var inventoryCard in cluster.Cards)
                         {
-                            for (int i = 0; i < cluster.Count; i++)
-                                mainboard.Add(inventoryCard);
+                            if (inventoryCard.InventoryId == currentCollectionForm.Collection.Commander)
+                                commander = inventoryCard;
+                            else
+                            {
+                                for (int i = 0; i < cluster.Count; i++)
+                                    mainboard.Add(inventoryCard);
+                            }
                         }
                     }
                     if (item is InventoryCard card)
                     {
-                        for (int i = 0; i < card.Count; i++)
-                            mainboard.Add(card);
+                            if (card.InventoryId == currentCollectionForm.Collection.Commander)
+                                commander = card;
+                            else
+                            {
+                                for (int i = 0; i < card.Count; i++)
+                                    mainboard.Add(card);
+                            }
                     }
                 }
                 simulatorForm.Mainboard = mainboard;
+                simulatorForm.Commander = commander;
                 var nullImageCards = simulatorForm.GetNullImages();
                 if (nullImageCards != null && nullImageCards.Count > 0) 
                 {
