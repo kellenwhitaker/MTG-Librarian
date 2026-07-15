@@ -1203,7 +1203,9 @@ namespace MTG_Librarian
         {
             var listView = cardListViewMenuStrip.SourceControl as FastObjectListView;
             if (listView.SelectedObjects?.Count < 1 || listView.SelectedObject is InventoryTotalsItem)
+            {                 
                 e.Cancel = true;
+            }
             else
             {
                 collapsedViewToolStripMenuItem.Text = (Collection.CollapsedView.HasValue && Collection.CollapsedView.Value) ? "Expand View" : "Collapse View";
@@ -1218,7 +1220,8 @@ namespace MTG_Librarian
                     }
                     else
                     {
-                        if (Collection.Type == "deck" && card.Board == "mainboard" && card.type_line.Contains("Legendary") && card.type_line.Contains("Creature"))
+                        var commanderTypes = new List<string> { "Creature", "Planeswalker", "Vehicle", "Spacecraft" };
+                        if (Collection.Type == "deck" && card.Board == "mainboard" && card.type_line.Contains("Legendary") && commanderTypes.Any(type => card.type_line.Contains(type)))
                         {
                             makeCommanderToolStripMenuItem.Visible = true;
                             if (Collection.Commander.HasValue && card.InventoryId == Collection.Commander.Value)
@@ -1229,7 +1232,7 @@ namespace MTG_Librarian
                             {
                                 makeCommanderToolStripMenuItem.Text = "Make Commander";
                             }
-                        }                        
+                        }
                     }
                 }
 
