@@ -27,19 +27,7 @@ namespace MTG_Librarian
         }
         public static void Upsert(this ScryfallCardsDbContext context, ScryfallCard card)
         {
-            if (card.text == null)
-                card.text = "";
-            var existing = context.Catalog.AsNoTracking().FirstOrDefault(x => x.ScryfallId == card.ScryfallId);
-            if (existing == null) // new card
-            {
-                context.Add(card);
-            }
-            else // update existing card
-            {
-                // don't overwrite existing prices
-                card.prices = existing.prices;
-                context.Update(card);
-            }
+            Upsert(context, card.ToScryfallMagicCard());
         }
         public static void Upsert(this ScryfallCardsDbContext context, ScryfallMagicCard card)
         {

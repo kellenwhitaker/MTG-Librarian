@@ -36,8 +36,10 @@
             this.dockPanel1 = new KW.WinFormsUI.Docking.DockPanel();
             this.mainMenuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importDeckToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportDeckcollectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deckToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.simulatorToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.collectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -60,6 +62,7 @@
             this.TasksLabel = new System.Windows.Forms.Label();
             this.UpdateMissingSetIconsWorker = new System.ComponentModel.BackgroundWorker();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
+            this.importDeckDialog = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -100,7 +103,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.statusPanel);
             this.splitContainer1.Size = new System.Drawing.Size(1924, 782);
-            this.splitContainer1.SplitterDistance = 746;
+            this.splitContainer1.SplitterDistance = 756;
             this.splitContainer1.SplitterWidth = 1;
             this.splitContainer1.TabIndex = 2;
             // 
@@ -121,7 +124,7 @@
             this.dockPanel1.Name = "dockPanel1";
             this.dockPanel1.Padding = new System.Windows.Forms.Padding(6);
             this.dockPanel1.ShowAutoHideContentOnHover = false;
-            this.dockPanel1.Size = new System.Drawing.Size(1924, 718);
+            this.dockPanel1.Size = new System.Drawing.Size(1924, 728);
             this.dockPanel1.TabIndex = 1;
             // 
             // mainMenuStrip
@@ -143,25 +146,41 @@
             // fileToolStripMenuItem
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.importDeckToolStripMenuItem,
             this.exportDeckcollectionToolStripMenuItem,
-            this.settingsToolStripMenuItem});
+            this.settingsToolStripMenuItem,
+            this.exitToolStripMenuItem});
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(46, 24);
             this.fileToolStripMenuItem.Text = "File";
             // 
+            // importDeckToolStripMenuItem
+            // 
+            this.importDeckToolStripMenuItem.Name = "importDeckToolStripMenuItem";
+            this.importDeckToolStripMenuItem.Size = new System.Drawing.Size(250, 26);
+            this.importDeckToolStripMenuItem.Text = "Import deck...";
+            this.importDeckToolStripMenuItem.Click += new System.EventHandler(this.importDeckToolStripMenuItem_Click);
+            // 
             // exportDeckcollectionToolStripMenuItem
             // 
             this.exportDeckcollectionToolStripMenuItem.Name = "exportDeckcollectionToolStripMenuItem";
-            this.exportDeckcollectionToolStripMenuItem.Size = new System.Drawing.Size(241, 26);
-            this.exportDeckcollectionToolStripMenuItem.Text = "Export deck/collection";
+            this.exportDeckcollectionToolStripMenuItem.Size = new System.Drawing.Size(250, 26);
+            this.exportDeckcollectionToolStripMenuItem.Text = "Export deck/collection...";
             this.exportDeckcollectionToolStripMenuItem.Click += new System.EventHandler(this.exportDeckcollectionToolStripMenuItem_Click);
             // 
             // settingsToolStripMenuItem
             // 
             this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(241, 26);
+            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(250, 26);
             this.settingsToolStripMenuItem.Text = "Settings...";
             this.settingsToolStripMenuItem.Click += new System.EventHandler(this.settingsToolStripMenuItem_Click);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(250, 26);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
             // 
             // deckToolStripMenuItem
             // 
@@ -271,7 +290,7 @@
             this.statusPanel.Location = new System.Drawing.Point(0, 0);
             this.statusPanel.Margin = new System.Windows.Forms.Padding(4);
             this.statusPanel.Name = "statusPanel";
-            this.statusPanel.Size = new System.Drawing.Size(1924, 35);
+            this.statusPanel.Size = new System.Drawing.Size(1924, 25);
             this.statusPanel.TabIndex = 3;
             // 
             // panel1
@@ -282,7 +301,7 @@
             this.panel1.Location = new System.Drawing.Point(0, 0);
             this.panel1.Margin = new System.Windows.Forms.Padding(4);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(677, 35);
+            this.panel1.Size = new System.Drawing.Size(677, 25);
             this.panel1.TabIndex = 2;
             // 
             // mainStatusLabel
@@ -320,7 +339,7 @@
             this.mainPanel.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
             this.mainPanel.Controls.Add(this.TasksProgressBar);
             this.mainPanel.Controls.Add(this.TasksLabel);
-            this.mainPanel.Location = new System.Drawing.Point(1079, 4);
+            this.mainPanel.Location = new System.Drawing.Point(1079, -6);
             this.mainPanel.Margin = new System.Windows.Forms.Padding(4);
             this.mainPanel.Name = "mainPanel";
             this.mainPanel.Size = new System.Drawing.Size(841, 31);
@@ -359,6 +378,12 @@
             // saveFileDialog
             // 
             this.saveFileDialog.Filter = "CSV Files|*.csv";
+            // 
+            // importDeckDialog
+            // 
+            this.importDeckDialog.Filter = "Magic Online DEK Files (*.dek)|*.dek|Magic Online Text Files (*.txt)|*.txt|Magic " +
+    "Arena Text Files (*.txt)|*.txt";
+            this.importDeckDialog.Title = "Import Deck";
             // 
             // MainForm
             // 
@@ -422,6 +447,9 @@
         private System.Windows.Forms.ToolStripMenuItem collectionToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem priceHistoryToolStripMenuItem;
         private System.Windows.Forms.SaveFileDialog saveFileDialog;
+        private System.Windows.Forms.ToolStripMenuItem importDeckToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.OpenFileDialog importDeckDialog;
     }
 }
 

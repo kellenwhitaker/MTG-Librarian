@@ -98,6 +98,7 @@
     <Compile Include="Classes\EventManager.cs" />
     <Compile Include="Classes\Exporter.cs" />
     <Compile Include="Classes\Globals.cs" />
+    <Compile Include="Classes\Importer.cs" />
     <Compile Include="Classes\ScryfallList.cs" />
     <Compile Include="Classes\ScryfallSearchCollection.cs" />
     <Compile Include="Classes\SettingsManager.cs" />
@@ -143,6 +144,12 @@
     </Compile>
     <Compile Include="Forms\DockForm.cs">
       <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ImportDeckForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ImportDeckForm.Designer.cs">
+      <DependentUpon>ImportDeckForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\MoveToSoldCardsForm.cs">
       <SubType>Form</SubType>
@@ -297,6 +304,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\DBViewForm.resx">
       <DependentUpon>DBViewForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ImportDeckForm.resx">
+      <DependentUpon>ImportDeckForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

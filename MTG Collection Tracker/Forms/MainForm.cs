@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Diagnostics.Eventing.Reader;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -533,6 +534,40 @@ namespace MTG_Librarian
                 priceHistoryForm.Collection = collection;
                 priceHistoryForm.Text = $"Price History - {collection.CollectionName}";
                 priceHistoryForm.ShowDialog();
+            }
+        }
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Close();
+        }
+
+        private void importDeckToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (importDeckDialog.ShowDialog() == DialogResult.OK)
+            {
+                var filePath = importDeckDialog.FileName;
+                var importDeckForm = new ImportDeckForm();
+                importDeckForm.FilePath = filePath;
+                var deckName = Path.GetFileNameWithoutExtension(filePath);
+                if (importDeckDialog.FilterIndex == 3)
+                {
+                    var lines = File.ReadLines(filePath);
+                    foreach (var line in lines)
+                    {
+                        if (line.StartsWith("Name "))
+                        {
+                            deckName = line.Substring(5).Trim();
+                            break;
+                        }
+                    }
+                    importDeckForm.FileFormat = FileFormat.MTGAText;
+                }
+                else if (importDeckDialog.FilterIndex == 1)
+                    importDeckForm.FileFormat = FileFormat.MTGODek;
+                else if (importDeckDialog.FilterIndex == 2)
+                    importDeckForm.FileFormat = FileFormat.MTGOText;
+                importDeckForm.deckNameTextBox.Text = deckName; 
+                importDeckForm.ShowDialog();
             }
         }
     }

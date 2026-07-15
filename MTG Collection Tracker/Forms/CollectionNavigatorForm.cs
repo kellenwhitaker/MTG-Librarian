@@ -107,7 +107,7 @@ namespace MTG_Librarian
             {
                 using (var context = new ScryfallCardsDbContext())
                 {
-                    if (e.Control.Text == "Collections" || e.Control.Text == "Wish Lists" || e.Control.Text == "Decks")
+                    if (e.Control.Text == "Collections" || e.Control.Text == "Wish Lists" || e.Control.Text == "Decks" || e.Control.Text == "Watch Lists")
                     {
                         if (navGroup.CollectionGroup != null)
                             context.Entry(navGroup.CollectionGroup).Reload();
@@ -332,6 +332,8 @@ namespace MTG_Librarian
                             navigatorListView.RebuildAll(true);
                             navigatorListView.Expand(group);
                             navigatorListView.SelectedObject = newCollection;
+                            navigatorListView.EnsureModelVisible(newCollection);
+                            CardManager.LoadCollection(collection);
                         }
                         catch (Exception ex)
                         {
@@ -552,6 +554,24 @@ namespace MTG_Librarian
         private void OnCardsDropped(CardsDroppedEventArgs args)
         {
             CardsDropped?.Invoke(this, args);
+        }
+
+        public void AddCollection(CardCollection collection)
+        {
+            if (collection != null)
+            {
+                var navigatorCollection = new NavigatorCollection { CardCollection = collection };
+                var groups = navigatorListView.Objects.Cast<NavigatorGroup>();
+                var group = groups.FirstOrDefault(g => g.Id == collection.GroupId);
+                if (group != null)
+                {
+                    group.AddCollection(navigatorCollection);
+                    navigatorListView.RebuildAll(true);
+                    navigatorListView.Expand(group);
+                    navigatorListView.SelectedObject = navigatorCollection;
+                    navigatorListView.EnsureModelVisible(navigatorCollection);
+                }
+            }
         }
 
         #endregion Events
