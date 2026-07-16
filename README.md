@@ -6,7 +6,10 @@ MTG Librarian is a Magic: the Gathering card library and collection tracker, ins
 ## Features
 1. Full library of Magic cards, beyond booster pack sets and promos
 2. Easy drag-and-drop interface
-3. Up-to-date pricing data from TCGPlayer
+3. Up-to-date card and pricing data from Scryfall
 4. Card search and filtering
+5. Simulator
+6. Collection price histories
+7. Deck editor
 
-*Special thanks to the **MTGJSON Developers** and to the developer of **Magic Assistant***
+*Special thanks to the **Scryfall Developers** and to the developer of **Magic Assistant***
