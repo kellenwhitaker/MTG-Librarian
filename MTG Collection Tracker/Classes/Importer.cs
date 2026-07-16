@@ -86,6 +86,7 @@ namespace MTG_Librarian
         private void UpdateCommander()
         {
             var commanderCard = cardsAdded.FirstOrDefault(c => c.Board == "commander");
+            var commanderTypes = new List<string> { "Creature", "Planeswalker", "Vehicle", "Spacecraft" };
             if (commanderCard != null)
             {
                 commanderCard.Board = "mainboard";
@@ -98,7 +99,7 @@ namespace MTG_Librarian
             {
                 var sideboardCards = cardsObjectsAdded.Where(c => c.Board == "sideboard").ToList();
                 var mainboardCards = cardsObjectsAdded.Where(c => c.Board == "mainboard").ToList();
-                if (sideboardCards.Count == 1 && sideboardCards[0].Typeline.Contains("Legendary") && sideboardCards[0].Typeline.Contains("Creature"))
+                if (sideboardCards.Count == 1 && sideboardCards[0].Typeline.Contains("Legendary") && commanderTypes.Any(type => sideboardCards[0].Typeline.Contains(type)))
                 {
                     var sideboardCard = cardsAdded.FirstOrDefault(c => c.Board == "sideboard");
                     if (sideboardCard != null)
@@ -110,7 +111,7 @@ namespace MTG_Librarian
                         context.SaveChanges();
                     }
                 }
-                else if (mainboardCards.Count == 1 && mainboardCards[0].Typeline.Contains("Legendary") && mainboardCards[0].Typeline.Contains("Creature"))
+                else if (mainboardCards.Count == 1 && mainboardCards[0].Typeline.Contains("Legendary") && commanderTypes.Any(type => mainboardCards[0].Typeline.Contains(type)))
                 {
                     var mainboardCard = cardsAdded.FirstOrDefault(c => c.Board == "mainboard");
                     if (mainboardCard != null)
