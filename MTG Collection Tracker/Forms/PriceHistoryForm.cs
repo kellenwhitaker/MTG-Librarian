@@ -91,7 +91,7 @@ namespace MTG_Librarian
                     Fill = null,
                     Stroke = new SolidColorPaint(SKColors.Blue, 3),
                     ScalesYAt = 1,
-                    YToolTipLabelFormatter = (chartPoint) => platform == "Paper" ? chartPoint.Model.Value?.ToString("C", cultureInfo) : chartPoint.Model.ToString()
+                    YToolTipLabelFormatter = (chartPoint) => platform == "Paper" ? chartPoint.Model.Value?.ToString("C", cultureInfo) : chartPoint.Model.Value?.ToString("F2")
                 },
                 new LineSeries<DateTimePoint>
                 {
@@ -102,7 +102,7 @@ namespace MTG_Librarian
                     Fill = null,
                     Stroke = new SolidColorPaint(SKColors.Green, 3),
                     ScalesYAt = 1,
-                    YToolTipLabelFormatter = (chartPoint) => platform == "Paper" ? chartPoint.Model.Value?.ToString("C", cultureInfo) : chartPoint.Model.ToString()
+                    YToolTipLabelFormatter = (chartPoint) => platform == "Paper" ? chartPoint.Model.Value?.ToString("C", cultureInfo) : chartPoint.Model.Value?.ToString("F2")
                 }
             };
             var xAxis = new DateTimeAxis(TimeSpan.FromDays(1), date => date.ToString("yyyy-MM-dd"));
@@ -120,7 +120,7 @@ namespace MTG_Librarian
                 {
                     Name = "Price",
                     Position = LiveChartsCore.Measure.AxisPosition.End,
-                    Labeler = (value) => platform == "Paper" ? value.ToString("C", cultureInfo) : value.ToString()
+                    Labeler = (value) => platform == "Paper" ? value.ToString("C", cultureInfo) : value.ToString("F2")
                 }
             };
             priceHistoryChart.LegendPosition = LiveChartsCore.Measure.LegendPosition.Bottom;
