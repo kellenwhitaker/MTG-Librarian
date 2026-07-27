@@ -93,7 +93,11 @@ namespace MTG_Librarian
                     request.AddHeader("Accept", "application/json");
                     request.AddHeader("User-Agent", $"MTG Librarian/{SettingsManager.ApplicationSettings.ApplicationVersion}");
                     request.AddHeader("Content-Type", "application/json");
-                    request.AddJsonBody(JsonConvert.SerializeObject(searchCollection));
+                    request.AddJsonBody(JsonConvert.SerializeObject(searchCollection, Formatting.None, new JsonSerializerSettings
+                    {
+                        NullValueHandling = NullValueHandling.Ignore
+                    }));
+
                     var response = client.Execute(request);
                     var scryfallCards = response.Content != null
                         ? JsonConvert.DeserializeObject<ScryfallCardList>(response.Content)?.data
