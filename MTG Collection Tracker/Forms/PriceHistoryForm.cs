@@ -84,6 +84,7 @@ namespace MTG_Librarian
                 },
                 new LineSeries<DateTimePoint>
                 {
+                    LineSmoothness = 0,
                     EnableNullSplitting = false,
                     Name = "Price",
                     Values = priceSeries,
@@ -95,6 +96,7 @@ namespace MTG_Librarian
                 },
                 new LineSeries<DateTimePoint>
                 {
+                    LineSmoothness = 0,
                     EnableNullSplitting = false,
                     Name = "Cost",
                     Values = costSeries,
