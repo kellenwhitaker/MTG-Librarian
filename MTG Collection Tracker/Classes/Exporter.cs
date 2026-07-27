@@ -1,7 +1,12 @@
-﻿using LiveChartsCore.SkiaSharpView;
+﻿using CsvHelper;
+using CsvHelper.Configuration;
+using CsvHelper.Configuration.Attributes;
+using LiveChartsCore.SkiaSharpView;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -113,14 +118,69 @@ namespace MTG_Librarian
         public void ExportToCSV(string filePath)
         {
             bool isDeck = Collection.Type == "deck";
-            var csvLines = new List<string>();
-            csvLines.Add($"Quantity,Name,Code,SetName,CollectorNumber,PurchasePrice,SoldPrice,Finish,Condition,Language,PurchaseDate,SoldDate{(isDeck ? ",Board" : "")}");
+            var records = new List<CSVExportObject>();
             foreach (var card in cards)
             {
-                var line = $"{card.Count},\"{card.Name}\",{card.set},\"{card.set_name}\",{card.collector_number},{card.Cost},{card.SoldPrice},{card.Finish},{card.Condition},{card.lang},{card.TimeAdded},{card.SoldTime}{(isDeck ? $",{card.Board}" : "")}";
-                csvLines.Add(line);
+                var record = new CSVExportObject
+                {
+                    Quantity = card.Count,
+                    Name = card.Name,
+                    SetCode = card.set,
+                    SetName = card.set_name,
+                    CollectorNumber = card.collector_number,
+                    PurchasePrice = card.Cost,
+                    SoldPrice = card.SoldPrice,
+                    Finish = card.Finish,
+                    Condition = card.Condition,
+                    Language = card.lang,
+                    AddedDate = card.TimeAdded,
+                    SoldTime = card.SoldTime,
+                    ScryfallId = card.ScryfallId,
+                    Board = isDeck ? card.Board : null
+                };
+                records.Add(record);
             }
-            System.IO.File.WriteAllLines(filePath, csvLines);
+            using (var writer = new StreamWriter(filePath))
+            using (var csv = new CsvWriter(writer, CultureInfo.InvariantCulture))
+            {
+                var map = new DefaultClassMap<CSVExportObject>();
+                map.AutoMap(CultureInfo.InvariantCulture);
+                if (records.All(r => r.Board == null))
+                {
+                    map.Map(m => m.Board).Ignore();
+                }
+
+                csv.Context.RegisterClassMap(map);
+                csv.WriteRecords(records);
+            }
         }
+    }
+
+    public class CSVExportObject
+    {
+        public int? Quantity { get; set; }
+        public string Name { get; set; }
+        [Name("Set Code")]
+        public string SetCode { get; set; }
+        [Name("Set Name")]
+        public string SetName { get; set; }
+        [Name("Collector Number")]
+        public string CollectorNumber { get; set; }
+        [Name("Purchase Price")]
+        [CultureInfo("InvariantCulture")]
+        public double? PurchasePrice { get; set; }
+        [Name("Sold Price")]
+        [CultureInfo("InvariantCulture")]
+        public double? SoldPrice { get; set; }
+        public string Finish { get; set; }
+        public string Condition { get; set; }
+        public string Language { get; set; }
+        [Name("Added")]
+        public DateTime? AddedDate { get; set; }
+        [Name("Sold Date")]
+        public DateTime? SoldTime { get; set; }
+        [Name("Scryfall ID")]
+        public string ScryfallId { get; set; }
+        public string Board { get; set; }
     }
 }
