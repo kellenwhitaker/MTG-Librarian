@@ -111,6 +111,56 @@ namespace MTG_Librarian
                 }
                 return abbr;
             }
+            public static string ConvertGathererSetCodeToScryfall(string code)
+            {
+                switch (code)
+                {
+                    case "1e": return "lea";
+                    case "2e": return "leb";
+                    case "2u": return "2ed";
+                    case "an": return "arn";
+                    case "aq": return "atq";
+                    case "3e": return "3ed";
+                    case "le": return "leg";
+                    case "dk": return "drk";
+                    case "fe": return "fem";
+                    case "4e": return "4ed";
+                    case "ia": return "ice";
+                    case "ch": return "chr";
+                    case "hm": return "hml";
+                    case "al": return "all";
+                    case "mi": return "mir";
+                    case "vi": return "vis";
+                    case "5e": return "5ed";
+                    case "po": return "por";
+                    case "wl": return "wth";
+                    case "te": return "tmp";
+                    case "st": return "sth";
+                    case "p2": return "p02";
+                    case "ex": return "exo";
+                    case "ug": return "ugl";
+                    case "uz": return "usg";
+                    case "gu": return "ulg";
+                    case "ul": return "ulg";
+                    case "ud": return "uds";
+                    case "6e": return "6ed";
+                    case "pk": return "ptk";
+                    case "cg": return "uds";
+                    case "p3": return "s99";
+                    case "mm": return "mmq";
+                    case "br": return "brb";
+                    case "ne": return "nem";
+                    case "pr": return "pcy";
+                    case "p4": return "s00";
+                    case "in": return "inv";
+                    case "bd": return "btd";
+                    case "ps": return "pls";
+                    case "7e": return "7ed";
+                    case "ap": return "apc";
+                    case "od": return "ody";
+                    default: return code;
+                }
+            }
             public static string ConvertScryfallSetCodeToGatherer(string code)
             {
                 switch (code)
@@ -160,6 +210,7 @@ namespace MTG_Librarian
                 }
             }
         }
+
         public static class Collections
         {
             public static Dictionary<string, ScryfallMagicCard> MagicCardCache { get; set; } = new Dictionary<string, ScryfallMagicCard>();

@@ -583,7 +583,7 @@ namespace MTG_Librarian
                     if (!setsNeedingRecount.Contains(card.set))
                         setsNeedingRecount.Add(card.set);
                     var invCards = (from i in context.LibraryView
-                                    where i.ScryfallId == card.ScryfallId && !i.Virtual && i.Count.HasValue
+                                    where i.ScryfallId == card.ScryfallId && !i.Virtual && i.Count.HasValue && !i.SoldTime.HasValue
                                     select i).ToList();
                     foreach (var inv in invCards)
                     {
@@ -615,7 +615,7 @@ namespace MTG_Librarian
                     {
                         olvSet.Cards.Clear(); 
                         var cardsWithInventory = (from c in context.LibraryView
-                                                  where c.set == olvSet.CardSet.code && !c.Virtual && c.Count.HasValue
+                                                  where c.set == olvSet.CardSet.code && !c.Virtual && c.Count.HasValue && !c.SoldTime.HasValue
                                                   select c).ToList();
 
                         foreach (var card in cardsWithInventory)

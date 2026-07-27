@@ -80,18 +80,26 @@ namespace MTG_Librarian
         private void importWorker_DoWork(object sender, DoWorkEventArgs e)
         {
             var importer = (Importer)e.Argument;
-            var numLines = importer.NumLines;
+            var report = new ProgressReport { CurrentCards = 0, TotalCards = 0, MessagePrefix = "Parsing file... "};
+            importWorker.ReportProgress(0, report);
             importer.Parse();
-            var report = new ProgressReport { CurrentCards = 0, TotalCards = importer.CardCount };
+            report = new ProgressReport { CurrentCards = 0, TotalCards = importer.CardCount, MessagePrefix = "" };
             importWorker.ReportProgress(0, report);
             importer.BeginImport();
             int delay = 0;
             while (importer.ImportNextCard(out delay))
             {
+                if (importWorker.CancellationPending)
+                {
+                    e.Result = false;
+                    return;
+                }
+       
                 report.CurrentCards++;
                 importWorker.ReportProgress(0, report);
                 Thread.Sleep(delay);
-            } 
+            }
+            e.Result = true;
         }
 
         private void importWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
@@ -100,12 +108,31 @@ namespace MTG_Librarian
             blockProgressBar.CurrentBlocks = (int)(report.CurrentCards / (double)report.TotalCards * blockProgressBar.MaxBlocks);
             if (blockProgressBar.CurrentBlocks == blockProgressBar.MaxBlocks)
                 blockProgressBar.BarColor = Color.Black;
-            progressLabel.Text = $"Importing items... {report.CurrentCards}/{report.TotalCards} ({(double)report.CurrentCards / report.TotalCards:P0})";
+            progressLabel.Text = $"{report.MessagePrefix}";
+            if (report.TotalCards > 0)
+                progressLabel.Text += $"{report.CurrentCards}/{report.TotalCards} ({(double)report.CurrentCards / report.TotalCards:P0})";
+            progressLabel.Width = blockProgressBar.Width;
         }
 
         private void importWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            importer.CommitImport();
+            var success = (bool)e.Result;
+            if (!success)
+            {
+                importer.CancelImport();
+                MessageBox.Show("Import canceled.");
+                return;
+            }
+
+            try
+            {
+                importer.CommitImport();
+            }
+            catch (Exception ex)
+            {
+                importer.CancelImport();
+                MessageBox.Show($"An error occurred while committing the import: {ex.Message}\n{ex.InnerException.ToString()}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
             if (importer.FailedCards.Count > 0)
             {
                 failedLabel.Visible = true;
@@ -131,11 +158,16 @@ namespace MTG_Librarian
                 }
             }
         }
+        private void ImportDeckForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (importWorker.IsBusy) importWorker.CancelAsync();
+        }
     }
 
     public class ProgressReport
     {
         public int CurrentCards { get; set; }
         public int TotalCards { get; set; }
+        public string MessagePrefix { get; set; }
     }
 }

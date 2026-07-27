@@ -59,7 +59,7 @@ namespace MTG_Librarian
             snapshot.Cost = cost;
             snapshot.Price = price;
             cardsContext.CollectionSnapshots.Add(snapshot);
-            //context.SaveChanges();
+            cardsContext.SaveChanges();
         }
         
         public static void SaveCollectionSnapshots()
@@ -72,7 +72,6 @@ namespace MTG_Librarian
                 {
                     SaveCollectionSnapshot(collection, context);
                 }
-                context.SaveChanges();
             }
         }
         public static CollectionViewForm LoadCollection(int id, DockState dockState = DockState.Document)
@@ -226,6 +225,12 @@ namespace MTG_Librarian
                     var destinationListView = destinationBoard == "sideboard" ? destinationCVForm.sideboardListView : destinationCVForm.cardListView;
                     destinationListView.SelectedObjects = cardsList;
                     destinationListView.Focus();
+                }
+
+                if (collection.GroupName == "Sold")
+                {
+                    if (cardsList.Count > 0)
+                        EventManager.OnInventoryChanged(new InventoryChangedEventArgs { Cards = cardsList });
                 }
             }
             catch (Exception ex)

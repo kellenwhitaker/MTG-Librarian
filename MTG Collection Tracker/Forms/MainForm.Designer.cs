@@ -37,6 +37,7 @@
             this.mainMenuStrip = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importDeckToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.importCollectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportDeckcollectionToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -63,6 +64,7 @@
             this.UpdateMissingSetIconsWorker = new System.ComponentModel.BackgroundWorker();
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.importDeckDialog = new System.Windows.Forms.OpenFileDialog();
+            this.importCollectionDialog = new System.Windows.Forms.OpenFileDialog();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -147,6 +149,7 @@
             // 
             this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.importDeckToolStripMenuItem,
+            this.importCollectionToolStripMenuItem,
             this.exportDeckcollectionToolStripMenuItem,
             this.settingsToolStripMenuItem,
             this.exitToolStripMenuItem});
@@ -160,6 +163,13 @@
             this.importDeckToolStripMenuItem.Size = new System.Drawing.Size(250, 26);
             this.importDeckToolStripMenuItem.Text = "Import deck...";
             this.importDeckToolStripMenuItem.Click += new System.EventHandler(this.importDeckToolStripMenuItem_Click);
+            // 
+            // importCollectionToolStripMenuItem
+            // 
+            this.importCollectionToolStripMenuItem.Name = "importCollectionToolStripMenuItem";
+            this.importCollectionToolStripMenuItem.Size = new System.Drawing.Size(250, 26);
+            this.importCollectionToolStripMenuItem.Text = "Import collection...";
+            this.importCollectionToolStripMenuItem.Click += new System.EventHandler(this.importCollectionToolStripMenuItem_Click);
             // 
             // exportDeckcollectionToolStripMenuItem
             // 
@@ -385,6 +395,10 @@
     "Arena Text Files (*.txt)|*.txt";
             this.importDeckDialog.Title = "Import Deck";
             // 
+            // importCollectionDialog
+            // 
+            this.importCollectionDialog.Filter = "CSV Files (*.csv)|*.csv|Magic Online DEK Files (*.dek)|*.dek";
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -450,6 +464,8 @@
         private System.Windows.Forms.ToolStripMenuItem importDeckToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.OpenFileDialog importDeckDialog;
+        private System.Windows.Forms.ToolStripMenuItem importCollectionToolStripMenuItem;
+        private System.Windows.Forms.OpenFileDialog importCollectionDialog;
     }
 }
 

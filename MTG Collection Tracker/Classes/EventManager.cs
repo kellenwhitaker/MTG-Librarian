@@ -104,12 +104,11 @@ namespace MTG_Librarian
                         foreach (var card in e.Results)
                         {
                             var inventory = from c in context.Library
-                                            where c.ScryfallId == card.ScryfallId
+                                            where c.ScryfallId == card.ScryfallId && !c.Virtual && !c.SoldTime.HasValue
                                             select c;
                             foreach (var item in inventory)
                             {
-                                if (!item.Virtual)
-                                    card.CopiesOwned += item.Count.GetValueOrDefault();
+                                card.CopiesOwned += item.Count.GetValueOrDefault();
                             }
                             string priceString;
                             string finish = "nonfoil";

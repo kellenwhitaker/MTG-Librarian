@@ -73,12 +73,12 @@
             // 
             this.deckNameTextBox.Location = new System.Drawing.Point(15, 96);
             this.deckNameTextBox.Name = "deckNameTextBox";
-            this.deckNameTextBox.Size = new System.Drawing.Size(216, 22);
+            this.deckNameTextBox.Size = new System.Drawing.Size(553, 22);
             this.deckNameTextBox.TabIndex = 3;
             // 
             // importButton
             // 
-            this.importButton.Location = new System.Drawing.Point(392, 96);
+            this.importButton.Location = new System.Drawing.Point(730, 96);
             this.importButton.Name = "importButton";
             this.importButton.Size = new System.Drawing.Size(75, 23);
             this.importButton.TabIndex = 4;
@@ -89,16 +89,16 @@
             // importWorker
             // 
             this.importWorker.WorkerReportsProgress = true;
+            this.importWorker.WorkerSupportsCancellation = true;
             this.importWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.importWorker_DoWork);
             this.importWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.importWorker_ProgressChanged);
             this.importWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.importWorker_RunWorkerCompleted);
             // 
             // progressLabel
             // 
-            this.progressLabel.AutoSize = true;
             this.progressLabel.Location = new System.Drawing.Point(17, 130);
             this.progressLabel.Name = "progressLabel";
-            this.progressLabel.Size = new System.Drawing.Size(0, 16);
+            this.progressLabel.Size = new System.Drawing.Size(674, 16);
             this.progressLabel.TabIndex = 5;
             // 
             // blockProgressBar
@@ -112,13 +112,13 @@
             this.blockProgressBar.MaxBlocks = 1;
             this.blockProgressBar.Name = "blockProgressBar";
             this.blockProgressBar.Progress = 0;
-            this.blockProgressBar.Size = new System.Drawing.Size(676, 27);
+            this.blockProgressBar.Size = new System.Drawing.Size(790, 27);
             this.blockProgressBar.TabIndex = 6;
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(235, 65);
+            this.label3.Location = new System.Drawing.Point(573, 65);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(56, 16);
             this.label3.TabIndex = 7;
@@ -132,7 +132,7 @@
             "Paper",
             "Arena",
             "Magic Online"});
-            this.platformComboBox.Location = new System.Drawing.Point(238, 94);
+            this.platformComboBox.Location = new System.Drawing.Point(576, 94);
             this.platformComboBox.Name = "platformComboBox";
             this.platformComboBox.Size = new System.Drawing.Size(148, 24);
             this.platformComboBox.TabIndex = 8;
@@ -161,7 +161,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(707, 202);
+            this.ClientSize = new System.Drawing.Size(827, 202);
             this.Controls.Add(this.failedLabel);
             this.Controls.Add(this.failedTextBox);
             this.Controls.Add(this.platformComboBox);
@@ -179,6 +179,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
             this.Text = "Import Deck";
             this.TopMost = true;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.ImportDeckForm_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 

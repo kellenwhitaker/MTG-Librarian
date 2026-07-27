@@ -574,6 +574,13 @@ namespace MTG_Librarian
             }
         }
 
+        public void ReloadCollections()
+        {
+            navigatorListView.ClearObjects();
+            LoadGroups();
+            LoadTree();
+        }
+
         #endregion Events
 
     }
