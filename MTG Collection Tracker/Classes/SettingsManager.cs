@@ -187,7 +187,7 @@ namespace MTG_Librarian
             CardCollection mainCollection;
             using (var context = new ScryfallCardsDbContext())
                 mainCollection = (from c in context.Collections
-                                  where c.CollectionName == "Main"
+                                  where c.CollectionName == "Main" && c.Platform == "Paper"
                                   select c).FirstOrDefault();
 
             if (mainCollection != null)
