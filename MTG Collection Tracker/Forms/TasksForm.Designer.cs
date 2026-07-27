@@ -38,10 +38,11 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;            
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.pictureBox1.Location = new System.Drawing.Point(0, 0);
+            this.pictureBox1.Margin = new System.Windows.Forms.Padding(4);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(528, 437);
+            this.pictureBox1.Size = new System.Drawing.Size(704, 538);
             this.pictureBox1.TabIndex = 1;
             this.pictureBox1.TabStop = false;
             // 
@@ -49,6 +50,7 @@
             // 
             this.tasksListView.AllColumns.Add(this.olvColumn3);
             this.tasksListView.AllColumns.Add(this.olvColumn1);
+            this.tasksListView.CellEditUseWholeCell = false;
             this.tasksListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.olvColumn3,
             this.olvColumn1});
@@ -60,7 +62,9 @@
             this.tasksListView.HeaderMaximumHeight = 0;
             this.tasksListView.HeaderMinimumHeight = 0;
             this.tasksListView.HeaderStyle = System.Windows.Forms.ColumnHeaderStyle.Nonclickable;
+            this.tasksListView.HideSelection = false;
             this.tasksListView.Location = new System.Drawing.Point(0, 0);
+            this.tasksListView.Margin = new System.Windows.Forms.Padding(4);
             this.tasksListView.MultiSelect = false;
             this.tasksListView.Name = "tasksListView";
             this.tasksListView.OverlayImage.Alignment = System.Drawing.ContentAlignment.TopLeft;
@@ -68,8 +72,9 @@
             this.tasksListView.OverlayImage.InsetY = 0;
             this.tasksListView.RowHeight = 26;
             this.tasksListView.ShowGroups = false;
+            this.tasksListView.ShowItemToolTips = true;
             this.tasksListView.ShowSortIndicators = false;
-            this.tasksListView.Size = new System.Drawing.Size(528, 437);
+            this.tasksListView.Size = new System.Drawing.Size(704, 538);
             this.tasksListView.TabIndex = 0;
             this.tasksListView.UseCompatibleStateImageBehavior = false;
             this.tasksListView.View = System.Windows.Forms.View.Details;
@@ -90,11 +95,12 @@
             // 
             // TasksForm
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(528, 437);
+            this.ClientSize = new System.Drawing.Size(704, 538);
             this.Controls.Add(this.tasksListView);
             this.Controls.Add(this.pictureBox1);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "TasksForm";
             this.Text = "Tasks";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
