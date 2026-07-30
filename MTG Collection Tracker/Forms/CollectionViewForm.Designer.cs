@@ -330,6 +330,7 @@
             this.soldPriceColumn.DisplayIndex = 15;
             this.soldPriceColumn.IsVisible = false;
             this.soldPriceColumn.Text = "Sold Price";
+            this.soldPriceColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // soldTimeColumn
             // 
