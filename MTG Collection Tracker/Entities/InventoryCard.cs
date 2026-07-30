@@ -60,6 +60,8 @@ namespace MTG_Librarian
         { 
             get 
             { 
+                if (SoldTime.HasValue && !SoldPrice.HasValue)
+                    return null;
                 var price = SoldPrice.HasValue ? SoldPrice : Price;
                 if (price.HasValue && Cost.HasValue)
                     return price.Value - Cost.Value;
@@ -72,6 +74,8 @@ namespace MTG_Librarian
         { 
             get
             {
+                if (SoldTime.HasValue && !SoldPrice.HasValue)
+                    return null;
                 var price = SoldPrice.HasValue ? SoldPrice : Price;
                 if (price.HasValue && Cost.HasValue && Cost.Value != 0.0)
                     return 100 * (price.Value - Cost.Value) / Cost.Value;
