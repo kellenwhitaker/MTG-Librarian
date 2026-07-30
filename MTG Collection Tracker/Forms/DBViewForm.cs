@@ -441,7 +441,11 @@ namespace MTG_Librarian
         public void LoadTree()
         {
             setListView.AddObjects(SetItems);
-            setListView.Sort(setListView.AllColumns[1], SortOrder.Descending);
+            setListView.PrimarySortColumn = setListView.AllColumns[1];
+            setListView.PrimarySortOrder = SortOrder.Descending;
+            setListView.SecondarySortColumn = setListView.AllColumns[0];
+            setListView.SecondarySortOrder = SortOrder.Descending;
+            setListView.Sort();
         }
         private void UpdateSetModelFilter()
         {
