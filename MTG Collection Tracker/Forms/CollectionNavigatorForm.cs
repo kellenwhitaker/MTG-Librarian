@@ -1,13 +1,15 @@
-﻿using System;
+﻿using BrightIdeasSoftware;
+using KW.WinFormsUI.Docking;
+using Microsoft.EntityFrameworkCore.Query.ExpressionVisitors.Internal;
+using MTG_Librarian.Forms;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using BrightIdeasSoftware;
-using KW.WinFormsUI.Docking;
-using MTG_Librarian.Forms;
+using static MTG_Librarian.Globals;
 
 namespace MTG_Librarian
 {
@@ -27,6 +29,7 @@ namespace MTG_Librarian
             navigatorListView.CanExpandGetter = x => (x as NavigatorItem).CanExpand;
             navigatorListView.ChildrenGetter = x => (x as NavigatorGroup).Collections;
             navigatorListView.TreeColumnRenderer = new CollectionNameRenderer();
+            navigatorListView.AutoResizeColumns();
             var dropSink = navigatorListView.DropSink as SimpleDropSink;
             dropSink.CanDropOnItem = false;
             dropSink.Billboard.BackColor = Color.DodgerBlue;
@@ -581,6 +584,22 @@ namespace MTG_Librarian
             LoadTree();
         }
 
+        public void DeckColorIdentityChanged(object sender, DeckColorIdentityChangedEventArgs e)
+        {
+            var collection = e.Collection;
+            var navigatorItems = navigatorListView.Objects.Cast<NavigatorGroup>();
+            foreach (var group in navigatorItems)
+            {
+                foreach (var navCollection in group.Collections)
+                if (navCollection.Id == collection.Id)
+                {
+                    navCollection.CardCollection.ColorIdentity = collection.ColorIdentity;
+                    navigatorListView.RefreshObject(group);
+                    return;
+                }
+            }
+        }
+
         #endregion Events
 
     }
@@ -606,7 +625,7 @@ namespace MTG_Librarian
             set => _name = value;
         }
 
-        public string Text => Name;
+        public override string Text => Name;
         public NavigatorGroup Parent { get; set; }
 
         public void RemoveFromParent()
@@ -655,7 +674,7 @@ namespace MTG_Librarian
             return $"{Name} [{collectionCount}]";
         }
 
-        public string Text => ToString();
+        public override string Text => Name;
     }
 
     public class NavigatorItem
@@ -665,6 +684,8 @@ namespace MTG_Librarian
         public virtual bool Permanent { get; }
         public virtual bool CanExpand => false;
         public virtual string Name { get; set; }
+        public virtual string PaddedName => Name.PadRight(30);
         public virtual bool Virtual { get; }
+        public virtual string Text { get; } 
     }
 }

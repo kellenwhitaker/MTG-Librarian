@@ -55,6 +55,7 @@ namespace MTG_Librarian
             EventManager.CardImageRetrieved += Globals.Forms.CardInfoForm.cardImageRetrieved;
             Globals.Forms.NavigationForm = new CollectionNavigatorForm();
             Globals.Forms.NavigationForm.CardsDropped += EventManager.NavigationFormCardsDropped;
+            EventManager.DeckColorIdentityChanged += Globals.Forms.NavigationForm.DeckColorIdentityChanged;
             Globals.Forms.DBViewForm = new DBViewForm();
             EventManager.InventoryChanged += Globals.Forms.DBViewForm.InventoryChanged;
             Globals.Forms.DBViewForm.setListView.AddObject(new OLVSetItem(""));
@@ -73,6 +74,12 @@ namespace MTG_Librarian
             splitContainer1.SplitterDistance = Height;
             InitUIWorker.RunWorkerAsync();
         }
+
+        private void EventManager_DeckColorIdentityChanged(object sender, DeckColorIdentityChangedEventArgs e)
+        {
+            throw new NotImplementedException();
+        }
+
         public void InitDB()
         {
             using (var context = new ScryfallCardsDbContext())

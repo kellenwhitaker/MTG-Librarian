@@ -49,15 +49,17 @@
             this.collectionNameColumn});
             this.navigatorListView.ContextMenuStrip = this.contextMenuStrip1;
             this.navigatorListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.navigatorListView.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.navigatorListView.FullRowSelect = true;
             this.navigatorListView.HeaderMaximumHeight = 0;
             this.navigatorListView.HideSelection = false;
             this.navigatorListView.IsSimpleDragSource = true;
             this.navigatorListView.IsSimpleDropSink = true;
             this.navigatorListView.Location = new System.Drawing.Point(0, 0);
-            this.navigatorListView.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.navigatorListView.Margin = new System.Windows.Forms.Padding(4);
             this.navigatorListView.MultiSelect = false;
             this.navigatorListView.Name = "navigatorListView";
+            this.navigatorListView.RowHeight = 35;
             this.navigatorListView.ShowGroups = false;
             this.navigatorListView.Size = new System.Drawing.Size(545, 591);
             this.navigatorListView.TabIndex = 0;
@@ -73,11 +75,11 @@
             // 
             // collectionNameColumn
             // 
-            this.collectionNameColumn.AspectName = "Text";
+            this.collectionNameColumn.AspectName = "PaddedName";
             this.collectionNameColumn.AutoCompleteEditor = false;
             this.collectionNameColumn.AutoCompleteEditorMode = System.Windows.Forms.AutoCompleteMode.None;
             this.collectionNameColumn.CellEditUseWholeCell = true;
-            this.collectionNameColumn.Width = 200;
+            this.collectionNameColumn.Width = 31;
             // 
             // contextMenuStrip1
             // 
@@ -127,7 +129,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(545, 591);
             this.Controls.Add(this.navigatorListView);
-            this.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.Margin = new System.Windows.Forms.Padding(4);
             this.Name = "CollectionNavigatorForm";
             this.Text = "Collections";
             ((System.ComponentModel.ISupportInitialize)(this.navigatorListView)).EndInit();

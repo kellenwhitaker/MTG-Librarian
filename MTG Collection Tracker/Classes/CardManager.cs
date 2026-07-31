@@ -173,8 +173,47 @@ namespace MTG_Librarian
                     MessageBox.Show($"{failedCards} card(s) were not added because they are not available on the collection's platform.");
                 if (cvForm != null)
                     cvForm.AddFullInventoryCards(fullCardsAdded, board);
+                if (collection.Type == "deck")
+                    UpdateColorIdentity(context, collection);
                 EventManager.OnInventoryChanged(new InventoryChangedEventArgs { Cards = fullCardsAdded });
             }
+        }
+        private static void UpdateColorIdentity(ScryfallCardsDbContext context, CardCollection collection)
+        {
+            var inventoryCards = context.LibraryView.Where(x => x.CollectionId == collection.Id).ToList();
+            var whiteColor = false;
+            var blueColor = false;
+            var blackColor = false;
+            var redColor = false;
+            var greenColor = false;
+            collection.ColorIdentity = string.Empty;
+            foreach (var inventoryCard in inventoryCards)
+            {
+                if (inventoryCard.ColorIdentity.Contains("W"))
+                    whiteColor = true;
+                if (inventoryCard.ColorIdentity.Contains("U"))
+                    blueColor = true;
+                if (inventoryCard.ColorIdentity.Contains("B"))
+                    blackColor = true;
+                if (inventoryCard.ColorIdentity.Contains("R"))
+                    redColor = true;
+                if (inventoryCard.ColorIdentity.Contains("G"))
+                    greenColor = true;
+            }
+            if (whiteColor)
+                collection.ColorIdentity += "{W}";
+            if (blueColor)
+                collection.ColorIdentity += "{U}";
+            if (blackColor)
+                collection.ColorIdentity += "{B}";
+            if (redColor)
+                collection.ColorIdentity += "{R}";
+            if (greenColor)
+                collection.ColorIdentity += "{G}";
+            
+            context.Update(collection);
+            context.SaveChanges();
+            EventManager.OnDeckColorIdentityChanged(new DeckColorIdentityChangedEventArgs { Collection = collection });
         }
         public static void FetchPrices(List<InventoryCard> pricesToFetch)
         {
@@ -190,6 +229,7 @@ namespace MTG_Librarian
                 return;
             }
             var cardsList = new List<InventoryCard>();
+            CardCollection sourceCollection = null;
             try
             {
                 using (var context = new ScryfallCardsDbContext())
@@ -197,6 +237,8 @@ namespace MTG_Librarian
                     foreach (InventoryCard fullInventoryCard in fullInventoryCards)
                     {
                         var sourceCollectionId = fullInventoryCard.CollectionId;
+                        if (sourceCollection == null && sourceCollectionId != collection.Id)
+                            sourceCollection = context.Collections.FirstOrDefault(x => x.Id == sourceCollectionId);
                         fullInventoryCard.CollectionId = collection.Id;
                         if (fullInventoryCard.Virtual != collection.Virtual && collection.GroupName != "Sold")
                             fullInventoryCard.TimeAdded = DateTime.Now;
@@ -206,27 +248,31 @@ namespace MTG_Librarian
                         cardsList.Add(fullInventoryCard);
                     }
                     context.SaveChanges();
-                }
-                if (string.IsNullOrEmpty(sourceBoard) && sourceCVForm != null)
-                {
-                    var ids = new List<int>();
-                    foreach (InventoryCard card in cardsList)
-                        ids.Add(card.InventoryId);
-                    sourceCVForm.RemoveFullInventoryCards(ids, "mainboard");
-                    sourceCVForm.RemoveFullInventoryCards(ids, "sideboard");
-                }
 
-                if (sourceCVForm != null)
-                    sourceCVForm.RemoveFullInventoryCards(cardsList, sourceBoard);
-                var destinationCVForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.Collection.Id == collection.Id);
-                if (destinationCVForm != null)
-                {
-                    destinationCVForm.AddFullInventoryCards(cardsList, destinationBoard);
-                    var destinationListView = destinationBoard == "sideboard" ? destinationCVForm.sideboardListView : destinationCVForm.cardListView;
-                    destinationListView.SelectedObjects = cardsList;
-                    destinationListView.Focus();
-                }
+                    if (string.IsNullOrEmpty(sourceBoard) && sourceCVForm != null)
+                    {
+                        var ids = new List<int>();
+                        foreach (InventoryCard card in cardsList)
+                            ids.Add(card.InventoryId);
+                        sourceCVForm.RemoveFullInventoryCards(ids, "mainboard");
+                        sourceCVForm.RemoveFullInventoryCards(ids, "sideboard");
+                    }
 
+                    if (sourceCVForm != null)
+                        sourceCVForm.RemoveFullInventoryCards(cardsList, sourceBoard);
+                    var destinationCVForm = Globals.Forms.OpenCollectionForms.FirstOrDefault(x => x.Collection.Id == collection.Id);
+                    if (destinationCVForm != null)
+                    {
+                        destinationCVForm.AddFullInventoryCards(cardsList, destinationBoard);
+                        var destinationListView = destinationBoard == "sideboard" ? destinationCVForm.sideboardListView : destinationCVForm.cardListView;
+                        destinationListView.SelectedObjects = cardsList;
+                        destinationListView.Focus();
+                    }
+                    if (sourceCollection != null && sourceCollection.Type == "deck")
+                        UpdateColorIdentity(context, sourceCollection);
+                    if (collection.Type == "deck")
+                        UpdateColorIdentity(context, collection);
+                }
                 if (collection.GroupName == "Sold")
                 {
                     if (cardsList.Count > 0)
@@ -268,14 +314,24 @@ namespace MTG_Librarian
 
         private static void UpdateCardsInDB(ScryfallCardsDbContext context, ArrayList items)
         {
+            var cardRemoved = false;
             foreach (InventoryCard card in items)
             {
                 if (card.Count > 0)
                     context.Library.Update(card.InventoryCardBase);
                 else
+                {
+                    cardRemoved = true;
                     context.Library.Remove(card.InventoryCardBase);
+                }
             }
             context.SaveChanges();
+            if (cardRemoved)
+            {
+                var collection = items[0] is InventoryCard firstCard ? context.Collections.FirstOrDefault(x => x.Id == firstCard.CollectionId) : null;
+                if (collection != null && collection.Type == "deck")
+                    UpdateColorIdentity(context, collection);
+            }
         }
 
         public static void RetrieveImage(ScryfallMagicCardBase card, string side)

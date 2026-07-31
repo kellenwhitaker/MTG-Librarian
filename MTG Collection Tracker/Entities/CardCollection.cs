@@ -17,5 +17,6 @@ namespace MTG_Librarian
         public string   Platform { get; set; }
         public int?     Commander { get; set; }
         public bool?    CollapsedView { get; set; }
+        public string   ColorIdentity { get; set; }
     }
 }

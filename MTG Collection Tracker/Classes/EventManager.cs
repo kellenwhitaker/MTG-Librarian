@@ -75,7 +75,11 @@ namespace MTG_Librarian
         {
             InventoryChanged?.Invoke(Globals.Forms.MainForm, args);
         }
-
+        public static event EventHandler<DeckColorIdentityChangedEventArgs> DeckColorIdentityChanged;
+        public static void OnDeckColorIdentityChanged(DeckColorIdentityChangedEventArgs args)
+        {
+            DeckColorIdentityChanged?.Invoke(Globals.Forms.MainForm, args);
+        }
         private delegate void ScryfallSearchEndedDelegate(object sender,  ScryfallSearchEndedEventArgs e);
 
         public static void ScryfallSearchEnded(object sender, ScryfallSearchEndedEventArgs e)

@@ -19,7 +19,10 @@ namespace MTG_Librarian
         public string SourceBoard { get; set; } = string.Empty;
         public string TargetBoard { get; set; } = "mainboard";
     }
-
+    public class DeckColorIdentityChangedEventArgs : EventArgs
+    {
+        public CardCollection Collection { get; set; }
+    }
     public class InventoryChangedEventArgs : EventArgs
     {
         public List<InventoryCard> Cards { get; set; }

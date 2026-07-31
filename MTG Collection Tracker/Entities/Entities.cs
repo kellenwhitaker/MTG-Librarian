@@ -67,6 +67,42 @@ namespace MTG_Librarian
         {
             this.Database.ExecuteSqlCommand("PRAGMA foreign_keys = ON;");
             EnsureDatabaseCreated();
+            UpgradeDatabase();
+        }
+        private void AddColumnIfNotExists(SqliteConnection connection, string tableName, string columnName, string columnType)
+        {
+            using (var checkCommand = connection.CreateCommand())
+            {
+                checkCommand.CommandText = $"PRAGMA table_info({tableName});";
+                using (var reader = checkCommand.ExecuteReader())
+                {
+                    bool columnExists = false;
+                    while (reader.Read())
+                    {
+                        if (reader["name"].ToString() == columnName)
+                        {
+                            columnExists = true;
+                            break;
+                        }
+                    }
+                    if (!columnExists)
+                    {
+                        using (var addCommand = connection.CreateCommand())
+                        {
+                            addCommand.CommandText = $"ALTER TABLE {tableName} ADD COLUMN {columnName} {columnType};";
+                            addCommand.ExecuteNonQuery();
+                        }
+                    }
+                }
+            }
+        }
+        private void UpgradeDatabase()
+        {
+            using (var sqliteConn = new SqliteConnection($"Data Source=cards.db"))
+            {
+                sqliteConn.Open();
+                AddColumnIfNotExists(sqliteConn, "Collections", "ColorIdentity", "TEXT");
+            }
         }
         private void EnsureDatabaseCreated()
         {
@@ -208,6 +244,7 @@ namespace MTG_Librarian
                             ""Platform"" TEXT, 
                             ""Commander"" INTEGER, 
                             ""CollapsedView"" INTEGER,
+                            ""ColorIdentity"" TEXT,
                             UNIQUE(""CollectionName"", ""GroupId"", ""Platform""),
                             FOREIGN KEY(""GroupId"") REFERENCES ""CollectionGroups""(""Id""));
                         CREATE TABLE Library (
