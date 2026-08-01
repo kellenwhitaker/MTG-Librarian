@@ -73,11 +73,11 @@ namespace MTG_Librarian
                 else
                 {
                     textSize = g.MeasureString(text, boldFont);
-                    var fillRect = new Rectangle(textRect.Left, textRect.Top + 4, (int)textSize.Width + 3, textRect.Height / 2 - 5);
+                    var fillRect = new Rectangle(textRect.Left, textRect.Top + 4, (int)textSize.Width + 3, textRect.Height / 2 - 4);
                     if (IsItemSelected && ListView.Focused)
                             g.FillRectangle(Brushes.LightBlue, fillRect); 
                     else
-                        using (var gradientBrush = new LinearGradientBrush(fillRect, Color.White, Color.AntiqueWhite, LinearGradientMode.Vertical))
+                        using (var gradientBrush = new LinearGradientBrush(fillRect, Color.White, Color.FromArgb(255, 255, 235, 205), LinearGradientMode.Vertical))
                             g.FillRectangle(gradientBrush, fillRect);
                     g.DrawLine(Pens.DarkGray, fillRect.Left, fillRect.Top + fillRect.Height, fillRect.Right, fillRect.Top + fillRect.Height);
                 }
