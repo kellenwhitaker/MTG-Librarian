@@ -56,7 +56,6 @@ namespace MTG_Librarian
             Globals.Forms.DBViewForm.LoadSets();
             InitUIWorker.ReportProgress(0, new SplashProgressObject("Loading collections...", 2));
             Globals.Forms.NavigationForm.LoadGroups();
-            CardManager.CountInventory();
             AddSetIcons();
             InitUIWorker.ReportProgress(0, new SplashProgressObject("Starting application...", 3));
             Thread.Sleep(100);
