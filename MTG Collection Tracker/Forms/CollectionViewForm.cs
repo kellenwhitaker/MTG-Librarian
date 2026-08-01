@@ -1442,7 +1442,11 @@ namespace MTG_Librarian
                             result = valueX.CompareTo(valueY);
                         }
                         else if (AspectName == "TimeAdded")
+                        {
                             result = (x as InventoryCard).SortableTimeAdded.CompareTo((y as InventoryCard).SortableTimeAdded);
+                            if (result == 0)
+                                result = (x as InventoryCard).InventoryId.CompareTo((y as InventoryCard).InventoryId);
+                        }
                         else if (AspectName == "Foil")
                             result = (x as InventoryCard).Foil.CompareTo((y as InventoryCard).Foil);
                         else if (AspectName == "Cost")
