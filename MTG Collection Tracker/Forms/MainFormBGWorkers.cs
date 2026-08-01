@@ -124,7 +124,7 @@ namespace MTG_Librarian
                         {
                             (set.CommonIconBytes, set.UncommonIconBytes, set.RareIconBytes, set.MythicRareIconBytes) =
                                 (match.CommonIconBytes, match.UncommonIconBytes, match.RareIconBytes, match.MythicRareIconBytes);
-                            if (match.card_count != set.card_count)
+                            if (match.card_count != set.card_count || match.name != set.name)
                                 result.setsNeedingRefresh.Add(match);
                         }
                     }
@@ -158,7 +158,7 @@ namespace MTG_Librarian
                     MessageBox.Show(ex.ToString());
             }
             e.Result = result;
-            //UpdateCards();
+            UpdateCards();
         }
 
         private void UpdateCards()
