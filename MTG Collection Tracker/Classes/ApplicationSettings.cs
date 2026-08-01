@@ -55,7 +55,7 @@ namespace MTG_Librarian
         [ApplicationScopedSetting()]
         public string ApplicationVersion
         {
-            get => "0.2-beta";
+            get => "0.21-beta";
          }
 
         [UserScopedSetting()]
