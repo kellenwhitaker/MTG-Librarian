@@ -245,7 +245,7 @@ namespace MTG_Librarian
                             ""Commander"" INTEGER, 
                             ""CollapsedView"" INTEGER,
                             ""ColorIdentity"" TEXT,
-                            UNIQUE(""CollectionName"", ""GroupId"", ""Platform""),
+                            UNIQUE(""CollectionName"", ""Platform""),
                             FOREIGN KEY(""GroupId"") REFERENCES ""CollectionGroups""(""Id""));
                         CREATE TABLE Library (
                             InventoryId INTEGER PRIMARY KEY AUTOINCREMENT, 
