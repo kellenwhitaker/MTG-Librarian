@@ -110,7 +110,7 @@ namespace MTG_Librarian
                     foreach (var set in scryfallSets)
                     {
                         var dbSet = from s in DBSets
-                                    where s.code == set.code
+                                    where s.id == set.id
                                     select s;
 
                         var match = dbSet.FirstOrDefault();
@@ -134,7 +134,7 @@ namespace MTG_Librarian
                             (set.CommonIconBytes == null && set.UncommonIconBytes == null && set.RareIconBytes == null && set.MythicRareIconBytes == null)))
                         {
                             var match = from s in scryfallSets
-                                        where s.code == set.code
+                                        where s.id == set.id
                                         select s;
                             if (match.FirstOrDefault() != null)
                                 result.setsNeedingIcons.Add(match.FirstOrDefault());
@@ -158,7 +158,7 @@ namespace MTG_Librarian
                     MessageBox.Show(ex.ToString());
             }
             e.Result = result;
-            UpdateCards();
+            //UpdateCards();
         }
 
         private void UpdateCards()

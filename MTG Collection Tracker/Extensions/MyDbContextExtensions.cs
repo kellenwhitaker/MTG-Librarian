@@ -7,7 +7,7 @@ namespace MTG_Librarian
     {
         public static void Upsert(this ScryfallCardsDbContext context, ScryfallCardSet set)
         {
-            var existing = context.Sets.AsNoTracking().FirstOrDefault(x => x.name == set.name);
+            var existing = context.Sets.AsNoTracking().FirstOrDefault(x => x.id == set.id);
             if (existing == null) // new set
                 context.Add(set);
             else // update existing set

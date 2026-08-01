@@ -75,11 +75,6 @@ namespace MTG_Librarian
             InitUIWorker.RunWorkerAsync();
         }
 
-        private void EventManager_DeckColorIdentityChanged(object sender, DeckColorIdentityChangedEventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
         public void InitDB()
         {
             using (var context = new ScryfallCardsDbContext())
