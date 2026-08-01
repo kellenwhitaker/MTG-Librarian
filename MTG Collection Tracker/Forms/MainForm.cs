@@ -78,15 +78,16 @@ namespace MTG_Librarian
         public void InitDB()
         {
             using (var context = new ScryfallCardsDbContext())
+            {
                 if (!context.CollectionGroups.Any())
                 {
                     var collectionsGroup = new CollectionGroup { GroupName = "Collections", Permanent = true, Virtual = false };
                     context.Add(collectionsGroup);
                     var wishlistGroup = new CollectionGroup { GroupName = "Wish Lists", Permanent = true, Virtual = true };
                     context.Add(wishlistGroup);
-                    var decksGroup = new CollectionGroup { GroupName = "Decks", Permanent = true, Virtual = false };
+                    var decksGroup = new CollectionGroup { GroupName = "Decks", Permanent = true, Virtual = true };
                     context.Add(decksGroup);
-                    var watchlistGroup = new CollectionGroup { GroupName = "Watch Lists", Permanent = true, Virtual = false };
+                    var watchlistGroup = new CollectionGroup { GroupName = "Watch Lists", Permanent = true, Virtual = true };
                     context.Add(watchlistGroup);
                     var tradeListGroup = new CollectionGroup { GroupName = "Trade Lists", Permanent = true, Virtual = false };
                     context.Add(tradeListGroup);
@@ -94,7 +95,7 @@ namespace MTG_Librarian
                     context.Add(soldGroup);
                     context.SaveChanges();
                     var mainCollection = new CardCollection { CollectionName = "Main", Type = "collection", GroupName = collectionsGroup.GroupName, GroupId = collectionsGroup.Id, Virtual = false, Permanent = true, Platform = "Paper" };
-                    var mainCollection2 = new CardCollection { CollectionName = "Main", Type = "collection", GroupName = collectionsGroup.GroupName, GroupId = collectionsGroup.Id, Virtual = false, Permanent = true, Platform = "Arena" }; 
+                    var mainCollection2 = new CardCollection { CollectionName = "Main", Type = "collection", GroupName = collectionsGroup.GroupName, GroupId = collectionsGroup.Id, Virtual = false, Permanent = true, Platform = "Arena" };
                     var mainCollection3 = new CardCollection { CollectionName = "Main", Type = "collection", GroupName = collectionsGroup.GroupName, GroupId = collectionsGroup.Id, Virtual = false, Permanent = true, Platform = "MTGO" };
                     context.Add(mainCollection);
                     context.Add(mainCollection2);
@@ -102,13 +103,26 @@ namespace MTG_Librarian
                     var tradeCollection = new CardCollection { CollectionName = "For Trade", Type = "collection", GroupName = tradeListGroup.GroupName, GroupId = tradeListGroup.Id, Virtual = false, Permanent = true, Platform = "Paper" };
                     var tradeCollection2 = new CardCollection { CollectionName = "For Trade", Type = "collection", GroupName = tradeListGroup.GroupName, GroupId = tradeListGroup.Id, Virtual = false, Permanent = true, Platform = "MTGO" };
                     context.Add(tradeCollection);
-                    context.Add(tradeCollection2);  
+                    context.Add(tradeCollection2);
                     var soldCollection = new CardCollection { CollectionName = "Sold Cards", Type = "collection", GroupName = soldGroup.GroupName, GroupId = soldGroup.Id, Virtual = false, Permanent = true, Platform = "Paper" };
                     var soldCollection2 = new CardCollection { CollectionName = "Sold Cards", Type = "collection", GroupName = soldGroup.GroupName, GroupId = soldGroup.Id, Virtual = false, Permanent = true, Platform = "MTGO" };
                     context.Add(soldCollection);
                     context.Add(soldCollection2);
                     context.SaveChanges();
                 }
+                else
+                {
+                    var decksGroup = (from g in context.CollectionGroups
+                                     where g.GroupName == "Decks"
+                                     select g).FirstOrDefault();
+
+                    if (decksGroup != null && decksGroup.Virtual == false)
+                    {
+                        decksGroup.Virtual = true;
+                        context.SaveChanges();
+                    }
+                }
+            }
         }
 
         private void DockPanelActiveDocumentChanged(object sender, EventArgs e)

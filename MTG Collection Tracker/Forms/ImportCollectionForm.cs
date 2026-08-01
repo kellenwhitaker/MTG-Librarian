@@ -192,10 +192,10 @@ namespace MTG_Librarian
             var importer = (Importer)e.Argument;
             var report = new ProgressReport { CurrentCards = 0, TotalCards = importer.CardCount, MessagePrefix = "Parsing file... " };
             importWorker.ReportProgress(0, report);
+            importer.BeginImport();
             importer.Parse();
             report = new ProgressReport { CurrentCards = 0, TotalCards = importer.CardCount, MessagePrefix = "Finding items in existing catalog... " };
             importWorker.ReportProgress(0, report);
-            importer.BeginImport();
             int delay = 0;
             while (importer.ImportNextCardUsingCatalog())
             {
@@ -285,6 +285,12 @@ namespace MTG_Librarian
                 importer.CancelImport();
                 MessageBox.Show($"An error occurred while committing the import: {ex.Message}\n{ex.InnerException.ToString()}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error); 
             }
+            List<InventoryCard> cardsAdded = new List<InventoryCard>();
+            using (var context = new ScryfallCardsDbContext())
+                foreach (var card in importer.cardsAdded)
+                    cardsAdded.Add(card.ToFullCard(context));
+         
+            Globals.Forms.DBViewForm.InventoryChanged(this, new InventoryChangedEventArgs { Cards = cardsAdded });
             if (importer.FailedCards.Count > 0)
             {
                 failedLabel.Visible = true;
@@ -329,15 +335,15 @@ namespace MTG_Librarian
                 if (navForm != null)
                     navForm.ReloadCollections();
 
-                foreach (var collectionId in importer.Collections.Values)
+                foreach (var collection in importer.Collections.Values)
                 {
                     foreach (var form in Globals.Forms.OpenCollectionForms)
                     {
-                        if (form.Collection.Id == collectionId)
+                        if (form.Collection.Id == collection.Id)
                         {
                             form.Close();
                             Globals.Forms.OpenCollectionForms.Remove(form);
-                            CardManager.LoadCollection(collectionId);
+                            CardManager.LoadCollection(collection.Id);
                             break;
                         }
                     }

@@ -28,7 +28,7 @@ namespace MTG_Librarian
         private ScryfallCardsDbContext context;
         private List<CardImportObject> cards = new List<CardImportObject>();
         private List<CardImportObject> cardsObjectsAdded = new List<CardImportObject>();
-        private List<InventoryCardBase> cardsAdded = new List<InventoryCardBase>();
+        public List<InventoryCardBase> cardsAdded = new List<InventoryCardBase>();
         public List<CardImportObject> FailedCards { get; private set; } = new List<CardImportObject>();
         private List<CardImportObject> uncataloguedCards = new List<CardImportObject>();
         private Dictionary<string, int> setCounts = new Dictionary<string, int>();
@@ -37,7 +37,7 @@ namespace MTG_Librarian
         private int batchNumber = 0;
         public CardCollection NewCollection { get; private set; }
         public CardCollection ExistingCollection { get; set; } = null;
-        public Dictionary<string, int> Collections { get; private set; } = new Dictionary<string, int>();
+        public Dictionary<string, CardCollection> Collections { get; private set; } = new Dictionary<string, CardCollection>();
         public string Platform { get; set; }
         public string CollectionType { get; set; } = "deck";
         public int CardCount => cards.Count;
@@ -53,7 +53,6 @@ namespace MTG_Librarian
             this.collectionName = collectionName;
             this.FileFormat = fileFormat;
         }
-
         public bool Parse()
         {
             if (FileFormat != FileFormat.CSV)
@@ -88,7 +87,8 @@ namespace MTG_Librarian
                         GroupId = decksId,
                         GroupName = "Decks",
                         Type = "deck",
-                        Platform = Platform
+                        Platform = Platform,
+                        Virtual = true
                     };
                 }
                 else if (CollectionType == "collection" && ExistingCollection == null)
@@ -114,7 +114,10 @@ namespace MTG_Librarian
         {
             context.SaveChanges();
             if (CollectionType == "deck")
+            {
                 UpdateCommander();
+                CardManager.UpdateColorIdentity(context, NewCollection);
+            }
             context.Database.CommitTransaction();
             context.Dispose();
         }
@@ -697,6 +700,7 @@ namespace MTG_Librarian
                 TimeAdded = card.TimeAcquired,
                 SoldTime = card.SoldTime,
                 SoldPrice = card.SoldPrice,
+                Virtual = card.Virtual
             };
 
             if (!MultipleCollections)
@@ -715,7 +719,9 @@ namespace MTG_Librarian
 
             card.ScryfallId = catalogCard.ScryfallId;
             if (CollectionType == "deck")
+            {
                 card.Typeline = catalogCard.type_line;
+            }
             cardsObjectsAdded.Add(card);
             cardsAdded.Add(inventoryCard);
             context.Library.Add(inventoryCard);
@@ -895,10 +901,11 @@ namespace MTG_Librarian
                     if (collectionField != null)
                     {
                         var cardCollectionName = csv.GetField(collectionField);
-                        int existingCollectionId;
-                        if (Collections.TryGetValue(cardCollectionName, out existingCollectionId))
+                        CardCollection existingCollection;
+                        if (Collections.TryGetValue(cardCollectionName, out existingCollection))
                         {
-                            record.CollectionId = existingCollectionId;
+                            record.CollectionId = existingCollection.Id;
+                            record.Virtual = existingCollection.Virtual;
                         }
                         else
                         {
@@ -914,7 +921,8 @@ namespace MTG_Librarian
                             if (match != null)
                             {
                                 record.CollectionId = match.Id;
-                                Collections[cardCollectionName] = match.Id;
+                                Collections[cardCollectionName] = match;
+                                record.Virtual = match.Virtual;
                             }
                             else
                             {
@@ -930,7 +938,7 @@ namespace MTG_Librarian
                                 context.Collections.Add(newCollection);
                                 context.SaveChanges();
                                 record.CollectionId = newCollection.Id;
-                                Collections[cardCollectionName] = newCollection.Id;
+                                Collections[cardCollectionName] = newCollection;
                             }
 
                         }
@@ -1098,6 +1106,7 @@ namespace MTG_Librarian
                     continue;
                 }
                 var card = new CardImportObject();
+                card.Virtual = NewCollection != null ? NewCollection.Virtual : ExistingCollection.Virtual;
                 card.Board = board;
                 var quantityMatch = quantityRegex.Match(line);
                 if (quantityMatch.Success)
@@ -1153,6 +1162,7 @@ namespace MTG_Librarian
                     continue;
                 }
                 var card = new CardImportObject();
+                card.Virtual = NewCollection != null ? NewCollection.Virtual : ExistingCollection.Virtual;
                 card.Board = board;
                 var quantityMatch = quantityRegex.Match(line);
                 if (quantityMatch.Success)
@@ -1194,7 +1204,8 @@ namespace MTG_Librarian
                 if (!line.Trim().StartsWith("<Cards"))
                     continue;
 
-                var card = new CardImportObject();
+                var card = new CardImportObject();     
+                card.Virtual = NewCollection != null ? NewCollection.Virtual : ExistingCollection.Virtual;
                 var match = nameRegex.Match(line);
                 if (match.Success)
                 {
@@ -1257,5 +1268,6 @@ namespace MTG_Librarian
         public int CollectionId { get; set; }
         public double? SoldPrice { get; set; }
         public DateTime? SoldTime { get; set; }
+        public bool Virtual { get; set; }
     }
 }

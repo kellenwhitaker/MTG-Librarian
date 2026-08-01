@@ -82,10 +82,10 @@ namespace MTG_Librarian
             var importer = (Importer)e.Argument;
             var report = new ProgressReport { CurrentCards = 0, TotalCards = 0, MessagePrefix = "Parsing file... "};
             importWorker.ReportProgress(0, report);
+            importer.BeginImport();
             importer.Parse();
             report = new ProgressReport { CurrentCards = 0, TotalCards = importer.CardCount, MessagePrefix = "" };
             importWorker.ReportProgress(0, report);
-            importer.BeginImport();
             int delay = 0;
             while (importer.ImportNextCard(out delay))
             {
@@ -133,6 +133,7 @@ namespace MTG_Librarian
                 importer.CancelImport();
                 MessageBox.Show($"An error occurred while committing the import: {ex.Message}\n{ex.InnerException.ToString()}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+            
             if (importer.FailedCards.Count > 0)
             {
                 failedLabel.Visible = true;

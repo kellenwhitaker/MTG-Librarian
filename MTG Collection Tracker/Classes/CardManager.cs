@@ -178,7 +178,7 @@ namespace MTG_Librarian
                 EventManager.OnInventoryChanged(new InventoryChangedEventArgs { Cards = fullCardsAdded });
             }
         }
-        private static void UpdateColorIdentity(ScryfallCardsDbContext context, CardCollection collection)
+        public static void UpdateColorIdentity(ScryfallCardsDbContext context, CardCollection collection)
         {
             var inventoryCards = context.LibraryView.Where(x => x.CollectionId == collection.Id).ToList();
             var whiteColor = false;
