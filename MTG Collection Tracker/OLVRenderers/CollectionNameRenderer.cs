@@ -1,6 +1,7 @@
 ﻿using BrightIdeasSoftware;
 using System;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -13,8 +14,8 @@ namespace MTG_Librarian
         public override void Render(Graphics g, Rectangle r)
         {
             // High quality rendering
-            g.CompositingQuality = System.Drawing.Drawing2D.CompositingQuality.HighQuality;
-            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+            g.CompositingQuality = CompositingQuality.HighQuality;
+            g.SmoothingMode = SmoothingMode.HighQuality;
 
             var treeView = ListView as TreeListView;
             var item = ListItem.RowObject as NavigatorItem;
@@ -54,31 +55,40 @@ namespace MTG_Librarian
             // Selection background
             if (IsItemSelected)
             {
-                Rectangle fillRect = new Rectangle(textRect.Left, textRect.Top, textRect.Width, textRect.Height);
-                if (ListItem.RowObject is NavigatorGroup)
-                    fillRect = new Rectangle(textRect.Left, textRect.Top + 6, textRect.Width, textRect.Height - 6);
-
+                var fillRect = new Rectangle(textRect.Left, textRect.Top + 6, textRect.Width, textRect.Height - 6);
                 DrawSelectionFill(g, fillRect);
             }
 
-            // Group header band
-            if (ListItem.RowObject is NavigatorGroup)
-            {
-                var fillRect = new Rectangle(textRect.Left, textRect.Top + 5, textRect.Width, textRect.Height / 2 - 3);
-                using (var solidBrush = new SolidBrush(Color.FromArgb(255, 205, 220, 235)))
-                    g.FillRectangle(solidBrush, fillRect);
-                g.DrawLine(Pens.DarkGray, fillRect.Left, fillRect.Top + fillRect.Height, fillRect.Right, fillRect.Top + fillRect.Height);
-            }
-
-            var fontColor = IsItemSelected && ListView.Focused ? Brushes.White : Brushes.Black;
-
-            // Draw main text with bold font
             using (var boldFont = new Font(Font, FontStyle.Bold))
             {
+                SizeF textSize;
+                // Group header band
+                if (ListItem.RowObject is NavigatorGroup)
+                {
+                    var fillRect = new Rectangle(textRect.Left, textRect.Top + 5, textRect.Width, textRect.Height / 2 - 3);
+                    using (var solidBrush = new SolidBrush(Color.FromArgb(255, 205, 220, 235)))
+                        g.FillRectangle(solidBrush, fillRect);
+                    g.DrawLine(Pens.DarkGray, fillRect.Left, fillRect.Top + fillRect.Height, fillRect.Right, fillRect.Top + fillRect.Height);
+                }
+                else
+                {
+                    textSize = g.MeasureString(text, boldFont);
+                    var fillRect = new Rectangle(textRect.Left, textRect.Top + 4, (int)textSize.Width + 3, textRect.Height / 2 - 5);
+                    if (IsItemSelected && ListView.Focused)
+                            g.FillRectangle(Brushes.LightBlue, fillRect); 
+                    else
+                        using (var gradientBrush = new LinearGradientBrush(fillRect, Color.White, Color.AntiqueWhite, LinearGradientMode.Vertical))
+                            g.FillRectangle(gradientBrush, fillRect);
+                    g.DrawLine(Pens.DarkGray, fillRect.Left, fillRect.Top + fillRect.Height, fillRect.Right, fillRect.Top + fillRect.Height);
+                }
+
+                var fontColor = IsItemSelected && ListView.Focused ? Brushes.White : Brushes.Black;
+
+                // Draw main text with bold font
                 var textDrawColor = ListItem.RowObject is NavigatorGroup ? Brushes.Black : fontColor;
-                g.DrawString(text, boldFont, textDrawColor, textRect.Left, textRect.Top + 3);
-      
-                var textSize = g.MeasureString(text, Font);
+                g.DrawString(text, boldFont, Brushes.Black, textRect.Left, textRect.Top + 3);
+
+                textSize = g.MeasureString(text, Font);
                 int rectLeft = textRect.Left + (int)textSize.Width;
                 int rectTop = (int)(contentRect.Top + textSize.Height - 2);
 
@@ -122,8 +132,16 @@ namespace MTG_Librarian
         {
             if (ListView.Focused)
             {
-                using (var solidBrush = new SolidBrush(ListView.SelectedBackColorOrDefault))
-                    g.FillRectangle(solidBrush, fillRect);
+                if (ListItem.RowObject is NavigatorGroup)
+                {
+                    using (var solidBrush = new SolidBrush(ListView.SelectedBackColorOrDefault))
+                        g.FillRectangle(solidBrush, fillRect);
+                }
+                else
+                {
+                    using (var gradientBrush = new LinearGradientBrush(fillRect, Color.LightBlue, ListView.SelectedBackColorOrDefault, LinearGradientMode.Vertical))
+                        g.FillRectangle(gradientBrush, fillRect);
+                }
             }
             else
             {
@@ -137,12 +155,14 @@ namespace MTG_Librarian
             // Platform badge
             var platformText = collection.CardCollection.Platform ?? string.Empty;
             var textSize = g.MeasureString(platformText, Font);
-            var platformRect = new Rectangle(contentRect.Left, rectTop - 2, (int)textSize.Width + 4, (int)textSize.Height + 4);
-            using (var bg = new SolidBrush(Color.FromArgb(255, 255, 255, 250)))
-                g.FillRectangle(bg, platformRect);
-            g.DrawRectangle(Pens.LightGray, platformRect);
-            g.DrawString(platformText, Font, Brushes.Black, contentRect.Left + 4, rectTop);
 
+            using (var font = new Font(Font, FontStyle.Italic))
+            {
+                if (IsItemSelected && ListView.Focused)
+                    g.DrawString(platformText, font, Brushes.White, contentRect.Left + 4, rectTop);
+                else
+                    g.DrawString(platformText, font, Brushes.Black, contentRect.Left + 4, rectTop);
+            }
             // If deck, draw color identity icons
             if (collection.CardCollection.Type == "deck" && !string.IsNullOrEmpty(collection.CardCollection.ColorIdentity))
             {
@@ -155,7 +175,7 @@ namespace MTG_Librarian
                 {
                     int? imgIndex = imageList?.Images?.IndexOfKey(part.Value);
                     if (imgIndex.HasValue && imgIndex.Value != -1)
-                        imageList.Draw(g, imgLeft, (int)textSize.Height, imgIndex.Value);
+                        imageList.Draw(g, imgLeft, (int)textSize.Height + 1, imgIndex.Value);
 
                     rectLeft += 18;
                     imgLeft += 18;
