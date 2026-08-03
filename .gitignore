@@ -259,3 +259,5 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+/MTG Collection Tracker/Resources/reserved_20.png
+/MTG Collection Tracker/Resources/reserved.png

@@ -623,6 +623,16 @@ namespace MTG_Librarian.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap reserved_27 {
+            get {
+                object obj = ResourceManager.GetObject("reserved_27", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap RG_16 {
             get {
                 object obj = ResourceManager.GetObject("RG_16", resourceCulture);

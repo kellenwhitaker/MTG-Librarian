@@ -223,9 +223,6 @@
   <data name="mtgl_logo" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\mtgl logo4.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Q_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Q 16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="C17_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\C17_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -333,5 +330,11 @@
   </data>
   <data name="5020" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\5020.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="reserved_27" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\reserved_27.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Q_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Q 16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

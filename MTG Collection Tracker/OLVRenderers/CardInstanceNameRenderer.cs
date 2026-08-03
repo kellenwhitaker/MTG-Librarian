@@ -1,5 +1,6 @@
 ﻿using BrightIdeasSoftware;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace MTG_Librarian
 {
@@ -39,6 +40,11 @@ namespace MTG_Librarian
         {
             if (ListItem.RowObject is InventoryCard || ListItem.RowObject is OLVCardItem)
             {
+                bool isReserved = false;
+                if (ListItem.RowObject is InventoryCard inventoryCard && inventoryCard.reserved)
+                    isReserved = true;
+                else if (ListItem.RowObject is OLVCardItem olvCardItem && olvCardItem.MagicCard.reserved)
+                    isReserved = true;
                 int? imgIndex = null;
                 if (ListItem.RowObject is InventoryCard cardInstance)
                     imgIndex = ListView.SmallImageList?.Images?.IndexOfKey(cardInstance.ImageKey);
@@ -48,13 +54,26 @@ namespace MTG_Librarian
                 var backgroundRect = new Rectangle(r.Left - 1, r.Top - 1, r.Width + 1, r.Height + 1);
                 FillBackground(g, backgroundRect);
                 var fontColor = IsItemSelected && ListView.Focused ? Brushes.White : Brushes.Black;
+                var textLeft = imgIndex.HasValue && imgIndex.Value != -1 ? r.Left + imgWidth + 3 : r.Left + 5;
                 if (imgIndex.HasValue && imgIndex.Value != -1)
                 {
                     ListView.SmallImageList.Draw(g, 2, 0, imgIndex.Value);
-                    g.DrawString(GetText(), Font, fontColor, r.Left + imgWidth + 3, r.Top + 3);
+                    if (isReserved)
+                    {
+                        g.DrawImage(Properties.Resources.reserved_27, r.Left + imgWidth + 2, r.Top, 20, 20);
+                        textLeft += 22;
+                    }
+                    g.DrawString(GetText(), Font, fontColor, textLeft, r.Top + 3);
                 }
                 else
-                    g.DrawString(GetText(), Font, fontColor, r.Left + 5, r.Top + 3);
+                {
+                    if (isReserved)
+                    {
+                        g.DrawImage(Properties.Resources.reserved_27, r.Left + imgWidth + 2, r.Top, 20, 20);
+                        textLeft += 22;
+                    }
+                    g.DrawString(GetText(), Font, fontColor, textLeft, r.Top + 3);
+                }
             }
             else if (ListItem.RowObject is InventoryTotalsItem || ListItem.RowObject is OLVMessageRow)
             {
