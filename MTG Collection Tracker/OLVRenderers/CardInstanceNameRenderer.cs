@@ -41,15 +41,19 @@ namespace MTG_Librarian
             if (ListItem.RowObject is InventoryCard || ListItem.RowObject is OLVCardItem)
             {
                 bool isReserved = false;
-                if (ListItem.RowObject is InventoryCard inventoryCard && inventoryCard.reserved)
-                    isReserved = true;
-                else if (ListItem.RowObject is OLVCardItem olvCardItem && olvCardItem.MagicCard.reserved)
-                    isReserved = true;
                 int? imgIndex = null;
                 if (ListItem.RowObject is InventoryCard cardInstance)
+                {
                     imgIndex = ListView.SmallImageList?.Images?.IndexOfKey(cardInstance.ImageKey);
+                    if (cardInstance.reserved)
+                        isReserved = true;
+                }
                 else if (ListItem.RowObject is OLVCardItem cardItem)
+                {
                     imgIndex = ListView.SmallImageList?.Images?.IndexOfKey(cardItem.ImageKey);
+                    if (cardItem.MagicCard.reserved)
+                        isReserved = true;
+                }
                 int imgWidth = ListView.SmallImageList?.ImageSize.Width ?? 0;
                 var backgroundRect = new Rectangle(r.Left - 1, r.Top - 1, r.Width + 1, r.Height + 1);
                 FillBackground(g, backgroundRect);
