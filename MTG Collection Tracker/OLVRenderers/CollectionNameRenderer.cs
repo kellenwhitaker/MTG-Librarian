@@ -9,8 +9,87 @@ using static BrightIdeasSoftware.TreeListView;
 
 namespace MTG_Librarian
 {
+
     public class CollectionNameRenderer : TreeRenderer
     {
+        public static void FillRoundedRectangle(Graphics g, Brush brush, Rectangle bounds, int cornerRadius)
+        {
+            if (g == null) throw new ArgumentNullException(nameof(g));
+
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+
+            int diameter = cornerRadius * 2;
+            Size size = new Size(diameter, diameter);
+            Rectangle arc = new Rectangle(bounds.Location, size);
+
+            using (GraphicsPath path = new GraphicsPath())
+            {
+                if (cornerRadius == 0)
+                {
+                    path.AddRectangle(bounds);
+                }
+                else
+                {
+                    // Top Left Arc
+                    path.AddArc(arc, 180, 90);
+
+                    // Top Right Arc
+                    arc.X = bounds.Right - diameter;
+                    path.AddArc(arc, 270, 90);
+
+                    // Bottom Right Arc
+                    arc.Y = bounds.Bottom - diameter;
+                    path.AddArc(arc, 0, 90);
+
+                    // Bottom Left Arc
+                    arc.X = bounds.Left;
+                    path.AddArc(arc, 90, 90);
+
+                    path.CloseFigure();
+                }
+
+                g.FillPath(brush, path);
+            }
+        }
+        public static void DrawRoundedRectangle(Graphics g, Pen pen, Rectangle bounds, int cornerRadius)
+        {
+            if (g == null) throw new ArgumentNullException(nameof(g));
+
+            g.SmoothingMode = SmoothingMode.AntiAlias;
+
+            int diameter = cornerRadius * 2;
+            Size size = new Size(diameter, diameter);
+            Rectangle arc = new Rectangle(bounds.Location, size);
+
+            using (GraphicsPath path = new GraphicsPath())
+            {
+                if (cornerRadius == 0)
+                {
+                    path.AddRectangle(bounds);
+                }
+                else
+                {
+                    // Top Left Arc
+                    path.AddArc(arc, 180, 90);
+
+                    // Top Right Arc
+                    arc.X = bounds.Right - diameter;
+                    path.AddArc(arc, 270, 90);
+
+                    // Bottom Right Arc
+                    arc.Y = bounds.Bottom - diameter;
+                    path.AddArc(arc, 0, 90);
+
+                    // Bottom Left Arc
+                    arc.X = bounds.Left;
+                    path.AddArc(arc, 90, 90);
+
+                    path.CloseFigure();
+                }
+
+                g.DrawPath(pen, path);
+            }
+        }
         public override void Render(Graphics g, Rectangle r)
         {
             // High quality rendering
@@ -22,7 +101,7 @@ namespace MTG_Librarian
             string text = item?.Text ?? string.Empty;
             const int margin = 3;
 
-            var backgroundRect = new Rectangle(r.Left - 1, r.Top, r.Width + 1, r.Height + 1);
+            var backgroundRect = new Rectangle(r.Left - 1, r.Top - 1, r.Width + 1, r.Height + 1);
 
             // Clear background (keeps original behaviour of white background)
             g.FillRectangle(Brushes.White, backgroundRect);
@@ -30,7 +109,7 @@ namespace MTG_Librarian
             var contentRect = new Rectangle
             {
                 X = backgroundRect.Left,
-                Y = backgroundRect.Y + 3,
+                Y = backgroundRect.Y + 4,
                 Width = backgroundRect.Width,
                 Height = backgroundRect.Height
             };
@@ -73,13 +152,20 @@ namespace MTG_Librarian
                 else
                 {
                     textSize = g.MeasureString(text, boldFont);
-                    var fillRect = new Rectangle(textRect.Left, textRect.Top + 4, (int)textSize.Width + 3, textRect.Height / 2 - 4);
+                    var fillRect = new Rectangle(textRect.Left - 1, textRect.Top + 4, (int)textSize.Width + 4, textRect.Height / 2 - 4);
                     if (IsItemSelected && ListView.Focused)
-                            g.FillRectangle(Brushes.LightBlue, fillRect); 
+                    {
+                        FillRoundedRectangle(g, Brushes.LightBlue, fillRect, 4);
+                        //g.FillRectangle(Brushes.LightBlue, fillRect);
+                    }
                     else
+                    {
                         using (var gradientBrush = new LinearGradientBrush(fillRect, Color.White, Color.FromArgb(255, 255, 235, 205), LinearGradientMode.Vertical))
-                            g.FillRectangle(gradientBrush, fillRect);
-                    g.DrawLine(Pens.DarkGray, fillRect.Left, fillRect.Top + fillRect.Height, fillRect.Right, fillRect.Top + fillRect.Height);
+                            FillRoundedRectangle(g, gradientBrush, fillRect, 4);
+                        //g.FillRectangle(gradientBrush, fillRect);
+                    }
+                    DrawRoundedRectangle(g, Pens.DarkGray, fillRect, 4);
+                    //g.DrawLine(Pens.DarkGray, fillRect.Left, fillRect.Top + fillRect.Height, fillRect.Right, fillRect.Top + fillRect.Height);
                 }
 
                 var fontColor = IsItemSelected && ListView.Focused ? Brushes.White : Brushes.Black;
