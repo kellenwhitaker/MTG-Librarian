@@ -17,6 +17,12 @@ namespace MTG_Librarian
         public int? Count { get; set; }
         [NotMapped]
         public int? OldCount { get; set; } = null;
+        [NotMapped]
+        public int OwnedCount { get; set; } = 0;
+        [NotMapped]
+        public int AllOwnedCount { get; set; } = 0;
+        [NotMapped]
+        public string OwnedText => $"{OwnedCount} — {AllOwnedCount}";
         public double? Cost { get; set; }
         [NotMapped]
         public double? Price { get; set; }

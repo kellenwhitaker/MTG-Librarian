@@ -61,5 +61,6 @@ namespace MTG_Librarian
         public new string Tags => Cards.All(x => x.Tags == Cards[0].Tags) ? Cards[0].Tags : null;
         public new string Condition => Cards.All(x => x.Condition == Cards[0].Condition) ? Cards[0].Condition : null;
         public new string Finish => Cards.All(x => x.Finish == Cards[0].Finish) ? Cards[0].Finish : null;
+        public new string OwnedText => Cards.Count > 0 ? Cards.First()?.AllOwnedCount.ToString() : null;
     }
 }

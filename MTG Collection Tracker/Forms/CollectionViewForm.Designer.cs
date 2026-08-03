@@ -42,6 +42,8 @@
             this.olvColumn4 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn5 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.CountColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.ownedCountColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.allOwnedCountColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.CostColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.tcgplayerMarketPriceColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.tcgPlayerMidPriceColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -90,6 +92,8 @@
             this.olvColumn12 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn13 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.sideboardCountColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.sideboardOwnedCountColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.sideboardAllOwnedCountColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn15 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.sideboardPriceColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn17 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -124,6 +128,8 @@
             this.cardListView.AllColumns.Add(this.olvColumn4);
             this.cardListView.AllColumns.Add(this.olvColumn5);
             this.cardListView.AllColumns.Add(this.CountColumn);
+            this.cardListView.AllColumns.Add(this.ownedCountColumn);
+            this.cardListView.AllColumns.Add(this.allOwnedCountColumn);
             this.cardListView.AllColumns.Add(this.CostColumn);
             this.cardListView.AllColumns.Add(this.tcgplayerMarketPriceColumn);
             this.cardListView.AllColumns.Add(this.tcgPlayerMidPriceColumn);
@@ -277,6 +283,22 @@
             this.CountColumn.MinimumWidth = 50;
             this.CountColumn.Text = "Count";
             this.CountColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // ownedCountColumn
+            // 
+            this.ownedCountColumn.AspectName = "OwnedText";
+            this.ownedCountColumn.DisplayIndex = 11;
+            this.ownedCountColumn.IsVisible = false;
+            this.ownedCountColumn.Text = "Owned";
+            this.ownedCountColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // allOwnedCountColumn
+            // 
+            this.allOwnedCountColumn.AspectName = "AllOwnedCount";
+            this.allOwnedCountColumn.DisplayIndex = 12;
+            this.allOwnedCountColumn.IsVisible = false;
+            this.allOwnedCountColumn.Text = "All Printings";
+            this.allOwnedCountColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // CostColumn
             // 
@@ -704,6 +726,8 @@
             this.sideboardListView.AllColumns.Add(this.olvColumn12);
             this.sideboardListView.AllColumns.Add(this.olvColumn13);
             this.sideboardListView.AllColumns.Add(this.sideboardCountColumn);
+            this.sideboardListView.AllColumns.Add(this.sideboardOwnedCountColumn);
+            this.sideboardListView.AllColumns.Add(this.sideboardAllOwnedCountColumn);
             this.sideboardListView.AllColumns.Add(this.olvColumn15);
             this.sideboardListView.AllColumns.Add(this.sideboardPriceColumn);
             this.sideboardListView.AllColumns.Add(this.tcgPlayerMidPriceColumn);
@@ -845,6 +869,20 @@
             this.sideboardCountColumn.MinimumWidth = 50;
             this.sideboardCountColumn.Text = "Count";
             this.sideboardCountColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // sideboardOwnedCountColumn
+            // 
+            this.sideboardOwnedCountColumn.AspectName = "OwnedText";
+            this.sideboardOwnedCountColumn.IsVisible = false;
+            this.sideboardOwnedCountColumn.Text = "Owned";
+            this.sideboardOwnedCountColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            // 
+            // sideboardAllOwnedCountColumn
+            // 
+            this.sideboardAllOwnedCountColumn.AspectName = "AllOwnedCount";
+            this.sideboardAllOwnedCountColumn.IsVisible = false;
+            this.sideboardAllOwnedCountColumn.Text = "All Printings";
+            this.sideboardAllOwnedCountColumn.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // olvColumn15
             // 
@@ -1009,5 +1047,9 @@
         private System.Windows.Forms.ToolStripMenuItem moveToSoldCardsToolStripMenuItem;
         private BrightIdeasSoftware.OLVColumn soldPriceColumn;
         private BrightIdeasSoftware.OLVColumn soldTimeColumn;
+        private BrightIdeasSoftware.OLVColumn ownedCountColumn;
+        private BrightIdeasSoftware.OLVColumn allOwnedCountColumn;
+        private BrightIdeasSoftware.OLVColumn sideboardOwnedCountColumn;
+        private BrightIdeasSoftware.OLVColumn sideboardAllOwnedCountColumn;
     }
 }
