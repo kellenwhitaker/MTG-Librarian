@@ -1,6 +1,8 @@
 ﻿using KW.WinFormsUI.Docking;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 // TODO: Cleanup
@@ -22,7 +24,9 @@ namespace MTG_Librarian
         {
             InitializeComponent();
             printingsListView.SmallImageList = Globals.ImageLists.SmallIconList;
+            ownedListView.SmallImageList = Globals.ImageLists.SmallIconList;
             setColumn.ImageGetter = delegate (object row) { return (row as dynamic).ImageKey; };
+            ownedSetColumn.ImageGetter = delegate (object row) { return (row as dynamic).ImageKey; };
             DockAreas = DockAreas.DockLeft | DockAreas.DockRight | DockAreas.DockBottom;
         }
 
@@ -230,6 +234,7 @@ namespace MTG_Librarian
                 }
                 else if (tabControl.SelectedTab == printingsTabPage)
                 {
+                    FillOwnedPanel();
                     FillPrintingsPanel();
                     if (card.printings == null)
                     {
@@ -240,6 +245,37 @@ namespace MTG_Librarian
                 }
             }
         }
+
+        private void FillOwnedPanel()
+        {
+            ownedListView.ClearObjects();
+            var totalCount = 0;
+            using (var context = new ScryfallCardsDbContext())
+            {
+                var ownedCards = context.LibraryView.Where(x => x.Name == MagicCard.Name && !x.Virtual && !x.SoldTime.HasValue).ToList();
+                var combinedList = new List<InventoryCard>();
+                string ImageKey = "";
+                while (ownedCards.Count > 0)
+                {
+                    var card = ownedCards.First();
+                    ownedCards.Remove(card);
+                    var matches = ownedCards.Where(x => x.set == card.set && x.collector_number == card.collector_number).ToList();
+                    foreach (var match in matches)
+                    {
+                        ownedCards.Remove(match);
+                        card.Count += match.Count;
+                    }
+                    string SymbolCode = card.set != null && card.set.Length == 4 && (card.set_type == "token" || card.set_type == "promo" || card.set_type == "memorabilia") ? card.set.Substring(1) : card.set;
+                    ImageKey = $"{SymbolCode}: {card.rarity}";
+                    ownedListView.AddObject(new { ImageKey, card.set_name, card.collector_number, Owned = card.Count });
+                    totalCount += card.Count.Value;
+                }
+                ImageKey = "";
+                ownedListView.AddObject(new { ImageKey, set_name = "Total", collector_number = "", Owned = totalCount });
+                ownedListView.AutoResizeColumns();
+            } 
+        }
+
         private void FillPrintingsPanel()
         {
             printingsListView.ClearObjects();
@@ -247,20 +283,29 @@ namespace MTG_Librarian
             {
                 if (MagicCard.printings.Count > 0)
                 {
+                    var printingObjects = new List<dynamic>();
                     foreach (var card in MagicCard.printings)
                     {
                         var DefaultCurrency = SettingsManager.ApplicationSettings.DefaultCurrency;
+                        
                         string priceString;
                         double? price = null;
                         string finish = "nonfoil";
                         if (card.finishes.Count() == 1)
                             finish = card.finishes[0];
-                        if (card.prices.TryGetValue($"{DefaultCurrency.ToLower()}{((finish != "nonfoil") ? $"_{finish}" : "")}", out priceString) && !string.IsNullOrEmpty(priceString))
-                            price = Convert.ToDouble(priceString);
+                        if (DefaultCurrency == "TIX")
+                            card.prices.TryGetValue("tix", out priceString);
+                        else
+                            card.prices.TryGetValue($"{DefaultCurrency.ToLower()}{((finish != "nonfoil") ? $"_{finish}" : "")}", out priceString);
+                            
+                        if (!string.IsNullOrEmpty(priceString))
+                            price = Convert.ToDouble(priceString); 
+                        
                         string SymbolCode = card.set != null && card.set.Length == 4 && (card.set_type == "token" || card.set_type == "promo" || card.set_type == "memorabilia") ? card.set.Substring(1) : card.set;
                         var ImageKey = $"{SymbolCode}: {card.rarity}";
-                        printingsListView.AddObject(new { ImageKey, card.set_name, card.collector_number, Price = price });
+                        printingObjects.Add(new { ImageKey, card.set_name, card.collector_number, Price = price });
                     }
+                    printingsListView.AddObjects(printingObjects);
                     printingsListView.AutoResizeColumns();
                 }
                 else
@@ -334,6 +379,9 @@ namespace MTG_Librarian
         private void CardInfoForm_Resize(object sender, System.EventArgs e)
         {
             cardTextHtmlPanel.Width = Width - 20;
+            var totalListViewHeight = Height - panel1.Height - 30;
+            ownedListView.Height = totalListViewHeight / 2;
+            printingsListView.Height = totalListViewHeight / 2;
         }
 
         private void legalitiesListView_FormatRow(object sender, BrightIdeasSoftware.FormatRowEventArgs e)
@@ -364,6 +412,7 @@ namespace MTG_Librarian
             }
             else if (tabControl.SelectedTab == printingsTabPage && MagicCard != null)
             {
+                FillOwnedPanel();
                 FillPrintingsPanel();
                 if (MagicCard.printings == null)
                 {

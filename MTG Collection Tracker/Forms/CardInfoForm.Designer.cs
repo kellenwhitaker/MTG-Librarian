@@ -33,17 +33,24 @@
             this.flipButton = new System.Windows.Forms.Button();
             this.cardTextHtmlPanel = new TheArtOfDev.HtmlRenderer.WinForms.HtmlPanel();
             this.cardPictureBox = new System.Windows.Forms.PictureBox();
+            this.printingsTabPage = new System.Windows.Forms.TabPage();
+            this.panel2 = new System.Windows.Forms.Panel();
+            this.printingsListView = new BrightIdeasSoftware.FastObjectListView();
+            this.setColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.numberColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.priceColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.panel1 = new System.Windows.Forms.Panel();
+            this.ownedListView = new BrightIdeasSoftware.FastObjectListView();
+            this.ownedSetColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn2 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.olvColumn3 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.splitter1 = new System.Windows.Forms.Splitter();
             this.legalitiesTabPage = new System.Windows.Forms.TabPage();
             this.legalitiesListView = new BrightIdeasSoftware.FastObjectListView();
             this.formatColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.legalityColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.rulingsTabPage = new System.Windows.Forms.TabPage();
             this.rulingsHtmlPanel = new TheArtOfDev.HtmlRenderer.WinForms.HtmlPanel();
-            this.printingsTabPage = new System.Windows.Forms.TabPage();
-            this.printingsListView = new BrightIdeasSoftware.FastObjectListView();
-            this.setColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.numberColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
-            this.priceColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.attributesTabPage = new System.Windows.Forms.TabPage();
             this.attributesListView = new BrightIdeasSoftware.FastObjectListView();
             this.keyColumn = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
@@ -51,11 +58,13 @@
             this.tabControl.SuspendLayout();
             this.mainTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.cardPictureBox)).BeginInit();
+            this.printingsTabPage.SuspendLayout();
+            this.panel2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.printingsListView)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ownedListView)).BeginInit();
             this.legalitiesTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.legalitiesListView)).BeginInit();
             this.rulingsTabPage.SuspendLayout();
-            this.printingsTabPage.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.printingsListView)).BeginInit();
             this.attributesTabPage.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.attributesListView)).BeginInit();
             this.SuspendLayout();
@@ -64,9 +73,9 @@
             // 
             this.tabControl.Alignment = System.Windows.Forms.TabAlignment.Bottom;
             this.tabControl.Controls.Add(this.mainTabPage);
+            this.tabControl.Controls.Add(this.printingsTabPage);
             this.tabControl.Controls.Add(this.legalitiesTabPage);
             this.tabControl.Controls.Add(this.rulingsTabPage);
-            this.tabControl.Controls.Add(this.printingsTabPage);
             this.tabControl.Controls.Add(this.attributesTabPage);
             this.tabControl.Dock = System.Windows.Forms.DockStyle.Fill;
             this.tabControl.Location = new System.Drawing.Point(0, 0);
@@ -121,6 +130,124 @@
             this.cardPictureBox.Size = new System.Drawing.Size(297, 382);
             this.cardPictureBox.TabIndex = 3;
             this.cardPictureBox.TabStop = false;
+            // 
+            // printingsTabPage
+            // 
+            this.printingsTabPage.Controls.Add(this.panel2);
+            this.printingsTabPage.Controls.Add(this.splitter1);
+            this.printingsTabPage.Location = new System.Drawing.Point(4, 4);
+            this.printingsTabPage.Name = "printingsTabPage";
+            this.printingsTabPage.Size = new System.Drawing.Size(371, 941);
+            this.printingsTabPage.TabIndex = 3;
+            this.printingsTabPage.Text = "Printings";
+            this.printingsTabPage.UseVisualStyleBackColor = true;
+            // 
+            // panel2
+            // 
+            this.panel2.AutoScroll = true;
+            this.panel2.Controls.Add(this.printingsListView);
+            this.panel2.Controls.Add(this.panel1);
+            this.panel2.Controls.Add(this.ownedListView);
+            this.panel2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel2.Location = new System.Drawing.Point(0, 3);
+            this.panel2.Name = "panel2";
+            this.panel2.Size = new System.Drawing.Size(371, 938);
+            this.panel2.TabIndex = 4;
+            // 
+            // printingsListView
+            // 
+            this.printingsListView.AllColumns.Add(this.setColumn);
+            this.printingsListView.AllColumns.Add(this.numberColumn);
+            this.printingsListView.AllColumns.Add(this.priceColumn);
+            this.printingsListView.CellEditUseWholeCell = false;
+            this.printingsListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.setColumn,
+            this.numberColumn,
+            this.priceColumn});
+            this.printingsListView.Cursor = System.Windows.Forms.Cursors.Default;
+            this.printingsListView.Dock = System.Windows.Forms.DockStyle.Top;
+            this.printingsListView.FullRowSelect = true;
+            this.printingsListView.HideSelection = false;
+            this.printingsListView.Location = new System.Drawing.Point(0, 346);
+            this.printingsListView.Name = "printingsListView";
+            this.printingsListView.ShowGroups = false;
+            this.printingsListView.Size = new System.Drawing.Size(371, 423);
+            this.printingsListView.TabIndex = 0;
+            this.printingsListView.UseCompatibleStateImageBehavior = false;
+            this.printingsListView.View = System.Windows.Forms.View.Details;
+            this.printingsListView.VirtualMode = true;
+            // 
+            // setColumn
+            // 
+            this.setColumn.AspectName = "set_name";
+            this.setColumn.Text = "Set";
+            // 
+            // numberColumn
+            // 
+            this.numberColumn.AspectName = "collector_number";
+            this.numberColumn.Text = "#";
+            // 
+            // priceColumn
+            // 
+            this.priceColumn.AspectName = "Price";
+            this.priceColumn.AspectToStringFormat = "{0:N2}";
+            this.priceColumn.Text = "Price";
+            // 
+            // panel1
+            // 
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.panel1.Location = new System.Drawing.Point(0, 336);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(371, 10);
+            this.panel1.TabIndex = 3;
+            // 
+            // ownedListView
+            // 
+            this.ownedListView.AllColumns.Add(this.ownedSetColumn);
+            this.ownedListView.AllColumns.Add(this.olvColumn2);
+            this.ownedListView.AllColumns.Add(this.olvColumn3);
+            this.ownedListView.CellEditUseWholeCell = false;
+            this.ownedListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.ownedSetColumn,
+            this.olvColumn2,
+            this.olvColumn3});
+            this.ownedListView.Cursor = System.Windows.Forms.Cursors.Default;
+            this.ownedListView.Dock = System.Windows.Forms.DockStyle.Top;
+            this.ownedListView.FullRowSelect = true;
+            this.ownedListView.HideSelection = false;
+            this.ownedListView.Location = new System.Drawing.Point(0, 0);
+            this.ownedListView.Name = "ownedListView";
+            this.ownedListView.ShowGroups = false;
+            this.ownedListView.Size = new System.Drawing.Size(371, 336);
+            this.ownedListView.TabIndex = 1;
+            this.ownedListView.UseCompatibleStateImageBehavior = false;
+            this.ownedListView.View = System.Windows.Forms.View.Details;
+            this.ownedListView.VirtualMode = true;
+            // 
+            // ownedSetColumn
+            // 
+            this.ownedSetColumn.AspectName = "set_name";
+            this.ownedSetColumn.Text = "Set";
+            // 
+            // olvColumn2
+            // 
+            this.olvColumn2.AspectName = "collector_number";
+            this.olvColumn2.Text = "#";
+            // 
+            // olvColumn3
+            // 
+            this.olvColumn3.AspectName = "Owned";
+            this.olvColumn3.AspectToStringFormat = "";
+            this.olvColumn3.Text = "Owned";
+            // 
+            // splitter1
+            // 
+            this.splitter1.Dock = System.Windows.Forms.DockStyle.Top;
+            this.splitter1.Location = new System.Drawing.Point(0, 0);
+            this.splitter1.Name = "splitter1";
+            this.splitter1.Size = new System.Drawing.Size(371, 3);
+            this.splitter1.TabIndex = 2;
+            this.splitter1.TabStop = false;
             // 
             // legalitiesTabPage
             // 
@@ -186,54 +313,6 @@
             this.rulingsHtmlPanel.TabIndex = 0;
             this.rulingsHtmlPanel.Text = null;
             // 
-            // printingsTabPage
-            // 
-            this.printingsTabPage.Controls.Add(this.printingsListView);
-            this.printingsTabPage.Location = new System.Drawing.Point(4, 4);
-            this.printingsTabPage.Name = "printingsTabPage";
-            this.printingsTabPage.Size = new System.Drawing.Size(371, 941);
-            this.printingsTabPage.TabIndex = 3;
-            this.printingsTabPage.Text = "Printings";
-            this.printingsTabPage.UseVisualStyleBackColor = true;
-            // 
-            // printingsListView
-            // 
-            this.printingsListView.AllColumns.Add(this.setColumn);
-            this.printingsListView.AllColumns.Add(this.numberColumn);
-            this.printingsListView.AllColumns.Add(this.priceColumn);
-            this.printingsListView.CellEditUseWholeCell = false;
-            this.printingsListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            this.setColumn,
-            this.numberColumn,
-            this.priceColumn});
-            this.printingsListView.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.printingsListView.FullRowSelect = true;
-            this.printingsListView.HideSelection = false;
-            this.printingsListView.Location = new System.Drawing.Point(0, 0);
-            this.printingsListView.Name = "printingsListView";
-            this.printingsListView.ShowGroups = false;
-            this.printingsListView.Size = new System.Drawing.Size(371, 941);
-            this.printingsListView.TabIndex = 0;
-            this.printingsListView.UseCompatibleStateImageBehavior = false;
-            this.printingsListView.View = System.Windows.Forms.View.Details;
-            this.printingsListView.VirtualMode = true;
-            // 
-            // setColumn
-            // 
-            this.setColumn.AspectName = "set_name";
-            this.setColumn.Text = "Set";
-            // 
-            // numberColumn
-            // 
-            this.numberColumn.AspectName = "collector_number";
-            this.numberColumn.Text = "#";
-            // 
-            // priceColumn
-            // 
-            this.priceColumn.AspectName = "Price";
-            this.priceColumn.AspectToStringFormat = "{0:N2}";
-            this.priceColumn.Text = "Price";
-            // 
             // attributesTabPage
             // 
             this.attributesTabPage.Controls.Add(this.attributesListView);
@@ -286,11 +365,13 @@
             this.tabControl.ResumeLayout(false);
             this.mainTabPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.cardPictureBox)).EndInit();
+            this.printingsTabPage.ResumeLayout(false);
+            this.panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.printingsListView)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.ownedListView)).EndInit();
             this.legalitiesTabPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.legalitiesListView)).EndInit();
             this.rulingsTabPage.ResumeLayout(false);
-            this.printingsTabPage.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.printingsListView)).EndInit();
             this.attributesTabPage.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.attributesListView)).EndInit();
             this.ResumeLayout(false);
@@ -318,5 +399,12 @@
         private BrightIdeasSoftware.FastObjectListView attributesListView;
         private BrightIdeasSoftware.OLVColumn keyColumn;
         private BrightIdeasSoftware.OLVColumn valueColumn;
+        private BrightIdeasSoftware.FastObjectListView ownedListView;
+        private BrightIdeasSoftware.OLVColumn ownedSetColumn;
+        private BrightIdeasSoftware.OLVColumn olvColumn2;
+        private BrightIdeasSoftware.OLVColumn olvColumn3;
+        private System.Windows.Forms.Panel panel1;
+        private System.Windows.Forms.Splitter splitter1;
+        private System.Windows.Forms.Panel panel2;
     }
 }
