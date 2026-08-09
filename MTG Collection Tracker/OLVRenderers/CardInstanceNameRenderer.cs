@@ -1,4 +1,5 @@
 ﻿using BrightIdeasSoftware;
+using System;
 using System.Drawing;
 using System.Windows.Forms;
 
@@ -42,41 +43,83 @@ namespace MTG_Librarian
             {
                 bool isReserved = false;
                 int? imgIndex = null;
+                string imageKey = null;
+                Image cachedImage = null;
+
                 if (ListItem.RowObject is InventoryCard cardInstance)
                 {
+                    cachedImage = cardInstance.CardNameImage;
+                    imageKey = cardInstance.ImageKey;
                     imgIndex = ListView.SmallImageList?.Images?.IndexOfKey(cardInstance.ImageKey);
                     if (cardInstance.reserved)
                         isReserved = true;
                 }
+                else if (ListItem.RowObject is InventoryCardCluster cluster)
+                {
+                    cachedImage = cluster.CardNameImage;
+                    imageKey = cluster.ImageKey;
+                    imgIndex = ListView.SmallImageList?.Images?.IndexOfKey(cluster.ImageKey);
+                    if (cluster.reserved)
+                        isReserved = true;
+                }
                 else if (ListItem.RowObject is OLVCardItem cardItem)
                 {
+                    cachedImage = cardItem.MagicCard.CardNameImage;
+                    imageKey = cardItem.ImageKey;
                     imgIndex = ListView.SmallImageList?.Images?.IndexOfKey(cardItem.ImageKey);
                     if (cardItem.MagicCard.reserved)
                         isReserved = true;
                 }
-                int imgWidth = ListView.SmallImageList?.ImageSize.Width ?? 0;
+
                 var backgroundRect = new Rectangle(r.Left - 1, r.Top - 1, r.Width + 1, r.Height + 1);
-                FillBackground(g, backgroundRect);
-                var fontColor = IsItemSelected && ListView.Focused ? Brushes.White : Brushes.Black;
-                var textLeft = imgIndex.HasValue && imgIndex.Value != -1 ? r.Left + imgWidth + 3 : r.Left + 5;
-                if (imgIndex.HasValue && imgIndex.Value != -1)
+                if (cachedImage != null && cachedImage.Width == backgroundRect.Width && cachedImage.Height == backgroundRect.Height && !IsItemSelected)
                 {
-                    ListView.SmallImageList.Draw(g, 2, 0, imgIndex.Value);
-                    if (isReserved)
-                    {
-                        g.DrawImage(Properties.Resources.reserved_27, r.Left + imgWidth + 2, r.Top, 20, 20);
-                        textLeft += 22;
-                    }
-                    g.DrawString(GetText(), Font, fontColor, textLeft, r.Top + 3);
+                    g.DrawImage(cachedImage, backgroundRect);
+                    return;
                 }
-                else
+
+                cachedImage = new Bitmap(Math.Max(1, backgroundRect.Width), Math.Max(1, backgroundRect.Height));
+                using (Graphics g2 = Graphics.FromImage(cachedImage))
                 {
-                    if (isReserved)
+                    g2.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
+                    int imgWidth = ListView.SmallImageList.ImageSize.Width;
+                    var bmpRect = new Rectangle(0, 0, cachedImage.Width, cachedImage.Height);
+                    FillBackground(g2, bmpRect);
+                    var fontColor = IsItemSelected && ListView.Focused ? Brushes.White : Brushes.Black;
+                    var textLeft = 2;
+
+                    if (imgIndex.HasValue && imgIndex.Value != -1)
                     {
-                        g.DrawImage(Properties.Resources.reserved_27, r.Left + imgWidth + 2, r.Top, 20, 20);
-                        textLeft += 22;
+                        ListView.SmallImageList.Draw(g2, 2, 2, imgIndex.Value);
+                        textLeft += imgWidth;
+                        if (isReserved)
+                        {
+                            g2.DrawImage(Properties.Resources.reserved_27, imgWidth + 2, 2, 20, 20);
+                            textLeft += 22;
+                        }
+                        g2.DrawString(GetText(), Font, fontColor, textLeft, 5);
                     }
-                    g.DrawString(GetText(), Font, fontColor, textLeft, r.Top + 3);
+                    else
+                    {
+                        if (isReserved)
+                        {
+                            g2.DrawImage(Properties.Resources.reserved_27, imgWidth + 2, 2, 20, 20);
+                            textLeft += 22;
+                        }
+                        g2.DrawString(GetText(), Font, fontColor, textLeft, 5);
+                    }
+                }
+                g.DrawImage(cachedImage, backgroundRect);
+
+                // Cache the bitmap on the row object so future paints can reuse it.
+                if (!IsItemSelected)
+                {
+                    if (ListItem.RowObject is InventoryCard card3)
+                        card3.CardNameImage = cachedImage;
+                    else if (ListItem.RowObject is InventoryCardCluster cluster3)
+                        cluster3.CardNameImage = cachedImage;
+                    else if (ListItem.RowObject is OLVCardItem olvCard3)
+                        olvCard3.MagicCard.CardNameImage = cachedImage;
                 }
             }
             else if (ListItem.RowObject is InventoryTotalsItem || ListItem.RowObject is OLVMessageRow)

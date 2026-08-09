@@ -37,6 +37,7 @@ namespace MTG_Librarian
 
         public override void Render(Graphics g, Rectangle r)
         {
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             if (ListItem.RowObject is InventoryCard cardInstance)
             {
                 var backgroundRect = new Rectangle(r.Left - 1, r.Top - 1, r.Width + 1, r.Height + 1);
@@ -44,14 +45,19 @@ namespace MTG_Librarian
                 Brush fontColor;
                 bool isPositive = false;
                 if (cardInstance.Delta.HasValue && cardInstance.Delta.Value > 0)
-                {
                     isPositive = true;
-                    fontColor = Brushes.Green;
-                }
-                else if (cardInstance.Delta.HasValue && cardInstance.Delta.Value < 0)
-                    fontColor = Brushes.Red;
+            
+                if (IsItemSelected)
+                    fontColor = Brushes.White;
                 else
-                    fontColor = Brushes.Black;
+                {
+                    if (cardInstance.Delta.HasValue && cardInstance.Delta.Value > 0)
+                        fontColor = Brushes.Green;
+                    else if (cardInstance.Delta.HasValue && cardInstance.Delta.Value < 0)
+                        fontColor = Brushes.Red;
+                    else
+                        fontColor = Brushes.Black;
+                }
                 var textRect = new Rectangle(r.Left, r.Top + 5, r.Width, r.Height - 5);
                 g.DrawString(isPositive ? "+" + GetText() : GetText(), Font, fontColor, textRect, new StringFormat() { Alignment = StringAlignment.Far });
             }
