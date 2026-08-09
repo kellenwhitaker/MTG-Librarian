@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Drawing;
 using System.IO;
 using System.Windows.Forms;
 
@@ -25,6 +26,10 @@ namespace MTG_Librarian
         public List<ScryfallCardRuling> rulings { get; set; }
         [NotMapped]
         public List<ScryfallCard> printings { get; set; }
+        [NotMapped]
+        public Image ManaCostImage { get; set; } = null;
+        [NotMapped]
+        public Image CardNameImage { get; set; } = null;
     }
 
     public class Metadata
