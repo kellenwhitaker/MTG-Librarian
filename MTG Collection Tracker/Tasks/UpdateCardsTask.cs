@@ -98,7 +98,26 @@ namespace MTG_Librarian
                         NullValueHandling = NullValueHandling.Ignore
                     }));
 
+                    TimeSpan elapsed;
+                    lock (Globals.States.LastScryfallSearchLockObject)
+                    {
+                        elapsed = DateTime.Now - Globals.States.LastScryfallSearchTime;
+                    }
+                    if (elapsed < TimeSpan.FromMilliseconds(500))
+                    {
+                        Thread.Sleep(500);
+                    }
+                    lock (Globals.States.LastScryfallSearchLockObject)
+                    {
+                        Globals.States.LastScryfallSearchTime = DateTime.Now;
+                    }
                     var response = client.Execute(request);
+                    if (response.StatusCode == (System.Net.HttpStatusCode)429)
+                    {
+                        DebugOutput.WriteLine("ScryfallSearchCollection returned 429 Too Many Requests. Waiting 30 seconds before retrying.");
+                        Thread.Sleep(TimeSpan.FromSeconds(30));
+                        response = client.Execute(request);
+                    }
                     var scryfallCards = response.Content != null
                         ? JsonConvert.DeserializeObject<ScryfallCardList>(response.Content)?.data
                         : null;
@@ -115,7 +134,7 @@ namespace MTG_Librarian
                         CardsUpdated.Add(scryfallMagicCard);
                         CompletedWorkUnits++;
                     }
-                    Thread.Sleep(500); // Sleep briefly to avoid hitting rate limits
+                    Thread.Sleep(TimeSpan.FromMilliseconds(500)); // Sleep briefly to avoid hitting rate limits
                 }
             }
             catch (Exception ex)

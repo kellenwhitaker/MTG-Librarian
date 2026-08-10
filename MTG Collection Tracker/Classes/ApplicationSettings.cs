@@ -11,7 +11,9 @@ namespace MTG_Librarian
     {
         #region Enums
 
-        public enum DockContentEnum { CollectionViewForm, DBViewForm, NavigatorForm, CardInfoForm, TasksForm }
+        public enum DockContentEnum { CollectionViewForm, DBViewForm, NavigatorForm, CardInfoForm, TasksForm,
+            QuickEntryForm
+        }
 
         #endregion Enums
 

@@ -71,6 +71,8 @@ namespace MTG_Librarian
             Globals.Forms.TasksForm.TaskManager.CardsUpdatedFromScryfall += EventManager.CardsUpdatedFromScryfall;
             Globals.Forms.TasksForm.TaskManager.RulingsDownloaded += EventManager.RulingsDownloaded;
             Globals.Forms.TasksForm.TaskManager.PrintingsDownloaded += EventManager.PrintingsDownloaded;
+            Globals.Forms.QuickEntryForm = new QuickEntryForm();
+            Globals.Forms.DockPanel.ActiveDocumentChanged += Globals.Forms.QuickEntryForm.DockPanelActiveDocumentChanged;
             splitContainer1.SplitterDistance = Height;
             InitUIWorker.RunWorkerAsync();
         }
@@ -623,6 +625,48 @@ namespace MTG_Librarian
                 importCollectionForm.collectionNameTextBox.Text = collectionName;
                 importCollectionForm.ShowDialog();
             }
+        }
+        private void standardToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Globals.Forms.DockPanel.SuspendLayout();
+            Globals.Forms.TasksForm.SuspendLayout();
+            Globals.Forms.NavigationForm.SuspendLayout();
+            Globals.Forms.DBViewForm.SuspendLayout();
+            Globals.Forms.CardInfoForm.SuspendLayout();
+            Globals.Forms.TasksForm.Show(Globals.Forms.DockPanel, DockState.DockRight);
+            Globals.Forms.NavigationForm.Show(Globals.Forms.DockPanel, DockState.DockRight);
+            Globals.Forms.DBViewForm.Show(Globals.Forms.DockPanel, DockState.DockBottom);
+            Globals.Forms.CardInfoForm.Show(Globals.Forms.DockPanel, DockState.DockLeft);
+            Globals.Forms.QuickEntryForm.Hide();
+            Globals.Forms.DockPanel.UpdateDockWindowZOrder(DockStyle.Right, true);
+            Globals.Forms.DockPanel.UpdateDockWindowZOrder(DockStyle.Bottom, true);
+            Globals.Forms.DockPanel.UpdateDockWindowZOrder(DockStyle.Left, true);
+            Globals.Forms.DockPanel.ResumeLayout();
+            Globals.Forms.TasksForm.ResumeLayout();
+            Globals.Forms.NavigationForm.ResumeLayout();
+            Globals.Forms.DBViewForm.ResumeLayout();
+            Globals.Forms.CardInfoForm.ResumeLayout();
+        }
+        private void quickEntryToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Globals.Forms.DockPanel.SuspendLayout();
+            Globals.Forms.CardInfoForm.SuspendLayout();
+            Globals.Forms.QuickEntryForm.SuspendLayout();
+            Globals.Forms.TasksForm.SuspendLayout();
+            Globals.Forms.NavigationForm.SuspendLayout();
+            Globals.Forms.CardInfoForm.Show(Globals.Forms.DockPanel, DockState.DockLeft);
+            Globals.Forms.QuickEntryForm.Show(Globals.Forms.DockPanel, DockState.DockLeft);
+            Globals.Forms.TasksForm.Show(Globals.Forms.DockPanel, DockState.DockRight);
+            Globals.Forms.NavigationForm.Show(Globals.Forms.DockPanel, DockState.DockRight);
+            Globals.Forms.DBViewForm.Hide();
+            Globals.Forms.DockPanel.UpdateDockWindowZOrder(DockStyle.Right, true);
+            Globals.Forms.DockPanel.UpdateDockWindowZOrder(DockStyle.Bottom, true);
+            Globals.Forms.DockPanel.UpdateDockWindowZOrder(DockStyle.Left, true);
+            Globals.Forms.DockPanel.ResumeLayout();
+            Globals.Forms.CardInfoForm.ResumeLayout();
+            Globals.Forms.QuickEntryForm.ResumeLayout();
+            Globals.Forms.TasksForm.ResumeLayout();
+            Globals.Forms.NavigationForm.ResumeLayout();
         }
     }
 }

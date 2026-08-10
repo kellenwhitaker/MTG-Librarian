@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using MTG_Librarian.Forms;
+using System;
+using System.Collections.Generic;
 using System.Web.Configuration;
 using System.Windows.Forms;
 // TODO: remove MagicCardCache
@@ -219,6 +221,8 @@ namespace MTG_Librarian
         public static class States
         {
             public static string CardFocusedUuid { get; set; }
+            public static DateTime LastScryfallSearchTime { get; set; }
+            public static object LastScryfallSearchLockObject { get; } = new object();
         }
 
         public static class Forms
@@ -229,6 +233,7 @@ namespace MTG_Librarian
             public static DBViewForm DBViewForm { get; set; }
             public static TasksForm TasksForm { get; set; }
             public static MainForm MainForm { get; set; }
+            public static QuickEntryForm QuickEntryForm { get; set; }
             public static List<CollectionViewForm> OpenCollectionForms { get; set; } = new List<CollectionViewForm>();
         }
 

@@ -7,6 +7,7 @@ using System.IO;
 using System.Linq;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -44,6 +45,20 @@ namespace MTG_Librarian
                 };
                 request.AddHeader("Accept", "application/json");
                 request.AddHeader("User-Agent", $"MTG Librarian/{SettingsManager.ApplicationSettings.ApplicationVersion}");
+                TimeSpan elapsed;
+                lock (Globals.States.LastScryfallSearchLockObject)
+                {
+                    elapsed = DateTime.Now - Globals.States.LastScryfallSearchTime;
+                }
+                if (elapsed < TimeSpan.FromMilliseconds(500))
+                {
+                    Thread.Sleep(500);
+                }
+                lock (Globals.States.LastScryfallSearchLockObject)
+                {
+                    Globals.States.LastScryfallSearchTime = DateTime.Now;
+                }
+
                 var response = client.Execute(request);
                 if (response.ResponseStatus == ResponseStatus.TimedOut)
                 {

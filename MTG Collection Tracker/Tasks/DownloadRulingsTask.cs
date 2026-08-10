@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
@@ -34,6 +35,20 @@ namespace MTG_Librarian
                 var request = new RestRequest("", Method.Get);
                 request.AddHeader("Accept", "application/json");
                 request.AddHeader("User-Agent", $"MTG Librarian/{SettingsManager.ApplicationSettings.ApplicationVersion}");
+                TimeSpan elapsed;
+                lock (Globals.States.LastScryfallSearchLockObject)
+                {
+                    elapsed = DateTime.Now - Globals.States.LastScryfallSearchTime;
+                }
+                if (elapsed < TimeSpan.FromMilliseconds(100))
+                {
+                    Thread.Sleep(100);
+                }
+                lock (Globals.States.LastScryfallSearchLockObject)
+                {
+                    Globals.States.LastScryfallSearchTime = DateTime.Now;
+                }
+
                 string responseContent = client.Execute(request).Content;
                 var responseObject = JsonConvert.DeserializeObject<ScryfallRulingsList>(responseContent);
                 if (responseObject == null) throw new InvalidDataException("Invalid JSON encountered");

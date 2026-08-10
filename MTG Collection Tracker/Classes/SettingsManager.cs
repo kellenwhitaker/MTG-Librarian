@@ -1,4 +1,5 @@
 ﻿using KW.WinFormsUI.Docking;
+using MTG_Librarian.Forms;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
@@ -73,6 +74,8 @@ namespace MTG_Librarian
                         settings.ContentPanes.Add(new ApplicationSettings.DockContentSettings { ContentType = ApplicationSettings.DockContentEnum.TasksForm, IsActivated = tasksForm == activeContent });
                     else if (dockContent is CollectionViewForm collectionViewForm)
                         settings.ContentPanes.Add(new ApplicationSettings.DockContentSettings { ContentType = ApplicationSettings.DockContentEnum.CollectionViewForm, IsActivated = collectionViewForm == activeContent, DocumentId = collectionViewForm.Collection.Id });
+                    else if (dockContent is QuickEntryForm quickEntryForm)
+                        settings.ContentPanes.Add(new ApplicationSettings.DockContentSettings { ContentType = ApplicationSettings.DockContentEnum.QuickEntryForm, IsActivated = quickEntryForm == activeContent });
                 }
             }
         }
@@ -104,6 +107,7 @@ namespace MTG_Librarian
             Globals.Forms.CardInfoForm.SuspendLayout();
             Globals.Forms.NavigationForm.SuspendLayout();
             Globals.Forms.TasksForm.SuspendLayout();
+            Globals.Forms.QuickEntryForm.SuspendLayout();
             if (!ApplicationSettings.InInitialState)
             {
                 var ZOrderDictionary = new SortedDictionary<int, DockState>();
@@ -128,6 +132,7 @@ namespace MTG_Librarian
             Globals.Forms.CardInfoForm.ResumeLayout();
             Globals.Forms.NavigationForm.ResumeLayout();
             Globals.Forms.TasksForm.ResumeLayout();
+            Globals.Forms.QuickEntryForm.ResumeLayout();
         }
 
         private static void SetupDockPanel(DockState dockState, SortedDictionary<int, DockState> ZOrderDictionary)
@@ -161,6 +166,8 @@ namespace MTG_Librarian
                 dockContent = Globals.Forms.NavigationForm;
             else if (contentSettings.ContentType == ApplicationSettings.DockContentEnum.TasksForm)
                 dockContent = Globals.Forms.TasksForm;
+            else if (contentSettings.ContentType == ApplicationSettings.DockContentEnum.QuickEntryForm)
+                dockContent = Globals.Forms.QuickEntryForm;
             else
                 dockContent = CardManager.LoadCollection(contentSettings.DocumentId, dockState);
 

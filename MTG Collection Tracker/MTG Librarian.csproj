@@ -136,11 +136,18 @@
     <Compile Include="Forms\AboutForm.Designer.cs">
       <DependentUpon>AboutForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Classes\CollectionSortingDataSource.cs" />
     <Compile Include="Forms\CollectorViewForm.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Forms\CollectorViewForm.Designer.cs">
       <DependentUpon>CollectorViewForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\QuickEntryForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\QuickEntryForm.Designer.cs">
+      <DependentUpon>QuickEntryForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\DockForm.cs">
       <SubType>Form</SubType>
@@ -310,6 +317,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\DBViewForm.resx">
       <DependentUpon>DBViewForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\QuickEntryForm.resx">
+      <DependentUpon>QuickEntryForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ImportCollectionForm.resx">
       <DependentUpon>ImportCollectionForm.cs</DependentUpon>

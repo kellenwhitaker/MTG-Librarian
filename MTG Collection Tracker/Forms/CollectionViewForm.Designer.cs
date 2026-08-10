@@ -101,6 +101,7 @@
             this.olvColumn19 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn20 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
             this.olvColumn21 = ((BrightIdeasSoftware.OLVColumn)(new BrightIdeasSoftware.OLVColumn()));
+            this.panel1 = new System.Windows.Forms.Panel();
             this.statsTabPage = new System.Windows.Forms.TabPage();
             ((System.ComponentModel.ISupportInitialize)(this.cardListView)).BeginInit();
             this.cardListViewMenuStrip.SuspendLayout();
@@ -194,6 +195,7 @@
             this.cardListView.ModelCanDrop += new System.EventHandler<BrightIdeasSoftware.ModelDropEventArgs>(this.fastObjectListView1_ModelCanDrop);
             this.cardListView.ModelDropped += new System.EventHandler<BrightIdeasSoftware.ModelDropEventArgs>(this.fastObjectListView1_ModelDropped);
             this.cardListView.SelectionChanged += new System.EventHandler(this.fastObjectListView1_SelectionChanged);
+            this.cardListView.Enter += new System.EventHandler(this.cardListView_Enter);
             this.cardListView.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.fastObjectListView1_KeyPress);
             this.cardListView.KeyUp += new System.Windows.Forms.KeyEventHandler(this.cardListView_KeyUp);
             // 
@@ -520,6 +522,7 @@
             // splitContainer2.Panel2
             // 
             this.splitContainer2.Panel2.Controls.Add(this.sideboardListView);
+            this.splitContainer2.Panel2.Controls.Add(this.panel1);
             this.splitContainer2.Panel2.Controls.Add(this.cardListView);
             this.splitContainer2.Size = new System.Drawing.Size(1866, 500);
             this.splitContainer2.SplitterDistance = 40;
@@ -762,14 +765,14 @@
             this.olvColumn21});
             this.sideboardListView.ContextMenuStrip = this.cardListViewMenuStrip;
             this.sideboardListView.Cursor = System.Windows.Forms.Cursors.Default;
-            this.sideboardListView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.sideboardListView.Dock = System.Windows.Forms.DockStyle.Left;
             this.sideboardListView.FullRowSelect = true;
             this.sideboardListView.GridLines = true;
             this.sideboardListView.HeaderWordWrap = true;
             this.sideboardListView.HideSelection = false;
             this.sideboardListView.IsSimpleDragSource = true;
             this.sideboardListView.IsSimpleDropSink = true;
-            this.sideboardListView.Location = new System.Drawing.Point(742, 0);
+            this.sideboardListView.Location = new System.Drawing.Point(752, 0);
             this.sideboardListView.Margin = new System.Windows.Forms.Padding(4);
             this.sideboardListView.Name = "sideboardListView";
             this.sideboardListView.SelectedBackColor = System.Drawing.Color.SteelBlue;
@@ -787,6 +790,7 @@
             this.sideboardListView.ModelCanDrop += new System.EventHandler<BrightIdeasSoftware.ModelDropEventArgs>(this.fastObjectListView1_ModelCanDrop);
             this.sideboardListView.ModelDropped += new System.EventHandler<BrightIdeasSoftware.ModelDropEventArgs>(this.fastObjectListView1_ModelDropped);
             this.sideboardListView.SelectionChanged += new System.EventHandler(this.fastObjectListView1_SelectionChanged);
+            this.sideboardListView.Enter += new System.EventHandler(this.cardListView_Enter);
             this.sideboardListView.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.fastObjectListView1_KeyPress);
             this.sideboardListView.KeyUp += new System.Windows.Forms.KeyEventHandler(this.cardListView_KeyUp);
             // 
@@ -941,6 +945,14 @@
             this.olvColumn21.Text = "Added";
             this.olvColumn21.Width = 200;
             // 
+            // panel1
+            // 
+            this.panel1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.panel1.Location = new System.Drawing.Point(742, 0);
+            this.panel1.Name = "panel1";
+            this.panel1.Size = new System.Drawing.Size(10, 456);
+            this.panel1.TabIndex = 2;
+            // 
             // statsTabPage
             // 
             this.statsTabPage.BackColor = System.Drawing.Color.White;
@@ -961,6 +973,7 @@
             this.Name = "CollectionViewForm";
             this.Text = "Collection View";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.CollectionViewForm_FormClosed);
+            this.Shown += new System.EventHandler(this.CollectionViewForm_Shown);
             this.SizeChanged += new System.EventHandler(this.CollectionViewForm_SizeChanged);
             ((System.ComponentModel.ISupportInitialize)(this.cardListView)).EndInit();
             this.cardListViewMenuStrip.ResumeLayout(false);
@@ -1051,5 +1064,6 @@
         private BrightIdeasSoftware.OLVColumn allOwnedCountColumn;
         private BrightIdeasSoftware.OLVColumn sideboardOwnedCountColumn;
         private BrightIdeasSoftware.OLVColumn sideboardAllOwnedCountColumn;
+        private System.Windows.Forms.Panel panel1;
     }
 }
