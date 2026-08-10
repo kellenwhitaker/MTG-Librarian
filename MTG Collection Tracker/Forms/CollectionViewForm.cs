@@ -321,7 +321,25 @@ namespace MTG_Librarian
                     }
                 }
                 else if (Collection.Type == "deck")                
-                {
+                {  
+                    cardListView.CellToolTip.Font = new System.Drawing.Font("Segoe UI", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point);
+                    cardListView.CellToolTipGetter = delegate (OLVColumn column, Object model)
+                    {
+                        var currency = Collection.Platform.ToLower() == "mtgo" ? "TIX" : SettingsManager.ApplicationSettings.DefaultPaperCurrency;
+                        if (model is InventoryCardCluster cluster)
+                        {
+                            return $"{cluster.Name}\n{cluster.OwnedText} total copies owned\n{cluster.Price * cluster.Count} {currency}";
+                        }
+                        else if (model is InventoryCard card)
+                        {
+                            return $"{card.Name}\n{card.OwnedCount} exact copies / {card.AllOwnedCount} total copies owned\n{card.Price * card.Count} {currency}";
+                        }
+                        else if (model is InventoryTotalsItem totals)
+                            return $"{totals.Count} cards\n{totals.Price} {currency}";
+
+                        return null;
+                    };
+                    
                     EventManager.InventoryChanged += InventoryChanged;
                     collapsedViewToolStripMenuItem.Visible = true;
                     CountColumn.DisplayIndex = sideboardCountColumn.DisplayIndex = 1;
