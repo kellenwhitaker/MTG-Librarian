@@ -358,6 +358,7 @@ namespace MTG_Librarian
         {
             using (var settingsForm = new SettingsForm())
             {
+                settingsForm.showSensitiveImagesCheckBox.Checked = SettingsManager.ApplicationSettings.ShowSensitiveImages;
                 settingsForm.defaultCurrencyComboBox.Text = SettingsManager.ApplicationSettings.DefaultCurrency;
                 settingsForm.defaultPaperCurrencyComboBox.Text = SettingsManager.ApplicationSettings.DefaultPaperCurrency;
                 settingsForm.defaultSearchLanguageComboBox.Text = SettingsManager.ApplicationSettings.DefaultSearchLanguage;
@@ -370,6 +371,7 @@ namespace MTG_Librarian
                     string defaultCurrency = SettingsManager.ApplicationSettings.DefaultCurrency;
                     string defaultPaperCurrency = SettingsManager.ApplicationSettings.DefaultPaperCurrency;
                     string defaultSearchLanguage = SettingsManager.ApplicationSettings.DefaultSearchLanguage;
+                    SettingsManager.ApplicationSettings.ShowSensitiveImages = settingsForm.showSensitiveImagesCheckBox.Checked;
                     SettingsManager.ApplicationSettings.DefaultCurrency = settingsForm.defaultCurrencyComboBox.Text;
                     SettingsManager.ApplicationSettings.DefaultPaperCurrency = settingsForm.defaultPaperCurrencyComboBox.Text;
                     SettingsManager.ApplicationSettings.DefaultSearchLanguage = settingsForm.defaultSearchLanguageComboBox.Text;

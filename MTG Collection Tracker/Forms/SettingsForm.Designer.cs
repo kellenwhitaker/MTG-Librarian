@@ -40,6 +40,7 @@
             this.magicOnlineCheckBox = new System.Windows.Forms.CheckBox();
             this.label4 = new System.Windows.Forms.Label();
             this.defaultPaperCurrencyComboBox = new System.Windows.Forms.ComboBox();
+            this.showSensitiveImagesCheckBox = new System.Windows.Forms.CheckBox();
             this.SuspendLayout();
             // 
             // label1
@@ -182,11 +183,22 @@
             this.defaultPaperCurrencyComboBox.Size = new System.Drawing.Size(121, 24);
             this.defaultPaperCurrencyComboBox.TabIndex = 11;
             // 
+            // showSensitiveImagesCheckBox
+            // 
+            this.showSensitiveImagesCheckBox.AutoSize = true;
+            this.showSensitiveImagesCheckBox.Location = new System.Drawing.Point(12, 132);
+            this.showSensitiveImagesCheckBox.Name = "showSensitiveImagesCheckBox";
+            this.showSensitiveImagesCheckBox.Size = new System.Drawing.Size(230, 20);
+            this.showSensitiveImagesCheckBox.TabIndex = 12;
+            this.showSensitiveImagesCheckBox.Text = "Show images for sensitive content";
+            this.showSensitiveImagesCheckBox.UseVisualStyleBackColor = true;
+            // 
             // SettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(463, 231);
+            this.Controls.Add(this.showSensitiveImagesCheckBox);
             this.Controls.Add(this.defaultPaperCurrencyComboBox);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.magicOnlineCheckBox);
@@ -225,5 +237,6 @@
         public System.Windows.Forms.CheckBox magicOnlineCheckBox;
         private System.Windows.Forms.Label label4;
         public System.Windows.Forms.ComboBox defaultPaperCurrencyComboBox;
+        public System.Windows.Forms.CheckBox showSensitiveImagesCheckBox;
     }
 }

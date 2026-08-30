@@ -272,5 +272,7 @@ namespace MTG_Librarian
                 color_indicator = value == null ? null : JsonConvert.DeserializeObject<string[]>(value);
             }
         }
+
+        public bool content_warning { get; set; }
     }
 }

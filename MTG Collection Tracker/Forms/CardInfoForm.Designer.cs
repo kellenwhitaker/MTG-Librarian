@@ -130,6 +130,7 @@
             this.cardPictureBox.Size = new System.Drawing.Size(297, 382);
             this.cardPictureBox.TabIndex = 3;
             this.cardPictureBox.TabStop = false;
+            this.cardPictureBox.DoubleClick += new System.EventHandler(this.cardPictureBox_DoubleClick);
             // 
             // printingsTabPage
             // 

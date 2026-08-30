@@ -100,6 +100,7 @@ namespace MTG_Librarian
             }
             query += "&q=";
             var queryClauses = new List<string>();
+            queryClauses.Add("include%3Aextras");
             if (whiteManaButton.Checked) manaSymbols += "W";
             if (blueManaButton.Checked) manaSymbols += "U";
             if (blackManaButton.Checked) manaSymbols += "B";

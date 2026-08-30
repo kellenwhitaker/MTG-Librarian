@@ -61,6 +61,14 @@ namespace MTG_Librarian
          }
 
         [UserScopedSetting()]
+        [DefaultSettingValue("false")]
+        public bool ShowSensitiveImages
+        {
+            get => (bool)this["ShowSensitiveImages"];
+            set => this["ShowSensitiveImages"] = value;
+        }
+
+        [UserScopedSetting()]
         [DefaultSettingValue("0")]
         public int CardInfoTabIndex
         {

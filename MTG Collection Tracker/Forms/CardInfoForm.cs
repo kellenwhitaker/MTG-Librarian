@@ -15,6 +15,7 @@ namespace MTG_Librarian
         private ScryfallMagicCardBase MagicCard;
         private ScryfallMagicCardBase DisplayedCard;
         private string DisplayedSide = "A";
+        private bool DisplaySensitiveCard;
 
         #endregion Fields
 
@@ -142,6 +143,11 @@ namespace MTG_Librarian
             var oldCard = MagicCard;
             MagicCard = DisplayedCard = card;
             DisplayedSide = "A";
+            if (MagicCard.content_warning && !SettingsManager.ApplicationSettings.ShowSensitiveImages)
+            {
+                DisplaySensitiveCard = false;
+                cardPictureBox.Image = Properties.Resources.contentwarning.ScaleImage(cardPictureBox.Width, cardPictureBox.Height);
+            }
             string html = "<table width='100%'>";
             if (card.layout == "transform")
             {
@@ -351,8 +357,12 @@ namespace MTG_Librarian
 
         public void cardImageRetrieved(object sender, CardImageRetrievedEventArgs e)
         {
-            if (DisplayedCard != null && DisplayedCard.ScryfallId == e.uuid)
+            if (DisplayedCard != null && DisplayedCard.ScryfallId == e.uuid) 
+            {
+                if (DisplayedCard.content_warning && !DisplaySensitiveCard)
+                    return;
                 cardPictureBox.Image = e.CardImage.ScaleImage(cardPictureBox.Width, cardPictureBox.Height);
+            }
         }
 
         private void flipButton_Click(object sender, System.EventArgs e)
@@ -422,11 +432,18 @@ namespace MTG_Librarian
                 }
             }
         }
-
         public void DefaultCurrencyChanged(object sender, EventArgs e)
         {
             if (MagicCard != null)
                 FillPrintingsPanel();
+        }
+        private void cardPictureBox_DoubleClick(object sender, EventArgs e)
+        {
+            if (DisplayedCard != null && DisplayedCard.content_warning && !SettingsManager.ApplicationSettings.ShowSensitiveImages)
+            {
+                DisplaySensitiveCard = true;
+                CardManager.RetrieveImage(DisplayedCard, DisplayedSide);
+            }
         }
     }
 }

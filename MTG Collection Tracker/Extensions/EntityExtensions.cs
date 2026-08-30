@@ -101,6 +101,7 @@ namespace MTG_Librarian
                 life_modifier = scryfallCard.life_modifier,
                 produced_mana = scryfallCard.produced_mana,
                 color_indicator = scryfallCard.color_indicator,
+                content_warning = scryfallCard.content_warning,
             };
         }
     }
