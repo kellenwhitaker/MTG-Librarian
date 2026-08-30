@@ -223,6 +223,7 @@ namespace MTG_Librarian
             public static string CardFocusedUuid { get; set; }
             public static DateTime LastScryfallSearchTime { get; set; }
             public static object LastScryfallSearchLockObject { get; } = new object();
+            public static bool UpdatePricesMode { get; internal set; } = false;
         }
 
         public static class Forms

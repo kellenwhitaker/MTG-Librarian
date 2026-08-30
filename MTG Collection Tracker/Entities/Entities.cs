@@ -17,7 +17,16 @@ namespace MTG_Librarian
         [NotMapped]
         public string DisplayTypeLine => card_faces != null ? (card_faces[0].DisplayTypeLine + " // " + card_faces[1].DisplayTypeLine) : (printed_type_line != null ? printed_type_line : type_line);
         [NotMapped]
-        public string DisplayText => card_faces != null ? (card_faces[0].DisplayText) : (printed_text != null ? printed_text : oracle_text);
+        public string DisplayText
+        {
+            get
+            {
+                var text = card_faces != null ? (card_faces[0].DisplayText) : (printed_text != null ? printed_text : oracle_text);
+                if (text != null)
+                    text = text.Replace(".\n", ". ").Replace("\n", ". ");
+                return text;
+            }
+        }
         [NotMapped]
         public string SymbolCode => set != null && set.Length == 4 && (set_type == "token" || set_type == "promo" || set_type == "memorabilia") ? set.Substring(1) : set;
         [NotMapped]
@@ -67,12 +76,13 @@ namespace MTG_Librarian
         public DbSet<CollectionSnapshot> CollectionSnapshots { get; set; }
         public DbSet<CardCollectionItem> CollectionsView { get; set; }
         #endregion
-
+        private string dbFilePath = "cards.db";
         public ScryfallCardsDbContext()
         {
-            this.Database.ExecuteSqlCommand("PRAGMA foreign_keys = ON;");
+            
             EnsureDatabaseCreated();
             UpgradeDatabase();
+            this.Database.ExecuteSqlCommand("PRAGMA foreign_keys = ON;");
         }
         private void AddColumnIfNotExists(SqliteConnection connection, string tableName, string columnName, string columnType)
         {
@@ -103,7 +113,7 @@ namespace MTG_Librarian
         }
         private void UpgradeDatabase()
         {
-            using (var sqliteConn = new SqliteConnection($"Data Source=cards.db"))
+            using (var sqliteConn = new SqliteConnection($"Data Source={dbFilePath}"))
             {
                 sqliteConn.Open();
                 AddColumnIfNotExists(sqliteConn, "Collections", "ColorIdentity", "TEXT");
@@ -111,19 +121,28 @@ namespace MTG_Librarian
         }
         private void EnsureDatabaseCreated()
         {
-            string fileName = "cards.db";
-            var file = new FileInfo(fileName);
+            var file = new FileInfo(dbFilePath);
             if (!file.Exists)
             {
-                using (var sqliteConn = new SqliteConnection($"Data Source={fileName}"))
+                string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+                string appFolder = Path.Combine(appDataPath, "MTG Librarian");
+                if (!Directory.Exists(appFolder))
+                    Directory.CreateDirectory(appFolder);
+                
+                dbFilePath = Path.Combine(appFolder, "cards.db");
+                file = new FileInfo(dbFilePath);
+                if (!file.Exists)
                 {
-                    sqliteConn.Open();
-                    CreateDB(sqliteConn);
-                }   
+                    using (var sqliteConn = new SqliteConnection($"Data Source={dbFilePath}"))
+                    {
+                        sqliteConn.Open();
+                        CreateDB(sqliteConn);
+                    }
+                }
             }
             else
             {
-                using (var sqliteConn = new SqliteConnection($"Data Source={fileName}"))
+                using (var sqliteConn = new SqliteConnection($"Data Source={dbFilePath}"))
                 {
                     sqliteConn.Open();
                     using (var checkCommand = sqliteConn.CreateCommand())
@@ -137,13 +156,11 @@ namespace MTG_Librarian
                     }
                 }
             }
+
                 void CreateDB(SqliteConnection sqliteConn)
                 {
                     try
                     {
-                        //var sqliteConn = new SqliteConnection("Data Source=cards.db;");
-                        //sqliteConn.Open();
-
                         // Database does not exist, create it
                         using (var createCommand = sqliteConn.CreateCommand())
                         {
@@ -557,7 +574,7 @@ namespace MTG_Librarian
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var sqliteConn = new SqliteConnection("Data Source=cards.db;");
+            var sqliteConn = new SqliteConnection($"Data Source={dbFilePath};");
             optionsBuilder.UseSqlite(sqliteConn);
         }
     }
@@ -566,18 +583,25 @@ namespace MTG_Librarian
         #region DbSet
         public DbSet<DbCardImage> CardImages { get; set; }
         #endregion
+
+        private string dbFilePath = "Card Images.db";
         private readonly string Edition;
 
         public CardImagesDbContext(string Edition)
         {
             this.Edition = Edition.SanitizeFilename();
-            var dir = new DirectoryInfo($"Card Images/");
-            if (!dir.Exists) dir.Create();
-            string fileName = $"Card Images/{this.Edition}.db";
-            var file = new FileInfo(fileName);
-            if (!file.Exists)
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+            string appFolder = Path.Combine(appDataPath, "MTG Librarian");
+            if (!Directory.Exists(appFolder))
+                Directory.CreateDirectory(appFolder);
+
+            string cacheFolder = Path.Combine(appFolder, "Card Images");
+            if (!Directory.Exists(cacheFolder))
+                Directory.CreateDirectory(cacheFolder);
+            dbFilePath = Path.Combine(cacheFolder, $"{this.Edition}.db");
+            if (!File.Exists(dbFilePath))
             {
-                using (SqliteConnection conn = new SqliteConnection($"Data Source={fileName}"))
+                using (SqliteConnection conn = new SqliteConnection($"Data Source={dbFilePath}"))
                 using (SqliteCommand createDB = new SqliteCommand("CREATE TABLE CardImages (ScryfallId TEXT, Side TEXT DEFAULT A, MVid INTEGER, CardImageBytes BLOB, PRIMARY KEY (ScryfallId, Side)); ", conn))
                 {
                     conn.Open();
@@ -588,7 +612,7 @@ namespace MTG_Librarian
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var sqliteConn = new SqliteConnection($"Data Source=Card Images/{Edition}.db;");
+            var sqliteConn = new SqliteConnection($"Data Source={dbFilePath};");
             optionsBuilder.UseSqlite(sqliteConn);
         }
     }

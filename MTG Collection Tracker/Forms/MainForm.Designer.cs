@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.vS2015LightTheme1 = new KW.WinFormsUI.Docking.VS2015LightTheme();
             this.CheckForNewSetsWorker = new System.ComponentModel.BackgroundWorker();
@@ -68,6 +69,7 @@
             this.saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this.importDeckDialog = new System.Windows.Forms.OpenFileDialog();
             this.importCollectionDialog = new System.Windows.Forms.OpenFileDialog();
+            this.notifyIcon = new System.Windows.Forms.NotifyIcon(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -293,14 +295,14 @@
             // quickEntryToolStripMenuItem
             // 
             this.quickEntryToolStripMenuItem.Name = "quickEntryToolStripMenuItem";
-            this.quickEntryToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.quickEntryToolStripMenuItem.Size = new System.Drawing.Size(166, 26);
             this.quickEntryToolStripMenuItem.Text = "Quick Entry";
             this.quickEntryToolStripMenuItem.Click += new System.EventHandler(this.quickEntryToolStripMenuItem_Click);
             // 
             // standardToolStripMenuItem
             // 
             this.standardToolStripMenuItem.Name = "standardToolStripMenuItem";
-            this.standardToolStripMenuItem.Size = new System.Drawing.Size(224, 26);
+            this.standardToolStripMenuItem.Size = new System.Drawing.Size(166, 26);
             this.standardToolStripMenuItem.Text = "Standard";
             this.standardToolStripMenuItem.Click += new System.EventHandler(this.standardToolStripMenuItem_Click);
             // 
@@ -427,6 +429,11 @@
             // 
             this.importCollectionDialog.Filter = "CSV Files (*.csv)|*.csv|Magic Online DEK Files (*.dek)|*.dek";
             // 
+            // notifyIcon1
+            // 
+            this.notifyIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("notifyIcon1.Icon")));
+            this.notifyIcon.Visible = true;
+            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
@@ -497,6 +504,7 @@
         private System.Windows.Forms.ToolStripMenuItem layoutsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem quickEntryToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem standardToolStripMenuItem;
+        public System.Windows.Forms.NotifyIcon notifyIcon;
     }
 }
 

@@ -33,6 +33,14 @@ namespace MTG_Librarian
         {
             InitializeComponent();
             InitDB();
+
+            if (Globals.States.UpdatePricesMode)
+            {
+                Globals.Forms.MainForm = this;
+                UpdateCards();
+                return;
+            }
+
             Globals.Forms.DockPanel = dockPanel1;
             Globals.Forms.DockPanel.SetDoubleBuffered();
             Globals.Forms.MainForm = this;
@@ -47,6 +55,7 @@ namespace MTG_Librarian
 
         private void SetupUI()
         {
+            notifyIcon.Visible = false;
             SetupImageLists();
             EventManager.DefaultCurrencyChanged += DefaultCurrencyChanged;
             Globals.Forms.DockPanel.ActiveDocumentChanged += DockPanelActiveDocumentChanged;
@@ -241,6 +250,10 @@ namespace MTG_Librarian
             Globals.ImageLists.SymbolIcons16.Images.Add("{T}", Properties.Resources.T_16);
             Globals.ImageLists.SymbolIcons16.Images.Add("{Q}", Properties.Resources.Q_16);
             Globals.ImageLists.SymbolIcons16.Images.Add("{E}", Properties.Resources.E_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{G/U/P}", Properties.Resources.GUP_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{G/W/P}", Properties.Resources.GWP_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{R/G/P}", Properties.Resources.RGP_16);
+            Globals.ImageLists.SymbolIcons16.Images.Add("{R/W/P}", Properties.Resources.RWP_16);
 
             #endregion Add mana icons
         }

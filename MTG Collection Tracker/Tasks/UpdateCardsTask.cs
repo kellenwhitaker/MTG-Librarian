@@ -17,6 +17,7 @@ namespace MTG_Librarian
 
         private List<ScryfallMagicCardBase> cardsToUpdate;
         public List<ScryfallMagicCard> CardsUpdated = new List<ScryfallMagicCard>();
+        public bool WholeCatalogUpdate { get; set; } = true;
 
         #endregion Fields
 
@@ -41,37 +42,72 @@ namespace MTG_Librarian
 
         protected override void OnRunWorkerCompleted(RunWorkerCompletedEventArgs e)
         {
-            try
+            if (cardsToUpdate.Any())
             {
-                using (var context = new ScryfallCardsDbContext())
+                try
                 {
-                    foreach (var scryfallMagicCard in CardsUpdated)
+                    using (var context = new ScryfallCardsDbContext())
                     {
-                        context.Catalog.Update(scryfallMagicCard);
+                        foreach (var scryfallMagicCard in CardsUpdated)
+                            context.Catalog.Update(scryfallMagicCard);
+
+                        if (WholeCatalogUpdate)
+                        {
+                            var match = context.Metadata.FirstOrDefault(m => m.Name == "LastCatalogUpdate");
+                            if (match != null)
+                            {
+                                match.Value = DateTime.Now.ToString();
+                                context.Metadata.Update(match);
+                            }
+                            else
+                                context.Metadata.Add(new Metadata { Name = "LastCatalogUpdate", Value = DateTime.Now.ToString() });
+                        }
+                        context.SaveChanges();
                     }
-                    context.SaveChanges();
+                    watch.Stop();
+                    Globals.Forms.MainForm.notifyIcon.ShowBalloonTip(5000, "MTG Librarian", $"Finished updating {cardsToUpdate.Count} cards.", System.Windows.Forms.ToolTipIcon.Info);
+                    if (CardsUpdated.Count != cardsToUpdate.Count)
+                        RunState = RunState.Failed;
+                    else
+                    {
+                        if (Globals.States.UpdatePricesMode)
+                        {
+                            CardManager.SaveCollectionSnapshots();
+                            System.Windows.Forms.Application.Exit();
+                        }
+                        RunState = RunState.Completed;
+                    }
                 }
-                watch.Stop();
-                if (CardsUpdated.Count != cardsToUpdate.Count)
+                catch (Exception ex)
+                {
+                    DebugOutput.WriteLine(ex.ToString());
                     RunState = RunState.Failed;
-                else
-                    RunState = RunState.Completed;
+                }
             }
-            catch (Exception ex)
+            else
             {
-                DebugOutput.WriteLine(ex.ToString());
-                RunState = RunState.Failed;
+                if (Globals.States.UpdatePricesMode)
+                {
+                    System.Windows.Forms.Application.Exit();
+                }
+                RunState = RunState.Completed;
             }
         }
         protected override void OnDoWork(DoWorkEventArgs e)
         {
+            if (Globals.States.UpdatePricesMode && !cardsToUpdate.Any())
+            {
+                Thread.Sleep(10000);
+                return;
+            }
+
             try
             {
                 const int batchSize = 75; // Scryfall /cards/collection is typically limited; 75 is safe
                 string scryfallBaseUrl = "https://api.scryfall.com";
                 var client = new RestClient(scryfallBaseUrl);
 
-
+                Globals.Forms.MainForm.notifyIcon.ShowBalloonTip(5000, "MTG Librarian", $"Getting updates for {cardsToUpdate.Count} cards...", System.Windows.Forms.ToolTipIcon.Info);
                 // Process in batches
                 for (int start = 0; start < cardsToUpdate.Count; start += batchSize)
                 {

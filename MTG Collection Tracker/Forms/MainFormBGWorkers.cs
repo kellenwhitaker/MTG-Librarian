@@ -1,12 +1,13 @@
 ﻿using HtmlAgilityPack;
-using RestSharp;
 using Newtonsoft.Json;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Runtime.Remoting.Contexts;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows.Forms;
@@ -74,11 +75,8 @@ namespace MTG_Librarian
             Show();
             SettingsManager.LayoutMainForm();
             using (var context = new ScryfallCardsDbContext())
-            {
-                
-                var match = (from m in context.Metadata
-                            where m.Name == "LastCatalogUpdate"
-                            select m).FirstOrDefault();
+            { 
+                var match = context.Metadata.FirstOrDefault(m => m.Name == "LastSetsUpdate");
                 var lastUpdate = DateTime.MinValue;
                 if (match != null && match.Value != "")
                     DateTime.TryParse(match.Value, out lastUpdate);
@@ -86,6 +84,15 @@ namespace MTG_Librarian
                 {
                     CheckForNewSetsWorker.RunWorkerCompleted += CheckForNewSetsWorker_RunWorkerCompleted;
                     CheckForNewSetsWorker.RunWorkerAsync();
+                }
+                else
+                {
+                    var catalogMatch = context.Metadata.FirstOrDefault(m => m.Name == "LastCatalogUpdate");
+                    var lastCatalogUpdate = DateTime.MinValue;
+                    if (catalogMatch != null && catalogMatch.Value != "")
+                        DateTime.TryParse(catalogMatch.Value, out lastCatalogUpdate);
+                    if (catalogMatch == null || (DateTime.Now.Date - lastCatalogUpdate.Date).Days > 0)
+                        UpdateCards();
                 }
             }
         }
@@ -157,7 +164,6 @@ namespace MTG_Librarian
                     MessageBox.Show(ex.ToString());
             }
             e.Result = result;
-            UpdateCards();
         }
 
         private void UpdateCards()
@@ -167,15 +173,18 @@ namespace MTG_Librarian
                 var cardsToUpdate = (from c in context.Catalog
                                     join s in context.Library 
                                     on c.ScryfallId equals s.ScryfallId
-                                    select c);
+                                    select c).ToList();
                 var cardsToUpdateDictionary = new Dictionary<string, ScryfallMagicCardBase>();
                 foreach (var card in cardsToUpdate)
                     if (!cardsToUpdateDictionary.ContainsKey(card.ScryfallId))
                         cardsToUpdateDictionary.Add(card.ScryfallId, card);
-                if (cardsToUpdate.Any())
+                if (cardsToUpdate.Any() || Globals.States.UpdatePricesMode)
                 {
                     var updateCardsTask = new UpdateCardsTask(cardsToUpdateDictionary.Values.Cast<ScryfallMagicCardBase>().ToList());
-                    Globals.Forms.TasksForm.TaskManager.AddTask(updateCardsTask);
+                    if (Globals.States.UpdatePricesMode)
+                        updateCardsTask.Run();
+                    else
+                        Globals.Forms.TasksForm.TaskManager.AddTask(updateCardsTask);
                 }
             }
         }
@@ -184,24 +193,29 @@ namespace MTG_Librarian
         {
             using (var context = new ScryfallCardsDbContext())
             {
-                var match = (from m in context.Metadata
-                             where m.Name == "LastCatalogUpdate"
-                             select m).FirstOrDefault();
+                var match = context.Metadata.FirstOrDefault(m => m.Name == "LastSetsUpdate");
                 if (match != null)
+                {
                     match.Value = DateTime.Now.ToString();
+                    context.Metadata.Update(match);
+                }
                 else
-                    context.Metadata.Add(new Metadata { Name = "LastCatalogUpdate", Value = DateTime.Now.ToString() });
+                    context.Metadata.Add(new Metadata { Name = "LastSetsUpdate", Value = DateTime.Now.ToString() });
                 context.SaveChanges();
+                var catalogMatch = context.Metadata.FirstOrDefault(m => m.Name == "LastCatalogUpdate");
+                var lastUpdate = DateTime.MinValue;
+                if (catalogMatch != null && catalogMatch.Value != "")
+                    DateTime.TryParse(catalogMatch.Value, out lastUpdate);
+                if (catalogMatch == null || (DateTime.Now.Date - lastUpdate.Date).Days > 0)
+                    UpdateCards();
             }
             var result = e.Result as UpdateSetsResult;
             if (result.newSets.Count > 0)
             {
                 var olvSets = new List<OLVSetItem>();
                 foreach (var set in result.newSets)
-                {
                     olvSets.Add(new OLVSetItem(set));
-                }
-
+            
                 Globals.Forms.DBViewForm.setListView.AddObjects(olvSets);
             }
             if (result.setsNeedingRefresh.Count > 0)
