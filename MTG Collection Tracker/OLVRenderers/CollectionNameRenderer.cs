@@ -145,10 +145,11 @@ namespace MTG_Librarian
                 if (ListItem.RowObject is NavigatorGroup)
                 {
                     var fillRect = new Rectangle(textRect.Left, textRect.Top + 5, textRect.Width, textRect.Height / 2 - 3);
-                    using (var solidBrush = new SolidBrush(Color.FromArgb(255, 205, 220, 235)))
+                    using (var solidBrush = new SolidBrush(Color.FromArgb(255, 204, 213, 240)))
                         g.FillRectangle(solidBrush, fillRect);
                     g.DrawLine(Pens.DarkGray, fillRect.Left, fillRect.Top + fillRect.Height, fillRect.Right, fillRect.Top + fillRect.Height);
                 }
+                /*
                 else
                 {
                     textSize = g.MeasureString(text, boldFont);
@@ -156,16 +157,29 @@ namespace MTG_Librarian
                     if (IsItemSelected && ListView.Focused)
                     {
                         FillRoundedRectangle(g, Brushes.LightBlue, fillRect, 4);
-                        //g.FillRectangle(Brushes.LightBlue, fillRect);
                     }
                     else
                     {
                         using (var gradientBrush = new LinearGradientBrush(fillRect, Color.White, Color.FromArgb(255, 255, 235, 205), LinearGradientMode.Vertical))
                             FillRoundedRectangle(g, gradientBrush, fillRect, 4);
-                        //g.FillRectangle(gradientBrush, fillRect);
                     }
                     DrawRoundedRectangle(g, Pens.DarkGray, fillRect, 4);
-                    //g.DrawLine(Pens.DarkGray, fillRect.Left, fillRect.Top + fillRect.Height, fillRect.Right, fillRect.Top + fillRect.Height);
+                }
+                */
+                if (ListItem.RowObject is NavigatorCollection collection)
+                {
+                    if (collection.Parent.Name == "Decks")
+                         g.DrawImage(Properties.Resources.deck_25, textRect.Left - 25, textRect.Top + 7);
+                    else if (collection.Parent.Name == "Collections")
+                        g.DrawImage(Properties.Resources.binder_25, textRect.Left - 25, textRect.Top + 7);
+                    else if (collection.Parent.Name == "Wish Lists")
+                        g.DrawImage(Properties.Resources.list_25, textRect.Left - 25, textRect.Top + 7);
+                    else if (collection.Parent.Name == "Sold")
+                        g.DrawImage(Properties.Resources.pricetag_25, textRect.Left - 25, textRect.Top + 7);
+                    else if (collection.Parent.Name == "Watch Lists")
+                        g.DrawImage(Properties.Resources.bookmark_25, textRect.Left - 25, textRect.Top + 7);
+                    else if (collection.Parent.Name == "Trade Lists")
+                        g.DrawImage(Properties.Resources.arrows_25, textRect.Left - 25, textRect.Top + 7);
                 }
 
                 var fontColor = IsItemSelected && ListView.Focused ? Brushes.White : Brushes.Black;
@@ -184,9 +198,9 @@ namespace MTG_Librarian
                     using (var italicFont = new Font(Font, FontStyle.Italic))
                         g.DrawString($"{count} item{(count != 1 ? "s" : "")} in group", italicFont, fontColor, contentRect.Left + 2, rectTop);
                 }
-                else if (ListItem.RowObject is NavigatorCollection collection)
+                else if (ListItem.RowObject is NavigatorCollection navCollection)
                 {
-                    DrawPlatformBadgeAndIcons(g, collection, contentRect, rectTop, ref rectLeft);
+                    DrawPlatformBadgeAndIcons(g, navCollection, contentRect, rectTop, ref rectLeft);
                 }
             }
         }
