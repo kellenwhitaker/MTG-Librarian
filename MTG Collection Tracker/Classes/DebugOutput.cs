@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.IO;
 
 namespace MTG_Librarian
 {
@@ -7,7 +8,13 @@ namespace MTG_Librarian
     {
         static DebugOutput()
         {
-            Trace.Listeners.Add(new TextWriterTraceListener("debugoutput.txt"));
+            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.CommonApplicationData);
+            string appFolder = Path.Combine(appDataPath, "MTG Librarian");
+            if (!Directory.Exists(appFolder))
+                Directory.CreateDirectory(appFolder);
+
+            string logFilePath = Path.Combine(appFolder, "debugoutput.txt");
+            Trace.Listeners.Add(new TextWriterTraceListener(logFilePath));
         }
 
         public static void WriteLine(string s)
