@@ -100,8 +100,6 @@ namespace MTG_Librarian
                     context.Add(decksGroup);
                     var watchlistGroup = new CollectionGroup { GroupName = "Watch Lists", Permanent = true, Virtual = true };
                     context.Add(watchlistGroup);
-                    var tradeListGroup = new CollectionGroup { GroupName = "Trade Lists", Permanent = true, Virtual = false };
-                    context.Add(tradeListGroup);
                     var soldGroup = new CollectionGroup { GroupName = "Sold", Permanent = true, Virtual = false };
                     context.Add(soldGroup);
                     context.SaveChanges();
@@ -111,10 +109,6 @@ namespace MTG_Librarian
                     context.Add(mainCollection);
                     context.Add(mainCollection2);
                     context.Add(mainCollection3);
-                    var tradeCollection = new CardCollection { CollectionName = "For Trade", Type = "collection", GroupName = tradeListGroup.GroupName, GroupId = tradeListGroup.Id, Virtual = false, Permanent = true, Platform = "Paper" };
-                    var tradeCollection2 = new CardCollection { CollectionName = "For Trade", Type = "collection", GroupName = tradeListGroup.GroupName, GroupId = tradeListGroup.Id, Virtual = false, Permanent = true, Platform = "MTGO" };
-                    context.Add(tradeCollection);
-                    context.Add(tradeCollection2);
                     var soldCollection = new CardCollection { CollectionName = "Sold Cards", Type = "collection", GroupName = soldGroup.GroupName, GroupId = soldGroup.Id, Virtual = false, Permanent = true, Platform = "Paper" };
                     var soldCollection2 = new CardCollection { CollectionName = "Sold Cards", Type = "collection", GroupName = soldGroup.GroupName, GroupId = soldGroup.Id, Virtual = false, Permanent = true, Platform = "MTGO" };
                     context.Add(soldCollection);
@@ -132,6 +126,20 @@ namespace MTG_Librarian
                         decksGroup.Virtual = true;
                         context.SaveChanges();
                     }
+                }
+                var tradeListGroup = (from g in context.CollectionGroups
+                                      where g.GroupName == "Trade Lists"
+                                      select g).FirstOrDefault();
+                if (tradeListGroup == null)
+                {
+                    tradeListGroup = new CollectionGroup { GroupName = "Trade Lists", Permanent = true, Virtual = false };
+                    context.Add(tradeListGroup);
+                    context.SaveChanges();
+                    var tradeCollection = new CardCollection { CollectionName = "For Trade", Type = "collection", GroupName = tradeListGroup.GroupName, GroupId = tradeListGroup.Id, Virtual = false, Permanent = true, Platform = "Paper" };
+                    var tradeCollection2 = new CardCollection { CollectionName = "For Trade", Type = "collection", GroupName = tradeListGroup.GroupName, GroupId = tradeListGroup.Id, Virtual = false, Permanent = true, Platform = "MTGO" };
+                    context.Add(tradeCollection);
+                    context.Add(tradeCollection2);
+                    context.SaveChanges();
                 }
             }
         }
