@@ -19,6 +19,9 @@ On first run, the application will update its list of available sets and begin d
 
 Commanders can be selected using the deck editor by right-clicking. Decks can be playtested using the simulator. To do so, open or activate the deck you wish to playtest and select Simulator from the Deck main menu item.
 
+## Quick Entry
+To use Quick Entry, select it from the Layout menu. The Quick Entry form utilizes the card name or partial name to fetch a list of matches. The complete card name can be selected from the dropdown box, which will fetch a list of printings. The cheapest printing is selected by default. Activating a printing will add it to the active collection. The keyboard can be used during the Quick Entry process, hitting Enter to search, to select a match, and to add the selected printing to the active collection. Hitting Shift + Enter will add 4 copies to the collection.
+
 ## Importing an Existing Collection
 Collections can be imported using the Magic Online DEK format or any supported CSV format. Click Import collection from the File menu and select the file you wish to import. Select the platform of the collection. For most formats, you may import into an existing collection or create a new one. Click the Import button to begin. Depending on the size of the collection, the process may take several minutes as the importer queries Scryfall.
 
