@@ -133,6 +133,16 @@ namespace MTG_Librarian.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap arrows_25 {
+            get {
+                object obj = ResourceManager.GetObject("arrows_25", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap B_16 {
             get {
                 object obj = ResourceManager.GetObject("B_16", resourceCulture);
@@ -156,6 +166,26 @@ namespace MTG_Librarian.Properties {
         internal static System.Drawing.Bitmap BG_16 {
             get {
                 object obj = ResourceManager.GetObject("BG_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap binder_25 {
+            get {
+                object obj = ResourceManager.GetObject("binder_25", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap bookmark_25 {
+            get {
+                object obj = ResourceManager.GetObject("bookmark_25", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -493,6 +523,16 @@ namespace MTG_Librarian.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap deck_25 {
+            get {
+                object obj = ResourceManager.GetObject("deck_25", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap E_16 {
             get {
                 object obj = ResourceManager.GetObject("E_16", resourceCulture);
@@ -543,6 +583,16 @@ namespace MTG_Librarian.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap GUP_16 {
+            get {
+                object obj = ResourceManager.GetObject("GUP_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap GW_16 {
             get {
                 object obj = ResourceManager.GetObject("GW_16", resourceCulture);
@@ -553,9 +603,39 @@ namespace MTG_Librarian.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap GWP_16 {
+            get {
+                object obj = ResourceManager.GetObject("GWP_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap hand {
             get {
                 object obj = ResourceManager.GetObject("hand", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap handshake_25 {
+            get {
+                object obj = ResourceManager.GetObject("handshake_25", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap list_25 {
+            get {
+                object obj = ResourceManager.GetObject("list_25", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -586,6 +666,16 @@ namespace MTG_Librarian.Properties {
         internal static System.Drawing.Bitmap mtgl_text {
             get {
                 object obj = ResourceManager.GetObject("mtgl text", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap pricetag_25 {
+            get {
+                object obj = ResourceManager.GetObject("pricetag_25", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -643,6 +733,16 @@ namespace MTG_Librarian.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap RGP_16 {
+            get {
+                object obj = ResourceManager.GetObject("RGP_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap RP_16 {
             get {
                 object obj = ResourceManager.GetObject("RP_16", resourceCulture);
@@ -656,6 +756,16 @@ namespace MTG_Librarian.Properties {
         internal static System.Drawing.Bitmap RW_16 {
             get {
                 object obj = ResourceManager.GetObject("RW_16", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap RWP_16 {
+            get {
+                object obj = ResourceManager.GetObject("RWP_16", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

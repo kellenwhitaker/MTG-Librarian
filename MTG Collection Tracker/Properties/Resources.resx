@@ -337,4 +337,37 @@
   <data name="Q_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Q 16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="GWP_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\GWP_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RGP_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\RGP_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="RWP_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\RWP_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="GUP_16" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Icons\GUP_16.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="deck_25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\deck_25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="binder_25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\binder_25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="list_25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\list_25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="pricetag_25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\pricetag_25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="bookmark_25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\bookmark_25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="handshake_25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\handshake_25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="arrows_25" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\..\..\..\..\..\Documents\arrows_25.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>
