@@ -644,10 +644,14 @@
     <Content Include="Icons\X_20.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Resources\GUP_16.png" />
+    <Content Include="Resources\RGP_16.png" />
+    <Content Include="Resources\RWP_16.png" />
     <None Include="Resources\5011.png" />
     <None Include="Resources\5020.png" />
     <Content Include="Resources\clear_16.png" />
     <Content Include="Resources\clear_20.png" />
+    <Content Include="Resources\GWP_16.png" />
     <Content Include="Resources\Magic_card_back.png" />
     <None Include="Resources\mtgl text.png" />
     <None Include="Resources\Magic_card_back1.png" />
